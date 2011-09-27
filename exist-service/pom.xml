@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.mayo.cts2.framework</groupId>
+		<artifactId>base-service-plugin</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>edu.mayo.cts2.framework</groupId>
+	<artifactId>exist-service</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<distributionManagement>
+		<site>
+			<id>sdk-website-server</id>
+			<url>scp://72.44.34.6/var/www/sites/exist-service</url>
+		</site>
+	</distributionManagement>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.5.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thaiopensource</groupId>
+			<artifactId>jing</artifactId>
+			<version>20091111</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<version>3.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xml-resolver</groupId>
+			<artifactId>xml-resolver</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.mayo.cts2.framework</groupId>
+			<artifactId>service</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.mayo.cts2.framework</groupId>
+			<artifactId>core</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.0.4.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xmldb</groupId>
+			<artifactId>xmldb</artifactId>
+			<version>unknown</version>
+		</dependency>
+		<dependency>
+			<groupId>exist</groupId>
+			<artifactId>exist</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+	</dependencies>
+
+	<repositories>
+
+		<repository>
+			<id>exist</id>
+			<url>file:///${basedir}/repo</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+</project>
