@@ -18,6 +18,10 @@
 			<url>scp://72.44.34.6/var/www/sites/exist-service</url>
 		</site>
 	</distributionManagement>
+	
+	<properties>
+		<service.provider.class>edu.mayo.cts2.framework.plugin.service.exist.profile.ExistServiceProvider</service.provider.class>
+	</properties>
 
 	<dependencies>
 
