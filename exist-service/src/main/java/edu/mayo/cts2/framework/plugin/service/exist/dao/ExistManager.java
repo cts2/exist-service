@@ -19,8 +19,8 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
-import edu.mayo.cts2.sdk.core.config.Cts2Config;
-import edu.mayo.cts2.sdk.core.xml.DelgatingMarshaller;
+import edu.mayo.cts2.framework.core.config.Cts2Config;
+import edu.mayo.cts2.framework.core.xml.DelgatingMarshaller;
 
 public class ExistManager implements InitializingBean {
 	

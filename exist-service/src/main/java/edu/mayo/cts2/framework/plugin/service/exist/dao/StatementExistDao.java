@@ -3,10 +3,10 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownStatement;
-import edu.mayo.cts2.sdk.model.statement.Statement;
-import edu.mayo.cts2.sdk.model.statement.StatementDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.service.exception.UnknownStatement;
+import edu.mayo.cts2.framework.model.statement.Statement;
+import edu.mayo.cts2.framework.model.statement.StatementDirectoryEntry;
 
 @Component
 public class StatementExistDao extends

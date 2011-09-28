@@ -3,10 +3,10 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownValueSet;
-import edu.mayo.cts2.sdk.model.valueset.ValueSetCatalogEntry;
-import edu.mayo.cts2.sdk.model.valueset.ValueSetCatalogEntrySummary;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.service.exception.UnknownValueSet;
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry;
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary;
 
 @Component
 public class ValueSetExistDao extends AbstractResourceExistDao<ValueSetCatalogEntrySummary, ValueSetCatalogEntry> {

@@ -4,17 +4,17 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.entity.EntityDescription;
+import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
+import edu.mayo.cts2.framework.model.util.RestModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.EntityDescriptionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.entity.EntityDescription;
-import edu.mayo.cts2.sdk.model.entity.EntityDescriptionBase;
-import edu.mayo.cts2.sdk.model.util.RestModelUtils;
-import edu.mayo.cts2.sdk.service.profile.entitydescription.EntityDescriptionMaintenanceService;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionMaintenanceService;
 
 @Component
 public class ExistEntityDescriptionMaintenanceService
 		extends
-		AbstractExistService<edu.mayo.cts2.sdk.model.service.entitydescription.EntityDescriptionMaintenanceService>
+		AbstractExistService<edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionMaintenanceService>
 		implements EntityDescriptionMaintenanceService {
 
 	@Resource

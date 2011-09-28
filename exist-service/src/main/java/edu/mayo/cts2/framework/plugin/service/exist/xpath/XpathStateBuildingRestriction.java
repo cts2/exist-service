@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import edu.mayo.cts2.framework.filter.directory.AbstractStateBuildingDirectoryBuilder.StateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.sdk.filter.directory.AbstractStateBuildingDirectoryBuilder.StateBuildingRestriction;
 
 /**
  * The Class XpathStateUpdater.
@@ -72,7 +72,7 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater#updateState(java.lang.Object, edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference, java.lang.String)
+	 * @see edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater#updateState(java.lang.Object, edu.mayo.cts2.framework.model.core.MatchAlgorithmReference, java.lang.String)
 	 */
 	@Override
 	public T restrict(

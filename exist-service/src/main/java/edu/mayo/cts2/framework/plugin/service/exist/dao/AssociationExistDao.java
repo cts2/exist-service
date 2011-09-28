@@ -3,10 +3,10 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.sdk.model.association.Association;
-import edu.mayo.cts2.sdk.model.association.AssociationDirectoryEntry;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownAssociation;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.association.Association;
+import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class AssociationExistDao extends AbstractResourceExistDao<AssociationDirectoryEntry,Association> {

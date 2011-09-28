@@ -8,29 +8,29 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.entity.EntityDescription;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.EntityDescriptionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.core.FilterComponent;
-import edu.mayo.cts2.sdk.model.core.PredicateReference;
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
-import edu.mayo.cts2.sdk.model.entity.EntityDescription;
-import edu.mayo.cts2.sdk.model.entity.EntityDirectoryEntry;
-import edu.mayo.cts2.sdk.model.service.core.Query;
-import edu.mayo.cts2.sdk.service.command.Page;
-import edu.mayo.cts2.sdk.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
-import edu.mayo.cts2.sdk.service.meta.StandardModelAttributeReference;
-import edu.mayo.cts2.sdk.service.profile.entitydescription.EntityDescriptionQueryService;
+import edu.mayo.cts2.framework.service.command.Page;
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
 
 @Component
 public class ExistEntityDescriptionQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.sdk.model.service.entitydescription.EntityDescriptionQueryService,EntityDescriptionDirectoryState>    
+		<edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionQueryService,EntityDescriptionDirectoryState>    
 	implements EntityDescriptionQueryService {
 
 	@Resource

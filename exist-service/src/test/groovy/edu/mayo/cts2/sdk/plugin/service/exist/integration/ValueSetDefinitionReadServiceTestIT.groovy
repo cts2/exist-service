@@ -1,17 +1,17 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.integration;
+package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
 import static org.junit.Assert.*
 
 import org.junit.Test
 
-import edu.mayo.cts2.sdk.model.core.CodeSystemReference
-import edu.mayo.cts2.sdk.model.core.SourceAndNotation
-import edu.mayo.cts2.sdk.model.core.ValueSetReference
-import edu.mayo.cts2.sdk.model.core.types.SetOperator
-import edu.mayo.cts2.sdk.model.valuesetdefinition.CompleteCodeSystemReference
-import edu.mayo.cts2.sdk.model.valuesetdefinition.ValueSetDefinition
-import edu.mayo.cts2.sdk.model.valuesetdefinition.ValueSetDefinitionEntry
-import edu.mayo.cts2.sdk.model.valuesetdefinition.ValueSetDefinitionMsg
+import edu.mayo.cts2.framework.model.core.CodeSystemReference
+import edu.mayo.cts2.framework.model.core.SourceAndNotation
+import edu.mayo.cts2.framework.model.core.ValueSetReference
+import edu.mayo.cts2.framework.model.core.types.SetOperator
+import edu.mayo.cts2.framework.model.valuesetdefinition.CompleteCodeSystemReference
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionMsg
 
 class ValueSetDefinitionReadServiceTestIT extends BaseServiceTestITBase {
 			

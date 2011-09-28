@@ -23,10 +23,10 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.xpath;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.sdk.service.meta.StandardMatchAlgorithmReference;
+import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 
 /**
  * The Class XpathStateUpdater.
@@ -61,7 +61,7 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater#updateState(java.lang.Object, edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference, java.lang.String)
+	 * @see edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater#updateState(java.lang.Object, edu.mayo.cts2.framework.model.core.MatchAlgorithmReference, java.lang.String)
 	 */
 	@Override
 	public T updateState(

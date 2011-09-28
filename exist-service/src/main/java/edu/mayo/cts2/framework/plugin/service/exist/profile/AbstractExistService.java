@@ -20,9 +20,9 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import org.apache.commons.lang.StringUtils;
 
+import edu.mayo.cts2.framework.model.service.core.BaseService;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.sdk.model.service.core.BaseService;
-import edu.mayo.cts2.sdk.service.profile.AbstractService;
+import edu.mayo.cts2.framework.service.profile.AbstractService;
 
 /**
  * The Class AbstractService.

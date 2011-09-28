@@ -5,9 +5,9 @@ import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.XMLDBException;
 
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
-import edu.mayo.cts2.sdk.model.exception.ExceptionFactory;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.exception.ExceptionFactory;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 public abstract class AbstractResourceExistDao<S, R> extends AbstractExistDao {
 

@@ -6,27 +6,27 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.association.Association;
+import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
+import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.AssociationExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.association.Association;
-import edu.mayo.cts2.sdk.model.association.AssociationDirectoryEntry;
-import edu.mayo.cts2.sdk.model.core.FilterComponent;
-import edu.mayo.cts2.sdk.model.core.PredicateReference;
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
-import edu.mayo.cts2.sdk.model.entity.EntityDirectoryEntry;
-import edu.mayo.cts2.sdk.model.service.core.Query;
-import edu.mayo.cts2.sdk.service.command.Page;
-import edu.mayo.cts2.sdk.service.command.restriction.AssociationQueryServiceRestrictions;
-import edu.mayo.cts2.sdk.service.profile.association.AssociationQueryService;
-import edu.mayo.cts2.sdk.service.profile.entitydescription.id.EntityDescriptionId;
+import edu.mayo.cts2.framework.service.command.Page;
+import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
+import edu.mayo.cts2.framework.service.profile.entitydescription.id.EntityDescriptionId;
 
 @Component
 public class ExistAssociationQueryService 	
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.sdk.model.service.association.AssociationQueryService,XpathState>
+		<edu.mayo.cts2.framework.model.service.association.AssociationQueryService,XpathState>
 	implements AssociationQueryService {
 
 	@Resource

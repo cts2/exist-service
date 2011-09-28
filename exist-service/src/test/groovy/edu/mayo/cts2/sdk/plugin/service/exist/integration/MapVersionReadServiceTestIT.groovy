@@ -1,13 +1,13 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.integration;
+package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
 import static org.junit.Assert.*
 
 import org.junit.Test
 
-import edu.mayo.cts2.sdk.model.core.MapReference
-import edu.mayo.cts2.sdk.model.core.SourceAndNotation
-import edu.mayo.cts2.sdk.model.mapversion.MapVersion
-import edu.mayo.cts2.sdk.model.mapversion.MapVersionMsg
+import edu.mayo.cts2.framework.model.core.MapReference
+import edu.mayo.cts2.framework.model.core.SourceAndNotation
+import edu.mayo.cts2.framework.model.mapversion.MapVersion
+import edu.mayo.cts2.framework.model.mapversion.MapVersionMsg
 
 
 class MapVersionReadServiceTestIT extends BaseServiceTestITBase {

@@ -1,11 +1,11 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.integration;
+package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
 import static org.junit.Assert.*
 
 import org.junit.Test
 
-import edu.mayo.cts2.sdk.model.valueset.ValueSetCatalogEntry
-import edu.mayo.cts2.sdk.model.valueset.ValueSetCatalogEntryMsg
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntryMsg
 
 
 class ValueSetReadServiceTestIT extends BaseServiceTestITBase {

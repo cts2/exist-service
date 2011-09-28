@@ -3,10 +3,10 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.sdk.model.mapversion.MapVersion;
-import edu.mayo.cts2.sdk.model.mapversion.MapVersionDirectoryEntry;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownMapVersion;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.mapversion.MapVersion;
+import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.exception.UnknownMapVersion;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class MapVersionExistDao extends

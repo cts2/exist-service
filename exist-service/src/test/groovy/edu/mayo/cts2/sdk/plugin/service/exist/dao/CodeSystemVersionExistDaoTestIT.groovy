@@ -1,4 +1,4 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.dao;
+package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
 import static org.junit.Assert.*
 
@@ -10,9 +10,9 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemVersionExistDao;
-import edu.mayo.cts2.sdk.model.codesystemversion.CodeSystemVersionCatalogEntry
-import edu.mayo.cts2.sdk.model.core.CodeSystemReference
-import edu.mayo.cts2.sdk.model.core.SourceAndNotation
+import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry
+import edu.mayo.cts2.framework.model.core.CodeSystemReference
+import edu.mayo.cts2.framework.model.core.SourceAndNotation
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(value="classpath:/exist-test-context.xml")

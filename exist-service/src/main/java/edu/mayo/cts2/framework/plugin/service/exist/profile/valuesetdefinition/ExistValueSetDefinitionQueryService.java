@@ -7,28 +7,28 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.service.core.Query;
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetDefinitionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.core.FilterComponent;
-import edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.sdk.model.core.PredicateReference;
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
-import edu.mayo.cts2.sdk.model.service.core.Query;
-import edu.mayo.cts2.sdk.model.valuesetdefinition.ValueSetDefinition;
-import edu.mayo.cts2.sdk.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
-import edu.mayo.cts2.sdk.service.command.Page;
-import edu.mayo.cts2.sdk.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
-import edu.mayo.cts2.sdk.service.meta.StandardModelAttributeReference;
-import edu.mayo.cts2.sdk.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
+import edu.mayo.cts2.framework.service.command.Page;
+import edu.mayo.cts2.framework.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
 
 @Component
 public class ExistValueSetDefinitionQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.sdk.model.service.valuesetdefinition.ValueSetDefinitionQueryService,XpathState>
+		<edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionQueryService,XpathState>
 	implements ValueSetDefinitionQueryService {
 
 	@Resource

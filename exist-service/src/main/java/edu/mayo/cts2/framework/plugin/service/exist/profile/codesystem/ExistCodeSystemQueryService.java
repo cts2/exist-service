@@ -7,25 +7,25 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
+import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.codesystem.CodeSystemCatalogEntry;
-import edu.mayo.cts2.sdk.model.codesystem.CodeSystemCatalogEntrySummary;
-import edu.mayo.cts2.sdk.model.core.FilterComponent;
-import edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.sdk.model.core.PredicateReference;
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
-import edu.mayo.cts2.sdk.model.service.core.Query;
-import edu.mayo.cts2.sdk.service.command.Page;
-import edu.mayo.cts2.sdk.service.profile.codesystem.CodeSystemQueryService;
+import edu.mayo.cts2.framework.service.command.Page;
+import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemQueryService;
 
 @Component
 public class ExistCodeSystemQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.sdk.model.service.codesystem.CodeSystemQueryService,XpathState> 
+		<edu.mayo.cts2.framework.model.service.codesystem.CodeSystemQueryService,XpathState> 
 	implements CodeSystemQueryService {
 
 	@Resource

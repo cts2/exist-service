@@ -2,8 +2,8 @@ package edu.mayo.cts2.framework.plugin.service.exist.util;
 
 import org.apache.commons.lang.StringUtils;
 
-import edu.mayo.cts2.sdk.model.core.ScopedEntityName;
-import edu.mayo.cts2.sdk.model.entity.EntityDescriptionBase;
+import edu.mayo.cts2.framework.model.core.ScopedEntityName;
+import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 
 public class ExistServiceUtils {
 	

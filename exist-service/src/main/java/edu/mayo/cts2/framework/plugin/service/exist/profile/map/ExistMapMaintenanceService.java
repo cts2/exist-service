@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.map.MapCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.MapExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.map.MapCatalogEntry;
-import edu.mayo.cts2.sdk.service.profile.map.MapMaintenanceService;
+import edu.mayo.cts2.framework.service.profile.map.MapMaintenanceService;
 
 @Component
 public class ExistMapMaintenanceService
-	extends AbstractExistService<edu.mayo.cts2.sdk.model.service.map.MapCatalogMaintenanceService>  
+	extends AbstractExistService<edu.mayo.cts2.framework.model.service.map.MapCatalogMaintenanceService>  
 	implements MapMaintenanceService {
 
 	@Resource

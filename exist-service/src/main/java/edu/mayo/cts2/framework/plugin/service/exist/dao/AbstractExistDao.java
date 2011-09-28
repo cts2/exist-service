@@ -22,13 +22,13 @@ import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
 
+import edu.mayo.cts2.framework.core.url.UrlConstructor;
+import edu.mayo.cts2.framework.model.core.Changeable;
+import edu.mayo.cts2.framework.model.core.DirectoryEntry;
+import edu.mayo.cts2.framework.model.core.ResourceDescription;
+import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.sdk.core.url.UrlConstructor;
-import edu.mayo.cts2.sdk.model.core.Changeable;
-import edu.mayo.cts2.sdk.model.core.DirectoryEntry;
-import edu.mayo.cts2.sdk.model.core.ResourceDescription;
-import edu.mayo.cts2.sdk.model.core.ResourceDescriptionDirectoryEntry;
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
 
 @Component
 public abstract class AbstractExistDao {

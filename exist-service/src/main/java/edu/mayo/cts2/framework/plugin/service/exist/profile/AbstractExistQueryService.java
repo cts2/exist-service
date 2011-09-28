@@ -23,15 +23,15 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.sdk.model.service.core.BaseQueryService;
-import edu.mayo.cts2.sdk.service.meta.StandardMatchAlgorithmReference;
-import edu.mayo.cts2.sdk.service.meta.StandardModelAttributeReference;
-import edu.mayo.cts2.sdk.service.profile.AbstractQueryService;
+import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
+import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
+import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
 
 /**
  * The Class AbstractService.

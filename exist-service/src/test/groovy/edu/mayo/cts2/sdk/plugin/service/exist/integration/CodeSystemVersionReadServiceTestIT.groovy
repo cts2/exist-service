@@ -1,13 +1,13 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.integration;
+package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
 import static org.junit.Assert.*
 
 import org.junit.Test
 
-import edu.mayo.cts2.sdk.model.codesystemversion.CodeSystemVersionCatalogEntry
-import edu.mayo.cts2.sdk.model.codesystemversion.CodeSystemVersionCatalogEntryMsg
-import edu.mayo.cts2.sdk.model.core.CodeSystemReference
-import edu.mayo.cts2.sdk.model.core.SourceAndNotation
+import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry
+import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntryMsg
+import edu.mayo.cts2.framework.model.core.CodeSystemReference
+import edu.mayo.cts2.framework.model.core.SourceAndNotation
 
 
 class CodeSystemVersionReadServiceTestIT extends BaseServiceTestITBase {

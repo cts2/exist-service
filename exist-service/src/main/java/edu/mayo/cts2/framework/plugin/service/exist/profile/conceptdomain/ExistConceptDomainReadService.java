@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ConceptDomainExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.conceptdomain.ConceptDomainCatalogEntry;
-import edu.mayo.cts2.sdk.service.profile.conceptdomain.ConceptDomainReadService;
+import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainReadService;
 
 @Component
 public class ExistConceptDomainReadService 
-	extends AbstractExistService<edu.mayo.cts2.sdk.model.service.conceptdomain.ConceptDomainReadService>
+	extends AbstractExistService<edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainReadService>
 	implements ConceptDomainReadService {
 
 	@Resource

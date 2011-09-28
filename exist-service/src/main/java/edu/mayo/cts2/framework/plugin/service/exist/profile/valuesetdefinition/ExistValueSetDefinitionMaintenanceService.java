@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetDefinitionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.valuesetdefinition.ValueSetDefinition;
-import edu.mayo.cts2.sdk.service.profile.valuesetdefinition.ValueSetDefinitionMaintenanceService;
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionMaintenanceService;
 
 @Component
 public class ExistValueSetDefinitionMaintenanceService 
-	extends AbstractExistService<edu.mayo.cts2.sdk.model.service.valuesetdefinition.ValueSetDefinitionMaintenanceService>
+	extends AbstractExistService<edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionMaintenanceService>
 	implements ValueSetDefinitionMaintenanceService {
 
 	@Resource

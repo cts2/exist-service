@@ -8,27 +8,27 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.mapversion.MapEntry;
+import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.MapEntryExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.sdk.model.core.FilterComponent;
-import edu.mayo.cts2.sdk.model.core.PredicateReference;
-import edu.mayo.cts2.sdk.model.directory.DirectoryResult;
-import edu.mayo.cts2.sdk.model.mapversion.MapEntry;
-import edu.mayo.cts2.sdk.model.mapversion.MapEntryDirectoryEntry;
-import edu.mayo.cts2.sdk.model.service.core.Query;
-import edu.mayo.cts2.sdk.service.command.Page;
-import edu.mayo.cts2.sdk.service.command.restriction.MapEntryQueryServiceRestrictions;
-import edu.mayo.cts2.sdk.service.profile.mapentry.MapEntryQueryService;
+import edu.mayo.cts2.framework.service.command.Page;
+import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
 
 @Component
 public class ExistMapEntryQueryService
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.sdk.model.service.mapentry.MapEntryQueryService,MapEntryDirectoryState>
+		<edu.mayo.cts2.framework.model.service.mapentry.MapEntryQueryService,MapEntryDirectoryState>
 	implements MapEntryQueryService {
 
 	@Resource

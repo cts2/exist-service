@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.StatementExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.statement.Statement;
-import edu.mayo.cts2.sdk.service.profile.statement.StatementReadService;
+import edu.mayo.cts2.framework.service.profile.statement.StatementReadService;
 
 @Component
 public class ExistStatementReadService 
-	extends AbstractExistService<edu.mayo.cts2.sdk.model.service.statement.StatementService>
+	extends AbstractExistService<edu.mayo.cts2.framework.model.service.statement.StatementService>
 	implements StatementReadService {
 
 	@Resource

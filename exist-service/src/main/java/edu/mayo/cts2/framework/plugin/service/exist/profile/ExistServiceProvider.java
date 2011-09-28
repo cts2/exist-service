@@ -21,7 +21,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import edu.mayo.cts2.sdk.service.provider.AbstractSpringServiceProvider;
+import edu.mayo.cts2.framework.service.provider.AbstractSpringServiceProvider;
 
 /**
  * The Class BioportalServiceProvider.

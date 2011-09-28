@@ -20,10 +20,10 @@ package edu.mayo.cts2.framework.plugin.service.exist.restrict.directory;
 
 import java.util.List;
 
+import edu.mayo.cts2.framework.filter.directory.AbstractStateBuildingDirectoryBuilder;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.sdk.filter.directory.AbstractStateBuildingDirectoryBuilder;
-import edu.mayo.cts2.sdk.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.sdk.model.core.MatchAlgorithmReference;
 
 /**
  * The Class EntityDirectoryBuilder.

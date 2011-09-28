@@ -9,17 +9,17 @@ import org.xmldb.api.base.Resource;
 
 import com.google.common.collect.Iterables;
 
+import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
+import edu.mayo.cts2.framework.model.core.ScopedEntityName;
+import edu.mayo.cts2.framework.model.entity.Designation;
+import edu.mayo.cts2.framework.model.entity.EntityDescription;
+import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
+import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
+import edu.mayo.cts2.framework.model.service.exception.UnknownEntity;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.util.RestModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.sdk.model.core.DescriptionInCodeSystem;
-import edu.mayo.cts2.sdk.model.core.ScopedEntityName;
-import edu.mayo.cts2.sdk.model.entity.Designation;
-import edu.mayo.cts2.sdk.model.entity.EntityDescription;
-import edu.mayo.cts2.sdk.model.entity.EntityDescriptionBase;
-import edu.mayo.cts2.sdk.model.entity.EntityDirectoryEntry;
-import edu.mayo.cts2.sdk.model.entity.NamedEntityDescription;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownEntity;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
-import edu.mayo.cts2.sdk.model.util.RestModelUtils;
 
 @Component
 public class EntityDescriptionExistDao extends

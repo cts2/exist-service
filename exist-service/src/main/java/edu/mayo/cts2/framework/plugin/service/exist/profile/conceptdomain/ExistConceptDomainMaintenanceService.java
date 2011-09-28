@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ConceptDomainExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.conceptdomain.ConceptDomainCatalogEntry;
-import edu.mayo.cts2.sdk.service.profile.conceptdomain.ConceptDomainMaintenanceService;
+import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainMaintenanceService;
 
 @Component
 public class ExistConceptDomainMaintenanceService 
-	extends AbstractExistService<edu.mayo.cts2.sdk.model.service.conceptdomain.ConceptDomainMaintenanceService>
+	extends AbstractExistService<edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainMaintenanceService>
 	implements ConceptDomainMaintenanceService {
 
 	@Resource

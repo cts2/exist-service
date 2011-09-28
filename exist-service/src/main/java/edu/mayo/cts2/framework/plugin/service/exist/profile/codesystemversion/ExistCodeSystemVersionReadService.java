@@ -4,9 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemVersionExistDao;
-import edu.mayo.cts2.sdk.model.codesystemversion.CodeSystemVersionCatalogEntry;
-import edu.mayo.cts2.sdk.service.profile.codesystemversion.CodeSystemVersionReadService;
+import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService;
 
 @Component
 public class ExistCodeSystemVersionReadService implements CodeSystemVersionReadService {

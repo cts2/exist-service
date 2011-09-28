@@ -3,10 +3,10 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.sdk.model.codesystem.CodeSystemCatalogEntry;
-import edu.mayo.cts2.sdk.model.codesystem.CodeSystemCatalogEntrySummary;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownCodeSystem;
-import edu.mayo.cts2.sdk.model.service.exception.UnknownResourceReference;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
+import edu.mayo.cts2.framework.model.service.exception.UnknownCodeSystem;
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class CodeSystemExistDao extends AbstractResourceExistDao<CodeSystemCatalogEntrySummary, CodeSystemCatalogEntry> {

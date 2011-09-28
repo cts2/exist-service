@@ -6,9 +6,9 @@
 
 	<import resource="classpath:exist-context.xml"/>
 	
-	<bean id="existManager" class="edu.mayo.cts2.sdk.plugin.service.exist.dao.TestExistManager"/>
+	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.TestExistManager"/>
 	
-	<bean id="cts2Config" class="edu.mayo.cts2.sdk.core.config.Cts2TestConfigFactory">
+	<bean id="cts2Config" class="edu.mayo.cts2.framework.core.config.Cts2TestConfigFactory">
 		<property name="context" value="test"/>
 	</bean>
 

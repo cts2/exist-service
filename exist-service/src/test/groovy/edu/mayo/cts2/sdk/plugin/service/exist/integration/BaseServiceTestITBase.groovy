@@ -1,6 +1,6 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.integration;
+package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
-import edu.mayo.cts2.sdk.core.client.Cts2RestClient
+import edu.mayo.cts2.framework.core.client.Cts2RestClient
 
 
 class BaseServiceTestITBase {

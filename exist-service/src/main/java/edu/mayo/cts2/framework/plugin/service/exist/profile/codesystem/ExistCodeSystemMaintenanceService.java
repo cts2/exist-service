@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
-import edu.mayo.cts2.sdk.model.codesystem.CodeSystemCatalogEntry;
-import edu.mayo.cts2.sdk.service.profile.codesystem.CodeSystemMaintenanceService;
+import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemMaintenanceService;
 
 @Component
 public class ExistCodeSystemMaintenanceService 
-	extends AbstractExistService<edu.mayo.cts2.sdk.model.service.codesystem.CodeSystemMaintenanceService>
+	extends AbstractExistService<edu.mayo.cts2.framework.model.service.codesystem.CodeSystemMaintenanceService>
 	implements CodeSystemMaintenanceService {
 
 	@Resource

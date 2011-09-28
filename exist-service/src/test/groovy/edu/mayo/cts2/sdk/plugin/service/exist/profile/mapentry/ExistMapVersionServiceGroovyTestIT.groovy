@@ -1,4 +1,4 @@
-package edu.mayo.cts2.sdk.plugin.service.exist.profile.mapentry
+package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry
 
 import static org.junit.Assert.*
 
@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryReadService;
-import edu.mayo.cts2.sdk.model.core.MapReference
-import edu.mayo.cts2.sdk.model.core.MapVersionReference
-import edu.mayo.cts2.sdk.model.core.NameAndMeaningReference
-import edu.mayo.cts2.sdk.model.core.URIAndEntityName
-import edu.mayo.cts2.sdk.model.mapversion.*
-import edu.mayo.cts2.sdk.model.mapversion.types.MapProcessingRule
-import edu.mayo.cts2.sdk.plugin.service.exist.profile.BaseServiceTestGroovy
-import edu.mayo.cts2.sdk.service.command.Page
-import edu.mayo.cts2.sdk.service.command.restriction.MapEntryQueryServiceRestrictions
+import edu.mayo.cts2.framework.model.core.MapReference
+import edu.mayo.cts2.framework.model.core.MapVersionReference
+import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
+import edu.mayo.cts2.framework.model.core.URIAndEntityName
+import edu.mayo.cts2.framework.model.mapversion.*
+import edu.mayo.cts2.framework.model.mapversion.types.MapProcessingRule
+import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestGroovy
+import edu.mayo.cts2.framework.service.command.Page
+import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 
 class ExistMapEntryServiceGroovyTestIT extends BaseServiceTestGroovy {
 
