@@ -4,9 +4,6 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.association.ExistAssociationMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.association.ExistAssociationQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.association.ExistAssociationReadService;
 import edu.mayo.cts2.framework.model.association.Association
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference

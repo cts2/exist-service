@@ -4,8 +4,6 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.codesystemversion.ExistCodeSystemVersionMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.codesystemversion.ExistCodeSystemVersionReadService;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.SourceAndNotation

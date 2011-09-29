@@ -2,8 +2,6 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.map
 
 import org.springframework.beans.factory.annotation.Autowired
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.map.ExistMapMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.map.ExistMapReadService;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary
 import edu.mayo.cts2.framework.model.service.exception.UnknownMap

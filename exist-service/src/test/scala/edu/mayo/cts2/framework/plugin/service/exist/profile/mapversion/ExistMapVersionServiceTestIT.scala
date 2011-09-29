@@ -2,8 +2,6 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion
 
 import org.springframework.beans.factory.annotation.Autowired
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion.ExistMapVersionMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion.ExistMapVersionReadService;
 import edu.mayo.cts2.framework.model.service.exception.UnknownMapVersion
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.model.mapversion.MapVersion

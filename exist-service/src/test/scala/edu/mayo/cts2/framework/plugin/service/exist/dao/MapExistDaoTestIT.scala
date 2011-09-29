@@ -2,7 +2,6 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao
 
 import org.junit.Assert.assertEquals
 
-import edu.mayo.cts2.framework.plugin.service.exist.dao.MapExistDao;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry
 import org.springframework.beans.factory.annotation.Autowired
 import org.scalatest.junit.AssertionsForJUnit

@@ -5,9 +5,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryReadService;
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.core.FilterComponent
 import edu.mayo.cts2.framework.model.core.MapVersionReference

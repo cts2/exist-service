@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.ContextConfiguration
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription.ExistEntityDescriptionMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription.ExistEntityDescriptionReadService;
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference

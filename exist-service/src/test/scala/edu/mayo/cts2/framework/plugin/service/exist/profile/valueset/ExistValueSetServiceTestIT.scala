@@ -4,8 +4,6 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.valueset.ExistValueSetMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.valueset.ExistValueSetReadService;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
