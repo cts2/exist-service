@@ -6,7 +6,7 @@
 
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.exist" />
 	
-	<bean id="pluginConfig" class="edu.mayo.cts2.framework.core.config.PluginConfigSpringFactory"/>
+<!-- 	<bean id="pluginConfig" class="edu.mayo.cts2.framework.core.config.PluginConfigSpringFactory"/> -->
 
 	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager"/>
 	
