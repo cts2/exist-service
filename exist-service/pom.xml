@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>edu.mayo.cts2.framework</groupId>
 		<artifactId>base-service-plugin</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
+		<version>0.2.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>edu.mayo.cts2.framework</groupId>
 	<artifactId>exist-service</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.5.0-SNAPSHOT</version>
 
 	<distributionManagement>
 		<site>
@@ -18,8 +18,9 @@
 			<url>scp://72.44.34.6/var/www/sites/exist-service</url>
 		</site>
 	</distributionManagement>
-	
+
 	<properties>
+		<develpment.framework.version>0.2.2-SNAPSHOT</develpment.framework.version>
 		<service.provider.class>edu.mayo.cts2.framework.plugin.service.exist.profile.ExistServiceProvider</service.provider.class>
 	</properties>
 
@@ -64,13 +65,13 @@
 		<dependency>
 			<groupId>edu.mayo.cts2.framework</groupId>
 			<artifactId>service</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${develpment.framework.version}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>edu.mayo.cts2.framework</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>${develpment.framework.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -123,6 +124,29 @@
 	</dependencies>
 
 	<repositories>
+		<repository>
+			<id>edu.informatics.maven.snapshot</id>
+			<name>Informatics Maven Snapshot Repository</name>
+			<url>http://informatics.mayo.edu/maven/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>edu.informatics.maven.releases</id>
+			<name>Informatics Maven Snapshot Repository</name>
+			<url>http://informatics.mayo.edu/maven/content/repositories/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 
 		<repository>
 			<id>exist</id>

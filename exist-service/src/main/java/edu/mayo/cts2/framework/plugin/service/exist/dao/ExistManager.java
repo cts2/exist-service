@@ -19,7 +19,7 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
-import edu.mayo.cts2.framework.core.config.Cts2Config;
+import edu.mayo.cts2.framework.core.config.PluginConfig;
 import edu.mayo.cts2.framework.core.xml.DelgatingMarshaller;
 
 public class ExistManager implements InitializingBean {
@@ -28,19 +28,14 @@ public class ExistManager implements InitializingBean {
 	private static final String PASSWORD_PROP = "exist.password";
 	private static final String URL_PROP = "exist.url";
 	private static final String EXIST_HOME_PROP = "exist.home";
+	
+	@javax.annotation.Resource
+	private PluginConfig pluginConfig;
 
-	private String uri = Cts2Config.instance().getProperty(
-			URL_PROP,
-			"xmldb:exist://localhost:8080/exist/xmlrpc/db/");
-	
-	private String existHome = Cts2Config.instance().getProperty(
-			EXIST_HOME_PROP);
-	
-	private String userName = Cts2Config.instance().getProperty(
-			USER_NAME_PROP);
-	
-	private String password = Cts2Config.instance().getProperty(
-			PASSWORD_PROP);
+	private String uri;
+	private String existHome;
+	private String userName;
+	private String password;
 	
 	private XQueryService xQueryService;
 	private CollectionManagementService collectionManagementService;
@@ -51,6 +46,8 @@ public class ExistManager implements InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		setPropertiesFromConfig();
+		
 		if(StringUtils.isNotBlank(this.existHome)){
 			System.setProperty(EXIST_HOME_PROP, this.existHome);
 			System.setProperty("exist.initdb", "true");
@@ -84,6 +81,13 @@ public class ExistManager implements InitializingBean {
 		}
 	}
 	
+	protected void setPropertiesFromConfig() {
+		this.uri = this.pluginConfig.getStringOption(URL_PROP).getOptionValue();
+		this.existHome = this.pluginConfig.getStringOption(EXIST_HOME_PROP).getOptionValue();
+		this.userName = this.pluginConfig.getStringOption(USER_NAME_PROP).getOptionValue();
+		this.password = this.pluginConfig.getStringOption(PASSWORD_PROP).getOptionValue();
+	}
+
 	public Collection getOrCreateCollection(String path) throws XMLDBException {
 		path = StringUtils.removeStart(path, "/");
 		String pathWithURI = uri + path;

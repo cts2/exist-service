@@ -4,13 +4,13 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<bean id="cts2Config" class="edu.mayo.cts2.framework.core.config.Cts2Config" factory-method="instance"/>
-		
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.exist" />
 	
+	<bean id="pluginConfig" class="edu.mayo.cts2.framework.core.config.PluginConfigSpringFactory"/>
+
 	<bean class="edu.mayo.cts2.framework.core.xml.DelgatingMarshaller"/>
 	
-	<bean class="edu.mayo.cts2.framework.core.url.UrlConstructorFactory"/>
+	<bean class="edu.mayo.cts2.framework.core.url.UrlConstructorSpringFactory"/>
 	
 	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.TestExistManager"/>
 

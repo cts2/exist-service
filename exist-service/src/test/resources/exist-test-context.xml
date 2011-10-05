@@ -8,8 +8,6 @@
 	
 	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.TestExistManager"/>
 	
-	<bean id="cts2Config" class="edu.mayo.cts2.framework.core.config.Cts2TestConfigFactory">
-		<property name="context" value="test"/>
-	</bean>
+	<bean id="pluginConfig" class="edu.mayo.cts2.framework.core.config.TestPluginConfigSpringFactory"/>
 
 </beans>

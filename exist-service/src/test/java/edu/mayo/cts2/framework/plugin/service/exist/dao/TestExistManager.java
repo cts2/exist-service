@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.UUID;
 
@@ -17,37 +18,40 @@ public class TestExistManager extends ExistManager {
 
 	
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		File tmpDir = SystemUtils.getJavaIoTmpDir();
+	public void setPropertiesFromConfig() {
+		try {
+			File tmpDir = SystemUtils.getJavaIoTmpDir();
 
-		File file = new File(tmpDir.getAbsolutePath() + "/"+ UUID.randomUUID().toString() + "/");
+			File file = new File(tmpDir.getAbsolutePath() + "/"+ UUID.randomUUID().toString() + "/");
+			
+			if(!file.exists()){
+				file.mkdir();
+			}
+
+			FileUtils.cleanDirectory(file);
+			
+			System.setProperty("exist.home", file.getAbsolutePath());
+			
+			Resource confXml = new ClassPathResource("conf.xml");
+			
+			File confXmlFile = new File(file.getAbsolutePath() + "/conf.xml");
+			confXmlFile.createNewFile();
+			
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(confXml.getInputStream(), writer);
+			
+			FileUtils.writeStringToFile(confXmlFile, writer.toString());
+
+			this.setUri("xmldb:exist:///db/");
+			System.setProperty("exist.initdb", "true");
+
+			FileUtils.forceDeleteOnExit(file);
+			
+			this.setUserName("admin");
+			this.setPassword("");
 		
-		if(!file.exists()){
-			file.mkdir();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-
-		FileUtils.cleanDirectory(file);
-		
-		System.setProperty("exist.home", file.getAbsolutePath());
-		
-		Resource confXml = new ClassPathResource("conf.xml");
-		
-		File confXmlFile = new File(file.getAbsolutePath() + "/conf.xml");
-		confXmlFile.createNewFile();
-		
-		StringWriter writer = new StringWriter();
-		IOUtils.copy(confXml.getInputStream(), writer);
-		
-		FileUtils.writeStringToFile(confXmlFile, writer.toString());
-
-		this.setUri("xmldb:exist:///db/");
-		System.setProperty("exist.initdb", "true");
-
-		FileUtils.forceDeleteOnExit(file);
-		
-		this.setUserName("admin");
-		this.setPassword("");
-		
-		super.afterPropertiesSet();
 	}
 }
