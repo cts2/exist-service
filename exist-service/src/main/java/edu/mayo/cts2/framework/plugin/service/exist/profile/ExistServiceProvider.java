@@ -34,15 +34,17 @@ public class ExistServiceProvider extends AbstractSpringServiceProvider {
 	 * @see org.cts2.rest.service.provider.AbstractSpringServiceProvider#getApplicationContext()
 	 */
 	@Override
-	protected ApplicationContext getApplicationContext() {
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("exist-context.xml");
+	protected ApplicationContext getApplicationContext(ApplicationContext parent) {
+		ClassPathXmlApplicationContext ctx = 
+				new ClassPathXmlApplicationContext(new String[]{"exist-context.xml"}, parent);
 
 		return ctx;
 	}
 
 	@Override
-	protected ApplicationContext getIntegrationTestApplicationContext() {
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("exist-validation-test-context.xml");
+	protected ApplicationContext getIntegrationTestApplicationContext(ApplicationContext parent) {
+		ClassPathXmlApplicationContext ctx = 
+				new ClassPathXmlApplicationContext(new String[]{"exist-validation-test-context.xml"}, parent);
 		
 		return ctx;
 	}
