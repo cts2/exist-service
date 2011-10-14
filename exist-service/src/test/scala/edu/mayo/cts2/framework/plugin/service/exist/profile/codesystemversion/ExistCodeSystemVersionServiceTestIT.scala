@@ -21,11 +21,11 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
        classOf[UnknownCodeSystemVersion]
     }
   
-    def createResource(name:String) = {
+    def createResource(name:String, uri:String) = {
       var entry = new CodeSystemVersionCatalogEntry()
       entry.setCodeSystemVersionName(name);
       entry.setAbout("about")
-      entry.setDocumentURI("uri")
+      entry.setDocumentURI(uri)
       entry.setSourceAndNotation(new SourceAndNotation());
 	  entry.setVersionOf(new CodeSystemReference());
       
@@ -34,6 +34,10 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
       
     def getResource(name:String):CodeSystemVersionCatalogEntry = {
     	readService.read(name)
+    }
+    
+        def getResourceByUri(uri:String):CodeSystemVersionCatalogEntry = {
+    	readService.readByUri(uri)
     }
   
 }

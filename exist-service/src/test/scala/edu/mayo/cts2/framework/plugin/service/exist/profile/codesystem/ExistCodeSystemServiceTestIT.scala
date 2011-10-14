@@ -20,10 +20,10 @@ class ExistCodeSystemServiceTestIT
        classOf[UnknownCodeSystem]
     }
   
-    def createResource(name:String) = {
+    def createResource(name:String, uri:String) = {
       var entry = new CodeSystemCatalogEntry()
       entry.setCodeSystemName(name);
-      entry.setAbout("about")
+      entry.setAbout(uri)
       
       maintService.createResource("", entry)
     }
@@ -32,4 +32,7 @@ class ExistCodeSystemServiceTestIT
     	readService.read(name)
     }
   
+    def getResourceByUri(uri:String):CodeSystemCatalogEntry = {
+    	readService.readByUri(uri)
+    }
 }

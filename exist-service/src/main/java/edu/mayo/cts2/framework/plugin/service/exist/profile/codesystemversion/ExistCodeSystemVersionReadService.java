@@ -6,10 +6,14 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemVersionExistDao;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService;
 
 @Component
-public class ExistCodeSystemVersionReadService implements CodeSystemVersionReadService {
+public class ExistCodeSystemVersionReadService 
+	extends AbstractExistReadService<CodeSystemVersionCatalogEntry,edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionReadService>
+	implements CodeSystemVersionReadService {
 
 	@Resource
 	private CodeSystemVersionExistDao codeSystemVersionExistDao;
@@ -40,6 +44,11 @@ public class ExistCodeSystemVersionReadService implements CodeSystemVersionReadS
 	public boolean existsVersionId(String codeSystemName,
 			String officialResourceVersionId) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected ExistDao<?, CodeSystemVersionCatalogEntry> getExistDao() {
+		return this.codeSystemVersionExistDao;
 	}
 
 }

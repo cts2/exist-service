@@ -18,8 +18,6 @@ public class CodeSystemExistDao extends AbstractResourceExistDao<CodeSystemCatal
 		return entry.getCodeSystemName();
 	}
 
-
-
 	@Override
 	protected CodeSystemCatalogEntrySummary createSummary() {
 		return new CodeSystemCatalogEntrySummary();
@@ -47,5 +45,19 @@ public class CodeSystemExistDao extends AbstractResourceExistDao<CodeSystemCatal
 	@Override
 	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
 		return UnknownCodeSystem.class;
+	}
+
+
+
+	@Override
+	protected String getResourceXpath() {
+		return "/codesystem:CodeSystemCatalogEntry";
+	}
+
+
+
+	@Override
+	protected String getUriXpath() {
+		return "@about";
 	}
 }

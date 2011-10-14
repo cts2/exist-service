@@ -32,16 +32,18 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
   
    @Test def testInsertAndRetrieve() {
     var name = "name"
-    	 createResource(name)
+       var uri = "someUri"
+    	 createResource(name, uri)
     	
     	
     	assertNotNull(  getResource(name));
   }
-  
+   
    
    @Test def testInsertAndRetrieveNotFound() {
 	   var name = "name"
-    	createResource(name)
+	    var uri = "someUri"
+    	createResource(name, uri)
     	
     	try {
     	getResource("__INVALID_NAME__")
@@ -53,6 +55,17 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
     	fail
    }
    
+       @Test def testInsertAndRetrieveByUri() {
+	    	var name = "name"
+	    	var uri = "someUri"
+    	 
+	    	createResource(name, uri)
+    	
+    	
+	    	assertNotNull(  getResourceByUri(uri));
+	    }
+       
+   
    def checkCTS2RestException(ex:Cts2RestException){
      var clazz = ex.getCts2Exception().getClass();
      
@@ -61,9 +74,11 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
    
    def getExceptionClass():Class[_<:UnknownResourceReference]
   
-    def createResource(name:String)
+    def createResource(name:String, uri:String)
       
     def getResource(name:String):T
+    
+    def getResourceByUri(uri:String):T
 }
 
   trait TestResourceSummaries[T,S] {

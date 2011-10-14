@@ -5,13 +5,14 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.MapExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.service.profile.map.MapReadService;
 
 @Component
 public class ExistMapReadService 
-	extends AbstractExistService<edu.mayo.cts2.framework.model.service.map.MapCatalogReadService>   
+	extends AbstractExistReadService<MapCatalogEntry,edu.mayo.cts2.framework.model.service.map.MapCatalogReadService>   
 	implements MapReadService {
 
 	@Resource
@@ -25,5 +26,10 @@ public class ExistMapReadService
 	@Override
 	public boolean exists(String identifier) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected ExistDao<?, MapCatalogEntry> getExistDao() {
+		return this.mapExistDao;
 	}
 }

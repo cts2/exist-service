@@ -58,7 +58,7 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
     entry
   }
   
-  def createResource(name: String) = {
+  def createResource(name: String, uri:String) = {
     var entry = createAssociation(name)
     
     maintService.createResource("", entry)
@@ -70,5 +70,9 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
     id.setAssociationUri(name)
     readService.read(id)
   }
+  
+      def getResourceByUri(uri:String):Association = {
+    	readService.readByUri(uri)
+    }
 
 }

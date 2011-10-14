@@ -25,10 +25,10 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
     classOf[UnknownValueSetDefinition]
   }
 
-  def createResource(name: String) = {
+  def createResource(name: String, uri:String) = {
     var entry = new ValueSetDefinition()
     entry.setDocumentURI(name)
-    entry.setAbout("about")
+    entry.setAbout(uri)
     entry.setSourceAndNotation(new SourceAndNotation())
     entry.setDefinedValueSet(new ValueSetReference())
     entry.addEntry(new ValueSetDefinitionEntry())
@@ -44,4 +44,7 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
     readService.read(name)
   }
 
+    def getResourceByUri(uri:String):ValueSetDefinition = {
+    	readService.readByUri(uri)
+    } 
 }

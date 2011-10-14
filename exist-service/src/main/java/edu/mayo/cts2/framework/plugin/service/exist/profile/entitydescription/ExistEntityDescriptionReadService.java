@@ -6,14 +6,15 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.EntityDescriptionExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.id.EntityDescriptionId;
 
 @Component
 public class ExistEntityDescriptionReadService 
-	extends AbstractExistService<edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionReadService>   
+	extends AbstractExistReadService<EntityDescription,edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionReadService>   
 	implements EntityDescriptionReadService {
 
 	@Resource
@@ -32,5 +33,10 @@ public class ExistEntityDescriptionReadService
 	@Override
 	public boolean exists(EntityDescriptionId identifier) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected ExistDao<?, EntityDescription> getExistDao() {
+		return this.entityDescriptionExistDao;
 	}
 }

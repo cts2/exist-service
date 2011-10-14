@@ -47,4 +47,16 @@ public class ValueSetDefinitionExistDao extends AbstractResourceExistDao<ValueSe
 	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
 		return UnknownValueSetDefinition.class;
 	}
+
+	@Override
+	protected String getResourceXpath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getUriXpath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

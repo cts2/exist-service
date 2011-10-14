@@ -20,11 +20,11 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
        classOf[UnknownMapVersion]
     }
   
-    def createResource(name:String) = {
+    def createResource(name:String, uri:String) = {
       var entry = new MapVersion()
       entry.setMapVersionName(name);
       entry.setAbout("about")
-      entry.setDocumentURI("uri")
+      entry.setDocumentURI(uri)
       entry.setSourceAndNotation(new SourceAndNotation());
       entry.setVersionOf(new MapReference())
       entry.getVersionOf().setContent("map")
@@ -35,5 +35,8 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
     def getResource(name:String):MapVersion = {
     	readService.read(name)
     }
-
+     
+    def getResourceByUri(uri:String):MapVersion = {
+    	readService.readByUri(uri)
+    }
 }

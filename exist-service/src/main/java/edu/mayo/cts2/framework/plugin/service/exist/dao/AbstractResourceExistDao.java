@@ -2,14 +2,18 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
 import org.apache.commons.lang.StringUtils;
 import org.xmldb.api.base.Collection;
+import org.xmldb.api.base.CompiledExpression;
 import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.modules.XQueryService;
 
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.exception.ExceptionFactory;
+import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
-public abstract class AbstractResourceExistDao<S, R> extends AbstractExistDao {
+public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao implements ExistDao<S,R> {
 
 	public DirectoryResult<S> getResourceSummaries(String path, String xpath,
 			int start, int max) {
@@ -53,9 +57,7 @@ public abstract class AbstractResourceExistDao<S, R> extends AbstractExistDao {
 
 	@SuppressWarnings("unchecked")
 	public R getResource(String path, String name) {
-		Resource resource;
-
-		resource = this.doGetResource(name, this.getResourcePath(path));
+		Resource resource = this.doGetResource(name, this.getResourcePath(path));
 
 		if (resource == null) {
 			throw ExceptionFactory.createUnknownResourceException(name,
@@ -64,6 +66,44 @@ public abstract class AbstractResourceExistDao<S, R> extends AbstractExistDao {
 
 		return (R) this.unmarshallResource(resource);
 
+	}
+	
+	protected abstract String getResourceXpath();
+	
+	protected abstract String getUriXpath();
+
+	@SuppressWarnings("unchecked")
+	public R getResourceByUri(String uri) {
+		Resource resource;
+		try {
+			XQueryService xqueryService = this.getExistManager().getXQueryService();
+			
+			CompiledExpression expression = 
+					xqueryService.compile(
+							this.getResourceXpath() + "[" + this.getUriXpath() + "='" + uri + "']");
+			
+			ResourceSet resourceSet = xqueryService.execute(expression);
+
+			long size = resourceSet.getSize();
+			
+			if (size == 0) {
+				throw ExceptionFactory.createUnknownResourceException(uri,
+						getUnknownResourceExceptionClass());
+			}
+			
+			//this should be caught during insert. If we get this far, the service is in an
+			//illegal state.
+			if (size > 1) {
+				throw new IllegalStateException("Duplicate URIs found. The service cannot contain more than "+
+						"one resource with the same URI.");
+			}
+
+			resource = resourceSet.getResource(0);
+		} catch (XMLDBException e) {
+			throw new UnspecifiedCts2RuntimeException(e);
+		}
+		
+		return (R) this.unmarshallResource(resource);
 	}
 
 	protected abstract Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass();

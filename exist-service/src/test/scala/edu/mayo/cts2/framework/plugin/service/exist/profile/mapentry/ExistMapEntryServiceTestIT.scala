@@ -38,7 +38,7 @@ class ExistMapEntryServiceTestIT
     classOf[UnknownResourceReference]
   }
 
-  def createResource(name: String) = {
+  def createResource(name: String, uri:String) = {
     var entry = createMapEntry(name)
 
     maintService.createResource("", entry)
@@ -225,4 +225,8 @@ class ExistMapEntryServiceTestIT
      
      id
    }
+   
+       def getResourceByUri(uri:String):MapEntry = {
+    	readService.readByUri(uri)
+    }
 }

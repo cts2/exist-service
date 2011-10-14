@@ -19,9 +19,9 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
     classOf[UnknownValueSet]
   }
 
-  def createResource(name: String) = {
+  def createResource(name: String, uri:String) = {
     var entry = new ValueSetCatalogEntry()
-    entry.setAbout("about")
+    entry.setAbout(uri)
     entry.setValueSetName(name)
 
     maintService.createResource("", entry)
@@ -30,5 +30,8 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
   def getResource(name: String): ValueSetCatalogEntry = {
     readService.read(name)
   }
-
+  
+    def getResourceByUri(uri:String):ValueSetCatalogEntry = {
+    	readService.readByUri(uri)
+    } 
 }

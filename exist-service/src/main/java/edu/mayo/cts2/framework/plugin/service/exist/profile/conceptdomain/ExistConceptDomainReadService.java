@@ -6,12 +6,13 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ConceptDomainExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainReadService;
 
 @Component
 public class ExistConceptDomainReadService 
-	extends AbstractExistService<edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainReadService>
+	extends AbstractExistReadService<ConceptDomainCatalogEntry, edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainReadService>
 	implements ConceptDomainReadService {
 
 	@Resource
@@ -25,5 +26,10 @@ public class ExistConceptDomainReadService
 	@Override
 	public boolean exists(String identifier) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected ExistDao<?, ConceptDomainCatalogEntry> getExistDao() {
+		return this.conceptDomainExistDao;
 	}
 }
