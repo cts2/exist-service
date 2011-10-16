@@ -25,6 +25,9 @@
 		</developer>
 	</developers>
 	
+	<scm>
+		<developerConnection>scm:git:git@github.com:cts2/exist-service.git</developerConnection>
+	</scm>
 
 	<distributionManagement>
 		<site>
