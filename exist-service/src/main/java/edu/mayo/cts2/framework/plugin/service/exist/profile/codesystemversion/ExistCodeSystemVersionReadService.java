@@ -8,23 +8,27 @@ import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogE
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemVersionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
+import edu.mayo.cts2.framework.service.name.Name;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService;
 
 @Component
 public class ExistCodeSystemVersionReadService 
-	extends AbstractExistReadService<CodeSystemVersionCatalogEntry,edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionReadService>
+	extends AbstractExistReadService<
+		CodeSystemVersionCatalogEntry,
+		Name,
+		edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionReadService>
 	implements CodeSystemVersionReadService {
 
 	@Resource
 	private CodeSystemVersionExistDao codeSystemVersionExistDao;
 
 	@Override
-	public CodeSystemVersionCatalogEntry read(String resourceName) {
-		return this.codeSystemVersionExistDao.getResource("", resourceName);
+	public CodeSystemVersionCatalogEntry read(Name resourceName) {
+		return this.codeSystemVersionExistDao.getResource("", resourceName.getResourceId());
 	}
 
 	@Override
-	public boolean exists(String resourceName) {
+	public boolean exists(Name resourceName) {
 		throw new UnsupportedOperationException();
 	}
 

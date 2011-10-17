@@ -10,25 +10,28 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.MapEntryExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryReadService;
-import edu.mayo.cts2.framework.service.profile.mapentry.id.MapEntryId;
+import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryName;
 
 @Component
 public class ExistMapEntryReadService 
-	extends AbstractExistReadService<MapEntry,edu.mayo.cts2.framework.model.service.mapentry.MapEntryReadService>
+	extends AbstractExistReadService<
+	MapEntry,
+	MapEntryName,
+	edu.mayo.cts2.framework.model.service.mapentry.MapEntryReadService>
 	implements MapEntryReadService {
 
 	@Resource
 	private MapEntryExistDao mapEntryExistDao;
 
 	@Override
-	public MapEntry read(MapEntryId identifier) {
+	public MapEntry read(MapEntryName identifier) {
 		return this.mapEntryExistDao.getResource(
-				identifier.getMapVersion(),  
-				ExistServiceUtils.getExistEntityName(identifier.getMapsFrom()));
+				identifier.getMapVersionName(),  
+				ExistServiceUtils.getExistEntityName(identifier.getResourceId()));
 	}
 
 	@Override
-	public boolean exists(MapEntryId identifier) {
+	public boolean exists(MapEntryName identifier) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -21,7 +21,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
-import edu.mayo.cts2.framework.service.profile.entitydescription.id.EntityDescriptionId;
+import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionName;
 
 @Component
 public class ExistAssociationQueryService 	
@@ -105,25 +105,17 @@ public class ExistAssociationQueryService
 			Query query, 
 			FilterComponent filterComponent, 
 			Page page,
-			EntityDescriptionId id) {
+			EntityDescriptionName id) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public DirectoryResult<EntityDirectoryEntry> getParentAssociationsOfEntity(
-			Query query, 
-			FilterComponent filterComponent, 
-			Page page,
-			EntityDescriptionId id) {
-		throw new UnsupportedOperationException();
-	}
 
 	@Override
 	public DirectoryResult<AssociationDirectoryEntry> getSourceOfAssociationsOfEntity(
 			Query query, 
 			FilterComponent filterComponent, 
 			Page page,
-			EntityDescriptionId id) {
+			EntityDescriptionName id) {
 		throw new UnsupportedOperationException();
 	}
 

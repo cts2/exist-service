@@ -1,7 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion
 
 import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.service.exception.UnknownMapVersion
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.model.mapversion.MapVersion
@@ -10,6 +9,7 @@ import edu.mayo.cts2.framework.model.core.MapReference
 import org.junit.Test
 import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
+import edu.mayo.cts2.framework.service.name.Name
 
 class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapVersionDirectoryEntry] {
   
@@ -33,7 +33,7 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
     }
       
     def getResource(name:String):MapVersion = {
-    	readService.read(name)
+    	readService.read(new Name(name))
     }
      
     def getResourceByUri(uri:String):MapVersion = {

@@ -3,12 +3,12 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
-
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.model.service.exception.UnknownValueSet
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
+import edu.mayo.cts2.framework.service.name.Name
 
 class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEntry,ValueSetCatalogEntrySummary] {
 
@@ -28,7 +28,7 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
   }
 
   def getResource(name: String): ValueSetCatalogEntry = {
-    readService.read(name)
+    readService.read(new Name(name))
   }
   
     def getResourceByUri(uri:String):ValueSetCatalogEntry = {

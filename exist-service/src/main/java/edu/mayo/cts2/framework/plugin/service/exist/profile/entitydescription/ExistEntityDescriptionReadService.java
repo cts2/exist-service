@@ -10,28 +10,31 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
-import edu.mayo.cts2.framework.service.profile.entitydescription.id.EntityDescriptionId;
+import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionName;
 
 @Component
 public class ExistEntityDescriptionReadService 
-	extends AbstractExistReadService<EntityDescription,edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionReadService>   
+	extends AbstractExistReadService<
+		EntityDescription,
+		EntityDescriptionName,
+		edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionReadService>   
 	implements EntityDescriptionReadService {
 
 	@Resource
 	private EntityDescriptionExistDao entityDescriptionExistDao;
 
 	@Override
-	public EntityDescription read(EntityDescriptionId identifier) {
+	public EntityDescription read(EntityDescriptionName identifier) {
 		
 		return 
 				this.entityDescriptionExistDao.getResource(
 						this.createPath(
-								identifier.getCodeSystemVersion()),
-						ExistServiceUtils.getExistEntityName(identifier.getName()));
+								identifier.getCodeSystemVersionName()),
+						ExistServiceUtils.getExistEntityName(identifier.getResourceId()));
 	}
 
 	@Override
-	public boolean exists(EntityDescriptionId identifier) {
+	public boolean exists(EntityDescriptionName identifier) {
 		throw new UnsupportedOperationException();
 	}
 

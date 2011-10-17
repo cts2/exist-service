@@ -8,23 +8,27 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetDefinitionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
+import edu.mayo.cts2.framework.service.name.Name;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionReadService;
 
 @Component
 public class ExistValueSetDefinitionReadService 
-	extends AbstractExistReadService<ValueSetDefinition,edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionReadService>
+	extends AbstractExistReadService<
+		ValueSetDefinition,
+		Name,
+		edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionReadService>
 	implements ValueSetDefinitionReadService {
 
 	@Resource
 	private ValueSetDefinitionExistDao valueSetDefinitionExistDao;
 
 	@Override
-	public ValueSetDefinition read(String identifier) {
-		return this.valueSetDefinitionExistDao.getResource("", identifier);
+	public ValueSetDefinition read(Name identifier) {
+		return this.valueSetDefinitionExistDao.getResource("", identifier.getResourceId());
 	}
 
 	@Override
-	public boolean exists(String identifier) {
+	public boolean exists(Name identifier) {
 		throw new UnsupportedOperationException();
 	}
 

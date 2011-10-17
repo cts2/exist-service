@@ -1,12 +1,12 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.map
 
 import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary
 import edu.mayo.cts2.framework.model.service.exception.UnknownMap
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
+import edu.mayo.cts2.framework.service.name.Name
 
 class ExistMapServiceTestIT extends BaseServiceTestBaseIT[MapCatalogEntry,MapCatalogEntrySummary] {
   
@@ -26,7 +26,7 @@ class ExistMapServiceTestIT extends BaseServiceTestBaseIT[MapCatalogEntry,MapCat
     }
       
     def getResource(name:String):MapCatalogEntry = {
-    	readService.read(name)
+    	readService.read(new Name(name))
     }
   
     def getResourceByUri(uri:String):MapCatalogEntry = {

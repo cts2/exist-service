@@ -22,7 +22,7 @@ import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
-import edu.mayo.cts2.framework.service.profile.mapentry.id.MapEntryId
+import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryName
 import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.service.command.Page
 
@@ -218,10 +218,8 @@ class ExistMapEntryServiceTestIT
      assertEquals(1, entries.getEntries().size())
    }
      
-   def getMapEntryId(mapVersion:String, name:ScopedEntityName):MapEntryId = {
-     val id = new MapEntryId()
-     id.setMapVersion(mapVersion)
-     id.setMapFrom(name)
+   def getMapEntryId(mapVersion:String, name:ScopedEntityName):MapEntryName = {
+     val id = new MapEntryName(name, mapVersion)
      
      id
    }

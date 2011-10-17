@@ -3,12 +3,12 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
-
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry
 import edu.mayo.cts2.framework.model.service.exception.UnknownCodeSystem
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary
+import edu.mayo.cts2.framework.service.name.Name
 
 class ExistCodeSystemServiceTestIT 
 	extends BaseServiceTestBaseIT[CodeSystemCatalogEntry,CodeSystemCatalogEntrySummary] {
@@ -29,7 +29,7 @@ class ExistCodeSystemServiceTestIT
     }
       
     def getResource(name:String):CodeSystemCatalogEntry = {
-    	readService.read(name)
+    	readService.read(new Name(name))
     }
   
     def getResourceByUri(uri:String):CodeSystemCatalogEntry = {
