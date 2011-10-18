@@ -6,7 +6,7 @@
 
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.exist" />
 
-	<bean class="edu.mayo.cts2.framework.core.xml.DelgatingMarshaller"/>
+	<bean class="edu.mayo.cts2.framework.core.xml.DelegatingMarshaller"/>
 	
 	<bean class="edu.mayo.cts2.framework.core.url.UrlConstructorSpringFactory"/>
 	

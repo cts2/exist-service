@@ -20,7 +20,7 @@ import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
 import edu.mayo.cts2.framework.core.config.PluginConfig;
-import edu.mayo.cts2.framework.core.xml.DelgatingMarshaller;
+import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
 
 public class ExistManager implements InitializingBean {
 	
@@ -70,7 +70,7 @@ public class ExistManager implements InitializingBean {
 		xUpdateQueryService = (XUpdateQueryService) root.getService("XUpdateQueryService", "1.0");
 		validationService = (ValidationService) root.getService("ValidationService", "1.0");	
 		
-		Resource namespaceResource = new ClassPathResource(DelgatingMarshaller.NAMESPACE_MAPPINGS_PROPS);
+		Resource namespaceResource = new ClassPathResource(DelegatingMarshaller.NAMESPACE_MAPPINGS_PROPS);
 		
 		Properties props = new Properties();
 		

@@ -8,7 +8,7 @@
 
 	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager"/>
 	
-	<bean class="edu.mayo.cts2.framework.core.xml.DelgatingMarshaller"/>
+	<bean class="edu.mayo.cts2.framework.core.xml.DelegatingMarshaller"/>
 	
 	<bean class="edu.mayo.cts2.framework.core.url.UrlConstructorSpringFactory"/>
 	

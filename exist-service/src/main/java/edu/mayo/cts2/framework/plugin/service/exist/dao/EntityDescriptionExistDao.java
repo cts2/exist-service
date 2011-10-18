@@ -18,7 +18,7 @@ import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
 import edu.mayo.cts2.framework.model.service.exception.UnknownEntity;
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
-import edu.mayo.cts2.framework.model.util.RestModelUtils;
+import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
 @Component
@@ -34,7 +34,7 @@ public class EntityDescriptionExistDao extends
 	
 		ScopedEntityName scopedName = getScopedEntityName(resource);
 		
-		EntityDescriptionBase base = RestModelUtils.getEntity(resource);
+		EntityDescriptionBase base = ModelUtils.getEntity(resource);
 		
 		String codeSystemName = 
 				base.getDescribingCodeSystemVersion().getCodeSystem().getContent();
@@ -70,7 +70,7 @@ public class EntityDescriptionExistDao extends
 				 super.getResource(path, name);
 		
 		EntityDescriptionBase entity = 
-				RestModelUtils.getEntity(ed);
+				ModelUtils.getEntity(ed);
 		
 		String codeSystemName = entity.getDescribingCodeSystemVersion().
 				getCodeSystem().getContent();
@@ -118,13 +118,13 @@ public class EntityDescriptionExistDao extends
 
 	@Override
 	protected String getName(EntityDescription entry) {
-		NamedEntityDescription entity = (NamedEntityDescription) RestModelUtils.getEntity(entry);
+		NamedEntityDescription entity = (NamedEntityDescription) ModelUtils.getEntity(entry);
 		
 		return ExistServiceUtils.getExistEntityName(entity);
 	}
 
 	protected ScopedEntityName getScopedEntityName(EntityDescription entry) {
-		NamedEntityDescription entity = (NamedEntityDescription) RestModelUtils.getEntity(entry);
+		NamedEntityDescription entity = (NamedEntityDescription) ModelUtils.getEntity(entry);
 		
 		return entity.getEntityID();
 	}
