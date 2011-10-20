@@ -27,10 +27,10 @@ class ExistMapServiceTestIT extends BaseServiceTestBaseIT[MapCatalogEntry,MapCat
     }
       
     def getResource(name:String):MapCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromName(name))
+    	readService.read(ModelUtils.nameOrUriFromName(name), null)
     }
   
     def getResourceByUri(uri:String):MapCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromUri(uri))
+    	readService.read(ModelUtils.nameOrUriFromUri(uri), null)
     }
 }

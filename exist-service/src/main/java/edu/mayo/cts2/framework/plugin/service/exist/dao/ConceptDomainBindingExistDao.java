@@ -43,13 +43,11 @@ public class ConceptDomainBindingExistDao extends AbstractResourceExistDao<Conce
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/conceptdomainbinding:ConceptDomainBinding";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@bindingURI";
 	}
 }

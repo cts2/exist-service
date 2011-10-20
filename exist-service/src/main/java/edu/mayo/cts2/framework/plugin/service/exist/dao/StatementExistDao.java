@@ -23,7 +23,7 @@ public class StatementExistDao extends
 
 	@Override
 	protected String getName(Statement entry) {
-		return null;//entry.getChangeableElementGroup().
+		throw new UnsupportedOperationException("Cannot ask for Statement by name.");
 	}
 
 	@Override
@@ -36,7 +36,6 @@ public class StatementExistDao extends
 		return new StatementDirectoryEntry();
 	}
 
-
 	@Override
 	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
 		return UnknownStatement.class;
@@ -44,13 +43,11 @@ public class StatementExistDao extends
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/statement:Statement";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@statementURI";
 	}
 }

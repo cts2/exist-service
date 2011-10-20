@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
+import edu.mayo.cts2.framework.model.service.core.ReadContext;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.service.profile.ReadService;
 
@@ -8,7 +9,7 @@ public abstract class AbstractExistReadService<R,I,T extends BaseReadService > e
 	implements ReadService<R,I> {
 
 	@Override
-	public R read(I resourceIdentifier) {
+	public R read(I resourceIdentifier, ReadContext readContext) {
 		if(! this.isReadByUri(resourceIdentifier)){
 			return this.getExistDao().getResource(this.createPath(resourceIdentifier),
 					this.getResourceName(resourceIdentifier));
@@ -21,7 +22,7 @@ public abstract class AbstractExistReadService<R,I,T extends BaseReadService > e
 	protected abstract boolean isReadByUri(I identifier);
 
 	@Override
-	public boolean exists(I identifier) {
+	public boolean exists(I identifier, ReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
 

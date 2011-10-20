@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.ReadService;
 
 public abstract class AbstractExistNameOrUriReadService<
@@ -26,6 +25,4 @@ public abstract class AbstractExistNameOrUriReadService<
 	protected String getResourceUri(I id) {
 		return id.getUri();
 	}
-
-
 }

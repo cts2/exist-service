@@ -57,20 +57,22 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
   }
   
   def createResource(name: String, uri:String) = {
-    var entry = createAssociation(name)
+    var entry1 = createAssociation(uri)
+    var entry2 = createAssociation(name)
     
-    maintService.createResource("", entry)
+    maintService.createResource("", entry1)
+    maintService.createResource("", entry2)
   }
 
-  def getResource(name: String): Association = {
-    var id = new AssociationReadId(name, "codesystemversion")
+  def getResource(uri: String): Association = {
+    var id = new AssociationReadId(uri, "codesystemversion")
   
-    readService.read(id)
+    readService.read(id, null)
   }
   
       def getResourceByUri(uri:String):Association = {
          var id = new AssociationReadId(uri, "codesystemversion")
-    	readService.read(id)
+    	readService.read(id, null)
     }
 
 }

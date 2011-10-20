@@ -33,10 +33,10 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
     }
       
     def getResource(name:String):MapVersion = {
-    	readService.read(ModelUtils.nameOrUriFromName(name));
+    	readService.read(ModelUtils.nameOrUriFromName(name), null)
     }
      
     def getResourceByUri(uri:String):MapVersion = {
-    	readService.read(ModelUtils.nameOrUriFromUri(uri))
+    	readService.read(ModelUtils.nameOrUriFromUri(uri), null)
     }
 }

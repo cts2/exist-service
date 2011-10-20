@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.model.service.core.ReadContext;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistNameOrUriReadService;
@@ -31,11 +30,5 @@ public class ExistCodeSystemReadService
 	@Override
 	protected ExistDao<?, CodeSystemCatalogEntry> getExistDao() {
 		return this.codeSystemExistDao;
-	}
-
-	@Override
-	public CodeSystemCatalogEntry getCodeSystemVersionForCodeSystem(
-			String codeSystemName, String tagName, ReadContext readContext) {
-		throw new UnsupportedOperationException();
 	}
 }

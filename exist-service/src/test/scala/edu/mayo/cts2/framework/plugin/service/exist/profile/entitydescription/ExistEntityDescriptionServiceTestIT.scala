@@ -58,7 +58,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     	
     	
-    	assertNotNull(readService.read(id));
+    	assertNotNull(readService.read(id, null))
   }
   
     @Test def testInsertAndRetrieveDefaultNamespace() {
@@ -79,7 +79,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     
     	
-    	assertNotNull(readService.read(id));
+    	assertNotNull(readService.read(id, null))
   }
     
    @Test def testInsertAndRetrieveNotFound() {
@@ -100,7 +100,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     	
     	try {
-    		readService.read(id)
+    		readService.read(id, null)
     	} catch {
     	  case e: Cts2RestException => checkCTS2RestException(e)
     	  return

@@ -27,10 +27,10 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
   }
 
   def getResource(name: String): ValueSetCatalogEntry = {
-    readService.read(ModelUtils.nameOrUriFromName(name))
+    readService.read(ModelUtils.nameOrUriFromName(name), null)
   }
   
     def getResourceByUri(uri:String):ValueSetCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromUri(uri))
+    	readService.read(ModelUtils.nameOrUriFromUri(uri), null)
     } 
 }

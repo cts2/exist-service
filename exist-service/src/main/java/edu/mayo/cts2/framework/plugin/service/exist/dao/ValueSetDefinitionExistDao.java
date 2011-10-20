@@ -50,13 +50,11 @@ public class ValueSetDefinitionExistDao extends AbstractResourceExistDao<ValueSe
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/valuesetdefinition:ValueSetDefinition";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@documentURI";
 	}
 }

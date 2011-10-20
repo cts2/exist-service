@@ -32,11 +32,11 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
     }
       
     def getResource(name:String):CodeSystemVersionCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromName(name))
+    	readService.read(ModelUtils.nameOrUriFromName(name), null)
     }
     
         def getResourceByUri(uri:String):CodeSystemVersionCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromUri(uri))
+    	readService.read(ModelUtils.nameOrUriFromUri(uri), null)
     }
   
 }

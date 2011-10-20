@@ -68,36 +68,27 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 
 	}
 	
-	protected abstract String getResourceXpath();
-	
-	protected abstract String getUriXpath();
-
 	@SuppressWarnings("unchecked")
-	public R getResourceByUri(String path, String uri) {
+	public R getResourceByXpath(String collectionPath, String xpathQuery) {
 		Resource resource;
 		try {
-			XQueryService xqueryService = this.getExistManager().getXQueryService(path);
-			
-			String expressionString = 
-					this.getResourceXpath() + "[" + this.getUriXpath() + "='" + uri + "']";
+			XQueryService xqueryService = this.getExistManager().getXQueryService(collectionPath);
 			
 			CompiledExpression expression = 
-					xqueryService.compile(expressionString);
+					xqueryService.compile(xpathQuery);
 			
 			ResourceSet resourceSet = xqueryService.execute(expression);
 
 			long size = resourceSet.getSize();
 			
 			if (size == 0) {
-				throw ExceptionFactory.createUnknownResourceException(uri,
-						getUnknownResourceExceptionClass());
+				return null;
 			}
 			
 			//this should be caught during insert. If we get this far, the service is in an
 			//illegal state.
 			if (size > 1) {
-				throw new IllegalStateException("Duplicate URIs found. The service cannot contain more than "+
-						"one resource with the same URI.");
+				throw new IllegalStateException("Duplicate Entries found.");
 			}
 
 			resource = resourceSet.getResource(0);
@@ -106,6 +97,18 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 		}
 		
 		return (R) this.unmarshallResource(resource);
+
+	}
+	
+	protected abstract String getResourceXpath();
+	
+	protected abstract String getUriXpath();
+
+	public R getResourceByUri(String collectionPath, String uri) {
+		String expressionString = 
+				this.getResourceXpath() + "[" + this.getUriXpath() + "='" + uri + "']";
+	
+		return this.getResourceByXpath(collectionPath, expressionString);
 	}
 
 	protected abstract Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass();

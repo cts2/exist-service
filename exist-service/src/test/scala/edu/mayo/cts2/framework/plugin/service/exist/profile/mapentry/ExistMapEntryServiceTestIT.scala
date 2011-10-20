@@ -48,7 +48,7 @@ class ExistMapEntryServiceTestIT
     sn.setName(name)
     sn.setNamespace("namespace")
     
-    readService.read(getMapEntryId("mapversion", sn))
+    readService.read(getMapEntryId("mapversion", sn), null)
   }
   
   def createMapEntry(name:String, uri:String): MapEntry = {
@@ -227,6 +227,6 @@ class ExistMapEntryServiceTestIT
        def getResourceByUri(uri:String):MapEntry = {
     	val id = new MapEntryReadId(uri, "mapversion")
      
-    	readService.read(id)
+    	readService.read(id, null)
     }
 }

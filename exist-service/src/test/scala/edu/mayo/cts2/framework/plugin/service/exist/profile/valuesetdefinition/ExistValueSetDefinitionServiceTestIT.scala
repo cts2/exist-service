@@ -25,8 +25,18 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
   }
 
   def createResource(name: String, uri:String) = {
+     var entry1 = buildValueSetDefinition(name)
+     var entry2 = buildValueSetDefinition(uri)
+    
+
+     maintService.createResource("", entry1)
+     maintService.createResource("", entry2)
+  }
+  
+  def buildValueSetDefinition(uri:String):ValueSetDefinition = {
+    
     var entry = new ValueSetDefinition()
-    entry.setDocumentURI(name)
+    entry.setDocumentURI(uri)
     entry.setAbout(uri)
     entry.setSourceAndNotation(new SourceAndNotation())
     entry.setDefinedValueSet(new ValueSetReference())
@@ -35,15 +45,15 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
     entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())
     entry.getEntry(0).setOperator(SetOperator.UNION)
     entry.getEntry(0).setEntryOrder(1l);
-
-    maintService.createResource("", entry)
+    
+    entry
   }
 
-  def getResource(name: String): ValueSetDefinition = {
-    null
+  def getResource(uri: String): ValueSetDefinition = {
+    readService.read(uri,null)
   }
 
     def getResourceByUri(uri:String):ValueSetDefinition = {
-    	readService.read(uri)
+    	readService.read(uri, null)
     } 
 }

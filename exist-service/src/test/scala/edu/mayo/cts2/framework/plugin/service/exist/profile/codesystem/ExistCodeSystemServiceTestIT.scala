@@ -29,10 +29,10 @@ class ExistCodeSystemServiceTestIT
     }
       
     def getResource(name:String):CodeSystemCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromName(name))
+    	readService.read(ModelUtils.nameOrUriFromName(name), null)
     }
   
     def getResourceByUri(uri:String):CodeSystemCatalogEntry = {
-    	readService.read(ModelUtils.nameOrUriFromUri(uri))
+    	readService.read(ModelUtils.nameOrUriFromUri(uri), null)
     }
 }

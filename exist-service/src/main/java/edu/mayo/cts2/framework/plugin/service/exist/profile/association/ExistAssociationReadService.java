@@ -33,7 +33,7 @@ public class ExistAssociationReadService
 
 	@Override
 	protected String createPath(AssociationReadId resourceIdentifier) {
-		return this.createPath(resourceIdentifier.getCodeSystemVersion());
+		return "";
 	}
 
 	@Override

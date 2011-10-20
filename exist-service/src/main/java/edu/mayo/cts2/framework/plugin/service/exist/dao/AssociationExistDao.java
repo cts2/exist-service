@@ -14,8 +14,7 @@ public class AssociationExistDao extends AbstractResourceExistDao<AssociationDir
 	private static final String ASSOCIATIONS_PATH = "/associations";
 
 	protected String doGetResourceBasePath(){
-		return CTS2_RESOURCES_PATH + 
-			ASSOCIATIONS_PATH;	
+		return ASSOCIATIONS_PATH;	
 	}
 
 	@Override
@@ -42,13 +41,11 @@ public class AssociationExistDao extends AbstractResourceExistDao<AssociationDir
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/association:Association";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@associationID";
 	}
 }
