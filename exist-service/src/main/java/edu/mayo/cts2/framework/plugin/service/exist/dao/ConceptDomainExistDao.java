@@ -46,13 +46,11 @@ public class ConceptDomainExistDao extends AbstractResourceExistDao<ConceptDomai
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/conceptdomain:ConceptDomainCatalogEntry";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@about";
 	}
 }

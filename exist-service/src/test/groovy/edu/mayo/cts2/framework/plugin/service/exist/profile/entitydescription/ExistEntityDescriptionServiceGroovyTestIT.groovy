@@ -34,7 +34,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 	@Autowired
 	ExistEntityDescriptionMaintenanceService maint
 
-	@Test void "Get Entity Description Summaries With Contains Name Restriction"(){
+	@Test void "Get Entity Description Summaries With Contains ResourceNameOrUri Restriction"(){
 
 		maint.createResource("", createEntity("something"))
 		maint.createResource("", createEntity("name"))
@@ -49,7 +49,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 		assertEquals 1, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With Contains Wrong Name Restriction"(){
+	@Test void "Get Entity Description Summaries With Contains Wrong ResourceNameOrUri Restriction"(){
 
 		maint.createResource("", createEntity("something"))
 		maint.createResource("", createEntity("name"))
@@ -64,7 +64,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 		assertEquals 0, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With ExactMatch Name Restriction"(){
+	@Test void "Get Entity Description Summaries With ExactMatch ResourceNameOrUri Restriction"(){
 
 		maint.createResource("", createEntity("something"))
 		maint.createResource("", createEntity("name"))
@@ -79,7 +79,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 		assertEquals 1, summaries.entries.size
 	}
 	
-	@Test void "Get Entity Description Summaries With ExactMatch Wrong Name Restriction"(){
+	@Test void "Get Entity Description Summaries With ExactMatch Wrong ResourceNameOrUri Restriction"(){
 
 		maint.createResource("", createEntity("something"))
 		maint.createResource("", createEntity("name"))
@@ -94,7 +94,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 		assertEquals 0, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With StartsWith Name Restriction"(){
+	@Test void "Get Entity Description Summaries With StartsWith ResourceNameOrUri Restriction"(){
 
 		maint.createResource("", createEntity("something"))
 		maint.createResource("", createEntity("name"))
@@ -109,7 +109,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 		assertEquals 1, summaries.entries.size
 	}
 	
-	@Test void "Get Entity Description Summaries With StartsWith Wrong Name Restriction"(){
+	@Test void "Get Entity Description Summaries With StartsWith Wrong ResourceNameOrUri Restriction"(){
 
 		maint.createResource("", createEntity("something"))
 		maint.createResource("", createEntity("name"))

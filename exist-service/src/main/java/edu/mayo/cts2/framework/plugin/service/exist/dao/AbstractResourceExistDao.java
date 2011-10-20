@@ -29,7 +29,7 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 			collection = this.getExistManager()
 					.getOrCreateCollection(this.getResourcePath(path));
 
-			this.createAndStoreResource(entry, collection, getName(entry));
+			this.createAndStoreResource(entry, collection, getName(entry) );
 
 		} catch (XMLDBException e) {
 			throw new RuntimeException(e);
@@ -73,14 +73,16 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 	protected abstract String getUriXpath();
 
 	@SuppressWarnings("unchecked")
-	public R getResourceByUri(String uri) {
+	public R getResourceByUri(String path, String uri) {
 		Resource resource;
 		try {
-			XQueryService xqueryService = this.getExistManager().getXQueryService();
+			XQueryService xqueryService = this.getExistManager().getXQueryService(path);
+			
+			String expressionString = 
+					this.getResourceXpath() + "[" + this.getUriXpath() + "='" + uri + "']";
 			
 			CompiledExpression expression = 
-					xqueryService.compile(
-							this.getResourceXpath() + "[" + this.getUriXpath() + "='" + uri + "']");
+					xqueryService.compile(expressionString);
 			
 			ResourceSet resourceSet = xqueryService.execute(expression);
 

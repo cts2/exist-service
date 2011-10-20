@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.core.FilterComponent
 import edu.mayo.cts2.framework.model.core.MapVersionReference
@@ -22,9 +21,9 @@ import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
-import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryName
 import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.service.command.Page
+import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId
 
 class ExistMapEntryServiceTestIT
 	extends BaseServiceTestBaseIT[MapEntry,MapEntryDirectoryEntry] 
@@ -39,7 +38,7 @@ class ExistMapEntryServiceTestIT
   }
 
   def createResource(name: String, uri:String) = {
-    var entry = createMapEntry(name)
+    var entry = createMapEntry(name, uri)
 
     maintService.createResource("", entry)
   }
@@ -52,7 +51,7 @@ class ExistMapEntryServiceTestIT
     readService.read(getMapEntryId("mapversion", sn))
   }
   
-  def createMapEntry(name:String): MapEntry = {
+  def createMapEntry(name:String, uri:String): MapEntry = {
     var entry = new MapEntry()
     entry.setMapFrom(new URIAndEntityName())
     entry.setAssertedBy(new MapVersionReference())
@@ -63,12 +62,13 @@ class ExistMapEntryServiceTestIT
     entry.setProcessingRule(MapProcessingRule.FIRST_MATCH)
     entry.getMapFrom().setName(name)
     entry.getMapFrom().setNamespace("namespace")
+    entry.getMapFrom().setUri(uri)
     
     entry
   }
   
    def createResources():Int = {
-    val resources = List(createMapEntry("Test"), createMapEntry("Test2"));
+    val resources = List(createMapEntry("Test", "someuri"), createMapEntry("Test2", "someuri"));
     resources.foreach(resource => maintService.createResource("", resource))
     
     resources.size
@@ -79,7 +79,7 @@ class ExistMapEntryServiceTestIT
    }
    
    @Test def testGetSummariesWithFilter() {
-     val entry1 = createMapEntry("Test1")
+     val entry1 = createMapEntry("Test1", "someuri")
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -89,7 +89,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
     
-     val entry2 = createMapEntry("Test2")
+     val entry2 = createMapEntry("Test2", "someuri")
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -112,7 +112,7 @@ class ExistMapEntryServiceTestIT
    }
    
     @Test def testGetSummariesWithBadFilter() {
-     val entry1 = createMapEntry("Test1")
+     val entry1 = createMapEntry("Test1", "someuri")
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -122,7 +122,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
     
-     val entry2 = createMapEntry("Test2")
+     val entry2 = createMapEntry("Test2", "someuri")
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -145,7 +145,7 @@ class ExistMapEntryServiceTestIT
    }
     
     @Test def testGetSummariesWithMapFromFilter() {
-     val entry1 = createMapEntry("Test1")
+     val entry1 = createMapEntry("Test1", "someuri")
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -155,7 +155,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
     
-     val entry2 = createMapEntry("Test2")
+     val entry2 = createMapEntry("Test2", "someuri")
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -182,7 +182,7 @@ class ExistMapEntryServiceTestIT
    }
     
      @Test def testGetSummariesWithMapFromFilterContains() {
-     val entry1 = createMapEntry("Test1")
+     val entry1 = createMapEntry("Test1", "someuri")
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -192,7 +192,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
     
-     val entry2 = createMapEntry("Test2")
+     val entry2 = createMapEntry("Test2", "someuri")
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -218,13 +218,15 @@ class ExistMapEntryServiceTestIT
      assertEquals(1, entries.getEntries().size())
    }
      
-   def getMapEntryId(mapVersion:String, name:ScopedEntityName):MapEntryName = {
-     val id = new MapEntryName(name, mapVersion)
+   def getMapEntryId(mapVersion:String, name:ScopedEntityName):MapEntryReadId = {
+     val id = new MapEntryReadId(name, mapVersion)
      
      id
    }
    
        def getResourceByUri(uri:String):MapEntry = {
-    	readService.readByUri(uri)
+    	val id = new MapEntryReadId(uri, "mapversion")
+     
+    	readService.read(id)
     }
 }

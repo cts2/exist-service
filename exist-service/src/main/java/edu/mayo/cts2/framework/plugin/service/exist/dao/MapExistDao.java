@@ -46,13 +46,11 @@ public class MapExistDao extends
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/map:MapCatalogEntry";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@about";
 	}
 }

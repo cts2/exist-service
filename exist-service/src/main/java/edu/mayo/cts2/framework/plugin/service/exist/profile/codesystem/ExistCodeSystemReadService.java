@@ -5,17 +5,18 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
+import edu.mayo.cts2.framework.model.service.core.ReadContext;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.service.name.Name;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistNameOrUriReadService;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemReadService;
 
 @Component
 public class ExistCodeSystemReadService 
-	extends AbstractExistReadService<
+	extends AbstractExistNameOrUriReadService<
 		CodeSystemCatalogEntry,
-		Name,
+		NameOrURI,
 		edu.mayo.cts2.framework.model.service.codesystem.CodeSystemReadService>
 	implements CodeSystemReadService {
 
@@ -23,22 +24,18 @@ public class ExistCodeSystemReadService
 	private CodeSystemExistDao codeSystemExistDao;
 
 	@Override
-	public CodeSystemCatalogEntry read(Name resourceName) {
-		return this.codeSystemExistDao.getResource("", resourceName.getResourceId());
-	}
-
-	@Override
-	public boolean exists(Name resourceName) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public CodeSystemCatalogEntry readByUri(String uri) {
-		return this.codeSystemExistDao.getResourceByUri(uri);
+	protected String createPath(NameOrURI resourceIdentifier) {
+		return "";
 	}
 
 	@Override
 	protected ExistDao<?, CodeSystemCatalogEntry> getExistDao() {
 		return this.codeSystemExistDao;
+	}
+
+	@Override
+	public CodeSystemCatalogEntry getCodeSystemVersionForCodeSystem(
+			String codeSystemName, String tagName, ReadContext readContext) {
+		throw new UnsupportedOperationException();
 	}
 }

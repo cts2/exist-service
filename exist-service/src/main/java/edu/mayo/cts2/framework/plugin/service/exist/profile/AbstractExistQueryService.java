@@ -72,7 +72,7 @@ public abstract class AbstractExistQueryService
 			}
 		}
 		
-		return ExistServiceUtils.getExistName(sb.toString());
+		return ExistServiceUtils.getExistResourceName(sb.toString());
 	}
 	
 	@Override

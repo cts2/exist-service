@@ -11,7 +11,7 @@ import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary;
 @Component
 public class ValueSetExistDao extends AbstractResourceExistDao<ValueSetCatalogEntrySummary, ValueSetCatalogEntry> {
 
-	private static final String CODESYSTEMS_PATH = "/valuesets";
+	private static final String VALUESETS_PATH = "/valuesets";
 	
 	@Override
 	protected String getName(ValueSetCatalogEntry entry) {
@@ -37,7 +37,7 @@ public class ValueSetExistDao extends AbstractResourceExistDao<ValueSetCatalogEn
 
 	@Override
 	protected String doGetResourceBasePath() {
-		return CODESYSTEMS_PATH;
+		return VALUESETS_PATH;
 	}
 	
 	@Override
@@ -47,13 +47,11 @@ public class ValueSetExistDao extends AbstractResourceExistDao<ValueSetCatalogEn
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/valueset:ValueSetCatalogEntry";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@about";
 	}
 }

@@ -6,7 +6,7 @@ import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 
 public class ExistServiceUtils {
-	
+		
 	private static final String EXTERNAL_ENTITY_NAME_SEPERATOR = ":";
 
 	private static final String EXIST_ENTITY_NAME_SEPERATOR = "__";
@@ -21,7 +21,7 @@ public class ExistServiceUtils {
 				+ entity.getEntityID().getName();
 	}
 	
-	public static String getExistName(String externalName){
+	public static String getExistResourceName(String externalName){
 		return externalName.replaceAll(":", "__");
 	}
 	

@@ -1,8 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association
 
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
+
 import edu.mayo.cts2.framework.model.association.Association
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
@@ -11,11 +10,11 @@ import edu.mayo.cts2.framework.model.core.PredicateReference
 import edu.mayo.cts2.framework.model.core.StatementTarget
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
-import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
-import edu.mayo.cts2.framework.service.command.Page
-import edu.mayo.cts2.framework.service.profile.association.name.AssociationId
 import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
+import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
+import edu.mayo.cts2.framework.service.command.Page
+import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId
 
 class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,AssociationDirectoryEntry] {
 
@@ -64,13 +63,14 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
   }
 
   def getResource(name: String): Association = {
-    var id = new AssociationId(name, "codesystemversion")
+    var id = new AssociationReadId(name, "codesystemversion")
   
     readService.read(id)
   }
   
       def getResourceByUri(uri:String):Association = {
-    	readService.readByUri(uri)
+         var id = new AssociationReadId(uri, "codesystemversion")
+    	readService.read(id)
     }
 
 }

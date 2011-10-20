@@ -19,7 +19,7 @@ public class MapEntryExistDao extends
 			MapEntry resource,
 			MapEntryDirectoryEntry summary, 
 			Resource eXistResource) {
-		String mapEntryName = this.getMapEntryName(resource);
+		String mapEntryName = this.getMapEntryNameForSummary(resource);
 		
 		String mapName = resource.getAssertedBy().getMap().getContent();
 		String mapVersionName = resource.getAssertedBy().getMapVersion().getContent();
@@ -36,7 +36,7 @@ public class MapEntryExistDao extends
 		return summary;
 	}
 	
-	private String getMapEntryName(MapEntry mapEntry){
+	private String getMapEntryNameForSummary(MapEntry mapEntry){
 		return mapEntry.getMapFrom().getNamespace() + ":" + mapEntry.getMapFrom().getName();
 	}
 
@@ -63,13 +63,11 @@ public class MapEntryExistDao extends
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/mapversion:MapEntry";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "mapversion:mapFrom/@uri";
 	}
 }

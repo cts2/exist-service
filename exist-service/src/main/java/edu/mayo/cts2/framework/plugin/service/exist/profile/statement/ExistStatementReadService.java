@@ -8,14 +8,13 @@ import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.StatementExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.service.name.Name;
 import edu.mayo.cts2.framework.service.profile.statement.StatementReadService;
 
 @Component
 public class ExistStatementReadService 
 	extends AbstractExistReadService<
 		Statement,
-		Name,
+		String,
 		edu.mayo.cts2.framework.model.service.statement.StatementService>
 	implements StatementReadService {
 
@@ -23,17 +22,27 @@ public class ExistStatementReadService
 	private StatementExistDao statementExistDao;
 
 	@Override
-	public Statement read(Name identifier) {
-		return statementExistDao.getResource("", identifier.getResourceId());
+	protected ExistDao<?, Statement> getExistDao() {
+		return this.statementExistDao;
 	}
 
 	@Override
-	public boolean exists(Name identifier) {
+	protected boolean isReadByUri(String identifier) {
+		return true;
+	}
+
+	@Override
+	protected String createPath(String resourceIdentifier) {
+		return "";
+	}
+
+	@Override
+	protected String getResourceName(String resourceIdentifier) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	protected ExistDao<?, Statement> getExistDao() {
-		return this.statementExistDao;
+	protected String getResourceUri(String resourceIdentifier) {
+		return resourceIdentifier;
 	}
 }

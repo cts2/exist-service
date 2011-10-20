@@ -61,6 +61,6 @@ public abstract class AbstractExistService<T extends BaseService> extends Abstra
 			}
 		}
 		
-		return ExistServiceUtils.getExistName(sb.toString());
+		return ExistServiceUtils.getExistResourceName(sb.toString());
 	}
 }

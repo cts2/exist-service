@@ -5,17 +5,17 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ConceptDomainExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.service.name.Name;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistNameOrUriReadService;
 import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainReadService;
 
 @Component
 public class ExistConceptDomainReadService 
-	extends AbstractExistReadService<
+	extends AbstractExistNameOrUriReadService<
 		ConceptDomainCatalogEntry, 
-		Name,
+		NameOrURI,
 		edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainReadService>
 	implements ConceptDomainReadService {
 
@@ -23,15 +23,11 @@ public class ExistConceptDomainReadService
 	private ConceptDomainExistDao conceptDomainExistDao;
 
 	@Override
-	public ConceptDomainCatalogEntry read(Name conceptDomainName) {
-		return this.conceptDomainExistDao.getResource("", conceptDomainName.getResourceId());
+	protected String createPath(NameOrURI resourceIdentifier) {
+		return "";
 	}
 
-	@Override
-	public boolean exists(Name identifier) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	@Override
 	protected ExistDao<?, ConceptDomainCatalogEntry> getExistDao() {
 		return this.conceptDomainExistDao;

@@ -11,6 +11,6 @@ public interface ExistDao<S, R> {
 	
 	public R getResource(String path, String name);
 	
-	public R getResourceByUri(String uri);
+	public R getResourceByUri(String path, String uri);
 
 }

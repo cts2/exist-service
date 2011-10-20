@@ -113,6 +113,11 @@ public class ExistManager implements InitializingBean {
 	public XQueryService getXQueryService() {
 		return xQueryService;
 	}
+	
+	public XQueryService getXQueryService(String path) {
+		//TODO: This needs to get the XQueryService of a specific collection.
+		return this.xQueryService;
+	}
 
 	public CollectionManagementService getCollectionManagementService() {
 		return collectionManagementService;

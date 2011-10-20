@@ -72,13 +72,11 @@ public class CodeSystemVersionExistDao
 
 	@Override
 	protected String getResourceXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/codesystemversion:CodeSystemVersionCatalogEntry";
 	}
 
 	@Override
 	protected String getUriXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@documentURI";
 	}
 }

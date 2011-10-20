@@ -43,9 +43,9 @@ public abstract class AbstractExistDao {
 
 	private static final String XML_RESOURCE_TYPE = "XMLResource";
 
-	private static final String XML_SUFFIX = ".xml";
-
 	protected static final String CTS2_RESOURCES_PATH = "/cts2resources";
+	
+	private static final String XML_SUFFIX = ".xml";
 
 	@Autowired
 	private Marshaller marshaller;
@@ -56,7 +56,7 @@ public abstract class AbstractExistDao {
 	protected void createAndStoreResource(Object cts2Resource,
 			Collection collection, String name) throws XMLDBException {
 		Resource resource = collection.createResource(
-				ExistServiceUtils.getExistName(name) + XML_SUFFIX,
+				ExistServiceUtils.getExistResourceName(name) + XML_SUFFIX,
 				XML_RESOURCE_TYPE);
 
 		StringWriter sw = new StringWriter();
@@ -79,7 +79,7 @@ public abstract class AbstractExistDao {
 	protected Resource doGetResource(String name, String collection) {
 		try {
 			return existManager.getOrCreateCollection(collection)
-					.getResource(ExistServiceUtils.getExistName(name) + XML_SUFFIX);
+					.getResource(ExistServiceUtils.getExistResourceName(name) + XML_SUFFIX);
 		} catch (XMLDBException e) {
 			throw new RuntimeException(e);
 		}

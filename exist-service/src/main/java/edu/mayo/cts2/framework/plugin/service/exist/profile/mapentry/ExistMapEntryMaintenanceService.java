@@ -29,7 +29,10 @@ public class ExistMapEntryMaintenanceService
 	@Override
 	public void updateResource(String changeSetUri, MapEntry resource) {
 		//TODO
-		this.mapEntryExistDao.storeResource("", resource);
+		this.mapEntryExistDao.storeResource(
+				this.createPath(
+				resource.getAssertedBy().getMapVersion().getContent()),
+				resource);
 	}
 
 	@Override

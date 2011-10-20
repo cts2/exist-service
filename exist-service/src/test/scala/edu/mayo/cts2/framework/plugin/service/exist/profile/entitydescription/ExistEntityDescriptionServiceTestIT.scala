@@ -19,8 +19,9 @@ import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
 import edu.mayo.cts2.framework.model.exception.Cts2RestException
 import edu.mayo.cts2.framework.model.service.exception.UnknownEntity
+import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
-import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionName
+import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
@@ -54,7 +55,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	name.setName("name")
     	name.setNamespace("namespace")
     	
-    	var id = new EntityDescriptionName(name, "csversion")
+    	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     	
     	
     	assertNotNull(readService.read(id));
@@ -75,7 +76,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	name.setName("name")
     	name.setNamespace("cs")
     	
-    	var id = new EntityDescriptionName(name, "csversion")
+    	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     
     	
     	assertNotNull(readService.read(id));
@@ -96,7 +97,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	name.setName("INVALID_NAME")
     	name.setNamespace("cs")
     	
-    	var id = new EntityDescriptionName(name, "csversion")
+    	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     	
     	try {
     		readService.read(id)

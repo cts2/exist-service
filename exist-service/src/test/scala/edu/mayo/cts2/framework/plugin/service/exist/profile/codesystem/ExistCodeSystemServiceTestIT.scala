@@ -8,7 +8,7 @@ import edu.mayo.cts2.framework.model.service.exception.UnknownCodeSystem
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary
-import edu.mayo.cts2.framework.service.name.Name
+import edu.mayo.cts2.framework.model.util.ModelUtils
 
 class ExistCodeSystemServiceTestIT 
 	extends BaseServiceTestBaseIT[CodeSystemCatalogEntry,CodeSystemCatalogEntrySummary] {
@@ -29,10 +29,10 @@ class ExistCodeSystemServiceTestIT
     }
       
     def getResource(name:String):CodeSystemCatalogEntry = {
-    	readService.read(new Name(name))
+    	readService.read(ModelUtils.nameOrUriFromName(name))
     }
   
     def getResourceByUri(uri:String):CodeSystemCatalogEntry = {
-    	readService.readByUri(uri)
+    	readService.read(ModelUtils.nameOrUriFromUri(uri))
     }
 }
