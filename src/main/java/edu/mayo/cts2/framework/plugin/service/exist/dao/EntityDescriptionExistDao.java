@@ -16,8 +16,6 @@ import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
-import edu.mayo.cts2.framework.model.service.exception.UnknownEntity;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
@@ -68,6 +66,10 @@ public class EntityDescriptionExistDao extends
 	public EntityDescription getResource(String path, String name) {
 		EntityDescription ed = 
 				 super.getResource(path, name);
+		
+		if(ed == null){
+			return null;
+		}
 		
 		EntityDescriptionBase entity = 
 				ModelUtils.getEntity(ed);
@@ -140,18 +142,10 @@ public class EntityDescriptionExistDao extends
 	}
 
 	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownEntity.class;
-	}
-
-
-
-	@Override
 	protected String getResourceXpath() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 
 	@Override

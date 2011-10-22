@@ -18,15 +18,15 @@ class EntityDescriptionReadServiceTestIT extends BaseServiceTestITBase {
 	
 	@Test void testGetEntityByNameCycle(){
 
-		def resourceURI = server +  "codesystem/TESTCS/version/TESTCSVERSION/entity/ns:name"
+		def resourceURI = server +  "codesystem/cs/version/2.0/entity/ns:name"
 		
 		def entry = new NamedEntityDescription(about:"about")
 		entry.setEntityID(new ScopedEntityName(name:"name", namespace:"ns"))
 		entry.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
     	entry.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
-    	entry.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+    	entry.getDescribingCodeSystemVersion().getVersion().setContent("cs_2.0")
     	entry.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
-    	entry.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+    	entry.getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
 		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
 		

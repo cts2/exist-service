@@ -5,8 +5,6 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.service.exception.UnknownMap;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class MapExistDao extends
@@ -37,11 +35,6 @@ public class MapExistDao extends
 	@Override
 	protected MapCatalogEntrySummary createSummary() {
 		return new MapCatalogEntrySummary();
-	}
-
-	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownMap.class;
 	}
 
 	@Override

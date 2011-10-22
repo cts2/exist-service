@@ -99,14 +99,9 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	
     	var id = new EntityDescriptionReadId(name, ModelUtils.nameOrUriFromName("csversion"))
     	
-    	try {
-    		readService.read(id, null)
-    	} catch {
-    	  case e: Cts2RestException => checkCTS2RestException(e)
-    	  return
-    	}
+
+    	assertNull(readService.read(id, null))
     	
-    	fail
    }
    
    def checkCTS2RestException(ex:Cts2RestException){

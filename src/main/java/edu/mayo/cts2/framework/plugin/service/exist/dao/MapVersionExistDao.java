@@ -5,8 +5,6 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry;
-import edu.mayo.cts2.framework.model.service.exception.UnknownMapVersion;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class MapVersionExistDao extends
@@ -37,11 +35,6 @@ public class MapVersionExistDao extends
 	@Override
 	protected MapVersionDirectoryEntry createSummary() {
 		return new MapVersionDirectoryEntry();
-	}
-
-	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownMapVersion.class;
 	}
 
 	@Override

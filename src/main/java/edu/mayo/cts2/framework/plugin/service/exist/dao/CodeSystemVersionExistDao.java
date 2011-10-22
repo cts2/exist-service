@@ -5,8 +5,6 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.service.exception.UnknownCodeSystemVersion;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class CodeSystemVersionExistDao
@@ -19,6 +17,10 @@ public class CodeSystemVersionExistDao
 	public CodeSystemVersionCatalogEntry getResource(String path, String name) {
 		// TODO Auto-generated method stub
 		CodeSystemVersionCatalogEntry cs = super.getResource(path, name);
+		
+		if(cs == null){
+			return null;
+		}
 
 		String codeSystemName = cs.getVersionOf().getContent();
 		String codeSystemVersionName = cs.getCodeSystemVersionName();
@@ -32,6 +34,13 @@ public class CodeSystemVersionExistDao
 						codeSystemVersionName));
 
 		return cs;
+	}
+	
+	public CodeSystemVersionCatalogEntry getCodeSystemVersionByOfficialResourceId(String codeSystemName, String officialResourceId) {
+		return this.getResourceByXpath(
+				"", 
+				this.getResourceXpath() + "[core:officialResourceVersionId[text() &= (\""+officialResourceId+"\")] and " +
+						"codesystemversion:versionOf[text() &= (\""+codeSystemName+"\")]]");
 	}
 
 	@Override
@@ -63,11 +72,6 @@ public class CodeSystemVersionExistDao
 		summary.setVersionOf(resource.getVersionOf());
 
 		return summary;
-	}
-
-	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownCodeSystemVersion.class;
 	}
 
 	@Override

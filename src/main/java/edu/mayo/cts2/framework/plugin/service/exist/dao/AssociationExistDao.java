@@ -5,8 +5,6 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
-import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class AssociationExistDao extends AbstractResourceExistDao<AssociationDirectoryEntry,Association> {
@@ -32,11 +30,6 @@ public class AssociationExistDao extends AbstractResourceExistDao<AssociationDir
 			AssociationDirectoryEntry summary, Resource eXistResource) {
 		
 		return summary;
-	}
-
-	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownAssociation.class;
 	}
 
 	@Override

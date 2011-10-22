@@ -9,9 +9,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
 
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.exception.ExceptionFactory;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao implements ExistDao<S,R> {
 
@@ -60,8 +58,7 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 		Resource resource = this.doGetResource(name, this.getResourcePath(path));
 
 		if (resource == null) {
-			throw ExceptionFactory.createUnknownResourceException(name,
-					getUnknownResourceExceptionClass());
+			return null;
 		}
 
 		return (R) this.unmarshallResource(resource);
@@ -69,7 +66,7 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 	}
 	
 	@SuppressWarnings("unchecked")
-	public R getResourceByXpath(String collectionPath, String xpathQuery) {
+	protected R getResourceByXpath(String collectionPath, String xpathQuery) {
 		Resource resource;
 		try {
 			XQueryService xqueryService = this.getExistManager().getXQueryService(collectionPath);
@@ -110,8 +107,6 @@ public abstract class AbstractResourceExistDao<S,R> extends AbstractExistDao imp
 	
 		return this.getResourceByXpath(collectionPath, expressionString);
 	}
-
-	protected abstract Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass();
 
 	protected abstract S createSummary();
 

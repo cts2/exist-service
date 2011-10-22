@@ -13,13 +13,14 @@ import edu.mayo.cts2.framework.model.core.SourceAndNotation
 class CodeSystemVersionReadServiceTestIT extends BaseServiceTestITBase {
 
 
-	@Test void testGetCodeSystemVersionByNameCycle(){
+	@Test void testGetCodeSystemVersionByNameCycleWithNonExpectedNameFormat(){
 
-		def resourceURI = server +  "codesystem/TESTCS/version/TESTCSVERSION"
+		def resourceURI = server +  "codesystem/TESTCS/version/2.0"
 
 		def entry = new CodeSystemVersionCatalogEntry(documentURI:"docuri", about:"testAbout", codeSystemVersionName:"TESTCSVERSION")
 		entry.setSourceAndNotation(new SourceAndNotation());
-		entry.setVersionOf(new CodeSystemReference());
+		entry.setVersionOf(new CodeSystemReference(content:"TESTCS"));
+		entry.setOfficialResourceVersionId("2.0");
 
 		client.putCts2Resource(resourceURI, entry)
 
@@ -29,19 +30,20 @@ class CodeSystemVersionReadServiceTestIT extends BaseServiceTestITBase {
 		assertEquals entry.documentURI, msg.getCodeSystemVersionCatalogEntry().getDocumentURI()
 	}
 
-	@Test void testGetCodeSystemVersionByNameWithNumberCycle(){
+	@Test void testGetCodeSystemVersionByNameWithExpectedNameFormat(){
 
 		def resourceURI = server +  "codesystem/TESTCS/version/2.0"
 
-		def entry = new CodeSystemVersionCatalogEntry(documentURI:"docuri", about:"testAbout", codeSystemVersionName:"2.0")
+		def entry = new CodeSystemVersionCatalogEntry(documentURI:"docuri", about:"testAbout", codeSystemVersionName:"cs_2.0")
 		entry.setSourceAndNotation(new SourceAndNotation());
-		entry.setVersionOf(new CodeSystemReference());
+		entry.setVersionOf(new CodeSystemReference(content:"cs"));
+		entry.setOfficialResourceVersionId("2.0");
 
 		client.putCts2Resource(resourceURI, entry)
 
 		def msg =
 				client.getCts2Resource(resourceURI, CodeSystemVersionCatalogEntryMsg.class)
 
-		assertEquals entry.about, msg.getCodeSystemVersionCatalogEntry().getAbout()
+		assertEquals entry.documentURI, msg.getCodeSystemVersionCatalogEntry().getDocumentURI()
 	}
 }

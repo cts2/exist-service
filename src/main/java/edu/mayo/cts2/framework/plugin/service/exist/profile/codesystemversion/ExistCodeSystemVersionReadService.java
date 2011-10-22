@@ -67,8 +67,9 @@ public class ExistCodeSystemVersionReadService
 			NameOrURI codeSystem, 
 			String officialResourceVersionId,
 			ReadContext readContext) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.codeSystemVersionExistDao.
+				getCodeSystemVersionByOfficialResourceId(codeSystem.getName(), officialResourceVersionId);
 	}
 
 	@Override

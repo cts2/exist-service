@@ -5,8 +5,6 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.service.exception.UnknownConceptDomain;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class ConceptDomainExistDao extends AbstractResourceExistDao<ConceptDomainCatalogEntrySummary, ConceptDomainCatalogEntry> {
@@ -38,11 +36,7 @@ public class ConceptDomainExistDao extends AbstractResourceExistDao<ConceptDomai
 	protected String doGetResourceBasePath() {
 		return CONCEPTDOMAINS_PATH;
 	}
-	
-	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownConceptDomain.class;
-	}
+
 
 	@Override
 	protected String getResourceXpath() {

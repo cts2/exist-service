@@ -2,6 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.runner.RunWith
 import org.junit.Before
 import org.junit.Test
@@ -45,14 +46,11 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
 	    var uri = "someUri"
     	createResource(name, uri)
     	
-    	try {
-    	getResource("__INVALID_NAME__")
-    	} catch {
-    	  case e: Cts2RestException => checkCTS2RestException(e)
-    	  return
-    	}
     	
-    	fail
+    	var resource = getResource("__INVALID_NAME__")
+    	
+    	assertNull(resource)
+    	
    }
    
        @Test def testInsertAndRetrieveByUri() {

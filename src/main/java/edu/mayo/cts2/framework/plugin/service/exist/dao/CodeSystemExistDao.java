@@ -5,8 +5,6 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.service.exception.UnknownCodeSystem;
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference;
 
 @Component
 public class CodeSystemExistDao extends AbstractResourceExistDao<CodeSystemCatalogEntrySummary, CodeSystemCatalogEntry> {
@@ -40,14 +38,6 @@ public class CodeSystemExistDao extends AbstractResourceExistDao<CodeSystemCatal
 	protected String doGetResourceBasePath() {
 		return CODESYSTEMS_PATH;
 	}
-	
-
-	@Override
-	protected Class<? extends UnknownResourceReference> getUnknownResourceExceptionClass() {
-		return UnknownCodeSystem.class;
-	}
-
-
 
 	@Override
 	protected String getResourceXpath() {
