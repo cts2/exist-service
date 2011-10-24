@@ -22,7 +22,7 @@ import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainQueryService;
 
 @Component
-public class ExistConceptQueryDomainService 
+public class ExistConceptDomainQueryService 
 	extends AbstractExistQueryService
 		<edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainQueryService,XpathState>
 	implements ConceptDomainQueryService {

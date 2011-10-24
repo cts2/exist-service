@@ -2,6 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
 import static org.junit.Assert.*
 
+import org.junit.Ignore
 import org.junit.Test
 
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
@@ -15,7 +16,7 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionMsg
 
 class ValueSetDefinitionReadServiceTestIT extends BaseServiceTestITBase {
 			
-	@Test void testGetValueSetByNameCycle(){
+	@Test @Ignore void testGetValueSetByNameCycle(){
 
 		def resourceURI = server +  "valueset/TESTVALUESET/definition/TESTDEFURI"
 		
