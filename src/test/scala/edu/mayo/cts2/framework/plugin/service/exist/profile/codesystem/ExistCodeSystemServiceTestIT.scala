@@ -25,7 +25,7 @@ class ExistCodeSystemServiceTestIT
       entry.setCodeSystemName(name);
       entry.setAbout(uri)
       
-      maintService.createResource("", entry)
+      maintService.createResource(entry)
     }
       
     def getResource(name:String):CodeSystemCatalogEntry = {

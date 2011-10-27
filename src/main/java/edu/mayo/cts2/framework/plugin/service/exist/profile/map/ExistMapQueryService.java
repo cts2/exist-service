@@ -14,8 +14,8 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.MapExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -25,18 +25,35 @@ import edu.mayo.cts2.framework.service.profile.map.MapQueryService;
 @Component
 public class ExistMapQueryService 
 	extends AbstractExistQueryService
-	<edu.mayo.cts2.framework.model.service.map.MapCatalogQueryService,XpathState> 
+	<MapCatalogEntry,
+	MapCatalogEntrySummary,
+	edu.mayo.cts2.framework.model.service.map.MapCatalogQueryService,XpathState> 
 	implements MapQueryService {
 
 	@Resource
-	private MapExistDao mapExistDao;
-
+	private MapResourceInfo mapResourceInfo;
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+
+	@Override
+	public MapCatalogEntrySummary doTransform(MapCatalogEntry resource,
+			MapCatalogEntrySummary summary, org.xmldb.api.base.Resource eXistResource) {
+		summary = this.baseTransform(summary, resource);
+		summary.setMapName(resource.getMapName());
+		summary.setHref(getUrlConstructor().createMapUrl(resource.getMapName()));
+
+		return summary;
+	}
+	
+	@Override
+	protected MapCatalogEntrySummary createSummary() {
+		return new MapCatalogEntrySummary();
+	}
 	private class CodeSystemNameStateUpdater implements StateUpdater<XpathState> {
 
 		@Override
@@ -58,7 +75,7 @@ public class ExistMapQueryService
 				public DirectoryResult<MapCatalogEntrySummary> execute(
 						XpathState state, int start, int maxResults) {
 					
-					return mapExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"", 
 							state.getXpath(), 
 							start,
@@ -110,6 +127,12 @@ public class ExistMapQueryService
 	@Override
 	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
 		return new CodeSystemNameStateUpdater();
+	}
+
+
+	@Override
+	protected ResourceInfo<MapCatalogEntry, ?> getResourceInfo() {
+		return this.mapResourceInfo;
 	}
 
 }

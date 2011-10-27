@@ -2,14 +2,14 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.EntityDescriptionExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
+import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
+import edu.mayo.cts2.framework.model.service.core.ReadContext;
+import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
 
@@ -20,33 +20,42 @@ public class ExistEntityDescriptionReadService
 		EntityDescriptionReadId,
 		edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionReadService>   
 	implements EntityDescriptionReadService {
-
+	
 	@Resource
-	private EntityDescriptionExistDao entityDescriptionExistDao;
+	private EntityDescriptionResourceInfo entityDescriptionResourceInfo;
 
 	@Override
-	protected ExistDao<?, EntityDescription> getExistDao() {
-		return this.entityDescriptionExistDao;
+	public EntityDescription read(EntityDescriptionReadId id, ReadContext readContext) {
+		EntityDescription ed = 
+				 super.read(id, readContext);
+		
+		if(ed == null){
+			return null;
+		}
+		
+		EntityDescriptionBase entity = 
+				ModelUtils.getEntity(ed);
+		
+		String codeSystemName = entity.getDescribingCodeSystemVersion().
+				getCodeSystem().getContent();
+		
+		String codeSystemVersionName = entity.getDescribingCodeSystemVersion().
+				getVersion().getContent();
+		
+		entity.getDescribingCodeSystemVersion().
+			getCodeSystem().
+			setHref(this.getUrlConstructor().createCodeSystemUrl(codeSystemName));
+		
+		entity.getDescribingCodeSystemVersion().
+			getVersion().
+			setHref(this.getUrlConstructor().createCodeSystemVersionUrl(codeSystemName, codeSystemVersionName));
+	
+		return ed;
 	}
 
 	@Override
-	protected boolean isReadByUri(EntityDescriptionReadId id) {
-		return StringUtils.isNotBlank(id.getUri());
+	protected ResourceInfo<EntityDescription, EntityDescriptionReadId> getResourceInfo() {
+		return this.entityDescriptionResourceInfo;
 	}
 
-	@Override
-	protected String createPath(EntityDescriptionReadId id) {
-		return this.createPath(id.getCodeSystemVersion().getName());
-	}
-
-	@Override
-	protected String getResourceName(
-			EntityDescriptionReadId id) {
-		return ExistServiceUtils.getExistEntityName(id.getEntityName());
-	}
-
-	@Override
-	protected String getResourceUri(EntityDescriptionReadId id) {
-		return id.getUri();
-	}
 }

@@ -2,10 +2,9 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
+import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
@@ -15,8 +14,8 @@ import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -25,18 +24,39 @@ import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemQueryService
 @Component
 public class ExistCodeSystemQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.codesystem.CodeSystemQueryService,XpathState> 
+		<CodeSystemCatalogEntry,
+		CodeSystemCatalogEntrySummary,
+		edu.mayo.cts2.framework.model.service.codesystem.CodeSystemQueryService,
+		XpathState> 
 	implements CodeSystemQueryService {
 
-	@Resource
-	private CodeSystemExistDao codeSystemExistDao;
-
+	@javax.annotation.Resource
+	private CodeSystemResourceInfo codeSystemResourceInfo;
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	protected CodeSystemCatalogEntrySummary createSummary() {
+		return new CodeSystemCatalogEntrySummary();
+	}
+
+	@Override
+	protected CodeSystemCatalogEntrySummary doTransform(
+			CodeSystemCatalogEntry resource,
+			CodeSystemCatalogEntrySummary summary, Resource eXistResource) {
+		summary = this.baseTransform(summary, resource);
+		
+		summary.setCodeSystemName(resource.getCodeSystemName());
+		summary.setHref(getUrlConstructor().createCodeSystemUrl(resource.getCodeSystemName()));
+		summary.setVersions(getUrlConstructor().createVersionsOfCodeSystemUrl(resource.getCodeSystemName()));
+		
+		return summary;
+	}
+	
 	private static class CodeSystemNameStateUpdater implements StateUpdater<XpathState> {
 
 		@Override
@@ -73,7 +93,7 @@ public class ExistCodeSystemQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return codeSystemExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							state.getXpath(), 
 							start, 
@@ -127,4 +147,10 @@ public class ExistCodeSystemQueryService
 	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
 		return new CodeSystemNameStateUpdater();
 	}
+
+	@Override
+	protected ResourceInfo<CodeSystemCatalogEntry, ?> getResourceInfo() {
+		return this.getResourceInfo();
+	}
+
 }

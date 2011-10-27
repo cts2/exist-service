@@ -32,7 +32,7 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
       entry.setSourceAndNotation(new SourceAndNotation());
 	  entry.setVersionOf(new CodeSystemReference());
       
-      maintService.createResource("", entry)
+      maintService.createResource(entry)
     }
       
     def getResource(name:String):CodeSystemVersionCatalogEntry = {
@@ -54,7 +54,7 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
 	  entry.getVersionOf().setContent("csname")
 	  entry.setOfficialResourceVersionId("5.0")
     	
-	  maintService.createResource("", entry)
+	  maintService.createResource(entry)
     
 	 assertNotNull( readService.getCodeSystemByVersionId(
 			 ModelUtils.nameOrUriFromName("csname"), "5.0", null) )
@@ -72,7 +72,7 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
 	  entry.getVersionOf().setContent("csname")
 	  entry.setOfficialResourceVersionId("5.0")
     	
-	  maintService.createResource("", entry)
+	  maintService.createResource(entry)
 
  	  assertNotNull( readService.read(ModelUtils.nameOrUriFromName("Name_5.0_owl"), null) )
   }

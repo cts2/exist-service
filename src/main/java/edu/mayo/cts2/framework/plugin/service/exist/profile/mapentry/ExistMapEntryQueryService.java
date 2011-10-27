@@ -15,12 +15,13 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.MapEntryExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
-import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
+import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
@@ -28,12 +29,14 @@ import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
 @Component
 public class ExistMapEntryQueryService
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.mapentry.MapEntryQueryService,MapEntryDirectoryState>
+		<MapEntry,
+		MapEntryDirectoryEntry,
+		edu.mayo.cts2.framework.model.service.mapentry.MapEntryQueryService,MapEntryDirectoryState>
 	implements MapEntryQueryService {
-
+	
 	@Resource
-	private MapEntryExistDao mapEntryExistDao;
-
+	private MapEntryResourceInfo mapEntryResourceInfo;
+	
 	private class MapEntryDirectoryBuilder extends
 			XpathDirectoryBuilder<MapEntryDirectoryState,MapEntryDirectoryEntry> {
 
@@ -56,7 +59,6 @@ public class ExistMapEntryQueryService
 					
 					this.getRestrictions().add(
 						 new XpathStateBuildingRestriction<MapEntryDirectoryState>(
-								"/mapversion:MapEntry", 
 								"mapversion:mapSet/mapversion:mapTarget/mapversion:mapTo/core:name", 
 								"text()",
 								AllOrAny.ANY,
@@ -73,8 +75,9 @@ public class ExistMapEntryQueryService
 				@Override
 				public DirectoryResult<MapEntryDirectoryEntry> execute(
 						MapEntryDirectoryState state, int start, int maxResults) {
-					return mapEntryExistDao.getResourceSummaries(
-							createPath(state.getMapVersion()), 
+					
+					return getResourceSummaries(
+							ExistServiceUtils.createPath(state.getMapVersion()), 
 							state.getXpath(), 
 							start,
 							maxResults);
@@ -115,6 +118,33 @@ public class ExistMapEntryQueryService
 	}
 
 	@Override
+	public MapEntryDirectoryEntry doTransform(
+			MapEntry resource,
+			MapEntryDirectoryEntry summary, 
+			org.xmldb.api.base.Resource eXistResource) {
+		String mapEntryName = this.getMapEntryNameForSummary(resource);
+		
+		String mapName = resource.getAssertedBy().getMap().getContent();
+		String mapVersionName = resource.getAssertedBy().getMapVersion().getContent();
+
+		summary.setAssertedBy(resource.getAssertedBy());
+		
+		summary.setMapFrom(resource.getMapFrom());
+		summary.setResourceName(mapEntryName);
+		summary.setHref(this.getUrlConstructor().createMapEntryUrl(
+				mapName, 
+				mapVersionName, 
+				mapEntryName));
+
+		return summary;
+	}
+	
+	private String getMapEntryNameForSummary(MapEntry mapEntry){
+		return mapEntry.getMapFrom().getNamespace() + ":" + mapEntry.getMapFrom().getName();
+	}
+
+	
+	@Override
 	public int count(Query query, FilterComponent filterComponent,
 			MapEntryQueryServiceRestrictions restrictions) {
 		throw new UnsupportedOperationException();
@@ -134,6 +164,18 @@ public class ExistMapEntryQueryService
 
 	@Override
 	protected StateUpdater<MapEntryDirectoryState> getResourceNameStateUpdater() {
-		return new XpathStateUpdater<MapEntryDirectoryState>("/mapversion:MapEntry","mapversion:mapFrom/core:name","text()");
+		return new XpathStateUpdater<MapEntryDirectoryState>(
+				"mapversion:mapFrom/core:name","text()");
 	}
+
+	@Override
+	protected MapEntryDirectoryEntry createSummary() {
+		return new MapEntryDirectoryEntry();
+	}
+
+	@Override
+	protected ResourceInfo<MapEntry, ?> getResourceInfo() {
+		return this.mapEntryResourceInfo;
+	}
+	
 }

@@ -1,7 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao
 
 import org.junit.Assert.assertEquals
-
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry
 import org.springframework.beans.factory.annotation.Autowired
 import org.scalatest.junit.AssertionsForJUnit
@@ -13,6 +12,7 @@ import org.junit.Before
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDaoImpl
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(
@@ -21,7 +21,7 @@ Array("/exist-test-context.xml"))
 class MapExistDaoTestIT extends AssertionsForJUnit {
  
  
-  @Autowired var dao:MapExistDao = null
+  @Autowired var dao:ExistDaoImpl = null
   
   @Before def cleanExist() {
     dao.getExistManager().getCollectionManagementService().removeCollection("/db");
@@ -36,24 +36,10 @@ class MapExistDaoTestIT extends AssertionsForJUnit {
     
     var foundMap = dao.getResource("", "testName")
     
-    println(foundMap.getMapName())
+    assertNotNull(foundMap)
   }
-  
-   @Test def testGetSummaries() {
-    var entry = new MapCatalogEntry()
-    entry.setMapName("testName")
-    entry.setAbout("about")
-    insertMap(entry)
-    
-    var summaries = dao.getResourceSummaries("", "", 0, 1);
-    
-    assertEquals(1, summaries.getEntries().size)
-  }
-  
-   def getMapCatalogs(map:MapCatalogEntrySummary):DirectoryResult[MapCatalogEntrySummary] =  {
-     return dao.getResourceSummaries("", "", 0, 1)
-   }
+ 
 
-   def insertMap(map:MapCatalogEntry) =  dao.storeResource("", map)
+   def insertMap(map:MapCatalogEntry) =  dao.storeResource("", map.getMapName(), map)
 
 }

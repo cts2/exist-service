@@ -9,19 +9,18 @@ import org.junit.runner.RunWith
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(value="classpath:/exist-test-context.xml")
-class CodeSystemExistDaoTestIT {
+class ExistDaoImplTestIT {
 
 	@Resource
-	CodeSystemExistDao codeSystemExistDao
+	ExistDaoImpl existDaoImpl
 	
 	@Test
-	void testStoreCodeSystems(){
-		assertNotNull codeSystemExistDao
+	void testQuery(){
+		assertNotNull existDaoImpl
 
 		for(int i=0;i<100;i++){
 			CodeSystemCatalogEntry entry = new CodeSystemCatalogEntry()
@@ -30,12 +29,12 @@ class CodeSystemExistDaoTestIT {
 			entry.setCodeSystemName(name)
 			entry.setAbout(name);
 			
-			codeSystemExistDao.storeResource("", entry)
+			existDaoImpl.storeResource("testcollection", name, entry)
 		}
 		
-		def summaries = codeSystemExistDao.getResourceSummaries("", "", 0, 1000)
+		def summaries = existDaoImpl.query("testcollection", "/codesystem:CodeSystemCatalogEntry", 0, 1000)
 		
-		assertEquals 100, summaries.entries.size
+		assertEquals 100, summaries.getSize()
 	}
 	
 	

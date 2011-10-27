@@ -5,9 +5,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetDefinitionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionReadService;
 
 @Component
@@ -19,35 +18,11 @@ public class ExistValueSetDefinitionReadService
 	implements ValueSetDefinitionReadService {
 
 	@Resource
-	private ValueSetDefinitionExistDao valueSetDefinitionExistDao;
-
-
-	@Override
-	protected ExistDao<?, ValueSetDefinition> getExistDao() {
-		return this.valueSetDefinitionExistDao;
-	}
-
+	private ValueSetDefinitionResourceInfo valueSetDefinitionResourceInfo;
 
 	@Override
-	protected boolean isReadByUri(String identifier) {
-		return true;
+	protected ResourceInfo<ValueSetDefinition, String> getResourceInfo() {
+		return this.valueSetDefinitionResourceInfo;
 	}
 
-
-	@Override
-	protected String createPath(String resourceIdentifier) {
-		return "";
-	}
-
-
-	@Override
-	protected String getResourceName(String resourceIdentifier) {
-		throw new UnsupportedOperationException();
-	}
-
-
-	@Override
-	protected String getResourceUri(String resourceIdentifier) {
-		return resourceIdentifier;
-	}
 }

@@ -5,38 +5,21 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.MapEntryExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryMaintenanceService;
+import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId;
 
 @Component
 public class ExistMapEntryMaintenanceService 
-	extends AbstractExistService<edu.mayo.cts2.framework.model.service.mapentry.MapEntryMaintenanceService>
+	extends AbstractExistMaintenanceService<MapEntry,MapEntryReadId,edu.mayo.cts2.framework.model.service.mapentry.MapEntryMaintenanceService>
 	implements MapEntryMaintenanceService {
 
 	@Resource
-	private MapEntryExistDao mapEntryExistDao;
+	private MapEntryResourceInfo mapEntryResourceInfo;
 
 	@Override
-	public void createResource(String changeSetUri, MapEntry resource) {
-		//TODO
-		this.mapEntryExistDao.storeResource(
-				this.createPath(
-				resource.getAssertedBy().getMapVersion().getContent()),
-				resource);
-	}
-
-	@Override
-	public void updateResource(String changeSetUri, MapEntry resource) {
-		//TODO
-		this.mapEntryExistDao.storeResource(
-				this.createPath(
-				resource.getAssertedBy().getMapVersion().getContent()),
-				resource);
-	}
-
-	@Override
-	public void deleteResource(String changeSetUri, String resourceName) {
-		throw new UnsupportedOperationException();
+	protected ResourceInfo<MapEntry, MapEntryReadId> getResourceInfo() {
+		return this.mapEntryResourceInfo;
 	}
 }

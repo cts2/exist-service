@@ -13,8 +13,8 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.model.statement.StatementDirectoryEntry;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.StatementExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -23,12 +23,14 @@ import edu.mayo.cts2.framework.service.profile.statement.StatementQueryService;
 @Component
 public class ExistStatementQueryService
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.statement.StatementQueryService,XpathState>
+		<Statement,
+		StatementDirectoryEntry,
+		edu.mayo.cts2.framework.model.service.statement.StatementQueryService,XpathState>
 	implements StatementQueryService {
 
 	@Resource
-	private StatementExistDao statementExistDao;
-
+	private StatementResourceInfo statementResourceInfo;
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
@@ -45,7 +47,7 @@ public class ExistStatementQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return statementExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							state.getXpath(), 
 							start, 
@@ -109,4 +111,22 @@ public class ExistStatementQueryService
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected StatementDirectoryEntry createSummary() {
+		return new StatementDirectoryEntry();
+	}
+
+	@Override
+	protected StatementDirectoryEntry doTransform(Statement resource,
+			StatementDirectoryEntry summary,
+			org.xmldb.api.base.Resource eXistResource) {
+		return summary;
+	}
+
+	@Override
+	protected ResourceInfo<Statement, ?> getResourceInfo() {
+		return this.statementResourceInfo;
+	}
+
 }

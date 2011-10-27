@@ -23,7 +23,7 @@ class ExistMapServiceTestIT extends BaseServiceTestBaseIT[MapCatalogEntry,MapCat
       entry.setMapName(name)
       entry.setAbout(uri)
       
-      maintService.createResource("", entry);
+      maintService.createResource(entry);
     }
       
     def getResource(name:String):MapCatalogEntry = {

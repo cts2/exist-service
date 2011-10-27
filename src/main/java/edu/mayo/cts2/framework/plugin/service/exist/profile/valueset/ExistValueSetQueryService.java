@@ -14,8 +14,8 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -25,16 +25,35 @@ import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQueryService;
 @Component
 public class ExistValueSetQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.valueset.ValueSetQueryService,XpathState>
+		<ValueSetCatalogEntry,
+		ValueSetCatalogEntrySummary,
+		edu.mayo.cts2.framework.model.service.valueset.ValueSetQueryService,XpathState>
 	implements ValueSetQueryService {
 
 	@Resource
-	private ValueSetExistDao valueSetExistDao;
-
+	private ValueSetResourceInfo valueSetResourceInfo;
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	protected ValueSetCatalogEntrySummary createSummary() {
+		return new ValueSetCatalogEntrySummary();
+	}
+
+	@Override
+	protected ValueSetCatalogEntrySummary doTransform(
+			ValueSetCatalogEntry resource,
+			ValueSetCatalogEntrySummary summary, org.xmldb.api.base.Resource eXistResource11) {
+		summary = this.baseTransform(summary, resource);
+		
+		summary.setValueSetName(resource.getValueSetName());
+		summary.setHref(getUrlConstructor().createValueSetUrl(resource.getValueSetName()));
+		
+		return summary;
 	}
 
 	private class ValueSetNameStateUpdater implements StateUpdater<XpathState> {
@@ -62,7 +81,7 @@ public class ExistValueSetQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return valueSetExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							state.getXpath(), 
 							start, 
@@ -121,4 +140,10 @@ public class ExistValueSetQueryService
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected ResourceInfo<ValueSetCatalogEntry, ?> getResourceInfo() {
+		return this.valueSetResourceInfo;
+	}
+	
 }

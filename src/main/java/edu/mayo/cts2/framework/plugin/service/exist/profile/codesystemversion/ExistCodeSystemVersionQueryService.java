@@ -14,8 +14,8 @@ import edu.mayo.cts2.framework.model.core.FilterComponent;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemVersionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -25,11 +25,13 @@ import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersi
 @Component
 public class ExistCodeSystemVersionQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionQueryService,XpathState> 
+		<CodeSystemVersionCatalogEntry,
+		CodeSystemVersionCatalogEntrySummary,
+		edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionQueryService,XpathState> 
 	implements CodeSystemVersionQueryService {
-
+	
 	@Resource
-	private CodeSystemVersionExistDao codeSystemVersionExistDao;
+	private CodeSystemVersionResourceInfo codeSystemVersionResourceInfo;
 	
 	private class CodeSystemVersionDirectoryBuilder extends XpathDirectoryBuilder<XpathState,CodeSystemVersionCatalogEntrySummary> {
 
@@ -42,7 +44,7 @@ public class ExistCodeSystemVersionQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return codeSystemVersionExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							getCodeSystemXpath(codeSystem), 
 							start, 
@@ -67,6 +69,28 @@ public class ExistCodeSystemVersionQueryService
 		}
 	}
 
+	@Override
+	protected CodeSystemVersionCatalogEntrySummary createSummary() {
+		return new CodeSystemVersionCatalogEntrySummary();
+	}
+
+	@Override
+	protected CodeSystemVersionCatalogEntrySummary doTransform(
+			CodeSystemVersionCatalogEntry resource,
+			CodeSystemVersionCatalogEntrySummary summary, org.xmldb.api.base.Resource eXistResource) {
+		summary = this.baseTransform(summary, resource);
+		summary.setDocumentURI(resource.getDocumentURI());
+		summary.setCodeSystemVersionName(resource.getCodeSystemVersionName());
+
+		summary.setHref(getUrlConstructor().createCodeSystemVersionUrl(
+				resource.getVersionOf().getContent(),
+				resource.getCodeSystemVersionName()));
+		summary.setVersionOf(resource.getVersionOf());
+
+		return summary;
+	}
+
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
@@ -113,5 +137,11 @@ public class ExistCodeSystemVersionQueryService
 	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
+
+	@Override
+	protected ResourceInfo<CodeSystemVersionCatalogEntry, ?> getResourceInfo() {
+		return codeSystemVersionResourceInfo;
+	}
+	
 }

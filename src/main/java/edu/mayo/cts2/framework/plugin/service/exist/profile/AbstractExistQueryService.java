@@ -22,13 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
 
+import edu.mayo.cts2.framework.core.url.UrlConstructor;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.core.ResourceDescription;
+import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.SummaryTransform;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
@@ -39,8 +48,24 @@ import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
  * @author <a href="mailto:kevin.peterson@mayo.edu">Kevin Peterson</a>
  */
 public abstract class AbstractExistQueryService
-	<T extends BaseQueryService,S extends XpathState> 
+	<R,Summary,T extends BaseQueryService,S extends XpathState> 
 	extends AbstractQueryService<T> {
+	
+	@Autowired
+	private UrlConstructor urlConstructor;
+	
+	@javax.annotation.Resource
+	private ExistResourceDao existResourceDao;
+	
+	protected ExistResourceDao getExistResourceDao() {
+		return existResourceDao;
+	}
+	protected void setExistResourceDao(ExistResourceDao existResourceDao) {
+		this.existResourceDao = existResourceDao;
+	}
+
+	@Autowired
+	private ResourceUnmarshaller resourceUnmarshaller;
 	
 	private static final String MAYO = "Mayo Clinic";
 	private static final String DEFAULT_VERSION = "1.0";
@@ -58,22 +83,77 @@ public abstract class AbstractExistQueryService
 	protected String getDescription() {
 		return DESCRIPTION;
 	}
-	
-	protected String createPath(String... path){
-		if(path == null){
-			return "";
-		}
+
+	public DirectoryResult<Summary> getResourceSummaries(
+			String collecitonPath, 
+			String xpath,
+			int start, int max) {
 		
-		StringBuffer sb = new StringBuffer();
-		for(String st : path){
-			if(StringUtils.isNotBlank(st)){
-				sb.append(st);
-				sb.append("/");
-			}
-		}
+		String queryString = this.getResourceInfo().getResourceXpath() + (StringUtils.isNotBlank(xpath) ? xpath : "");
 		
-		return ExistServiceUtils.getExistResourceName(sb.toString());
+		ResourceSet collection = this.getExistResourceDao().query(
+				collecitonPath, queryString, start, max);
+
+		return this.getResourceSummaries(collection, xpath, start, max,
+				transform);
 	}
+	
+	private DirectoryResult<Summary> getResourceSummaries(
+			ResourceSet collection,
+			String xpath,
+			int start,
+			int max,
+			SummaryTransform<Summary, R> transform) {
+		try {
+
+			long size = collection.getSize();
+			
+			List<Summary> returnList = new ArrayList<Summary>();
+
+		
+			for(int i=start;i< start + max && i < size;i++) {
+				Resource res = collection.getResource(i);
+			
+				@SuppressWarnings("unchecked")
+				R entry = (R) this.resourceUnmarshaller.unmarshallResource(res);
+
+				returnList.add(transform.transform(entry, res));
+			}
+		
+			return new DirectoryResult<Summary>(returnList, size <= returnList.size(), (start + max) >= size);
+		} catch (XMLDBException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+	
+	protected <E extends ResourceDescriptionDirectoryEntry, D extends ResourceDescription> E baseTransform(
+			E summary, D resource) {
+
+		summary.setAbout(resource.getAbout());
+		summary.setFormalName(resource.getFormalName());
+		summary.setResourceSynopsis(resource.getResourceSynopsis());
+
+		return summary;
+	}
+	
+	protected abstract Summary createSummary();
+
+	protected abstract Summary doTransform(R resource, Summary summary,
+			Resource eXistResource);
+
+	private SummaryTransform<Summary, R> transform = new SummaryTransform<Summary, R>() {
+
+		@Override
+		public Summary createSummary() {
+			return AbstractExistQueryService.this.createSummary();
+		}
+
+		@Override
+		public Summary transform(R resource, Resource eXistResource) {
+			return doTransform(resource,
+					this.createSummary(), eXistResource);
+		}
+	};
 	
 	@Override
 	protected List<MatchAlgorithmReference> getAvailableMatchAlgorithmReferences() {
@@ -101,4 +181,15 @@ public abstract class AbstractExistQueryService
 	}
 	
 	protected abstract StateUpdater<S> getResourceNameStateUpdater();
+
+	public void setUrlConstructor(UrlConstructor urlConstructor) {
+		this.urlConstructor = urlConstructor;
+	}
+
+	public UrlConstructor getUrlConstructor() {
+		return urlConstructor;
+	}
+
+	protected abstract ResourceInfo<R,?> getResourceInfo();
+
 }

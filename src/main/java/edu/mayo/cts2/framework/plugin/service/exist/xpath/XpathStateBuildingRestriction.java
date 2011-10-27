@@ -41,7 +41,6 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 	
 	public enum AllOrAny {ALL, ANY}
 
-	private String elementPath;
 	private String queryPath;
 	private String queryAttributeOrText;
 	private AllOrAny allOrAny;
@@ -58,13 +57,11 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 	 *  Example: text()
 	 */
 	public XpathStateBuildingRestriction(
-			String elementPath, 
 			String queryPath,
 			String queryAttributeOrText,
 			AllOrAny allOrAny,
 			List<String> restrictions){
 		super();
-		this.elementPath = elementPath;
 		this.queryPath = queryPath;
 		this.queryAttributeOrText = queryAttributeOrText;
 		this.allOrAny = allOrAny;
@@ -113,7 +110,7 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 			sb.append(" | ");
 		}
 		
-		sb.append(this.elementPath + "["+ this.queryPath + "["+this.queryAttributeOrText+" " + algorithm + " (\""+queryString.toString()+"\")]]");
+		sb.append("["+ this.queryPath + "["+this.queryAttributeOrText+" " + algorithm + " (\""+queryString.toString()+"\")]]");
 		
 		currentState.setXpath(sb.toString());
 		

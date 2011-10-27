@@ -49,7 +49,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
 
-	  	maintService.createResource("", ed)
+	  	maintService.createResource(ed)
     	
     	var name = new ScopedEntityName()
     	name.setName("name")
@@ -70,7 +70,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	ed.getNamedEntity().getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
-    	maintService.createResource("", ed)
+    	maintService.createResource(ed)
     	
     	var name = new ScopedEntityName()
     	name.setName("name")
@@ -91,7 +91,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	ed.getNamedEntity().getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
-    	maintService.createResource("", ed)
+    	maintService.createResource(ed)
     	
     	var name = new ScopedEntityName()
     	name.setName("INVALID_NAME")

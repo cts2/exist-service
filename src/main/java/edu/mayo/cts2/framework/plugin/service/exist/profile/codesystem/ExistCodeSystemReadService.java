@@ -6,29 +6,23 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistNameOrUriReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemReadService;
 
 @Component
 public class ExistCodeSystemReadService 
-	extends AbstractExistNameOrUriReadService<
+	extends AbstractExistReadService<
 		CodeSystemCatalogEntry,
 		NameOrURI,
 		edu.mayo.cts2.framework.model.service.codesystem.CodeSystemReadService>
 	implements CodeSystemReadService {
 
 	@Resource
-	private CodeSystemExistDao codeSystemExistDao;
+	private CodeSystemResourceInfo codeSystemResourceInfo;
 
 	@Override
-	protected String createPath(NameOrURI resourceIdentifier) {
-		return "";
-	}
-
-	@Override
-	protected ExistDao<?, CodeSystemCatalogEntry> getExistDao() {
-		return this.codeSystemExistDao;
+	protected ResourceInfo<CodeSystemCatalogEntry, NameOrURI> getResourceInfo() {
+		return this.codeSystemResourceInfo;
 	}
 }

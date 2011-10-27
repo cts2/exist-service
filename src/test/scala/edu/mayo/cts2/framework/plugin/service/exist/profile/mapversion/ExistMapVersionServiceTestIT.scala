@@ -29,7 +29,7 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
       entry.setVersionOf(new MapReference())
       entry.getVersionOf().setContent("map")
 
-      maintService.createResource("", entry)
+      maintService.createResource(entry)
     }
       
     def getResource(name:String):MapVersion = {

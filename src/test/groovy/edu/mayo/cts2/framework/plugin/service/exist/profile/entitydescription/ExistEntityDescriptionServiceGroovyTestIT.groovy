@@ -36,8 +36,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 
 	@Test void "Get Entity Description Summaries With Contains ResourceNameOrUri Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource(createEntity("something"))
+		maint.createResource(createEntity("name"))
 
 		def fc = new FilterComponent(
 				matchAlgorithm:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
@@ -51,8 +51,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 
 	@Test void "Get Entity Description Summaries With Contains Wrong ResourceNameOrUri Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def fc = new FilterComponent(
 				matchAlgorithm:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
@@ -66,8 +66,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 
 	@Test void "Get Entity Description Summaries With ExactMatch ResourceNameOrUri Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def fc = new FilterComponent(
 				matchAlgorithm:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
@@ -81,8 +81,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 	
 	@Test void "Get Entity Description Summaries With ExactMatch Wrong ResourceNameOrUri Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def fc = new FilterComponent(
 				matchAlgorithm:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
@@ -96,8 +96,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 
 	@Test void "Get Entity Description Summaries With StartsWith ResourceNameOrUri Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def fc = new FilterComponent(
 				matchAlgorithm:StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference(),
@@ -111,8 +111,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 	
 	@Test void "Get Entity Description Summaries With StartsWith Wrong ResourceNameOrUri Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def fc = new FilterComponent(
 				matchAlgorithm:StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference(),
@@ -126,8 +126,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 	
 	@Test void "Get Entity Description Summaries With Entity Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["something"])
 		
@@ -138,8 +138,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 	
 	@Test void "Get Entity Description Summaries With Two Entity Restrictions"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["something", "name"])
 
@@ -150,8 +150,8 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceTestGroovy {
 
 	@Test void "Get Entity Description Summaries With Wrong Entity Restriction"(){
 
-		maint.createResource("", createEntity("something"))
-		maint.createResource("", createEntity("name"))
+		maint.createResource( createEntity("something"))
+		maint.createResource( createEntity("name"))
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["INVALID"])
 

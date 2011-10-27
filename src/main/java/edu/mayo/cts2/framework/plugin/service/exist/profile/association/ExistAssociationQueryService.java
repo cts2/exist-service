@@ -14,29 +14,31 @@ import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.AssociationExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
+import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
 
 @Component
 public class ExistAssociationQueryService 	
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.association.AssociationQueryService,XpathState>
+		<Association,
+		AssociationDirectoryEntry,
+		edu.mayo.cts2.framework.model.service.association.AssociationQueryService,XpathState>
 	implements AssociationQueryService {
-
+	
 	@Resource
-	private AssociationExistDao associationExistDao;
+	private AssociationResourceInfo associationResourceInfo;
 
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		throw new UnsupportedOperationException();
 	}
-
 	
 	private class AssociationDirectoryBuilder extends XpathDirectoryBuilder<XpathState,AssociationDirectoryEntry> {
 
@@ -48,7 +50,7 @@ public class ExistAssociationQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return associationExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							state.getXpath(), 
 							start, 
@@ -120,6 +122,11 @@ public class ExistAssociationQueryService
 	}
 
 	@Override
+	protected ResourceInfo<Association, AssociationReadId> getResourceInfo() {
+		return this.associationResourceInfo;
+	}
+
+	@Override
 	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
 		// TODO Auto-generated method stub
 		return null;
@@ -130,4 +137,19 @@ public class ExistAssociationQueryService
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected AssociationDirectoryEntry createSummary() {
+		return new AssociationDirectoryEntry();
+	}
+
+	@Override
+	protected AssociationDirectoryEntry doTransform(
+			Association resource,
+			AssociationDirectoryEntry summary,
+			org.xmldb.api.base.Resource eXistResource) {
+		
+		return summary;
+	}
+
 }

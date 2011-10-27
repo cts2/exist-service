@@ -29,8 +29,8 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
      var entry2 = buildValueSetDefinition(uri)
     
 
-     maintService.createResource("", entry1)
-     maintService.createResource("", entry2)
+     maintService.createResource(entry1)
+     maintService.createResource(entry2)
   }
   
   def buildValueSetDefinition(uri:String):ValueSetDefinition = {

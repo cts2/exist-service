@@ -16,8 +16,8 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetDefinitionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -28,16 +28,38 @@ import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefini
 @Component
 public class ExistValueSetDefinitionQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionQueryService,XpathState>
+		<ValueSetDefinition,
+		ValueSetDefinitionDirectoryEntry,
+		edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionQueryService,XpathState>
 	implements ValueSetDefinitionQueryService {
 
 	@Resource
-	private ValueSetDefinitionExistDao valueSetDefinitionExistDao;
-
+	private ValueSetDefinitionResourceInfo valueSetDefinitionResourceInfo;
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	@Override
+	protected ValueSetDefinitionDirectoryEntry createSummary() {
+		return new ValueSetDefinitionDirectoryEntry();
+	}
+
+	@Override
+	protected ValueSetDefinitionDirectoryEntry doTransform(
+			ValueSetDefinition resource,
+			ValueSetDefinitionDirectoryEntry summary, org.xmldb.api.base.Resource eXistResource) {
+		summary = this.baseTransform(summary, resource);
+		
+		summary.setDocumentURI(summary.getDocumentURI());
+		summary.setHref(getUrlConstructor().createValueSetDefinitionUrl(
+				"TODO",
+				resource.getDocumentURI()));
+		
+		return summary;
 	}
 
 	private class ValueSetNameStateUpdater implements StateUpdater<XpathState> {
@@ -70,7 +92,7 @@ public class ExistValueSetDefinitionQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return valueSetDefinitionExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							state.getXpath(), 
 							start, 
@@ -137,4 +159,11 @@ public class ExistValueSetDefinitionQueryService
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	protected ResourceInfo<ValueSetDefinition, ?> getResourceInfo() {
+		return this.valueSetDefinitionResourceInfo;
+	}
+
 }

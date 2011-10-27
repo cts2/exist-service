@@ -5,31 +5,22 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.CodeSystemVersionExistDao;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionMaintenanceService;
 
 @Component
-public class ExistCodeSystemVersionMaintenanceService implements CodeSystemVersionMaintenanceService {
-
+public class ExistCodeSystemVersionMaintenanceService extends 
+	AbstractExistMaintenanceService<CodeSystemVersionCatalogEntry,NameOrURI,edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionMaintenanceService>
+implements CodeSystemVersionMaintenanceService {
+	
 	@Resource
-	private CodeSystemVersionExistDao codeSystemVersionExistDao;
+	private CodeSystemVersionResourceInfo codeSystemVersionResourceInfo;
 
 	@Override
-	public void createResource(String changeSetUri,
-			CodeSystemVersionCatalogEntry resource) {
-		this.codeSystemVersionExistDao.storeResource(
-				"", 
-				resource);
+	protected ResourceInfo<CodeSystemVersionCatalogEntry, NameOrURI> getResourceInfo() {
+		return this.codeSystemVersionResourceInfo;
 	}
 
-	@Override
-	public void updateResource(String changeSetUri,
-			CodeSystemVersionCatalogEntry resource) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void deleteResource(String changeSetUri, String resourceName) {
-		throw new UnsupportedOperationException();
-	}
 }

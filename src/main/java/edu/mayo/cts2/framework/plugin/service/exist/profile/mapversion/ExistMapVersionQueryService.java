@@ -13,9 +13,10 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.MapVersionExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.MapVersionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQueryService;
@@ -23,13 +24,30 @@ import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQueryService
 @Component
 public class ExistMapVersionQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.mapversion.MapVersionQueryService,MapVersionDirectoryState>
+		<MapVersion,
+		MapVersionDirectoryEntry,
+		edu.mayo.cts2.framework.model.service.mapversion.MapVersionQueryService,MapVersionDirectoryState>
 	implements MapVersionQueryService {
 
 	@Resource
-	private MapVersionExistDao mapVersionExistDao;
+	private MapVersionResourceInfo mapVersionResourceInfo;
+	
+	@Override
+	public MapVersionDirectoryEntry doTransform(MapVersion resource,
+			MapVersionDirectoryEntry summary, org.xmldb.api.base.Resource eXistResource) {
+		summary = this.baseTransform(summary, resource);
+		summary.setMapVersionName(resource.getMapVersionName());
+		summary.setHref(getUrlConstructor().createMapUrl(resource.getMapVersionName()));
+
+		return summary;
+	}
 
 
+	@Override
+	protected MapVersionDirectoryEntry createSummary() {
+		return new MapVersionDirectoryEntry();
+	}
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
@@ -48,8 +66,8 @@ public class ExistMapVersionQueryService
 						MapVersionDirectoryState state, 
 						int start, 
 						int maxResults) {
-					return mapVersionExistDao.getResourceSummaries(
-							createPath(state.getMap()), 
+					return getResourceSummaries(
+							ExistServiceUtils.createPath(state.getMap()), 
 							state.getXpath(), 
 							start,
 							maxResults);
@@ -110,4 +128,11 @@ public class ExistMapVersionQueryService
 	protected StateUpdater<MapVersionDirectoryState> getResourceNameStateUpdater() {
 		return null;
 	}
+
+
+	@Override
+	protected ResourceInfo<MapVersion, ?> getResourceInfo() {
+		return this.mapVersionResourceInfo;
+	}
+
 }

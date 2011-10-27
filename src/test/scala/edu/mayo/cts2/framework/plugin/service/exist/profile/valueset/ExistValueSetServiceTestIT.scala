@@ -23,7 +23,7 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
     entry.setAbout(uri)
     entry.setValueSetName(name)
 
-    maintService.createResource("", entry)
+    maintService.createResource(entry)
   }
 
   def getResource(name: String): ValueSetCatalogEntry = {

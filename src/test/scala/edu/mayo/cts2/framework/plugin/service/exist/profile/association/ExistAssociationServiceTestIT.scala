@@ -52,6 +52,7 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
 
     entry.setAssertedBy(new CodeSystemVersionReference())
     entry.getAssertedBy().setVersion(new NameAndMeaningReference())
+    entry.getAssertedBy().getVersion().setContent("csv")
     
     entry
   }
@@ -60,18 +61,18 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
     var entry1 = createAssociation(uri)
     var entry2 = createAssociation(name)
     
-    maintService.createResource("", entry1)
-    maintService.createResource("", entry2)
+    maintService.createResource(entry1)
+    maintService.createResource(entry2)
   }
 
   def getResource(uri: String): Association = {
-    var id = new AssociationReadId(uri, "codesystemversion")
+    var id = new AssociationReadId(uri, "csv")
   
     readService.read(id, null)
   }
   
       def getResourceByUri(uri:String):Association = {
-         var id = new AssociationReadId(uri, "codesystemversion")
+         var id = new AssociationReadId(uri, "csv")
     	readService.read(id, null)
     }
 

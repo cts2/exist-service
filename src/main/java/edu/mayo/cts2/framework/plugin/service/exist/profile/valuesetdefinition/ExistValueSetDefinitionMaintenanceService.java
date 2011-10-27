@@ -5,33 +5,21 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ValueSetDefinitionExistDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionMaintenanceService;
 
 @Component
 public class ExistValueSetDefinitionMaintenanceService 
-	extends AbstractExistService<edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionMaintenanceService>
+	extends AbstractExistMaintenanceService<ValueSetDefinition,String,edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionMaintenanceService>
 	implements ValueSetDefinitionMaintenanceService {
 
 	@Resource
-	private ValueSetDefinitionExistDao valueSetDefinitionExistDao;
+	private ValueSetDefinitionResourceInfo valueSetDefinitionResourceInfo;
 
 	@Override
-	public void createResource(
-			String changeSetUri,
-			ValueSetDefinition resource) {
-		this.valueSetDefinitionExistDao.storeResource("", resource);
+	protected ResourceInfo<ValueSetDefinition, String> getResourceInfo() {
+		return this.valueSetDefinitionResourceInfo;
 	}
 
-	@Override
-	public void updateResource(String changeSetUri,
-			ValueSetDefinition resource) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void deleteResource(String changeSetUri, String resourceName) {
-		throw new UnsupportedOperationException();
-	}
 }

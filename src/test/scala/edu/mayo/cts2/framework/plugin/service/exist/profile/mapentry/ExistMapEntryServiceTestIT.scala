@@ -40,7 +40,7 @@ class ExistMapEntryServiceTestIT
   def createResource(name: String, uri:String) = {
     var entry = createMapEntry(name, uri)
 
-    maintService.createResource("", entry)
+    maintService.createResource(entry)
   }
 
   def getResource(name: String): MapEntry = {
@@ -69,7 +69,7 @@ class ExistMapEntryServiceTestIT
   
    def createResources():Int = {
     val resources = List(createMapEntry("Test", "someuri"), createMapEntry("Test2", "someuri"));
-    resources.foreach(resource => maintService.createResource("", resource))
+    resources.foreach(resource => maintService.createResource(resource))
     
     resources.size
    }
@@ -99,8 +99,8 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
      
-     maintService.createResource("", entry1);
-     maintService.createResource("", entry2);
+     maintService.createResource(entry1);
+     maintService.createResource(entry2);
      
      val mapRestrictions = new MapEntryQueryServiceRestrictions()
      mapRestrictions.setMapversion("mapversion")
@@ -132,8 +132,8 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
      
-     maintService.createResource("", entry1);
-     maintService.createResource("", entry2);
+     maintService.createResource(entry1);
+     maintService.createResource(entry2);
      
      val mapRestrictions = new MapEntryQueryServiceRestrictions()
      mapRestrictions.setMapversion("mapversion")
@@ -165,8 +165,8 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
      
-     maintService.createResource("", entry1);
-     maintService.createResource("", entry2);
+     maintService.createResource(entry1);
+     maintService.createResource(entry2);
      
      val filterComponent = new FilterComponent()
      filterComponent.setMatchAlgorithm(new MatchAlgorithmReference())
@@ -202,8 +202,8 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
      
-     maintService.createResource("", entry1);
-     maintService.createResource("", entry2);
+     maintService.createResource(entry1);
+     maintService.createResource(entry2);
      
      val filterComponent = new FilterComponent()
      filterComponent.setMatchAlgorithm(new MatchAlgorithmReference())

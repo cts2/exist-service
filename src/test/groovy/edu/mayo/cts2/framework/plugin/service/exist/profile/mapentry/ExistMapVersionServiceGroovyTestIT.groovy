@@ -5,9 +5,6 @@ import static org.junit.Assert.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry.ExistMapEntryReadService;
 import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.model.core.MapVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
@@ -34,7 +31,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceTestGroovy {
 		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns"))
 		mapEntry.assertedBy = new MapVersionReference(map: new MapReference(), mapVersion: new NameAndMeaningReference() )
 		mapEntry.processingRule = MapProcessingRule.FIRST_MATCH
-		existMapEntryMaintenanceService.createResource("",mapEntry)
+		existMapEntryMaintenanceService.createResource(mapEntry)
 		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, null, new Page()).entries.size()
 	}
 
@@ -43,7 +40,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceTestGroovy {
 		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns"))
 		mapEntry.assertedBy = new MapVersionReference(map: new MapReference(), mapVersion: new NameAndMeaningReference() )
 		mapEntry.processingRule = MapProcessingRule.FIRST_MATCH
-		existMapEntryMaintenanceService.createResource("",mapEntry)
+		existMapEntryMaintenanceService.createResource(mapEntry)
 
 		mapEntry.mapSet = [
 			new MapSet(entryOrder:1, processingRule:MapProcessingRule.FIRST_MATCH,
@@ -70,7 +67,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceTestGroovy {
 			])
 		]
 
-		existMapEntryMaintenanceService.createResource("",mapEntry)
+		existMapEntryMaintenanceService.createResource(mapEntry)
 
 		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["targetName"])
 		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, new Page()).entries.size()
@@ -90,7 +87,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceTestGroovy {
 			])
 		]
 
-		existMapEntryMaintenanceService.createResource("",mapEntry)
+		existMapEntryMaintenanceService.createResource(mapEntry)
 
 		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["targetName2"])
 		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, new Page()).entries.size()

@@ -40,6 +40,17 @@
 		<service.provider.class>edu.mayo.cts2.framework.plugin.service.exist.profile.ExistServiceProvider</service.provider.class>
 	</properties>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>informatics-releases</id>
+			<url>http://informatics.mayo.edu/maven/content/repositories/releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>informatics-snapshots</id>
+			<url>http://informatics.mayo.edu/maven/content/repositories/snapshots</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
 	<dependencies>
 
 		<dependency>

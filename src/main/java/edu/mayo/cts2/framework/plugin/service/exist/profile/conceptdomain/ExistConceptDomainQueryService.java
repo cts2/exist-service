@@ -14,8 +14,8 @@ import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ConceptDomainExistDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.Page;
@@ -24,12 +24,14 @@ import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainQueryS
 @Component
 public class ExistConceptDomainQueryService 
 	extends AbstractExistQueryService
-		<edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainQueryService,XpathState>
+		<ConceptDomainCatalogEntry,
+		ConceptDomainCatalogEntrySummary,
+		edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainQueryService,XpathState>
 	implements ConceptDomainQueryService {
-
+	
 	@Resource
-	private ConceptDomainExistDao conceptDomainExistDao;
-
+	private ConceptDomainResourceInfo conceptDomainResourceInfo;
+	
 	@Override
 	public PredicateReference getPropertyReference(String nameOrUri) {
 		// TODO Auto-generated method stub
@@ -58,7 +60,7 @@ public class ExistConceptDomainQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
-					return conceptDomainExistDao.getResourceSummaries(
+					return getResourceSummaries(
 							"",
 							state.getXpath(), 
 							start, 
@@ -116,6 +118,25 @@ public class ExistConceptDomainQueryService
 	@Override
 	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
 		return new ConceptDomainNameStateUpdater();
+	}
+
+	@Override
+	protected ConceptDomainCatalogEntrySummary createSummary() {
+		return new ConceptDomainCatalogEntrySummary();
+	}
+
+	@Override
+	protected ConceptDomainCatalogEntrySummary doTransform(
+			ConceptDomainCatalogEntry resource,
+			ConceptDomainCatalogEntrySummary summary,
+			org.xmldb.api.base.Resource eXistResource) {
+		
+		return this.baseTransform(summary, resource);
+	}
+
+	@Override
+	protected ResourceInfo<ConceptDomainCatalogEntry, ?> getResourceInfo() {
+		return this.conceptDomainResourceInfo;
 	}
 
 }

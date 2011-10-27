@@ -18,6 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
+import edu.mayo.cts2.framework.service.profile.ChangeSetService
+import org.junit.Ignore
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(
@@ -27,6 +29,8 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
  
   @Autowired var manager:ExistManager = null
   
+  @Autowired var changeSetService:ChangeSetService = null
+  
   @Before def cleanExist() {
     	manager.getCollectionManagementService().removeCollection("/db");
   }
@@ -34,10 +38,28 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
    @Test def testInsertAndRetrieve() {
     var name = "name"
        var uri = "someUri"
+         var changeSetId = "http://test/cs/id#1"
+           
     	 createResource(name, uri)
     	
     	
     	assertNotNull(  getResource(name));
+    
+  }
+   
+    @Test @Ignore def testInsertAndRetrieveWithChangeSetCheck() {
+    var name = "name"
+       var uri = "someUri"
+         var changeSetId = "http://test/cs/id#1"
+           
+    	 createResource(name, uri)
+    	
+    	
+    	assertNotNull(  getResource(name));
+    
+    	var changeSet = changeSetService.readChangeSet(changeSetId);
+    	
+    	assertEquals(changeSet.getMemberCount(), 1);
   }
    
    

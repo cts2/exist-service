@@ -16,6 +16,28 @@ public class ExistServiceUtils {
 				+ name.getName();
 	}
 	
+	public String getByUriXpath(String uriPath, String uri) {
+		String expressionString = 
+				 "[" + uriPath + "='" + uri + "']";
+	
+		return expressionString;
+	}
+	
+	public static String createPath(String... path){
+		if(path == null){
+			return "";
+		}
+		
+		StringBuffer sb = new StringBuffer();
+		for(String st : path){
+			if(StringUtils.isNotBlank(st)){
+				sb.append(st);
+				sb.append("/");
+			}
+		}
+		
+		return ExistServiceUtils.getExistResourceName(sb.toString());
+	}
 	public static String getExistEntityName(EntityDescriptionBase entity) {
 		return entity.getEntityID().getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
 				+ entity.getEntityID().getName();
@@ -36,5 +58,9 @@ public class ExistServiceUtils {
 			return name.getNamespace() + EXTERNAL_ENTITY_NAME_SEPERATOR
 					+ name.getName();
 		}
+	}
+
+	public static String uriToExistName(String id) {
+		return Integer.toString(id.hashCode()).replaceFirst("-", "NEG");
 	}
 }

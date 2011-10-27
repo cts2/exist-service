@@ -38,7 +38,7 @@ class ConceptDomainServiceTestIT extends BaseServiceTestBaseIT[ConceptDomainCata
     entry.setConceptDomainName(name)
     entry.setAbout(uri)
     
-    maintService.createResource("", entry)
+    maintService.createResource(entry)
   }
 
   def getResource(name: String): ConceptDomainCatalogEntry = {
