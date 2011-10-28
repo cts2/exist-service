@@ -5,13 +5,13 @@ import java.io.StringWriter;
 
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.Marshaller;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.CompiledExpression;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
@@ -30,31 +30,39 @@ public class ExistDaoImpl implements ExistResourceDao {
 
 	private static final String XML_RESOURCE_TYPE = "XMLResource";
 
-	protected static final String CTS2_RESOURCES_PATH = "/cts2resources";
+	private static final String CTS2_RESOURCES_PATH = "/cts2resources";
 	
 	private static final String XML_SUFFIX = ".xml";
 
 	@Autowired
 	private Marshaller marshaller;
 
-	protected void createAndStoreResource(Object cts2Resource,
+	protected void createAndStoreResource(Object obj,
 			Collection collection, String name) throws XMLDBException {
 		Resource resource = collection.createResource(
 				ExistServiceUtils.getExistResourceName(name) + XML_SUFFIX,
 				XML_RESOURCE_TYPE);
+		
+		if(obj instanceof Resource){
+			Resource res = (Resource)obj;
+			resource.setContent(res.getContent());
+		} else if(obj instanceof String){
+			resource.setContent((String)obj);
+		} else {
 
-		StringWriter sw = new StringWriter();
-		StreamResult sr = new StreamResult(sw);
-
-		try {
-
-			this.marshaller.marshal(cts2Resource, sr);
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			StringWriter sw = new StringWriter();
+			StreamResult sr = new StreamResult(sw);
+	
+			try {
+	
+				this.marshaller.marshal(obj, sr);
+	
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+	
+			resource.setContent(sw.toString());
 		}
-
-		resource.setContent(sw.toString());
 
 		collection.storeResource(resource);
 	}
@@ -98,19 +106,32 @@ public class ExistDaoImpl implements ExistResourceDao {
 	}
 	
 	
+	@Override
+	public void removeCollection(String collectionPath) {
+		
+		collectionPath = this.getResourcePath(collectionPath);
+		
+		try {
+			Collection collection =
+					this.getExistManager().getOrCreateCollection(collectionPath);
+			
+			this.getExistManager().getCollectionManagementService().removeCollection(collection.getName());
+		} catch (XMLDBException e) {
+			throw new UnspecifiedCts2RuntimeException(e);
+		}
+	}
+
 	public ResourceSet query(
 			String collectionPath, 
 			String queryString, 
 			int start, 
 			int max){
+		
 		try {
-			XQueryService xqueryService = this.getExistManager().getXQueryService(collectionPath);
+			XQueryService xqueryService = this.getExistManager().getXQueryService(getResourcePath(collectionPath));
 
-			CompiledExpression expression = 
-					xqueryService.compile(queryString);
+			return xqueryService.query(queryString);
 			
-			return xqueryService.execute(expression);
-
 		} catch (XMLDBException e) {
 			throw new UnspecifiedCts2RuntimeException(e);
 		}
@@ -145,6 +166,9 @@ public class ExistDaoImpl implements ExistResourceDao {
 	}
 
 	protected String getResourcePath(String path) {
+		if(path.contains(CTS2_RESOURCES_PATH)){
+			path = StringUtils.substringAfter(path, CTS2_RESOURCES_PATH);
+		}
 		return CTS2_RESOURCES_PATH + "/" + path;
 	}
 

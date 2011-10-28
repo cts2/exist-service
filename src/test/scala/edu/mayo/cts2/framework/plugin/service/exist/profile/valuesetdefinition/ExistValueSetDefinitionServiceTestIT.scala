@@ -1,7 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition
 
 import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.core.types.SetOperator
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.SourceAndNotation
@@ -14,6 +13,7 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
+import junit.framework.Test
 
 class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSetDefinition,ValueSetDefinitionDirectoryEntry] {
 
@@ -23,14 +23,17 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
   def getExceptionClass(): Class[_ <: UnknownResourceReference] = {
     classOf[UnknownValueSetDefinition]
   }
-
-  def createResource(name: String, uri:String) = {
-     var entry1 = buildValueSetDefinition(name)
-     var entry2 = buildValueSetDefinition(uri)
+  
+  override def getName():String = {"someUri"}
     
+   override def getUri():String = {"someUri"}
 
-     maintService.createResource(entry1)
-     maintService.createResource(entry2)
+  def createResource(name: String, uri:String, changeSetUri:String) = {
+	var entry = buildValueSetDefinition(uri)
+    
+     entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
+     
+     maintService.createResource(entry)
   }
   
   def buildValueSetDefinition(uri:String):ValueSetDefinition = {

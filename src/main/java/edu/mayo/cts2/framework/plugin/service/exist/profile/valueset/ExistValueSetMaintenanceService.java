@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
+import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
@@ -21,6 +22,12 @@ public class ExistValueSetMaintenanceService
 	@Override
 	protected ResourceInfo<ValueSetCatalogEntry, NameOrURI> getResourceInfo() {
 		return this.valueSetResourceInfo;
+	}
+
+	@Override
+	protected void addResourceToChangeableResourceChoice(
+			ChangeableResourceChoice choice, ValueSetCatalogEntry resource) {
+		choice.setValueSet(resource);
 	}
 
 }

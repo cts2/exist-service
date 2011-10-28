@@ -18,10 +18,11 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
     classOf[UnknownValueSet]
   }
 
-  def createResource(name: String, uri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String) = {
     var entry = new ValueSetCatalogEntry()
     entry.setAbout(uri)
     entry.setValueSetName(name)
+    entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
 
     maintService.createResource(entry)
   }

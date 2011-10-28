@@ -16,6 +16,10 @@ public class ExistServiceUtils {
 				+ name.getName();
 	}
 	
+	public static String getTempChangeSetContentDirName(String changeSetUri){
+		return "tmpChangeSet-" + uriToExistName(changeSetUri);
+	}
+	
 	public String getByUriXpath(String uriPath, String uri) {
 		String expressionString = 
 				 "[" + uriPath + "='" + uri + "']";

@@ -4,8 +4,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
+import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemMaintenanceService;
@@ -23,4 +25,9 @@ public class ExistCodeSystemMaintenanceService
 		return this.codeSystemResourceInfo;
 	}
 	
+	@Override
+	protected void addResourceToChangeableResourceChoice(
+			ChangeableResourceChoice choice, CodeSystemCatalogEntry resource) {
+		choice.setCodeSystem(resource);
+	}
 }

@@ -20,7 +20,7 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
        classOf[UnknownMapVersion]
     }
   
-    def createResource(name:String, uri:String) = {
+    def createResource(name:String, uri:String, changeSetUri:String) = {
       var entry = new MapVersion()
       entry.setMapVersionName(name);
       entry.setAbout("about")
@@ -28,6 +28,7 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
       entry.setSourceAndNotation(new SourceAndNotation());
       entry.setVersionOf(new MapReference())
       entry.getVersionOf().setContent("map")
+      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
 
       maintService.createResource(entry)
     }

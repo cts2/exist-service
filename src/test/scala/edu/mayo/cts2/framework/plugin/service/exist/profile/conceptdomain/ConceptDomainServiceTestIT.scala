@@ -33,10 +33,11 @@ class ConceptDomainServiceTestIT extends BaseServiceTestBaseIT[ConceptDomainCata
 
   
   
-  def createResource(name: String, uri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String) = {
     var entry = new ConceptDomainCatalogEntry()
     entry.setConceptDomainName(name)
     entry.setAbout(uri)
+    entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
     maintService.createResource(entry)
   }

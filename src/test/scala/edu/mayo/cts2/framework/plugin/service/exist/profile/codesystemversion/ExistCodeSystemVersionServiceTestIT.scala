@@ -24,13 +24,14 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
        classOf[UnknownCodeSystemVersion]
     }
   
-    def createResource(name:String, uri:String) = {
+    def createResource(name:String, uri:String, changeSetUri:String) = {
       var entry = new CodeSystemVersionCatalogEntry()
       entry.setCodeSystemVersionName(name);
       entry.setAbout("about")
       entry.setDocumentURI(uri)
       entry.setSourceAndNotation(new SourceAndNotation());
 	  entry.setVersionOf(new CodeSystemReference());
+	  entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
       
       maintService.createResource(entry)
     }
@@ -45,6 +46,8 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
         
           
    @Test def testInsertAndRetrieveByOfficialVersionIdWithVersionId() {
+     var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+     
       var entry = new CodeSystemVersionCatalogEntry()
       entry.setCodeSystemVersionName("Name_5.0_owl");
       entry.setAbout("http://about")
@@ -53,9 +56,11 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
 	  entry.setVersionOf(new CodeSystemReference());
 	  entry.getVersionOf().setContent("csname")
 	  entry.setOfficialResourceVersionId("5.0")
+	  entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetId))
     	
 	  maintService.createResource(entry)
     
+	  changeSetService.commitChangeSet(changeSetId)
 	 assertNotNull( readService.getCodeSystemByVersionId(
 			 ModelUtils.nameOrUriFromName("csname"), "5.0", null) )
 
@@ -63,6 +68,9 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
   }
    
   @Test def testInsertAndRetrieveByOfficialVersionIdWithFullName() {
+     var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+     
+     
       var entry = new CodeSystemVersionCatalogEntry()
       entry.setCodeSystemVersionName("Name_5.0_owl");
       entry.setAbout("http://about")
@@ -71,8 +79,11 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
 	  entry.setVersionOf(new CodeSystemReference());
 	  entry.getVersionOf().setContent("csname")
 	  entry.setOfficialResourceVersionId("5.0")
+	  entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetId))
     	
 	  maintService.createResource(entry)
+	  
+	  changeSetService.commitChangeSet(changeSetId)
 
  	  assertNotNull( readService.read(ModelUtils.nameOrUriFromName("Name_5.0_owl"), null) )
   }

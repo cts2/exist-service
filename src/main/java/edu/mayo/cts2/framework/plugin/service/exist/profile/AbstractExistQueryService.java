@@ -38,6 +38,7 @@ import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.SummaryTransform;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
@@ -85,14 +86,18 @@ public abstract class AbstractExistQueryService
 	}
 
 	public DirectoryResult<Summary> getResourceSummaries(
-			String collecitonPath, 
+			String collectionPath, 
 			String xpath,
 			int start, int max) {
 		
 		String queryString = this.getResourceInfo().getResourceXpath() + (StringUtils.isNotBlank(xpath) ? xpath : "");
 		
+		collectionPath = ExistServiceUtils.createPath(
+				this.getResourceInfo().getResourceBasePath(),
+				collectionPath);
+		
 		ResourceSet collection = this.getExistResourceDao().query(
-				collecitonPath, queryString, start, max);
+				collectionPath, queryString, start, max);
 
 		return this.getResourceSummaries(collection, xpath, start, max,
 				transform);

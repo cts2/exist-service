@@ -1,10 +1,12 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.service.core.BaseService;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
 public abstract class AbstractExistResourceReadingService<R,I,T extends BaseService > extends AbstractExistService<T> {
 
@@ -15,13 +17,22 @@ public abstract class AbstractExistResourceReadingService<R,I,T extends BaseServ
 	private ExistResourceDao existResourceDao;
 
 	protected Resource getResource(I resourceIdentifier) {
+		return this.getResource(resourceIdentifier, null);
+	}
+	
+	protected Resource getResource(I resourceIdentifier, String changeSetUri) {
 		Resource resource;
 		
 		ResourceInfo<R,I> existResourceReader = getResourceInfo();
 		
 		String resourcePath = existResourceReader.createPath(resourceIdentifier);
 		
-		String wholePath = this.createPath(this.getResourceInfo().getResourceBasePath(), resourcePath);
+		String changeSetDir = null;
+		if(StringUtils.isNotBlank(changeSetUri)){
+			changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+		}
+		
+		String wholePath = this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), resourcePath);
 		
 		if(! existResourceReader.isReadByUri(resourceIdentifier)){
 			resource = this.getExistResourceDao().getResource(

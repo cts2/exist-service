@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
-import edu.mayo.cts2.framework.model.service.core.ReadContext;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.service.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
 
@@ -25,7 +25,7 @@ public class ExistEntityDescriptionReadService
 	private EntityDescriptionResourceInfo entityDescriptionResourceInfo;
 
 	@Override
-	public EntityDescription read(EntityDescriptionReadId id, ReadContext readContext) {
+	public EntityDescription read(EntityDescriptionReadId id, ResolvedReadContext readContext) {
 		EntityDescription ed = 
 				 super.read(id, readContext);
 		

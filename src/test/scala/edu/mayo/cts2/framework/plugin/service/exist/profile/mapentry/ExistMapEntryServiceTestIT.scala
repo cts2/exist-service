@@ -37,8 +37,8 @@ class ExistMapEntryServiceTestIT
     classOf[UnknownResourceReference]
   }
 
-  def createResource(name: String, uri:String) = {
-    var entry = createMapEntry(name, uri)
+  def createResource(name: String, uri:String, changeSetUri:String) = {
+    var entry = createMapEntry(name, uri, changeSetUri)
 
     maintService.createResource(entry)
   }
@@ -51,7 +51,7 @@ class ExistMapEntryServiceTestIT
     readService.read(getMapEntryId("mapversion", sn), null)
   }
   
-  def createMapEntry(name:String, uri:String): MapEntry = {
+  def createMapEntry(name:String, uri:String, changeSetUri:String): MapEntry = {
     var entry = new MapEntry()
     entry.setMapFrom(new URIAndEntityName())
     entry.setAssertedBy(new MapVersionReference())
@@ -63,12 +63,14 @@ class ExistMapEntryServiceTestIT
     entry.getMapFrom().setName(name)
     entry.getMapFrom().setNamespace("namespace")
     entry.getMapFrom().setUri(uri)
+    entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
     entry
   }
   
-   def createResources():Int = {
-    val resources = List(createMapEntry("Test", "someuri"), createMapEntry("Test2", "someuri"));
+  @Override
+   def createResources(changeSetUri:String):Int = {
+    val resources = List(createMapEntry("Test", "someuri", changeSetUri), createMapEntry("Test2", "someuri", changeSetUri));
     resources.foreach(resource => maintService.createResource(resource))
     
     resources.size
@@ -79,7 +81,9 @@ class ExistMapEntryServiceTestIT
    }
    
    @Test def testGetSummariesWithFilter() {
-     val entry1 = createMapEntry("Test1", "someuri")
+     var changeSetUri = changeSetService.createChangeSet().getChangeSetURI();
+          
+     val entry1 = createMapEntry("Test1", "someuri", changeSetUri)
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -89,7 +93,8 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
     
-     val entry2 = createMapEntry("Test2", "someuri")
+     val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
+
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -101,6 +106,8 @@ class ExistMapEntryServiceTestIT
      
      maintService.createResource(entry1);
      maintService.createResource(entry2);
+     
+     changeSetService.commitChangeSet(changeSetUri)
      
      val mapRestrictions = new MapEntryQueryServiceRestrictions()
      mapRestrictions.setMapversion("mapversion")
@@ -112,7 +119,9 @@ class ExistMapEntryServiceTestIT
    }
    
     @Test def testGetSummariesWithBadFilter() {
-     val entry1 = createMapEntry("Test1", "someuri")
+     var changeSetUri = changeSetService.createChangeSet().getChangeSetURI();
+       
+     val entry1 = createMapEntry("Test1", "someuri", changeSetUri)
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -121,8 +130,9 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
-     val entry2 = createMapEntry("Test2", "someuri")
+     val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -131,9 +141,12 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(entry1);
      maintService.createResource(entry2);
+     
+     changeSetService.commitChangeSet(changeSetUri)
      
      val mapRestrictions = new MapEntryQueryServiceRestrictions()
      mapRestrictions.setMapversion("mapversion")
@@ -145,7 +158,9 @@ class ExistMapEntryServiceTestIT
    }
     
     @Test def testGetSummariesWithMapFromFilter() {
-     val entry1 = createMapEntry("Test1", "someuri")
+     var changeSetUri = changeSetService.createChangeSet().getChangeSetURI();
+      
+     val entry1 = createMapEntry("Test1", "someuri", changeSetUri)
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -154,8 +169,9 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
-     val entry2 = createMapEntry("Test2", "someuri")
+     val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -164,9 +180,12 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(entry1);
      maintService.createResource(entry2);
+     
+     changeSetService.commitChangeSet(changeSetUri)
      
      val filterComponent = new FilterComponent()
      filterComponent.setMatchAlgorithm(new MatchAlgorithmReference())
@@ -182,7 +201,9 @@ class ExistMapEntryServiceTestIT
    }
     
      @Test def testGetSummariesWithMapFromFilterContains() {
-     val entry1 = createMapEntry("Test1", "someuri")
+     var changeSetUri = changeSetService.createChangeSet().getChangeSetURI();
+       
+     val entry1 = createMapEntry("Test1", "someuri", changeSetUri)
      entry1.addMapSet(new MapSet())
      entry1.getMapSet(0).setEntryOrder(1);
      entry1.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -191,8 +212,9 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
-     val entry2 = createMapEntry("Test2", "someuri")
+     val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
      entry2.addMapSet(new MapSet())
      entry2.getMapSet(0).setEntryOrder(1);
      entry2.getMapSet(0).setProcessingRule(MapProcessingRule.FIRST_MATCH)
@@ -201,9 +223,12 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(entry1);
      maintService.createResource(entry2);
+     
+     changeSetService.commitChangeSet(changeSetUri)
      
      val filterComponent = new FilterComponent()
      filterComponent.setMatchAlgorithm(new MatchAlgorithmReference())

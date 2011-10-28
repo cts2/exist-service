@@ -1,7 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association
 
+import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-
+import org.springframework.test.context.ContextConfiguration
 import edu.mayo.cts2.framework.model.association.Association
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
@@ -11,10 +12,10 @@ import edu.mayo.cts2.framework.model.core.StatementTarget
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.service.command.Page
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 
 class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,AssociationDirectoryEntry] {
 
@@ -22,19 +23,23 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
   @Autowired var maintService: ExistAssociationMaintenanceService = null
   @Autowired var queryService: ExistAssociationQueryService = null
  
+  override def getName():String = {"someUri"}
+    
+  override def getUri():String = {"someUri"}
+   
   def getExceptionClass(): Class[_ <: UnknownResourceReference] = {
     classOf[UnknownAssociation]
   }
 
-   def createResources():List[Association] = {
-      List(createAssociation("Test"), createAssociation("Test2"))
-   }
+ //  def createResources():List[Association] = {
+ //     List(createAssociation("Test"), createAssociation("Test2"))
+ //  }
     
    def getResourceSummaries():DirectoryResult[AssociationDirectoryEntry] = {
      queryService.getResourceSummaries(null,null,null,new Page());
   }
    
-  def createAssociation(name: String):Association = {
+  def createAssociation(name: String,changeSetUri:String):Association = {
     var entry = new Association()
     entry.setAssociationID(name)
     entry.setSubject(new URIAndEntityName())
@@ -53,16 +58,16 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
     entry.setAssertedBy(new CodeSystemVersionReference())
     entry.getAssertedBy().setVersion(new NameAndMeaningReference())
     entry.getAssertedBy().getVersion().setContent("csv")
+    entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
     entry
   }
   
-  def createResource(name: String, uri:String) = {
-    var entry1 = createAssociation(uri)
-    var entry2 = createAssociation(name)
+  def createResource(name: String, uri:String, changeSetUri:String) = {
+    var entry = createAssociation(uri,changeSetUri)
     
-    maintService.createResource(entry1)
-    maintService.createResource(entry2)
+    maintService.createResource(entry)
+
   }
 
   def getResource(uri: String): Association = {

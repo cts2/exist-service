@@ -18,11 +18,16 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import org.apache.commons.lang.StringUtils;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.XMLDBException;
 
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.model.service.core.BaseMaintenanceService;
+import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.util.ModelUtils;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
 
 /**
@@ -33,7 +38,8 @@ import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
 public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintenanceService> 
 	extends AbstractExistResourceReadingService<R,I,T> implements edu.mayo.cts2.framework.service.profile.BaseMaintenanceService<R,I> {
 
-
+	@javax.annotation.Resource
+	private StateChangeCallback stateChangeCallback;
 	
 	@Override
 	public void updateChangeableMetadata(I identifier,
@@ -61,12 +67,29 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 	public void createResource(R resource) {
 		String path = 
 				this.getResourceInfo().createPathFromResource(resource);
-		
-		String wholePath = this.createPath(this.getResourceInfo().getResourceBasePath(), path);
-		
+
 		String name = this.getResourceInfo().getExistResourceNameFromResource(resource);
+
+		ChangeableResourceChoice choice = new ChangeableResourceChoice();
 		
+		this.addResourceToChangeableResourceChoice(choice, resource);
+		
+		ChangeableElementGroup group = ModelUtils.getChangeableElementGroup(choice);
+		
+		String changeSetUri = group.getChangeDescription().getContainingChangeSet();
+		
+		String changeSetDir = null;
+		if(StringUtils.isNotBlank(changeSetUri)){
+			changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+		}
+		
+		String wholePath = this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), path);
+	
 		this.getExistResourceDao().storeResource(wholePath, name, resource);
+		
+		this.stateChangeCallback.resourceAdded(choice);
 	}
+	
+	protected abstract void addResourceToChangeableResourceChoice(ChangeableResourceChoice choice, R resource);
 
 }

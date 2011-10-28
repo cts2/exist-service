@@ -9,7 +9,6 @@ import org.scalatest.junit.AssertionsForJUnit
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.ContextConfiguration
-
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
@@ -22,6 +21,11 @@ import edu.mayo.cts2.framework.model.service.exception.UnknownEntity
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
+import edu.mayo.cts2.framework.model.core.ChangeDescription
+import edu.mayo.cts2.framework.model.core.types.ChangeType
+import java.util.Date
+import edu.mayo.cts2.framework.service.profile.ChangeSetService
 
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
@@ -35,13 +39,28 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
   @Autowired var maintService:ExistEntityDescriptionMaintenanceService = null
   @Autowired var manager:ExistManager = null
   
+  @Autowired var changeSetService:ChangeSetService = null
+  
   @Before def cleanExist() {
     	manager.getCollectionManagementService().removeCollection("/db");
   }
   
+    def buildChangeableElementGroup(uri:String):ChangeableElementGroup = {
+	  var g = new ChangeableElementGroup()
+      
+	  g.setChangeDescription(new ChangeDescription())
+	  g.getChangeDescription().setChangeDate(new Date())
+	  g.getChangeDescription().setChangeType(ChangeType.CREATE)
+	  g.getChangeDescription().setContainingChangeSet(uri)
+	  
+	  g
+ } 
+    
   @Test def testInsertAndRetrieve() {
 	  	var ed = new EntityDescription();
-	  	ed.setNamedEntity(createEntity("name", "namespace"))
+	  	var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+	  	
+	  	ed.setNamedEntity(createEntity("name", "namespace", changeSetId))
 	  	ed.getNamedEntity().setDescribingCodeSystemVersion(new CodeSystemVersionReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getVersion().setContent("csversion")
@@ -50,6 +69,8 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
 
 
 	  	maintService.createResource(ed)
+	  	
+	  	changeSetService.commitChangeSet(changeSetId)
     	
     	var name = new ScopedEntityName()
     	name.setName("name")
@@ -62,8 +83,10 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
   }
   
     @Test def testInsertAndRetrieveDefaultNamespace() {
+        var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+      
     	var ed = new EntityDescription();
-	  	ed.setNamedEntity(createEntity("name", "cs"))
+	  	ed.setNamedEntity(createEntity("name", "cs", changeSetId))
 	    ed.getNamedEntity().setDescribingCodeSystemVersion(new CodeSystemVersionReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getVersion().setContent("csversion")
@@ -71,6 +94,8 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
     	maintService.createResource(ed)
+    	
+    	changeSetService.commitChangeSet(changeSetId)
     	
     	var name = new ScopedEntityName()
     	name.setName("name")
@@ -83,8 +108,10 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
   }
     
    @Test def testInsertAndRetrieveNotFound() {
+        var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+        
     	var ed = new EntityDescription();
-	  	ed.setNamedEntity(createEntity("name", "namespace"))
+	  	ed.setNamedEntity(createEntity("name", "namespace", changeSetId))
 	    ed.getNamedEntity().setDescribingCodeSystemVersion(new CodeSystemVersionReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getVersion().setContent("csversion")
@@ -92,6 +119,8 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	ed.getNamedEntity().getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
     	maintService.createResource(ed)
+    	
+    	changeSetService.commitChangeSet(changeSetId)
     	
     	var name = new ScopedEntityName()
     	name.setName("INVALID_NAME")
@@ -110,7 +139,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
      assertEquals(clazz, new UnknownEntity().getClass)
    }
   
-  def createEntity(name:String, ns:String):NamedEntityDescription =  {
+  def createEntity(name:String, ns:String,changeSetUri:String):NamedEntityDescription =  {
      var entity = new NamedEntityDescription()
      entity.setEntityID(new ScopedEntityName())
      entity.getEntityID().setName(name)
@@ -123,6 +152,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
 	 entity.addEntityType(new URIAndEntityName())
 	 entity.getEntityType(0).setName("name")
 	 entity.getEntityType(0).setNamespace("ns")
+	 entity.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      entity
   } 

@@ -21,6 +21,7 @@ import org.xmldb.api.modules.XUpdateQueryService;
 
 import edu.mayo.cts2.framework.core.config.PluginConfig;
 import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
+import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 
 public class ExistManager implements InitializingBean {
 	
@@ -43,6 +44,8 @@ public class ExistManager implements InitializingBean {
 	private IndexQueryService indexQueryService;
 	private XUpdateQueryService xUpdateQueryService;
 	private ValidationService validationService;
+	
+	private Properties namespaceMappingProperties;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -72,13 +75,39 @@ public class ExistManager implements InitializingBean {
 		
 		Resource namespaceResource = new ClassPathResource(DelegatingMarshaller.NAMESPACE_MAPPINGS_PROPS);
 		
-		Properties props = new Properties();
+		this.namespaceMappingProperties = new Properties();
 		
-		props.load(namespaceResource.getInputStream());
+		this.namespaceMappingProperties.load(namespaceResource.getInputStream());
 		
-		for(Entry<Object, Object> entry : props.entrySet()){
-			xQueryService.setNamespace((String)entry.getKey(), (String)entry.getValue());
+		this.xQueryService = this.createXQueryService("");
+	
+	}
+	
+	private XQueryService createXQueryService(String collectionPath){
+		XQueryService service;
+		Collection collection;
+		try {
+			collection = this.getOrCreateCollection(collectionPath);
+			
+			System.out.println("PATH: " + collection.getName());
+			
+			service = (XQueryService) 
+					collection.getService("XPathQueryService", "1.0");
+			
+			service.setCollection(collection);
+		} catch (XMLDBException e) {
+			throw new UnspecifiedCts2RuntimeException(e);
 		}
+		
+		try {
+			for(Entry<Object, Object> entry : namespaceMappingProperties.entrySet()){
+				service.setNamespace((String)entry.getKey(), (String)entry.getValue());
+			}
+		} catch (XMLDBException e) {
+			throw new UnspecifiedCts2RuntimeException(e);
+		}
+		
+		return service;
 	}
 	
 	protected void setPropertiesFromConfig() {
@@ -90,6 +119,9 @@ public class ExistManager implements InitializingBean {
 
 	public Collection getOrCreateCollection(String path) throws XMLDBException {
 		path = StringUtils.removeStart(path, "/");
+		path = StringUtils.removeEnd(path, "/");
+		path = path.replaceAll("[/]+", "/");
+		
 		String pathWithURI = uri + path;
 
 		Collection col = DatabaseManager.getCollection( pathWithURI, userName,
@@ -115,14 +147,12 @@ public class ExistManager implements InitializingBean {
 	}
 	
 	public XQueryService getXQueryService(String path) {
-		//TODO: This needs to get the XQueryService of a specific collection.
-		return this.xQueryService;
+		return this.createXQueryService(path);
 	}
 
 	public CollectionManagementService getCollectionManagementService() {
 		return collectionManagementService;
 	}
-
 	
 	public DatabaseInstanceManager getDatabaseInstanceManager() {
 		return databaseInstanceManager;

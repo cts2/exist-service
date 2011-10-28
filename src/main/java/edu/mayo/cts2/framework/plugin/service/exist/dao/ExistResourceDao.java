@@ -19,4 +19,6 @@ public interface ExistResourceDao {
 	
 	public Resource getResourceByXpath(String collectionPath, String xpathQuery);
 
+	public void removeCollection(String changeSetDir);
+
 }

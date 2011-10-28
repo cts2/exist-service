@@ -9,6 +9,7 @@ import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary
 import edu.mayo.cts2.framework.model.util.ModelUtils
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 
 class ExistCodeSystemServiceTestIT 
 	extends BaseServiceTestBaseIT[CodeSystemCatalogEntry,CodeSystemCatalogEntrySummary] {
@@ -20,10 +21,11 @@ class ExistCodeSystemServiceTestIT
        classOf[UnknownCodeSystem]
     }
   
-    def createResource(name:String, uri:String) = {
+    def createResource(name:String, uri:String, changeSetId:String) = {
       var entry = new CodeSystemCatalogEntry()
       entry.setCodeSystemName(name);
       entry.setAbout(uri)
+      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetId))
       
       maintService.createResource(entry)
     }

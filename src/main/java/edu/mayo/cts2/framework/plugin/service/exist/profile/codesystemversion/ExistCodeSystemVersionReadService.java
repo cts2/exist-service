@@ -9,6 +9,7 @@ import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.service.core.ReadContext;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.service.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService;
 
 @Component
@@ -30,7 +31,7 @@ public class ExistCodeSystemVersionReadService
 	}	
 	
 	@Override
-	public CodeSystemVersionCatalogEntry read(NameOrURI identifier, ReadContext readContext){
+	public CodeSystemVersionCatalogEntry read(NameOrURI identifier, ResolvedReadContext readContext){
 
 		CodeSystemVersionCatalogEntry cs = super.read(identifier, readContext);
 		
