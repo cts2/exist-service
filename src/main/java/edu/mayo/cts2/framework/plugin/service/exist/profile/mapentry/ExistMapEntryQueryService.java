@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.FilterComponent;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -22,7 +25,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
 
@@ -96,7 +98,7 @@ public class ExistMapEntryQueryService
 	@Override
 	public DirectoryResult<MapEntryDirectoryEntry> getResourceSummaries(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			MapEntryQueryServiceRestrictions restrictions, 
 			Page page) {
 		MapEntryDirectoryBuilder builder = new MapEntryDirectoryBuilder();
@@ -112,7 +114,7 @@ public class ExistMapEntryQueryService
 
 	@Override
 	public DirectoryResult<MapEntry> getResourceList(Query query,
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			MapEntryQueryServiceRestrictions restrictions, Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -145,7 +147,7 @@ public class ExistMapEntryQueryService
 
 	
 	@Override
-	public int count(Query query, FilterComponent filterComponent,
+	public int count(Query query, Set<ResolvedFilter> filterComponent,
 			MapEntryQueryServiceRestrictions restrictions) {
 		throw new UnsupportedOperationException();
 	}

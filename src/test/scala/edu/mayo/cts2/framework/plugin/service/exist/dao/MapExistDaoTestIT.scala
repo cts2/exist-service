@@ -12,7 +12,6 @@ import org.junit.Before
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDaoImpl
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(

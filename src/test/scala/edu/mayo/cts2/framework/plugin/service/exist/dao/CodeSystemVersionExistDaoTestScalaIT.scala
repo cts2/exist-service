@@ -16,7 +16,6 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntrySummary
 import edu.mayo.cts2.framework.model.core.SourceAndNotation
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDaoImpl
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(

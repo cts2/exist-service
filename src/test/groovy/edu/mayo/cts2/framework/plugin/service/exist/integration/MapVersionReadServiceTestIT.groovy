@@ -14,17 +14,18 @@ class MapVersionReadServiceTestIT extends BaseServiceTestITBase {
 			
 	@Test void testGetCodeSystemByNameCycle(){
 
-		def resourceURI = server +  "map/TESTMAP/version/TESTMAPVERSION"
+		def getResourceURI = server +  "map/TESTMAP/version/TESTMAPVERSION"
+		def postResourceURI = "mapversion"
 		
 		def entry = new MapVersion(documentURI:"docuri", about:"testAbout", mapVersionName:"TESTMAPVERSION")
 		entry.setSourceAndNotation(new SourceAndNotation());
 		entry.setVersionOf(new MapReference())
 		
-		client.putCts2Resource(resourceURI, entry)
+		this.createResource(postResourceURI,entry)
 		
 		def msg = 
-			client.getCts2Resource(resourceURI,MapVersionMsg.class)
+			client.getCts2Resource(getResourceURI,MapVersionMsg.class)
 			
-		assertEquals entry, msg.getMapVersion()
+		assertEquals entry.getMapVersionName(), msg.getMapVersion().getMapVersionName()
 	}
 }

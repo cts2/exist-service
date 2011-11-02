@@ -18,7 +18,8 @@ class EntityDescriptionReadServiceTestIT extends BaseServiceTestITBase {
 	
 	@Test void testGetEntityByNameCycle(){
 
-		def resourceURI = server +  "codesystem/cs/version/2.0/entity/ns:name"
+		def getResourceURI = server +  "codesystem/cs/version/2.0/entity/ns:name" 
+		def postResourceURI = "entity"
 		
 		def entry = new NamedEntityDescription(about:"about")
 		entry.setEntityID(new ScopedEntityName(name:"name", namespace:"ns"))
@@ -30,10 +31,10 @@ class EntityDescriptionReadServiceTestIT extends BaseServiceTestITBase {
 
 		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
 		
-		client.putCts2Resource(resourceURI, new EntityDescription(namedEntity:entry))
+		this.createResource(postResourceURI, new EntityDescription(namedEntity:entry))
 		
 		def msg = 
-			client.getCts2Resource(resourceURI, EntityDescriptionMsg.class)
+			client.getCts2Resource(getResourceURI, EntityDescriptionMsg.class)
 			
 		assertEquals entry.entityID, msg.getEntityDescription().getNamedEntity().getEntityID()
 	}

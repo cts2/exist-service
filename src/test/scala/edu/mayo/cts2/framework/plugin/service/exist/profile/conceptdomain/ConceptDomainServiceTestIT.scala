@@ -1,25 +1,16 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association
 
 import org.springframework.beans.factory.annotation.Autowired
-import edu.mayo.cts2.framework.model.association.Association
-import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
-import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
-import edu.mayo.cts2.framework.model.core.PredicateReference
-import edu.mayo.cts2.framework.model.core.StatementTarget
-import edu.mayo.cts2.framework.model.core.URIAndEntityName
-import edu.mayo.cts2.framework.model.directory.DirectoryResult
+
+import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry
+import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary
 import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
-import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
-import edu.mayo.cts2.framework.service.command.Page
-import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId
-import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary
-import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry
 import edu.mayo.cts2.framework.model.util.ModelUtils
-import edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain.ExistConceptDomainReadService
 import edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain.ExistConceptDomainMaintenanceService
 import edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain.ExistConceptDomainQueryService
+import edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain.ExistConceptDomainReadService
+import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 
 class ConceptDomainServiceTestIT extends BaseServiceTestBaseIT[ConceptDomainCatalogEntry,ConceptDomainCatalogEntrySummary] {
 

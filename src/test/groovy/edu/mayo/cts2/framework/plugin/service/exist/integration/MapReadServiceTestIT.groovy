@@ -12,15 +12,16 @@ class MapReadServiceTestIT extends BaseServiceTestITBase {
 			
 	@Test void testGetCodeSystemByNameCycle(){
 
-		def resourceURI = server +  "map/TESTMAP"
+		def getResourceURI = server +  "map/TESTMAP"
+		def postResourceURI = "map"
 		
 		def entry = new MapCatalogEntry(about:"testAbout", mapName:"TESTMAP")
 	
-		client.putCts2Resource(resourceURI, entry)
+		this.createResource(postResourceURI,entry)
 		
 		def msg = 
-			client.getCts2Resource(resourceURI,MapCatalogEntryMsg.class)
+			client.getCts2Resource(getResourceURI,MapCatalogEntryMsg.class)
 			
-		assertEquals entry, msg.getMap()
+		assertEquals entry.getMapName(), msg.getMap().getMapName()
 	}
 }

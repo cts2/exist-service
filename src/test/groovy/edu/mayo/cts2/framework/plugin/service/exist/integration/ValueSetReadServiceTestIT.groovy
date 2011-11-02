@@ -12,15 +12,16 @@ class ValueSetReadServiceTestIT extends BaseServiceTestITBase {
 			
 	@Test void testGetValueSetByNameCycle(){
 
-		def resourceURI = server +  "valueset/TESTVALUESET"
+		def getResourceURI = server +  "valueset/TESTVALUESET"
+		def postResourceURI = "valueset"
 		
 		def entry = new ValueSetCatalogEntry(about:"testAbout", valueSetName:"TESTVALUESET")
 	
-		client.putCts2Resource(resourceURI, entry)
+		this.createResource(postResourceURI,entry)
 		
 		def msg = 
-			client.getCts2Resource(resourceURI,ValueSetCatalogEntryMsg.class)
+			client.getCts2Resource(getResourceURI,ValueSetCatalogEntryMsg.class)
 			
-		assertEquals entry, msg.getValueSetCatalogEntry()
+		assertEquals entry.getValueSetName(), msg.getValueSetCatalogEntry().getValueSetName()
 	}
 }

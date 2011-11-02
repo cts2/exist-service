@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.core.url.UrlConstructor;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
 import edu.mayo.cts2.framework.model.service.core.ReadContext;
-import edu.mayo.cts2.framework.service.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.service.profile.ReadService;
 
 public abstract class AbstractExistReadService<R,I,T extends BaseReadService > extends AbstractExistResourceReadingService<R,I,T> 

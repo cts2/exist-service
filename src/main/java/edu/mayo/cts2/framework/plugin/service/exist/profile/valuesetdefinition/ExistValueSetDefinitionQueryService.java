@@ -2,6 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -20,7 +22,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
@@ -112,7 +113,7 @@ public class ExistValueSetDefinitionQueryService
 	@Override
 	public DirectoryResult<ValueSetDefinitionDirectoryEntry> getResourceSummaries(
 			Query query, 
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			ValueSetDefinitionQueryServiceRestrictions restrictions,
 			Page page) {
 	ValueSetDefinitionDirectoryBuilder builder = new ValueSetDefinitionDirectoryBuilder();
@@ -121,14 +122,14 @@ public class ExistValueSetDefinitionQueryService
 			builder.restrict(filterComponent).
 				restrict(query).
 				addStart(page.getStart()).
-				addMaxToReturn(page.getMaxtoreturn()).
+				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
 	}
 
 	@Override
 	public DirectoryResult<ValueSetDefinition> getResourceList(
 			Query query,
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			ValueSetDefinitionQueryServiceRestrictions restrictions, 
 			Page page) {
 		throw new UnsupportedOperationException();
@@ -137,7 +138,7 @@ public class ExistValueSetDefinitionQueryService
 	@Override
 	public int count(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			ValueSetDefinitionQueryServiceRestrictions restrictions) {
 	ValueSetDefinitionDirectoryBuilder builder = new ValueSetDefinitionDirectoryBuilder();
 		

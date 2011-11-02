@@ -59,8 +59,8 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
 	  entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetId))
     	
 	  maintService.createResource(entry)
-    
-	  changeSetService.commitChangeSet(changeSetId)
+
+	 changeSetService.commitChangeSet(changeSetId)
 	 assertNotNull( readService.getCodeSystemByVersionId(
 			 ModelUtils.nameOrUriFromName("csname"), "5.0", null) )
 

@@ -88,9 +88,7 @@ public class ExistManager implements InitializingBean {
 		Collection collection;
 		try {
 			collection = this.getOrCreateCollection(collectionPath);
-			
-			System.out.println("PATH: " + collection.getName());
-			
+	
 			service = (XQueryService) 
 					collection.getService("XPathQueryService", "1.0");
 			

@@ -16,11 +16,12 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionMsg
 
 class ValueSetDefinitionReadServiceTestIT extends BaseServiceTestITBase {
 			
-	@Test @Ignore void testGetValueSetByNameCycle(){
+	@Test void testGetValueSetByNameCycle(){
 
-		def resourceURI = server +  "valueset/TESTVALUESET/definition/TESTDEFURI"
+		def getResourceURI = server +  "valueset/TESTVALUESET/definition/http://def/uri/test"
+		def postResourceURI = "valuesetdefinition"
 		
-		def entry = new ValueSetDefinition(about:"testAbout", documentURI:"TESTDEFURI")
+		def entry = new ValueSetDefinition(about:"testAbout", documentURI:"http://def/uri/test")
 		entry.setSourceAndNotation(new SourceAndNotation())
 		entry.setDefinedValueSet(new ValueSetReference())
 		entry.addEntry(new ValueSetDefinitionEntry())
@@ -29,11 +30,11 @@ class ValueSetDefinitionReadServiceTestIT extends BaseServiceTestITBase {
 		entry.getEntry(0).setOperator(SetOperator.UNION)
 		entry.getEntry(0).setEntryOrder(1l);
 	
-		client.putCts2Resource(resourceURI, entry)
+		this.createResource(postResourceURI,entry)
 		
 		def msg = 
-			client.getCts2Resource(resourceURI,ValueSetDefinitionMsg.class)
+			client.getCts2Resource(getResourceURI,ValueSetDefinitionMsg.class)
 			
-		assertEquals entry, msg.getValueSetDefinition()
+		assertEquals entry.getDocumentURI(), msg.getValueSetDefinition().getDocumentURI()
 	}
 }

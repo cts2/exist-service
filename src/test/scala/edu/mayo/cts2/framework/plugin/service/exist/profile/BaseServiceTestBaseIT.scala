@@ -54,7 +54,6 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
        var uri = getUri()
          var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
     
-           
     	 createResource(name, uri, changeSetId)
     	
     	changeSetService.commitChangeSet(changeSetId)

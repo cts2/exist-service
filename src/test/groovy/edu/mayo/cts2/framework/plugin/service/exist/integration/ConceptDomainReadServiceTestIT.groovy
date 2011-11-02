@@ -12,15 +12,17 @@ class ConceptDomainReadServiceTestIT extends BaseServiceTestITBase {
 			
 	@Test void testGetConceptDomainByNameCycle(){
 
-		def resourceURI = server +  "conceptdomain/TESTDOMAIN"
-		
+		def getResourceURI = server +  "conceptdomain/TESTDOMAIN"
+		def postResourceURI = "conceptdomain"
+
 		def entry = new ConceptDomainCatalogEntry(conceptDomainName:"TESTDOMAIN", about:"http://about")
 	
-		client.putCts2Resource(resourceURI, entry)
+		this.createResource(postResourceURI, entry)	
 		
 		def msg = 
-			client.getCts2Resource(resourceURI, ConceptDomainCatalogEntryMsg.class)
+			client.getCts2Resource(getResourceURI, ConceptDomainCatalogEntryMsg.class)
 			
-		assertEquals entry, msg.getConceptDomainCatalogEntry()
+		assertEquals entry.getConceptDomainName(), msg.getConceptDomainCatalogEntry().getConceptDomainName()
+	
 	}
 }

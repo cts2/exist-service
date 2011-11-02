@@ -1,5 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,7 +14,11 @@ import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 
+import edu.mayo.cts2.framework.model.core.OpaqueData;
+import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
+import edu.mayo.cts2.framework.model.service.core.UpdateChangeSetMetadataRequest;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
@@ -21,7 +26,7 @@ import edu.mayo.cts2.framework.service.profile.ChangeSetService;
 
 @Component
 public class ExistChangeSetService implements ChangeSetService {
-	
+
 	protected static final String CHANGESETS_PATH = "/changesets";
 	
 	protected Log log = LogFactory.getLog(getClass());
@@ -47,6 +52,7 @@ public class ExistChangeSetService implements ChangeSetService {
 		ChangeSet changeSet = new ChangeSet();
 		changeSet.setChangeSetURI(changeSetUri);
 		changeSet.setCreationDate(new Date());
+		changeSet.setState(FinalizableState.OPEN);
 		
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
@@ -90,6 +96,17 @@ public class ExistChangeSetService implements ChangeSetService {
 		} catch (XMLDBException e) {
 			throw new UnspecifiedCts2RuntimeException(e);
 		}
+	}
+
+	@Override
+	public String importChangeSet(URI changeSetUri) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void updateChangeSetMetadata(String changeSetUri, NameOrURI creator,
+			OpaqueData changeInstructions, Date officialEffectiveDate) {
+		//TODO:
 	}
 
 }

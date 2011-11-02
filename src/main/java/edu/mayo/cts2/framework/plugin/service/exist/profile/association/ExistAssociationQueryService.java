@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
@@ -18,7 +20,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
@@ -70,21 +71,21 @@ public class ExistAssociationQueryService
 	@Override
 	public DirectoryResult<AssociationDirectoryEntry> getResourceSummaries(
 			Query query, 
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			AssociationQueryServiceRestrictions restrictions,
 			Page page) {
 		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder();
 		
 		return builder.restrict(filterComponent).
 				addStart(page.getStart())
-				.addMaxToReturn(page.getMaxtoreturn()).
+				.addMaxToReturn(page.getMaxToReturn()).
 				resolve();
 	}
 
 	@Override
 	public DirectoryResult<Association> getResourceList(
 			Query query,
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			AssociationQueryServiceRestrictions restrictions, 
 			Page page) {
 		throw new UnsupportedOperationException();
@@ -93,7 +94,7 @@ public class ExistAssociationQueryService
 	@Override
 	public int count(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			AssociationQueryServiceRestrictions restrictions) {
 		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder();
 		
@@ -105,7 +106,7 @@ public class ExistAssociationQueryService
 	@Override
 	public DirectoryResult<EntityDirectoryEntry> getChildrenAssociationsOfEntity(
 			Query query, 
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			Page page,
 			EntityDescriptionReadId id) {
 		throw new UnsupportedOperationException();
@@ -115,7 +116,7 @@ public class ExistAssociationQueryService
 	@Override
 	public DirectoryResult<AssociationDirectoryEntry> getSourceOfAssociationsOfEntity(
 			Query query, 
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			Page page,
 			EntityDescriptionReadId id) {
 		throw new UnsupportedOperationException();

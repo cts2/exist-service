@@ -1,13 +1,15 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -17,7 +19,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.profile.statement.StatementQueryService;
 
 @Component
@@ -67,7 +68,7 @@ public class ExistStatementQueryService
 	@Override
 	public DirectoryResult<StatementDirectoryEntry> getResourceSummaries(
 			Query query,
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			Void restrictions,
 			Page page) {
 		StatementDirectoryBuilder builder = new StatementDirectoryBuilder();
@@ -76,13 +77,13 @@ public class ExistStatementQueryService
 			builder.restrict(filterComponent).
 				restrict(query).
 				addStart(page.getStart()).
-				addMaxToReturn(page.getMaxtoreturn()).
+				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
 	}
 
 	@Override
 	public DirectoryResult<Statement> getResourceList(Query query,
-			FilterComponent filterComponent, Void restrictions, Page page) {
+			Set<ResolvedFilter> filterComponent, Void restrictions, Page page) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -90,7 +91,7 @@ public class ExistStatementQueryService
 	@Override
 	public int count(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			Void restrictions) {
 		StatementDirectoryBuilder builder = new StatementDirectoryBuilder();
 		

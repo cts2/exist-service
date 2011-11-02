@@ -2,6 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -13,8 +14,9 @@ import com.google.common.collect.Iterables;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -32,7 +34,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
@@ -99,7 +100,7 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	public DirectoryResult<EntityDirectoryEntry> getResourceSummaries(
 			Query query,
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			EntityDescriptionQueryServiceRestrictions restrictions,
 			Page page) {
 		EntityDescriptionDirectoryBuilder builder = new EntityDescriptionDirectoryBuilder();
@@ -116,7 +117,7 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	public DirectoryResult<EntityDescription> getResourceList(
 			Query query,
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			EntityDescriptionQueryServiceRestrictions restrictions,
 			Page page) {
 		// TODO Auto-generated method stub
@@ -126,7 +127,7 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	public int count(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			EntityDescriptionQueryServiceRestrictions restrictions) {
 		// TODO Auto-generated method stub
 		return 0;

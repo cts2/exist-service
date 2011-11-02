@@ -4,8 +4,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import edu.mayo.cts2.framework.model.command.Page
+import edu.mayo.cts2.framework.model.command.ResolvedFilter
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.core.FilterComponent
+import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.model.core.MapVersionReference
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
@@ -18,12 +21,12 @@ import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry
 import edu.mayo.cts2.framework.model.mapversion.MapSet
 import edu.mayo.cts2.framework.model.mapversion.MapTarget
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
-import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
-import edu.mayo.cts2.framework.model.core.MapReference
-import edu.mayo.cts2.framework.service.command.Page
+import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId
+import edu.mayo.cts2.framework.model.core.ModelAttributeReference
+import java.util.HashSet
 
 class ExistMapEntryServiceTestIT
 	extends BaseServiceTestBaseIT[MapEntry,MapEntryDirectoryEntry] 
@@ -187,15 +190,17 @@ class ExistMapEntryServiceTestIT
      
      changeSetService.commitChangeSet(changeSetUri)
      
-     val filterComponent = new FilterComponent()
-     filterComponent.setMatchAlgorithm(new MatchAlgorithmReference())
-     filterComponent.getMatchAlgorithm().setContent("exactMatch")
+     val filterComponent = new ResolvedFilter()
+     filterComponent.setMatchAlgorithmReference(new MatchAlgorithmReference())
+     filterComponent.getMatchAlgorithmReference().setContent("exactMatch")
      filterComponent.setReferenceType(TargetReferenceType.ATTRIBUTE)
-     filterComponent.setReferenceTarget(new URIAndEntityName)
-     filterComponent.getReferenceTarget().setName("resourceName")
+     filterComponent.setModelAttributeReference(new ModelAttributeReference())
+     filterComponent.getModelAttributeReference().setContent("resourceName")
      filterComponent.setMatchValue("Test2")
      
-     val entries = queryService.getResourceSummaries(null,filterComponent,null,new Page());
+     var set = new HashSet[ResolvedFilter]()
+     set.add(filterComponent)
+     val entries = queryService.getResourceSummaries(null,set,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }
@@ -229,16 +234,19 @@ class ExistMapEntryServiceTestIT
      maintService.createResource(entry2);
      
      changeSetService.commitChangeSet(changeSetUri)
-     
-     val filterComponent = new FilterComponent()
-     filterComponent.setMatchAlgorithm(new MatchAlgorithmReference())
-     filterComponent.getMatchAlgorithm().setContent("contains")
+
+     val filterComponent = new ResolvedFilter()
+     filterComponent.setMatchAlgorithmReference(new MatchAlgorithmReference())
+     filterComponent.getMatchAlgorithmReference().setContent("contains")
      filterComponent.setReferenceType(TargetReferenceType.ATTRIBUTE)
-     filterComponent.setReferenceTarget(new URIAndEntityName)
-     filterComponent.getReferenceTarget().setName("resourceName")
+     filterComponent.setModelAttributeReference(new ModelAttributeReference())
+     filterComponent.getModelAttributeReference().setContent("resourceName")
      filterComponent.setMatchValue("st2")
      
-     val entries = queryService.getResourceSummaries(null,filterComponent,null,new Page());
+     var set = new HashSet[ResolvedFilter]()
+     set.add(filterComponent)
+     
+     val entries = queryService.getResourceSummaries(null,set,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }

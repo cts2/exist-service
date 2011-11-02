@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,8 @@ import org.xmldb.api.base.Resource;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -18,7 +20,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemQueryService;
 
 @Component
@@ -114,7 +115,7 @@ public class ExistCodeSystemQueryService
 	@Override
 	public DirectoryResult<CodeSystemCatalogEntrySummary> getResourceSummaries(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			Void restrictions, 
 			Page page) {
 
@@ -123,21 +124,21 @@ public class ExistCodeSystemQueryService
 		return 
 			builder.restrict(filterComponent).
 				addStart(page.getStart()).
-				addMaxToReturn(page.getMaxtoreturn()).
+				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
 	}
 
 	@Override
 	public DirectoryResult<CodeSystemCatalogEntry> getResourceList(
 			Query query,
-			FilterComponent filterComponent, 
+			Set<ResolvedFilter> filterComponent, 
 			Void restrictions,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public int count(Query query, FilterComponent filterComponent,
+	public int count(Query query, Set<ResolvedFilter> filterComponent,
 			Void restrictions) {
 		throw new UnsupportedOperationException();
 	}
@@ -150,7 +151,7 @@ public class ExistCodeSystemQueryService
 
 	@Override
 	protected ResourceInfo<CodeSystemCatalogEntry, ?> getResourceInfo() {
-		return this.getResourceInfo();
+		return this.codeSystemResourceInfo;
 	}
 
 }

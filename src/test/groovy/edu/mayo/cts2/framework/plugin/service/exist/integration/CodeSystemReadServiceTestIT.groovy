@@ -12,15 +12,18 @@ class CodeSystemReadServiceTestIT extends BaseServiceTestITBase {
 			
 	@Test void testGetCodeSystemByNameCycle(){
 
-		def resourceURI = server +  "codesystem/TESTCS"
+	
+		def postResourceURI = "codesystem"
+		def getResourceURI = server +  "codesystem/TESTCS"
 		
 		def entry = new CodeSystemCatalogEntry(about:"testAbout", codeSystemName:"TESTCS")
-	
-		client.putCts2Resource(resourceURI, entry)
-		
-		def msg = 
-			client.getCts2Resource(resourceURI, CodeSystemCatalogEntryMsg.class)
+
+		this.createResource(postResourceURI, entry)	
 			
-		assertEquals entry, msg.getCodeSystemCatalogEntry()
+		def msg = 
+			client.getCts2Resource(getResourceURI, CodeSystemCatalogEntryMsg.class)
+			
+		assertEquals entry.getCodeSystemName(), msg.getCodeSystemCatalogEntry().getCodeSystemName()
+
 	}
 }

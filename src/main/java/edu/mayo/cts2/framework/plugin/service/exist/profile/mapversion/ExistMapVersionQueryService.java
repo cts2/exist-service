@@ -1,13 +1,15 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
@@ -17,7 +19,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.MapVersionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQueryService;
 
@@ -87,7 +88,7 @@ public class ExistMapVersionQueryService
 	@Override
 	public DirectoryResult<MapVersionDirectoryEntry> getResourceSummaries(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			MapVersionQueryServiceRestrictions restrictions, 
 			Page page) {
 		MapVersionDirectoryBuilder builder =
@@ -100,7 +101,7 @@ public class ExistMapVersionQueryService
 
 	@Override
 	public DirectoryResult<MapVersion> getResourceList(Query query,
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			MapVersionQueryServiceRestrictions restrictions, Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -108,7 +109,7 @@ public class ExistMapVersionQueryService
 	@Override
 	public int count(
 			Query query, 
-			FilterComponent filterComponent,
+			Set<ResolvedFilter> filterComponent,
 			MapVersionQueryServiceRestrictions restrictions) {
 		MapVersionDirectoryBuilder builder = 
 				new MapVersionDirectoryBuilder();

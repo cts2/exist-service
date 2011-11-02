@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystemversion;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
+import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -18,7 +20,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.service.command.Page;
 import edu.mayo.cts2.framework.service.command.restriction.CodeSystemVersionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionQueryService;
 
@@ -99,7 +100,7 @@ public class ExistCodeSystemVersionQueryService
 
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntrySummary> getResourceSummaries(
-			Query query, FilterComponent filterComponent,
+			Query query, Set<ResolvedFilter> filterComponent,
 			CodeSystemVersionQueryServiceRestrictions restrictions, Page page) {
 		CodeSystemVersionDirectoryBuilder builder = 
 				new CodeSystemVersionDirectoryBuilder(restrictions.getCodesystem());
@@ -114,14 +115,14 @@ public class ExistCodeSystemVersionQueryService
 
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntry> getResourceList(
-			Query query, FilterComponent filterComponent,
+			Query query, Set<ResolvedFilter> filterComponent,
 			CodeSystemVersionQueryServiceRestrictions restrictions, Page page) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int count(Query query, FilterComponent filterComponent,
+	public int count(Query query, Set<ResolvedFilter> filterComponent,
 			CodeSystemVersionQueryServiceRestrictions restrictions) {
 		// TODO Auto-generated method stub
 		return 0;

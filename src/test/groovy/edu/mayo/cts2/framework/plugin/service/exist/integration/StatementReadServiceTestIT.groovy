@@ -16,11 +16,12 @@ import edu.mayo.cts2.framework.model.statement.StatementSubject
 
 class StatementReadServiceTestIT extends BaseServiceTestITBase {
 			
-	@Test @Ignore void testGetValueSetByNameCycle(){
+	@Test void testGetStatementByURICycle(){
 
-		def resourceURI = server +  "statement/1"
+		def getResourceURI = server +  "statement/http://some/stmnt1"
+		def postResourceURI = "statement"
 		
-		def entry = new Statement()
+		def entry = new Statement(statementURI:"http://some/stmnt1")
 		entry.setSubject(new StatementSubject())
 		entry.setPredicate(new URIAndEntityName(name:"name",namespace:"namespace"))
 		
@@ -31,10 +32,10 @@ class StatementReadServiceTestIT extends BaseServiceTestITBase {
 		entry.getAssertedBy().setCodeSystem(new CodeSystemReference())
 		entry.getAssertedBy().setVersion(new NameAndMeaningReference())
 		
-		client.putCts2Resource(resourceURI, entry)
+		this.createResource(postResourceURI,entry)
 		
 		def msg = 
-			client.getCts2Resource(resourceURI,StatementMsg.class)
+			client.getCts2Resource(getResourceURI,StatementMsg.class)
 			
 		assertEquals entry, msg.getStatement()
 	}
