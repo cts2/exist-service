@@ -90,14 +90,30 @@ public abstract class AbstractExistQueryService
 			String xpath,
 			int start, int max) {
 		
+		return this.getResourceSummaries(null, collectionPath, xpath, start, max);
+	}
+	
+	public DirectoryResult<Summary> getResourceSummaries(
+			String changeSetUri,
+			String collectionPath, 
+			String xpath,
+			int start, int max) {
+		
+		String changeSetDir = null;
+		if(StringUtils.isNotBlank(changeSetUri)){
+			changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+		}
+		
 		String queryString = this.getResourceInfo().getResourceXpath() + (StringUtils.isNotBlank(xpath) ? xpath : "");
 		
 		collectionPath = ExistServiceUtils.createPath(
+				changeSetDir,
 				this.getResourceInfo().getResourceBasePath(),
 				collectionPath);
-		
+
 		ResourceSet collection = this.getExistResourceDao().query(
 				collectionPath, queryString, start, max);
+
 
 		return this.getResourceSummaries(collection, xpath, start, max,
 				transform);

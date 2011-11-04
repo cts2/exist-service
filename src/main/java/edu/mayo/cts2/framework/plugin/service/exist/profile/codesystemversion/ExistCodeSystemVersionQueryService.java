@@ -13,6 +13,7 @@ import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogE
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -101,7 +102,9 @@ public class ExistCodeSystemVersionQueryService
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntrySummary> getResourceSummaries(
 			Query query, Set<ResolvedFilter> filterComponent,
-			CodeSystemVersionQueryServiceRestrictions restrictions, Page page) {
+			CodeSystemVersionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext,
+			Page page) {
 		CodeSystemVersionDirectoryBuilder builder = 
 				new CodeSystemVersionDirectoryBuilder(restrictions.getCodesystem());
 		

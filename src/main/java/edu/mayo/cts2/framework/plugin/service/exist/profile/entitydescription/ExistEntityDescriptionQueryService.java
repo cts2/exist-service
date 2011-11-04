@@ -16,6 +16,7 @@ import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReferenc
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
@@ -102,6 +103,7 @@ public class ExistEntityDescriptionQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent,
 			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 		EntityDescriptionDirectoryBuilder builder = new EntityDescriptionDirectoryBuilder();
 		

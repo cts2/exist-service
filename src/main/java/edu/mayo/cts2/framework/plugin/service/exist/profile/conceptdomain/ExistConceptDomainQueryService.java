@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.core.FilterComponent;
@@ -83,6 +84,7 @@ public class ExistConceptDomainQueryService
 	@Override
 	public DirectoryResult<ConceptDomainCatalogEntrySummary> getResourceSummaries(
 			Query query, Set<ResolvedFilter> filterComponent, Void restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 
 		ConceptDomainDirectoryBuilder builder = new ConceptDomainDirectoryBuilder();

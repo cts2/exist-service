@@ -16,7 +16,7 @@ import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.exception.Cts2RestException
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
-import edu.mayo.cts2.framework.service.profile.ChangeSetService
+import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 

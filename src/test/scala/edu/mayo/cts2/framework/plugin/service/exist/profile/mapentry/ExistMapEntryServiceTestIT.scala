@@ -80,7 +80,7 @@ class ExistMapEntryServiceTestIT
    }
     
    def getResourceSummaries():DirectoryResult[MapEntryDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,new Page())
+     queryService.getResourceSummaries(null,null,null,null,new Page())
    }
    
    @Test def testGetSummariesWithFilter() {
@@ -116,7 +116,7 @@ class ExistMapEntryServiceTestIT
      mapRestrictions.setMapversion("mapversion")
      mapRestrictions.getTargetentity().add("name2")
      
-     val entries = queryService.getResourceSummaries(null,null,mapRestrictions,new Page());
+     val entries = queryService.getResourceSummaries(null,null,mapRestrictions,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }
@@ -155,7 +155,7 @@ class ExistMapEntryServiceTestIT
      mapRestrictions.setMapversion("mapversion")
      mapRestrictions.getTargetentity().add("ns:INVALID")
      
-     val entries = queryService.getResourceSummaries(null,null,mapRestrictions,new Page());
+     val entries = queryService.getResourceSummaries(null,null,mapRestrictions,null,new Page());
      
      assertEquals(0, entries.getEntries().size())
    }
@@ -200,7 +200,7 @@ class ExistMapEntryServiceTestIT
      
      var set = new HashSet[ResolvedFilter]()
      set.add(filterComponent)
-     val entries = queryService.getResourceSummaries(null,set,null,new Page());
+     val entries = queryService.getResourceSummaries(null,set,null,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }
@@ -246,7 +246,7 @@ class ExistMapEntryServiceTestIT
      var set = new HashSet[ResolvedFilter]()
      set.add(filterComponent)
      
-     val entries = queryService.getResourceSummaries(null,set,null,new Page());
+     val entries = queryService.getResourceSummaries(null,set,null,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }

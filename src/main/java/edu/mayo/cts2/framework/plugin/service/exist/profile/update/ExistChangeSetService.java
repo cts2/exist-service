@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile;
+package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 
 import java.net.URI;
 import java.util.Date;
@@ -18,16 +18,17 @@ import edu.mayo.cts2.framework.model.core.OpaqueData;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.model.service.core.UpdateChangeSetMetadataRequest;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.framework.service.profile.ChangeSetService;
+import edu.mayo.cts2.framework.service.profile.update.ChangeSetService;
 
 @Component
 public class ExistChangeSetService implements ChangeSetService {
 
-	protected static final String CHANGESETS_PATH = "/changesets";
+	@javax.annotation.Resource
+	private ChangeSetResourceInfo changeSetResourceInfo;
 	
 	protected Log log = LogFactory.getLog(getClass());
 
@@ -41,7 +42,7 @@ public class ExistChangeSetService implements ChangeSetService {
 	public ChangeSet readChangeSet(String changeSetUri) {
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
-		Resource resource = existResourceDao.getResource(CHANGESETS_PATH, name);
+		Resource resource = existResourceDao.getResource(changeSetResourceInfo.getResourceBasePath(), name);
 		
 		return (ChangeSet) this.resourceUnmarshaller.unmarshallResource(resource);
 	}
@@ -56,7 +57,7 @@ public class ExistChangeSetService implements ChangeSetService {
 		
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
-		this.existResourceDao.storeResource(CHANGESETS_PATH, name, changeSet);
+		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
 		
 		return changeSet;
 	}
@@ -65,7 +66,7 @@ public class ExistChangeSetService implements ChangeSetService {
 	public void rollbackChangeSet(String changeSetUri) {
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
-		this.existResourceDao.deleteResource(CHANGESETS_PATH, name);
+		this.existResourceDao.deleteResource(changeSetResourceInfo.getResourceBasePath(), name);
 	}
 
 	@Override

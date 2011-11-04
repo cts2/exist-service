@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingDirectoryEntry;
 import edu.mayo.cts2.framework.model.core.FilterComponent;
@@ -44,6 +45,7 @@ public class ExistConceptDomainBindingQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent, 
 			ConceptDomainBindingQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}

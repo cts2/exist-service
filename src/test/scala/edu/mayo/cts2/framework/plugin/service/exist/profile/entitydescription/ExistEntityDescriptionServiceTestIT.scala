@@ -25,7 +25,7 @@ import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import java.util.Date
-import edu.mayo.cts2.framework.service.profile.ChangeSetService
+import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
 
 
 @RunWith(classOf[SpringJUnit4ClassRunner])

@@ -12,6 +12,7 @@ import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
@@ -73,6 +74,7 @@ public class ExistAssociationQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent, 
 			AssociationQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder();
 		

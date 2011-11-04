@@ -52,7 +52,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		        modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
 		
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
@@ -74,7 +74,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def set = new HashSet()
 		set.add(fc)
 		
-		def summaries = query.getResourceSummaries(null, set, null, new Page())
+		def summaries = query.getResourceSummaries(null, set, null, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}
@@ -93,7 +93,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
 
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
@@ -111,7 +111,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchValue:"somethin",
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}
@@ -129,7 +129,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchValue:"someth",
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
@@ -148,7 +148,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
 		
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}
@@ -163,7 +163,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["something"])
 		
-		def summaries = query.getResourceSummaries(null, null, restrictions, new Page())
+		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
@@ -178,7 +178,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["something", "name"])
 
-		def summaries = query.getResourceSummaries(null, null, restrictions, new Page())
+		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
 
 		assertEquals 2, summaries.entries.size
 	}
@@ -193,7 +193,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["INVALID"])
 
-		def summaries = query.getResourceSummaries(null, null, restrictions, new Page())
+		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}

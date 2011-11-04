@@ -31,7 +31,7 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
   }
     
    def getResourceSummaries():DirectoryResult[AssociationDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,new Page());
+     queryService.getResourceSummaries(null,null,null,null,new Page());
   }
    
   def createAssociation(name: String,changeSetUri:String):Association = {

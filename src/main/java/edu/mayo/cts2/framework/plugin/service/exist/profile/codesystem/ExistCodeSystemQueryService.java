@@ -12,6 +12,7 @@ import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -85,7 +86,9 @@ public class ExistCodeSystemQueryService
 	
 	private class CodeSystemDirectoryBuilder extends XpathDirectoryBuilder<XpathState,CodeSystemCatalogEntrySummary> {
 
-		public CodeSystemDirectoryBuilder() {
+		public CodeSystemDirectoryBuilder(final String changeSetUri) {
+			
+			
 			super(new XpathState(), 
 					new Callback<XpathState, CodeSystemCatalogEntrySummary>() {
 
@@ -95,6 +98,7 @@ public class ExistCodeSystemQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							changeSetUri,
 							"",
 							state.getXpath(), 
 							start, 
@@ -117,9 +121,16 @@ public class ExistCodeSystemQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			Void restrictions, 
+			ResolvedReadContext readContext,
 			Page page) {
 
-		CodeSystemDirectoryBuilder builder = new CodeSystemDirectoryBuilder();
+		String changeSetUri = null;
+		if(readContext != null){
+			changeSetUri = readContext.getChangeSetContextUri();
+		}
+		
+		CodeSystemDirectoryBuilder builder = 
+				new CodeSystemDirectoryBuilder(changeSetUri);
 		
 		return 
 			builder.restrict(filterComponent).

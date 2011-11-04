@@ -9,6 +9,7 @@ import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ChangeSetResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
 @Component
@@ -19,6 +20,9 @@ public class StateChangeCallback {
 	
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
+	
+	@javax.annotation.Resource
+	private ChangeSetResourceInfo changeSetResourceInfo;
 	
 	public void resourceAdded(ChangeableResourceChoice changeable) {
 		ChangeDescription changeDescription = ModelUtils.
@@ -31,7 +35,7 @@ public class StateChangeCallback {
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
 		Resource resource = 
-				this.existResourceDao.getResource(ExistChangeSetService.CHANGESETS_PATH, name);
+				this.existResourceDao.getResource(changeSetResourceInfo.getResourceBasePath(), name);
 		
 		ChangeSet changeSet = (ChangeSet) this.resourceUnmarshaller.unmarshallResource(resource);
 		
@@ -44,7 +48,7 @@ public class StateChangeCallback {
 		
 		changeSet.addMember(changeable);
 		
-		this.existResourceDao.storeResource(ExistChangeSetService.CHANGESETS_PATH, name, changeSet);
+		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
 	}
 	
 }

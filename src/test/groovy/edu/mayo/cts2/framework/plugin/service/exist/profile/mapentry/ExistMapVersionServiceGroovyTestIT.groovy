@@ -46,7 +46,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		changeSetService.commitChangeSet(changeSetUri)
 		
-		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, null, new Page()).entries.size()
+		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, null, null, new Page()).entries.size()
 	}
 
 	@Test void "Get Map Entries with target code restriction NONE"(){
@@ -76,7 +76,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
 
 		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["NS:___INVALID___"])
-		assertEquals 0, existMapEntryQueryService.getResourceSummaries(null, null, restritions,new Page()).entries.size()
+		assertEquals 0, existMapEntryQueryService.getResourceSummaries(null, null, restritions, null, new Page()).entries.size()
 	}
 
 	@Test void "Get Map Entries with target code restriction ONE"(){
@@ -105,7 +105,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		changeSetService.commitChangeSet(changeSetUri)
 
 		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["targetName"])
-		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, new Page()).entries.size()
+		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, null, new Page()).entries.size()
 	}
 
 	@Test void "Get Map Entries with target code restriction TWO"(){
@@ -135,6 +135,6 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		changeSetService.commitChangeSet(changeSetUri)
 
 		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["targetName2"])
-		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, new Page()).entries.size()
+		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, null, new Page()).entries.size()
 	}
 }

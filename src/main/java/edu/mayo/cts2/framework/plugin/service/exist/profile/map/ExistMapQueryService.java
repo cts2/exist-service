@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -96,8 +97,11 @@ public class ExistMapQueryService
 
 	@Override
 	public DirectoryResult<MapCatalogEntrySummary> getResourceSummaries(
-			Query query, Set<ResolvedFilter> filterComponent,
-			MapQueryServiceRestrictions restrictions, Page page) {
+			Query query, 
+			Set<ResolvedFilter> filterComponent,
+			MapQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
+			Page page) {
 		MapDirectoryBuilder builder = new MapDirectoryBuilder();
 
 		return builder.restrict(filterComponent).addStart(page.getStart())
