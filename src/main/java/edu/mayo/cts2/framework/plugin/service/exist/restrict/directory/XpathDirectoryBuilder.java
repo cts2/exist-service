@@ -18,7 +18,7 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.restrict.directory;
 
-import java.util.List;
+import java.util.Set;
 
 import edu.mayo.cts2.framework.filter.directory.AbstractStateBuildingDirectoryBuilder;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
@@ -57,8 +57,8 @@ public class XpathDirectoryBuilder<S extends XpathState, T> extends
 	public XpathDirectoryBuilder(
 			S state,
 			Callback<S, T> callback,
-			List<MatchAlgorithmReference> matchAlgorithmReferences,
-			List<StateAdjustingModelAttributeReference<S>> modelAttributeReferences) {
+			Set<MatchAlgorithmReference> matchAlgorithmReferences,
+			Set<StateAdjustingModelAttributeReference<S>> modelAttributeReferences) {
 		super(state, 
 				callback,
 				matchAlgorithmReferences,

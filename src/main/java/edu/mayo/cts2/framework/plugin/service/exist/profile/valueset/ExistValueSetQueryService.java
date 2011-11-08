@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -29,17 +28,12 @@ public class ExistValueSetQueryService
 	extends AbstractExistQueryService
 		<ValueSetCatalogEntry,
 		ValueSetCatalogEntrySummary,
+		ValueSetQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.valueset.ValueSetQueryService,XpathState>
 	implements ValueSetQueryService {
 
 	@Resource
 	private ValueSetResourceInfo valueSetResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	protected ValueSetCatalogEntrySummary createSummary() {
@@ -95,8 +89,8 @@ public class ExistValueSetQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 
@@ -122,6 +116,7 @@ public class ExistValueSetQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent,
 			ValueSetQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -139,14 +134,20 @@ public class ExistValueSetQueryService
 	}
 
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
+	protected ResourceInfo<ValueSetCatalogEntry, ?> getResourceInfo() {
+		return this.valueSetResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected ResourceInfo<ValueSetCatalogEntry, ?> getResourceInfo() {
-		return this.valueSetResourceInfo;
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

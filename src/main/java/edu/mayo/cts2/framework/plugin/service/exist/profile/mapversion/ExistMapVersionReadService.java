@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
@@ -24,5 +25,21 @@ public class ExistMapVersionReadService
 	@Override
 	protected ResourceInfo<MapVersion, NameOrURI> getResourceInfo() {
 		return this.mapVersionResourceInfo;
+	}
+
+	@Override
+	public boolean existsMapVersionForMap(
+			NameOrURI map, 
+			String tagName,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public MapVersion readMapVersionForMap(
+			NameOrURI map, 
+			String tagName,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
 	}
 }

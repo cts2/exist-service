@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -27,17 +26,12 @@ public class ExistStatementQueryService
 	extends AbstractExistQueryService
 		<Statement,
 		StatementDirectoryEntry,
+		Void,
 		edu.mayo.cts2.framework.model.service.statement.StatementQueryService,XpathState>
 	implements StatementQueryService {
 
 	@Resource
 	private StatementResourceInfo statementResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	private class StatementDirectoryBuilder extends XpathDirectoryBuilder<XpathState,StatementDirectoryEntry> {
 
@@ -61,8 +55,8 @@ public class ExistStatementQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 
@@ -84,8 +78,12 @@ public class ExistStatementQueryService
 	}
 
 	@Override
-	public DirectoryResult<Statement> getResourceList(Query query,
-			Set<ResolvedFilter> filterComponent, Void restrictions, Page page) {
+	public DirectoryResult<Statement> getResourceList(
+			Query query,
+			Set<ResolvedFilter> filterComponent, 
+			Void restrictions,
+			ResolvedReadContext readContext,
+			Page page) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -101,12 +99,6 @@ public class ExistStatementQueryService
 				builder.restrict(filterComponent).
 					restrict(query).
 					count();
-	}
-
-	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -130,6 +122,18 @@ public class ExistStatementQueryService
 	@Override
 	protected ResourceInfo<Statement, ?> getResourceInfo() {
 		return this.statementResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

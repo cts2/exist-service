@@ -11,7 +11,6 @@ import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
-import edu.mayo.cts2.framework.model.core.FilterComponent
 import edu.mayo.cts2.framework.model.core.ModelAttributeReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ScopedEntityName
@@ -20,6 +19,7 @@ import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
@@ -161,7 +161,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		
 		changeSetService.commitChangeSet(changeSetUri)
 
-		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["something"])
+		def restrictions = new EntityDescriptionQueryServiceRestrictions(entities:[new EntityNameOrURI(entityName:new ScopedEntityName(name:"something"))])
 		
 		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
 
@@ -176,7 +176,10 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		
 		changeSetService.commitChangeSet(changeSetUri)
 
-		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["something", "name"])
+		def restrictions = new EntityDescriptionQueryServiceRestrictions(
+			entities:[
+				new EntityNameOrURI(entityName:new ScopedEntityName(name:"something")),
+				new EntityNameOrURI(entityName:new ScopedEntityName(name:"name"))])
 
 		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
 
@@ -191,7 +194,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		
 		changeSetService.commitChangeSet(changeSetUri)
 
-		def restrictions = new EntityDescriptionQueryServiceRestrictions(entity:["INVALID"])
+		def restrictions = new EntityDescriptionQueryServiceRestrictions(entities:[new EntityNameOrURI(entityName:new ScopedEntityName(name:"INVALID"))])
 
 		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
 

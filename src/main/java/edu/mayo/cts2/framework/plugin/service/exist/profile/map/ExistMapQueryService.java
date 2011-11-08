@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.map;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -29,18 +28,12 @@ public class ExistMapQueryService
 	extends AbstractExistQueryService
 	<MapCatalogEntry,
 	MapCatalogEntrySummary,
+	MapQueryServiceRestrictions,
 	edu.mayo.cts2.framework.model.service.map.MapCatalogQueryService,XpathState> 
 	implements MapQueryService {
 
 	@Resource
 	private MapResourceInfo mapResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public MapCatalogEntrySummary doTransform(MapCatalogEntry resource,
@@ -90,8 +83,8 @@ public class ExistMapQueryService
 				}
 			},
 
-			getAvailableMatchAlgorithmReferences(), 
-			getAvailableModelAttributeReferences());
+			getSupportedMatchAlgorithms(),
+			getSupportedModelAttributes());
 		}
 	}
 
@@ -109,9 +102,12 @@ public class ExistMapQueryService
 	}
 
 	@Override
-	public DirectoryResult<MapCatalogEntry> getResourceList(Query query,
+	public DirectoryResult<MapCatalogEntry> getResourceList(
+			Query query,
 			Set<ResolvedFilter> filterComponent,
-			MapQueryServiceRestrictions restrictions, Page page) {
+			MapQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
+			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -124,20 +120,25 @@ public class ExistMapQueryService
 	}
 
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
+	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
+		return new CodeSystemNameStateUpdater();
+	}
+
+	@Override
+	protected ResourceInfo<MapCatalogEntry, ?> getResourceInfo() {
+		return this.mapResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		return new CodeSystemNameStateUpdater();
-	}
-
-
-	@Override
-	protected ResourceInfo<MapCatalogEntry, ?> getResourceInfo() {
-		return this.mapResourceInfo;
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

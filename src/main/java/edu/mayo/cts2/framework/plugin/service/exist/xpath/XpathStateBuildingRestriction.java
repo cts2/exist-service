@@ -24,7 +24,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.xpath;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -44,7 +43,7 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 	private String queryPath;
 	private String queryAttributeOrText;
 	private AllOrAny allOrAny;
-	private List<String> restrictions;
+	private Iterable<String> restrictions;
 	
 	/**
 	 * Instantiates a new xpath state updater.
@@ -60,7 +59,7 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 			String queryPath,
 			String queryAttributeOrText,
 			AllOrAny allOrAny,
-			List<String> restrictions){
+			Iterable<String> restrictions){
 		super();
 		this.queryPath = queryPath;
 		this.queryAttributeOrText = queryAttributeOrText;

@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystemversion;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -29,6 +28,7 @@ public class ExistCodeSystemVersionQueryService
 	extends AbstractExistQueryService
 		<CodeSystemVersionCatalogEntry,
 		CodeSystemVersionCatalogEntrySummary,
+		CodeSystemVersionQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionQueryService,XpathState> 
 	implements CodeSystemVersionQueryService {
 	
@@ -66,8 +66,8 @@ public class ExistCodeSystemVersionQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 
@@ -106,7 +106,7 @@ public class ExistCodeSystemVersionQueryService
 			ResolvedReadContext readContext,
 			Page page) {
 		CodeSystemVersionDirectoryBuilder builder = 
-				new CodeSystemVersionDirectoryBuilder(restrictions.getCodesystem());
+				new CodeSystemVersionDirectoryBuilder(restrictions.getCodeSystem().getName());
 		
 		return builder.
 				restrict(filterComponent).
@@ -119,7 +119,9 @@ public class ExistCodeSystemVersionQueryService
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntry> getResourceList(
 			Query query, Set<ResolvedFilter> filterComponent,
-			CodeSystemVersionQueryServiceRestrictions restrictions, Page page) {
+			CodeSystemVersionQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
+			Page page) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -138,14 +140,14 @@ public class ExistCodeSystemVersionQueryService
 	}
 
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
+	protected ResourceInfo<CodeSystemVersionCatalogEntry, ?> getResourceInfo() {
+		return codeSystemVersionResourceInfo;
 	}
 
 	@Override
-	protected ResourceInfo<CodeSystemVersionCatalogEntry, ?> getResourceInfo() {
-		return codeSystemVersionResourceInfo;
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

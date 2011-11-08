@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem;
 
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,6 +27,7 @@ public class ExistCodeSystemQueryService
 	extends AbstractExistQueryService
 		<CodeSystemCatalogEntry,
 		CodeSystemCatalogEntrySummary,
+		Void,
 		edu.mayo.cts2.framework.model.service.codesystem.CodeSystemQueryService,
 		XpathState> 
 	implements CodeSystemQueryService {
@@ -80,7 +80,7 @@ public class ExistCodeSystemQueryService
 	}
 
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
+	public Set<? extends PredicateReference> getSupportedProperties() {
 		return null;
 	}
 	
@@ -110,8 +110,8 @@ public class ExistCodeSystemQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 
@@ -144,6 +144,7 @@ public class ExistCodeSystemQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent, 
 			Void restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}

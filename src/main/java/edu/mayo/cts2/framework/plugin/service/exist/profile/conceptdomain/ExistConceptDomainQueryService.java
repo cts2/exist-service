@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -13,7 +12,6 @@ import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -29,6 +27,7 @@ public class ExistConceptDomainQueryService
 	extends AbstractExistQueryService
 		<ConceptDomainCatalogEntry,
 		ConceptDomainCatalogEntrySummary,
+		Void,
 		edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainQueryService,XpathState>
 	implements ConceptDomainQueryService {
 	
@@ -76,8 +75,8 @@ public class ExistConceptDomainQueryService
 				}
 			},
 
-			getAvailableMatchAlgorithmReferences(),
-			getAvailableModelAttributeReferences());
+			getSupportedMatchAlgorithms(),
+			getSupportedModelAttributes());
 		}
 	}
 
@@ -99,7 +98,10 @@ public class ExistConceptDomainQueryService
 
 	@Override
 	public DirectoryResult<ConceptDomainCatalogEntry> getResourceList(
-			Query query, Set<ResolvedFilter> filterComponent, Void restrictions,
+			Query query, 
+			Set<ResolvedFilter> filterComponent, 
+			Void restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -111,12 +113,6 @@ public class ExistConceptDomainQueryService
 
 		return builder.restrict(filterComponent).restrict(query).count();
 
-	}
-
-	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -141,6 +137,12 @@ public class ExistConceptDomainQueryService
 	@Override
 	protected ResourceInfo<ConceptDomainCatalogEntry, ?> getResourceInfo() {
 		return this.conceptDomainResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

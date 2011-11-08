@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -13,7 +12,6 @@ import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReferenc
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
@@ -34,6 +32,7 @@ public class ExistMapEntryQueryService
 	extends AbstractExistQueryService
 		<MapEntry,
 		MapEntryDirectoryEntry,
+		MapEntryQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.mapentry.MapEntryQueryService,MapEntryDirectoryState>
 	implements MapEntryQueryService {
 	
@@ -91,8 +90,8 @@ public class ExistMapEntryQueryService
 					throw new UnsupportedOperationException();
 				}
 			}, 
-			getAvailableMatchAlgorithmReferences(), 
-			getAvailableModelAttributeReferences());
+			getSupportedMatchAlgorithms(),
+			getSupportedModelAttributes());
 		}
 	}
 
@@ -115,9 +114,12 @@ public class ExistMapEntryQueryService
 	}
 
 	@Override
-	public DirectoryResult<MapEntry> getResourceList(Query query,
+	public DirectoryResult<MapEntry> getResourceList(
+			Query query,
 			Set<ResolvedFilter> filterComponent,
-			MapEntryQueryServiceRestrictions restrictions, Page page) {
+			MapEntryQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
+			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -155,18 +157,6 @@ public class ExistMapEntryQueryService
 	}
 
 	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected StateUpdater<MapEntryDirectoryState> getResourceNameStateUpdater() {
 		return new XpathStateUpdater<MapEntryDirectoryState>(
 				"mapversion:mapFrom/core:name","text()");
@@ -180,6 +170,18 @@ public class ExistMapEntryQueryService
 	@Override
 	protected ResourceInfo<MapEntry, ?> getResourceInfo() {
 		return this.mapEntryResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

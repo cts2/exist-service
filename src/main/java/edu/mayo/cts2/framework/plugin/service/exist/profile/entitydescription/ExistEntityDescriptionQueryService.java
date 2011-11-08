@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
+import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -26,6 +28,8 @@ import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURIList;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
@@ -44,19 +48,14 @@ public class ExistEntityDescriptionQueryService
 	extends AbstractExistQueryService
 		<EntityDescription,
 		EntityDirectoryEntry,
+		EntityDescriptionQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionQueryService,
 		EntityDescriptionDirectoryState>    
 	implements EntityDescriptionQueryService {
 
 	@Resource
 	private EntityDescriptionResourceInfo entityDescriptionResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
 	protected ScopedEntityName getScopedEntityName(EntityDescription entry) {
 		NamedEntityDescription entity = (NamedEntityDescription) ModelUtils.getEntity(entry);
 		
@@ -121,9 +120,10 @@ public class ExistEntityDescriptionQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent, 
 			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext,
 			Page page) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
+
 	}
 
 	@Override
@@ -131,27 +131,22 @@ public class ExistEntityDescriptionQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			EntityDescriptionQueryServiceRestrictions restrictions) {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new UnsupportedOperationException();
+
 	}
 
-	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	protected List<StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState>> getAvailableModelAttributeReferences() {
-		List<StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState>> list = super.getAvailableModelAttributeReferences();
+	public Set<StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState>> getSupportedModelAttributes() {
+		Set<StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState>> set = super.getSupportedModelAttributes();
 		
 		StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState> resourceSynopsis = 
 				StateAdjustingModelAttributeReference.toModelAttributeReference(
 						StandardModelAttributeReference.RESOURCE_SYNOPSIS.getModelAttributeReference(),
 						getResourceSynopsisStateUpdater());
 			
-		list.add(resourceSynopsis);
+		set.add(resourceSynopsis);
 		
-		return list;
+		return set;
 	}
 	
 	private StateUpdater<EntityDescriptionDirectoryState> getResourceSynopsisStateUpdater() {
@@ -181,8 +176,8 @@ public class ExistEntityDescriptionQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 		
 		public EntityDescriptionDirectoryBuilder restrict(final EntityDescriptionQueryServiceRestrictions restriction){
@@ -192,22 +187,28 @@ public class ExistEntityDescriptionQueryService
 						@Override
 						public EntityDescriptionDirectoryState restrict(EntityDescriptionDirectoryState currentState) {
 							if(restriction != null &&
-									StringUtils.isNotBlank(restriction.getCodesystemversion())){
-								currentState.setCodeSystemVersion(restriction.getCodesystemversion());
+									restriction.getCodeSystemVersion() != null){
+								currentState.setCodeSystemVersion(restriction.getCodeSystemVersion().getName());
 							}
 							
 							return currentState;
 						}
 					});
 			if(restriction != null &&
-					CollectionUtils.isNotEmpty(restriction.getEntity())){
+					CollectionUtils.isNotEmpty(restriction.getEntities())){
+				
+				//TODO: This currently does NOT resolve URIs
+				Set<String> names = new HashSet<String>();
+				for(EntityNameOrURI entityNameOrUri : restriction.getEntities()){
+					names.add(entityNameOrUri.getEntityName().getName());
+				}
 		
 				getRestrictions().add(
 						new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
 								".//entity:entityID/core:name", 
 								"text()", 
 								AllOrAny.ANY,
-								restriction.getEntity()));
+								names));
 			}
 			
 			return this;
@@ -255,6 +256,43 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	protected ResourceInfo<EntityDescription, ?> getResourceInfo() {
 		return this.entityDescriptionResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEntityInSet(EntityNameOrURI entity, Query query,
+			Set<ResolvedFilter> filterComponent,
+			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public EntityReferenceList resolveAsEntityReferenceList(Query query,
+			Set<ResolvedFilter> filterComponent,
+			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public EntityNameOrURIList intersectEntityList(
+			Set<EntityNameOrURI> entities, Query query,
+			Set<ResolvedFilter> filterComponent,
+			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
 	}
 
 }

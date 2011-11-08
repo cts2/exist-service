@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -9,7 +8,6 @@ import org.xmldb.api.base.Resource;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
@@ -20,6 +18,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.service.command.restriction.ChangeSetQueryExtensionRestrictions;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetQueryExtension;
 
 @Component
@@ -27,6 +26,7 @@ public class ExistChangeSetQueryService
 	extends AbstractExistQueryService
 	<ChangeSet,
 	ChangeSetDirectoryEntry,
+	ChangeSetQueryExtensionRestrictions,
 	BaseQueryService,
 	XpathState> 
 	implements ChangeSetQueryExtension {
@@ -37,8 +37,7 @@ public class ExistChangeSetQueryService
 	@Override
 	public DirectoryResult<ChangeSetDirectoryEntry> getResourceSummaries(
 			Query query, Set<ResolvedFilter> filterComponent,
-			Void restrictions, 
-			ResolvedReadContext readContext,
+			ChangeSetQueryExtensionRestrictions restrictions, 
 			Page page) {
 		
 		ChangeSetDirectoryBuilder builder = new ChangeSetDirectoryBuilder();
@@ -51,23 +50,6 @@ public class ExistChangeSetQueryService
 				resolve();
 	}
 
-	@Override
-	public DirectoryResult<ChangeSet> getResourceList(Query query,
-			Set<ResolvedFilter> filterComponent, Void restrictions, Page page) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public int count(Query query, Set<ResolvedFilter> filterComponent,
-			Void restrictions) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	protected ChangeSetDirectoryEntry createSummary() {
@@ -102,12 +84,27 @@ public class ExistChangeSetQueryService
 		return this.changeSetResourceInfo;
 	}
 
+
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
+	public Set<? extends PredicateReference> getSupportedProperties() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int count(Query query, Set<ResolvedFilter> filterComponent,
+			ChangeSetQueryExtensionRestrictions restrictions) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	private class ChangeSetDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ChangeSetDirectoryEntry> {
 
 		public ChangeSetDirectoryBuilder() {
@@ -131,8 +128,8 @@ public class ExistChangeSetQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 

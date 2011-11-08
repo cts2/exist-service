@@ -32,18 +32,12 @@ public class ExistValueSetDefinitionQueryService
 	extends AbstractExistQueryService
 		<ValueSetDefinition,
 		ValueSetDefinitionDirectoryEntry,
+		ValueSetDefinitionQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionQueryService,XpathState>
 	implements ValueSetDefinitionQueryService {
 
 	@Resource
 	private ValueSetDefinitionResourceInfo valueSetDefinitionResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 	@Override
 	protected ValueSetDefinitionDirectoryEntry createSummary() {
@@ -106,8 +100,8 @@ public class ExistValueSetDefinitionQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 
@@ -133,6 +127,7 @@ public class ExistValueSetDefinitionQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent, 
 			ValueSetDefinitionQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -152,12 +147,6 @@ public class ExistValueSetDefinitionQueryService
 	}
 
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
 		// TODO Auto-generated method stub
 		return null;
@@ -167,6 +156,18 @@ public class ExistValueSetDefinitionQueryService
 	@Override
 	protected ResourceInfo<ValueSetDefinition, ?> getResourceInfo() {
 		return this.valueSetDefinitionResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

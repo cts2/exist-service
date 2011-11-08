@@ -19,7 +19,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,9 @@ import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
  * @author <a href="mailto:kevin.peterson@mayo.edu">Kevin Peterson</a>
  */
 public abstract class AbstractExistQueryService
-	<R,Summary,T extends BaseQueryService,S extends XpathState> 
+	<R,Summary,Restrictions,
+	T extends BaseQueryService,
+	S extends XpathState> 
 	extends AbstractQueryService<T> {
 	
 	@Autowired
@@ -177,28 +181,28 @@ public abstract class AbstractExistQueryService
 	};
 	
 	@Override
-	protected List<MatchAlgorithmReference> getAvailableMatchAlgorithmReferences() {
-		List<MatchAlgorithmReference> returnList = new ArrayList<MatchAlgorithmReference>();
+	public Set<MatchAlgorithmReference> getSupportedMatchAlgorithms() {
+		Set<MatchAlgorithmReference> returnSet = new HashSet<MatchAlgorithmReference>();
 		
-		returnList.add(StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference());
-		returnList.add(StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference());
-		returnList.add(StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference());
+		returnSet.add(StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference());
+		returnSet.add(StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference());
+		returnSet.add(StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference());
 
-		return returnList;
+		return returnSet;
 	}
 
-	protected List<StateAdjustingModelAttributeReference<S>> getAvailableModelAttributeReferences() {
-		ArrayList<StateAdjustingModelAttributeReference<S>> returnList = 
-				new ArrayList<StateAdjustingModelAttributeReference<S>>();
+	public Set<StateAdjustingModelAttributeReference<S>> getSupportedModelAttributes() {
+		Set<StateAdjustingModelAttributeReference<S>> returnSet = 
+				new HashSet<StateAdjustingModelAttributeReference<S>>();
 		
 		StateAdjustingModelAttributeReference<S> resourceName = 
 			StateAdjustingModelAttributeReference.toModelAttributeReference(
 					StandardModelAttributeReference.RESOURCE_NAME.getModelAttributeReference(), 
 					getResourceNameStateUpdater());
 		
-		returnList.add(resourceName);
+		returnSet.add(resourceName);
 		
-		return returnList;
+		return returnSet;
 	}
 	
 	protected abstract StateUpdater<S> getResourceNameStateUpdater();

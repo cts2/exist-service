@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -11,15 +10,22 @@ import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReferenc
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
+import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.entity.EntityDescription;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.service.core.Query;
+import edu.mayo.cts2.framework.model.service.mapversion.types.MapRole;
+import edu.mayo.cts2.framework.model.service.mapversion.types.MapStatus;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.command.restriction.MapVersionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQueryService;
 
@@ -28,6 +34,7 @@ public class ExistMapVersionQueryService
 	extends AbstractExistQueryService
 		<MapVersion,
 		MapVersionDirectoryEntry,
+		MapVersionQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.mapversion.MapVersionQueryService,MapVersionDirectoryState>
 	implements MapVersionQueryService {
 
@@ -44,16 +51,9 @@ public class ExistMapVersionQueryService
 		return summary;
 	}
 
-
 	@Override
 	protected MapVersionDirectoryEntry createSummary() {
 		return new MapVersionDirectoryEntry();
-	}
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	private class MapVersionDirectoryBuilder extends
@@ -81,8 +81,8 @@ public class ExistMapVersionQueryService
 				}
 			},
 
-			getAvailableMatchAlgorithmReferences(), 
-			getAvailableModelAttributeReferences());
+			getSupportedMatchAlgorithms(),
+			getSupportedModelAttributes());
 		}
 	}
 
@@ -102,9 +102,12 @@ public class ExistMapVersionQueryService
 	}
 
 	@Override
-	public DirectoryResult<MapVersion> getResourceList(Query query,
+	public DirectoryResult<MapVersion> getResourceList(
+			Query query,
 			Set<ResolvedFilter> filterComponent,
-			MapVersionQueryServiceRestrictions restrictions, Page page) {
+			MapVersionQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
+			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -122,20 +125,56 @@ public class ExistMapVersionQueryService
 	}
 
 	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
+	protected ResourceInfo<MapVersion, ?> getResourceInfo() {
+		return this.mapVersionResourceInfo;
+	}
+
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	protected StateUpdater<MapVersionDirectoryState> getResourceNameStateUpdater() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected StateUpdater<MapVersionDirectoryState> getResourceNameStateUpdater() {
-		return null;
+	public DirectoryResult<EntityDirectoryEntry> mapVersionEntities(
+			NameOrURI mapVersion, MapRole mapRole, MapStatus mapStatus,
+			Query query, Set<ResolvedFilter> filterComponent,
+			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public DirectoryResult<EntityDescription> mapVersionEntityList(
+			NameOrURI mapVersion, MapRole mapRole, MapStatus mapStatus,
+			Query query, Set<ResolvedFilter> filterComponent,
+			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
-	protected ResourceInfo<MapVersion, ?> getResourceInfo() {
-		return this.mapVersionResourceInfo;
+	public EntityReferenceList mapVersionEntityReferences(NameOrURI mapVersion,
+			MapRole mapRole, MapStatus mapStatus, Query query,
+			Set<ResolvedFilter> filterComponent,
+			EntityDescriptionQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
 	}
 
 }

@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
+import edu.mayo.cts2.framework.model.association.AssociationGraph;
+import edu.mayo.cts2.framework.model.association.types.GraphDirection;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
@@ -31,6 +32,7 @@ public class ExistAssociationQueryService
 	extends AbstractExistQueryService
 		<Association,
 		AssociationDirectoryEntry,
+		AssociationQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.association.AssociationQueryService,XpathState>
 	implements AssociationQueryService {
 	
@@ -64,8 +66,8 @@ public class ExistAssociationQueryService
 					throw new UnsupportedOperationException();
 				}},
 				
-				getAvailableMatchAlgorithmReferences(),
-				getAvailableModelAttributeReferences());
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
 		}
 	}
 
@@ -89,6 +91,7 @@ public class ExistAssociationQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent,
 			AssociationQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -106,37 +109,12 @@ public class ExistAssociationQueryService
 	}
 
 	@Override
-	public DirectoryResult<EntityDirectoryEntry> getChildrenAssociationsOfEntity(
-			Query query, 
-			Set<ResolvedFilter> filterComponent, 
-			Page page,
-			EntityDescriptionReadId id) {
-		throw new UnsupportedOperationException();
-	}
-
-
-	@Override
-	public DirectoryResult<AssociationDirectoryEntry> getSourceOfAssociationsOfEntity(
-			Query query, 
-			Set<ResolvedFilter> filterComponent, 
-			Page page,
-			EntityDescriptionReadId id) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	protected ResourceInfo<Association, AssociationReadId> getResourceInfo() {
 		return this.associationResourceInfo;
 	}
 
 	@Override
 	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -153,6 +131,66 @@ public class ExistAssociationQueryService
 			org.xmldb.api.base.Resource eXistResource) {
 		
 		return summary;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AssociationGraph getAssociationGraph(EntityDescriptionReadId focus,
+			GraphDirection direction, long depth) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<EntityDirectoryEntry> getChildrenAssociationsOfEntity(
+			Query query, Set<ResolvedFilter> filterComponent,
+			EntityDescriptionReadId entity,
+			AssociationQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext, Page page) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<EntityDirectoryEntry> getSourceEntities(Query query,
+			Set<ResolvedFilter> filterComponent,
+			AssociationQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext, Page page) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<EntityDirectoryEntry> getTargetEntities(Query query,
+			Set<ResolvedFilter> filterComponent,
+			AssociationQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext, Page page) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<EntityDirectoryEntry> getAllSourceAndTargetEntities(
+			Query query, Set<ResolvedFilter> filterComponent,
+			AssociationQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext, Page page) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<EntityDirectoryEntry> getPredicates(Query query,
+			Set<ResolvedFilter> filterComponent,
+			AssociationQueryServiceRestrictions restrictions,
+			ResolvedReadContext readContext, Page page) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<AssociationDirectoryEntry> getSourceOfAssociationsOfEntity(
+			Query query, Set<ResolvedFilter> filterComponent, Page page,
+			EntityDescriptionReadId entity, ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
 	}
 
 }

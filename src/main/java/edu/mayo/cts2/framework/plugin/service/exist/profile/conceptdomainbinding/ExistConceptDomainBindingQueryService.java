@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomainbinding;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -13,7 +12,6 @@ import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingDirectoryEntry;
-import edu.mayo.cts2.framework.model.core.FilterComponent;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -28,17 +26,12 @@ public class ExistConceptDomainBindingQueryService
 	extends AbstractExistQueryService
 		<ConceptDomainBinding,
 		ConceptDomainBindingDirectoryEntry,
+		ConceptDomainBindingQueryServiceRestrictions,
 		edu.mayo.cts2.framework.model.service.conceptdomainbinding.ConceptDomainBindingQueryService,XpathState>
 	implements ConceptDomainBindingQueryService {
 
 	@Resource
 	private ConceptDomainBindingResourceInfo conceptDomainBindingResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public DirectoryResult<ConceptDomainBindingDirectoryEntry> getResourceSummaries(
@@ -55,6 +48,7 @@ public class ExistConceptDomainBindingQueryService
 			Query query,
 			Set<ResolvedFilter> filterComponent, 
 			ConceptDomainBindingQueryServiceRestrictions restrictions, 
+			ResolvedReadContext readContext,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -65,11 +59,6 @@ public class ExistConceptDomainBindingQueryService
 			Set<ResolvedFilter> filterComponent,
 			ConceptDomainBindingQueryServiceRestrictions restrictions) {
 		throw new UnsupportedOperationException();
-	}
-
-	protected List<? extends PredicateReference> getAvailablePredicateReferences() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -95,6 +84,18 @@ public class ExistConceptDomainBindingQueryService
 	@Override
 	protected ResourceInfo<ConceptDomainBinding, ?> getResourceInfo() {
 		return this.conceptDomainBindingResourceInfo;
+	}
+
+	@Override
+	public Set<? extends PredicateReference> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PredicateReference getPropertyReference(String nameOrUri) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
