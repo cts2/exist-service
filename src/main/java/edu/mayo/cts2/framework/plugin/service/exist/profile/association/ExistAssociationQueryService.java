@@ -38,11 +38,6 @@ public class ExistAssociationQueryService
 	
 	@Resource
 	private AssociationResourceInfo associationResourceInfo;
-
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		throw new UnsupportedOperationException();
-	}
 	
 	private class AssociationDirectoryBuilder extends XpathDirectoryBuilder<XpathState,AssociationDirectoryEntry> {
 

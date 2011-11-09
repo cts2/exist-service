@@ -92,13 +92,6 @@ public class ExistCodeSystemVersionQueryService
 		return summary;
 	}
 
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntrySummary> getResourceSummaries(
 			Query query, Set<ResolvedFilter> filterComponent,

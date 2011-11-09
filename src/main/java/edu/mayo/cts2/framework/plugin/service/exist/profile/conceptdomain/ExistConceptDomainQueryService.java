@@ -33,12 +33,6 @@ public class ExistConceptDomainQueryService
 	
 	@Resource
 	private ConceptDomainResourceInfo conceptDomainResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	private class ConceptDomainNameStateUpdater implements StateUpdater<XpathState> {
 

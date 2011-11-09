@@ -136,14 +136,6 @@ public class ExistMapVersionQueryService
 		return null;
 	}
 
-
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	@Override
 	protected StateUpdater<MapVersionDirectoryState> getResourceNameStateUpdater() {
 		// TODO Auto-generated method stub

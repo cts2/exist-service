@@ -34,12 +34,6 @@ public class ExistCodeSystemQueryService
 
 	@javax.annotation.Resource
 	private CodeSystemResourceInfo codeSystemResourceInfo;
-	
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	protected CodeSystemCatalogEntrySummary createSummary() {

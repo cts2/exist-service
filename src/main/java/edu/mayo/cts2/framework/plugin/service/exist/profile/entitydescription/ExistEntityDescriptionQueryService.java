@@ -22,6 +22,7 @@ import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
 import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
+import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.Designation;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
@@ -265,7 +266,7 @@ public class ExistEntityDescriptionQueryService
 	}
 
 	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
+	public Set<? extends VersionTagReference> getSupportedTags() {
 		// TODO Auto-generated method stub
 		return null;
 	}

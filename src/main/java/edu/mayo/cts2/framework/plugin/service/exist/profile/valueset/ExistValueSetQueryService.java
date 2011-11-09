@@ -143,11 +143,4 @@ public class ExistValueSetQueryService
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public PredicateReference getPropertyReference(String nameOrUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }
