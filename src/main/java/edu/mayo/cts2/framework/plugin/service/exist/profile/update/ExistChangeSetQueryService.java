@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
@@ -50,7 +49,6 @@ public class ExistChangeSetQueryService
 				resolve();
 	}
 
-
 	@Override
 	protected ChangeSetDirectoryEntry createSummary() {
 		return new ChangeSetDirectoryEntry();
@@ -71,12 +69,6 @@ public class ExistChangeSetQueryService
 		summary.setState(resource.getState());
 		
 		return summary;
-	}
-
-	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -56,4 +56,10 @@ public class StatementResourceInfo implements ResourceInfo<Statement,String> {
 		return "@statementURI";
 	}
 
+	@Override
+	public String getResourceNameXpath() {
+		throw new UnsupportedOperationException("Cannot reference Statement by name.");
+
+	}
+
 }

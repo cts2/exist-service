@@ -6,11 +6,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -50,21 +48,6 @@ public class ExistValueSetQueryService
 		summary.setHref(getUrlConstructor().createValueSetUrl(resource.getValueSetName()));
 		
 		return summary;
-	}
-
-	private class ValueSetNameStateUpdater implements StateUpdater<XpathState> {
-
-		@Override
-		public XpathState updateState(XpathState currentState, MatchAlgorithmReference matchAlgorithm, String queryString) {
-			currentState.setXpath("valueset:ValueSetCatalogEntry/@valueSetName = '" + queryString + "'");
-			
-			return currentState;
-		}	
-	}
-	
-	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		return new ValueSetNameStateUpdater();
 	}
 
 	private class ValueSetDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ValueSetCatalogEntrySummary> {

@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
@@ -59,12 +58,6 @@ public class ExistConceptDomainBindingQueryService
 			Set<ResolvedFilter> filterComponent,
 			ConceptDomainBindingQueryServiceRestrictions restrictions) {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

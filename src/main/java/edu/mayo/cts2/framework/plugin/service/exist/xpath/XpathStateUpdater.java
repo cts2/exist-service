@@ -38,7 +38,7 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 
 	//private String elementPath;
 	private String queryPath;
-	private String queryAttributeOrText;
+	//private String queryAttributeOrText;
 	
 	/**
 	 * Instantiates a new xpath state updater.
@@ -51,12 +51,13 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 	 *  Example: text()
 	 */
 	public XpathStateUpdater(
-			String queryPath,
-			String queryAttributeOrText){
+			String queryPath
+			//String queryAttributeOrText
+			){
 		super();
 		//this.elementPath = elementPath;
 		this.queryPath = queryPath;
-		this.queryAttributeOrText = queryAttributeOrText;
+		//this.queryAttributeOrText = queryAttributeOrText;
 	}
 	
 	/* (non-Javadoc)
@@ -83,7 +84,7 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 			// nop for exact match
 		} 
 			
-		sb.append("["+ this.queryPath + "["+this.queryAttributeOrText+" &= '"+queryString+"']]");
+		sb.append("["+ this.queryPath +" &= '"+queryString+"']");
 		
 		currentState.setXpath(sb.toString());
 		

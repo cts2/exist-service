@@ -55,4 +55,9 @@ public class ChangeSetResourceInfo implements ResourceInfo<ChangeSet,String> {
 	public String getResourceUri(String resourceIdentifier) {
 		return resourceIdentifier;
 	}
+
+	@Override
+	public String getResourceNameXpath() {
+		return "@changeSetURI";
+	}
 }

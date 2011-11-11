@@ -8,7 +8,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
@@ -23,7 +22,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
-import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
 
@@ -154,12 +152,6 @@ public class ExistMapEntryQueryService
 	public int count(Query query, Set<ResolvedFilter> filterComponent,
 			MapEntryQueryServiceRestrictions restrictions) {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	protected StateUpdater<MapEntryDirectoryState> getResourceNameStateUpdater() {
-		return new XpathStateUpdater<MapEntryDirectoryState>(
-				"mapversion:mapFrom/core:name","text()");
 	}
 
 	@Override

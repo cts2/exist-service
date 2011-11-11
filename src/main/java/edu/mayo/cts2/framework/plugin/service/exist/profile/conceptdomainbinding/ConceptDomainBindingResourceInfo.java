@@ -56,4 +56,9 @@ public class ConceptDomainBindingResourceInfo implements ResourceInfo<ConceptDom
 		return "@bindingURI";
 	}
 
+	@Override
+	public String getResourceNameXpath() {
+		throw new UnsupportedOperationException("Cannot reference ConceptDomainBinding by name.");
+	}
+
 }

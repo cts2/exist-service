@@ -41,4 +41,9 @@ public class CodeSystemVersionResourceInfo extends AbstractNameOrUriResourceInfo
 		return "@documentURI";
 	}
 
+	@Override
+	public String getResourceNameXpath() {
+		return "@codeSystemVersionName";
+	}
+
 }

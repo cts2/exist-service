@@ -147,13 +147,6 @@ public class ExistValueSetDefinitionQueryService
 	}
 
 	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	protected ResourceInfo<ValueSetDefinition, ?> getResourceInfo() {
 		return this.valueSetDefinitionResourceInfo;
 	}

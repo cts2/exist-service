@@ -24,7 +24,6 @@ public class ExistStatementMaintenanceService
 		return this.statementResourceInfo;
 	}
 
-
 	@Override
 	protected void addResourceToChangeableResourceChoice(
 			ChangeableResourceChoice choice, Statement resource) {

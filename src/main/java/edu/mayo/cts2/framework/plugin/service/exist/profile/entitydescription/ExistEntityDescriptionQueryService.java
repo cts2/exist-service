@@ -151,7 +151,7 @@ public class ExistEntityDescriptionQueryService
 	}
 	
 	private StateUpdater<EntityDescriptionDirectoryState> getResourceSynopsisStateUpdater() {
-		return new XpathStateUpdater<EntityDescriptionDirectoryState>(".//entity:designation/core:value", "text()");
+		return new XpathStateUpdater<EntityDescriptionDirectoryState>(".//entity:designation/core:value/text()");
 	}
 
 	private class EntityDescriptionDirectoryBuilder extends XpathDirectoryBuilder<EntityDescriptionDirectoryState,EntityDirectoryEntry> {
@@ -241,12 +241,6 @@ public class ExistEntityDescriptionQueryService
 		}
 		
 		return Iterables.toArray(returnList, DescriptionInCodeSystem.class);
-	}
-
-
-	@Override
-	protected StateUpdater<EntityDescriptionDirectoryState> getResourceNameStateUpdater() {
-		return new XpathStateUpdater<EntityDescriptionDirectoryState>(".//entity:entityID/core:name", "text()");
 	}
 
 	@Override

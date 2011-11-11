@@ -3,8 +3,6 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.exist.validation.service.ValidationService;
@@ -78,13 +76,10 @@ public class ExistManager implements InitializingBean {
 		Resource namespaceResource = new ClassPathResource(DelegatingMarshaller.NAMESPACE_MAPPINGS_PROPS);
 		
 		this.namespaceMappingProperties = new Properties();
-		
-		String fs = IOUtils.toString(namespaceResource.getInputStream());
-		
+	
 		this.namespaceMappingProperties.load(namespaceResource.getInputStream());
 		
 		this.xQueryService = this.createXQueryService("");
-	
 	}
 	
 	private XQueryService createXQueryService(String collectionPath){

@@ -59,4 +59,9 @@ public class MapEntryResourceInfo implements ResourceInfo<MapEntry,MapEntryReadI
 	public String getUriXpath() {
 		return "mapversion:mapFrom/@uri";
 	}
+
+	@Override
+	public String getResourceNameXpath() {
+		return "mapversion:mapFrom/core:name";
+	}
 }

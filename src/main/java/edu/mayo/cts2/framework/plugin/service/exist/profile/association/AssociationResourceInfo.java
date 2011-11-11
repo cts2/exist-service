@@ -58,5 +58,11 @@ public class AssociationResourceInfo implements ResourceInfo<Association,Associa
 	public String getUriXpath() {
 		return "@associationID";
 	}
+
+	@Override
+	public String getResourceNameXpath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
@@ -55,7 +54,7 @@ public class ExistCodeSystemVersionQueryService
 				
 				private String getCodeSystemXpath(final String codeSystem){
 					if(StringUtils.isNotBlank(codeSystem)){
-						return "/codesystemversion:CodeSystemVersionCatalogEntry[codesystemversion:versionOf[text() = '"+codeSystem+"']]";
+						return "[codesystemversion:versionOf[text() = '"+codeSystem+"']]";
 					} else {
 						return "";
 					}
@@ -87,7 +86,16 @@ public class ExistCodeSystemVersionQueryService
 		summary.setHref(getUrlConstructor().createCodeSystemVersionUrl(
 				resource.getVersionOf().getContent(),
 				resource.getCodeSystemVersionName()));
+
 		summary.setVersionOf(resource.getVersionOf());
+		
+		if(summary.getVersionOf() != null){
+			if(StringUtils.isBlank(summary.getVersionOf().getHref())){
+				summary.getVersionOf().setHref(
+					this.getUrlConstructor().createCodeSystemUrl(
+							resource.getVersionOf().getContent()));
+			}
+		}
 
 		return summary;
 	}
@@ -124,12 +132,6 @@ public class ExistCodeSystemVersionQueryService
 			CodeSystemVersionQueryServiceRestrictions restrictions) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

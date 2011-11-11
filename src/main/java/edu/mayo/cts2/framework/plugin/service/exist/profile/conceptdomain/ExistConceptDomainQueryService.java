@@ -6,13 +6,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -33,17 +31,6 @@ public class ExistConceptDomainQueryService
 	
 	@Resource
 	private ConceptDomainResourceInfo conceptDomainResourceInfo;
-
-	private class ConceptDomainNameStateUpdater implements StateUpdater<XpathState> {
-
-		@Override
-		public XpathState updateState(XpathState currentState, MatchAlgorithmReference matchAlgorithm, String queryString) {
-			currentState.setXpath("conceptdomain:ConceptDomainCatalogEntry/@conceptDomainName = '"
-					+ queryString + "'");
-			
-			return currentState;
-		}
-	}
 
 	private class ConceptDomainDirectoryBuilder extends
 			XpathDirectoryBuilder<XpathState,ConceptDomainCatalogEntrySummary> {
@@ -107,11 +94,6 @@ public class ExistConceptDomainQueryService
 
 		return builder.restrict(filterComponent).restrict(query).count();
 
-	}
-
-	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		return new ConceptDomainNameStateUpdater();
 	}
 
 	@Override

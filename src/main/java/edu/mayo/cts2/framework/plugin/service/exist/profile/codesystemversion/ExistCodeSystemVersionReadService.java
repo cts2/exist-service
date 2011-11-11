@@ -2,6 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystemversion;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
@@ -49,6 +50,11 @@ public class ExistCodeSystemVersionReadService
 		cs.setAssociations(this.getUrlConstructor()
 				.createAssociationsOfCodeSystemVersionUrl(codeSystemName,
 						codeSystemVersionName));
+		
+		if(StringUtils.isBlank(cs.getVersionOf().getHref())){
+			cs.getVersionOf().setHref(
+					this.getUrlConstructor().createCodeSystemUrl(codeSystemName));
+		}
 
 		return cs;
 	}

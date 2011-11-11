@@ -120,11 +120,6 @@ public class ExistMapQueryService
 	}
 
 	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		return new CodeSystemNameStateUpdater();
-	}
-
-	@Override
 	protected ResourceInfo<MapCatalogEntry, ?> getResourceInfo() {
 		return this.mapResourceInfo;
 	}

@@ -14,10 +14,11 @@ import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 
+import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
 import edu.mayo.cts2.framework.model.core.OpaqueData;
+import edu.mayo.cts2.framework.model.core.SourceReference;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
-import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
@@ -49,17 +50,27 @@ public class ExistChangeSetService implements ChangeSetService {
 
 	@Override
 	public ChangeSet createChangeSet() {
-		String changeSetUri = "urn:oid:" + UUID.randomUUID().toString();
+		ChangeSet changeSet = doCreateNewChangeSet();
+		
+		String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);
+		
+		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
+		
+		return changeSet;
+	}
+	
+	protected ChangeSet doCreateNewChangeSet(){
+		String changeSetUri = this.createNewChangeSetUri();
 		ChangeSet changeSet = new ChangeSet();
 		changeSet.setChangeSetURI(changeSetUri);
 		changeSet.setCreationDate(new Date());
 		changeSet.setState(FinalizableState.OPEN);
 		
-		String name = ExistServiceUtils.uriToExistName(changeSetUri);
-		
-		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
-		
 		return changeSet;
+	}
+	
+	protected String createNewChangeSetUri(){
+		return "urn:uuid:" + UUID.randomUUID().toString();
 	}
 
 	@Override
@@ -94,6 +105,16 @@ public class ExistChangeSetService implements ChangeSetService {
 			}
 			
 			this.existResourceDao.removeCollection(changeSetDir);
+			
+			ChangeSet changeSet = this.readChangeSet(changeSetUri);
+			changeSet.setState(FinalizableState.FINAL);
+			changeSet.setCloseDate(new Date());
+			
+			String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);
+			
+			this.existResourceDao.storeResource(
+					changeSetResourceInfo.getResourceBasePath(), name, changeSet);
+			
 		} catch (XMLDBException e) {
 			throw new UnspecifiedCts2RuntimeException(e);
 		}
@@ -103,11 +124,37 @@ public class ExistChangeSetService implements ChangeSetService {
 	public String importChangeSet(URI changeSetUri) {
 		throw new UnsupportedOperationException();
 	}
+	
+	private void addChangeSetElementGroupIfNecessary(ChangeSet changeSet){
+		if(changeSet.getChangeSetElementGroup() == null){
+			changeSet.setChangeSetElementGroup(new ChangeSetElementGroup());
+		}
+	}
 
 	@Override
-	public void updateChangeSetMetadata(String changeSetUri, NameOrURI creator,
-			OpaqueData changeInstructions, Date officialEffectiveDate) {
-		//TODO:
+	public void updateChangeSetMetadata(
+			String changeSetUri, 
+			SourceReference creator,
+			OpaqueData changeInstructions, 
+			Date officialEffectiveDate) {
+		ChangeSet changeSet = this.readChangeSet(changeSetUri);
+		
+		if(creator != null){
+			this.addChangeSetElementGroupIfNecessary(changeSet);
+			changeSet.getChangeSetElementGroup().setCreator(creator);
+		}
+		if(changeInstructions != null){
+			this.addChangeSetElementGroupIfNecessary(changeSet);
+			changeSet.getChangeSetElementGroup().setChangeInstructions(changeInstructions);
+		}
+		if(officialEffectiveDate != null){
+			changeSet.setOfficialEffectiveDate(officialEffectiveDate);
+		}
+		
+		String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);
+		
+		this.existResourceDao.storeResource(
+				changeSetResourceInfo.getResourceBasePath(), name, changeSet);
 	}
 
 }

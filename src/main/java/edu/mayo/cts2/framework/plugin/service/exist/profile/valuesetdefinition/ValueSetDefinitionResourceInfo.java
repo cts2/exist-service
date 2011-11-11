@@ -55,5 +55,10 @@ public class ValueSetDefinitionResourceInfo implements ResourceInfo<ValueSetDefi
 	public String getUriXpath() {
 		return "@documentURI";
 	}
+
+	@Override
+	public String getResourceNameXpath() {
+		throw new UnsupportedOperationException();
+	}
 	
 }

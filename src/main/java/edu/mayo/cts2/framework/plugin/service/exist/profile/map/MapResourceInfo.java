@@ -40,4 +40,9 @@ public class MapResourceInfo extends AbstractNameOrUriResourceInfo<MapCatalogEnt
 	public String getUriXpath() {
 		return "@about";
 	}
+
+	@Override
+	public String getResourceNameXpath() {
+		return "@mapName";
+	}
 }

@@ -20,12 +20,15 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 
@@ -41,6 +44,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.SummaryTransform;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
@@ -94,33 +98,118 @@ public abstract class AbstractExistQueryService
 			String xpath,
 			int start, int max) {
 		
-		return this.getResourceSummaries(null, collectionPath, xpath, start, max);
+		return this.getResourceSummaries(null, null, collectionPath, xpath, start, max);
 	}
 	
 	public DirectoryResult<Summary> getResourceSummaries(
+			ResourceInfo<?,?> resourceInfo,
 			String changeSetUri,
 			String collectionPath, 
 			String xpath,
 			int start, int max) {
 		
-		String changeSetDir = null;
-		if(StringUtils.isNotBlank(changeSetUri)){
-			changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
-		}
-		
 		String queryString = this.getResourceInfo().getResourceXpath() + (StringUtils.isNotBlank(xpath) ? xpath : "");
-		
-		collectionPath = ExistServiceUtils.createPath(
-				changeSetDir,
+
+		String allResourcesCollectionPath = ExistServiceUtils.createPath(
 				this.getResourceInfo().getResourceBasePath(),
 				collectionPath);
 
-		ResourceSet collection = this.getExistResourceDao().query(
-				collectionPath, queryString, start, max);
+		ResourceSet collection;
 
+		if(StringUtils.isNotBlank(changeSetUri)){
+			String changeSetDir = 
+					ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+	
+			String changeSetSpecificCollectionPath = ExistServiceUtils.createPath(
+					changeSetDir,
+					this.getResourceInfo().getResourceBasePath(),
+					collectionPath);
+	
+			try {
+				ResourceSet changeSetResources = 
+						this.existResourceDao.query(
+								changeSetSpecificCollectionPath, 
+									queryString, start, max);
+				
+				ResourceSet rs = 
+						this.existResourceDao.query(
+								changeSetSpecificCollectionPath, 
+									"string-join(/"+resourceInfo.getResourceXpath() + "/" + resourceInfo.getResourceNameXpath() +", '<->')", start, max);
+			
+				ResourceIterator itr = rs.getIterator();
+				if(itr.hasMoreResources()){
+					String names = itr.nextResource().getContent().toString();
+					
+					String[] namesArray = StringUtils.split(names, "<->");
 
-		return this.getResourceSummaries(collection, xpath, start, max,
+					XqueryExceptClauseBuilder builder = new XqueryExceptClauseBuilder(resourceInfo.getResourceNameXpath());
+					for(int i=0;i<namesArray.length;i++){
+						builder.except(namesArray[i]);
+					}
+		
+					queryString = queryString + " except " + resourceInfo.getResourceXpath() + builder.build();
+				}
+				
+				collection = this.getExistResourceDao().query(
+						allResourcesCollectionPath, queryString, start, max);
+				
+				ResourceIterator changeSetItr = changeSetResources.getIterator();
+				
+				while(changeSetItr.hasMoreResources()){
+					collection.addResource(changeSetItr.nextResource());
+				}
+				
+			} catch (XMLDBException e) {
+				throw new IllegalStateException(e);
+			}
+		} else {
+			collection = this.getExistResourceDao().query(
+					allResourcesCollectionPath, queryString, start, max);
+		}
+
+		return this.getResourceSummaries(collection, queryString, start, max,
 				transform);
+	}
+	
+	protected static class XqueryExceptClauseBuilder {
+		
+		private Set<String> query = new TreeSet<String>();
+		private String resourceNamePath;
+		
+		protected XqueryExceptClauseBuilder(String resourceNamePath){
+			this.resourceNamePath = resourceNamePath;
+		}
+		
+		protected XqueryExceptClauseBuilder except(String query){
+			this.query.add(query);
+			return this;
+		}
+		
+		protected String build(){
+			if(this.query.isEmpty()){
+				return "";
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+			
+			Iterator<String> itr = this.query.iterator();
+			
+			while(itr.hasNext()){
+				String name = itr.next();
+				sb.append(" ");
+				sb.append(resourceNamePath);
+				sb.append(" = '");
+				sb.append(name);
+				sb.append("'");
+				if(itr.hasNext()){
+					sb.append(" or");
+				}
+			}
+			
+			sb.append("]");
+			
+			return sb.toString();
+		}
 	}
 	
 	private DirectoryResult<Summary> getResourceSummaries(
@@ -205,7 +294,12 @@ public abstract class AbstractExistQueryService
 		return returnSet;
 	}
 	
-	protected abstract StateUpdater<S> getResourceNameStateUpdater();
+	private StateUpdater<S> getResourceNameStateUpdater(){
+		
+		return new XpathStateUpdater<S>(
+				this.getResourceInfo().getResourceNameXpath());
+		
+	}
 
 	public void setUrlConstructor(UrlConstructor urlConstructor) {
 		this.urlConstructor = urlConstructor;

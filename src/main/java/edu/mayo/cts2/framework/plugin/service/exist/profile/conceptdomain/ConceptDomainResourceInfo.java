@@ -40,4 +40,9 @@ public class ConceptDomainResourceInfo extends AbstractNameOrUriResourceInfo<Con
 	public String getUriXpath() {
 		return "@about";
 	}
+
+	@Override
+	public String getResourceNameXpath() {
+		return "@conceptDomainName";
+	}
 }

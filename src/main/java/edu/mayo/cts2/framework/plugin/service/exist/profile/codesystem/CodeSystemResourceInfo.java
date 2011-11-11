@@ -41,4 +41,9 @@ public class CodeSystemResourceInfo extends AbstractNameOrUriResourceInfo<CodeSy
 		return "@about";
 	}
 
+	@Override
+	public String getResourceNameXpath() {
+		return "@codeSystemName";
+	}
+
 }

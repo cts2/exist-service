@@ -16,6 +16,8 @@ public interface ResourceInfo<R,I> {
 	
 	public String getUriXpath();
 	
+	public String getResourceNameXpath();
+	
 	public String getResourceXpath();
 	
 	public String getResourceBasePath();

@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
 import edu.mayo.cts2.framework.model.association.AssociationGraph;
@@ -106,12 +105,6 @@ public class ExistAssociationQueryService
 	@Override
 	protected ResourceInfo<Association, AssociationReadId> getResourceInfo() {
 		return this.associationResourceInfo;
-	}
-
-	@Override
-	protected StateUpdater<XpathState> getResourceNameStateUpdater() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

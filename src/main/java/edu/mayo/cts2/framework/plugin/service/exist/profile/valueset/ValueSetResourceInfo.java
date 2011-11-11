@@ -41,4 +41,9 @@ public class ValueSetResourceInfo extends AbstractNameOrUriResourceInfo<ValueSet
 		return "@about";
 	}
 
+	@Override
+	public String getResourceNameXpath() {
+		return "@valueSetName";
+	}
+
 }

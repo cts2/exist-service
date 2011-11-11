@@ -11,28 +11,4 @@ class ExistCodeSystemQueryServiceTest {
 
 	ExistCodeSystemQueryService service = new ExistCodeSystemQueryService()
 	
-	@Test
-	void stateBuilderOneRestriction(){
-		def builder = new ExistCodeSystemQueryService$CodeSystemNameStateUpdater()
-		
-		def state = new XpathState()
-		
-		def updatedState = builder.updateState(state, null, "testCsName")
-		
-		assertEquals "//codesystem:CodeSystemCatalogEntry[@codeSystemName = 'testCsName']", updatedState.getXpath()
-	}
-	
-	@Test
-	void stateBuilderTwoRestrictions(){
-		def builder = new ExistCodeSystemQueryService$CodeSystemNameStateUpdater()
-		
-		def state = new XpathState(xpath:"test:test[@someOtherThing = 'test']")
-		
-		def updatedState = builder.updateState(state, null, "testCsName")
-		
-		assertEquals "test:test[@someOtherThing = 'test'] //codesystem:CodeSystemCatalogEntry[@codeSystemName = 'testCsName']", 
-			updatedState.getXpath()
-	}
-	
-	
 }

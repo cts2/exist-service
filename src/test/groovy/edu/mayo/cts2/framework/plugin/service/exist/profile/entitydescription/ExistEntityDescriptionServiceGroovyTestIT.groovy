@@ -1,7 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription
 
-import static org.junit.Assert.*
-
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -25,6 +23,33 @@ import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQuer
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
 
+import static org.junit.Assert.*
+
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+import edu.mayo.cts2.framework.model.command.Page
+import edu.mayo.cts2.framework.model.command.ResolvedFilter
+import edu.mayo.cts2.framework.model.core.ChangeDescription
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
+import edu.mayo.cts2.framework.model.core.CodeSystemReference
+import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
+import edu.mayo.cts2.framework.model.core.ModelAttributeReference
+import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
+import edu.mayo.cts2.framework.model.core.ScopedEntityName
+import edu.mayo.cts2.framework.model.core.TsAnyType
+import edu.mayo.cts2.framework.model.core.URIAndEntityName
+import edu.mayo.cts2.framework.model.core.types.ChangeType
+import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
+import edu.mayo.cts2.framework.model.entity.Designation
+import edu.mayo.cts2.framework.model.entity.EntityDescription
+import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
+import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
+import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
+import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
+
 class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
 	@Autowired
@@ -36,6 +61,21 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 	@Autowired
 	ExistEntityDescriptionMaintenanceService maint
 
+	@Test
+	void "Get_Entity_Description_Summaries_With_Page_Limit"(){
+		
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+		maint.createResource(createEntity("something",changeSetUri))
+		maint.createResource(createEntity("name",changeSetUri))
+
+		changeSetService.commitChangeSet(changeSetUri)
+		
+		def summaries = query.getResourceSummaries(null, null, null, null, new Page(maxtoreturn:1))
+
+		assertEquals 1, summaries.entries.size
+	}
+	
 	@Test 
 	void "Get_Entity_Description_Summaries_With_Contains_ResourceNameOrUri_Restriction"(){
 		
@@ -50,6 +90,26 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"name",
 		        modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
+				referenceType:TargetReferenceType.ATTRIBUTE)
+		
+		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+
+		assertEquals 1, summaries.entries.size
+	}
+	
+	@Test
+	void "Get_Entity_Description_Summaries_With_Contains_ResourceSynopsis_Restriction"(){
+		
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+		maint.createResource(createEntity("something",changeSetUri,"aname"))
+
+		changeSetService.commitChangeSet(changeSetUri)
+		
+		def fc = new ResolvedFilter(
+				matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
+				matchValue:"aname",
+				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_SYNOPSIS_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
 		
 		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
@@ -201,7 +261,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		assertEquals 0, summaries.entries.size
 	}
 
-	EntityDescription createEntity(name,changeSetUri){
+	EntityDescription createEntity(name,changeSetUri,description){
 		def entry = new NamedEntityDescription(about:"about")
 		entry.setEntityID(new ScopedEntityName(name:name, namespace:"ns"))
 		entry.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
@@ -209,6 +269,9 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		entry.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
 		entry.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
 		entry.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+		if(description != null){
+			entry.addDesignation(new Designation(value:new TsAnyType(content:description)))
+		}
 
 		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
 
@@ -221,4 +284,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		new EntityDescription(namedEntity:entry)
 	}
 
+	EntityDescription createEntity(name,changeSetUri){
+		createEntity(name,changeSetUri,null)
+	}
 }

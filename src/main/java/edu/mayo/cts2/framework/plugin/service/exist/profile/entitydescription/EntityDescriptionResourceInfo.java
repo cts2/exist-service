@@ -64,4 +64,9 @@ public class EntityDescriptionResourceInfo implements ResourceInfo<EntityDescrip
 		return "*/@about";
 	}
 
+	@Override
+	public String getResourceNameXpath() {
+		return ".//entity:entityID/core:name/text()";
+	}
+
 }
