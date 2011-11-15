@@ -1,8 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -11,15 +9,16 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Iterables;
-
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
+import edu.mayo.cts2.framework.model.core.CodeSystemReference;
+import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
 import edu.mayo.cts2.framework.model.core.EntityReferenceList;
+import edu.mayo.cts2.framework.model.core.NameAndMeaningReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.core.VersionTagReference;
@@ -29,6 +28,7 @@ import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
+import edu.mayo.cts2.framework.model.entity.types.DesignationRole;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURIList;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -88,11 +88,11 @@ public class ExistEntityDescriptionQueryService
 					ExistServiceUtils.getExternalEntityName(scopedName, codeSystemName)));
 		}
 		
-		summary.setKnownEntityDescription(
-				getDescriptionsInCodeSystemVersion(
+		summary.addKnownEntityDescription(
+				getDescriptionInCodeSystemVersion(
 					 codeSystemName,
 					 codeSystemVersionName,
-						base));
+					 base));
 		
 		
 		return summary;
@@ -105,7 +105,11 @@ public class ExistEntityDescriptionQueryService
 			EntityDescriptionQueryServiceRestrictions restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-		EntityDescriptionDirectoryBuilder builder = new EntityDescriptionDirectoryBuilder();
+		
+	    String changeSetUri = readContext != null ? readContext.getChangeSetContextUri() : null;
+	    
+		EntityDescriptionDirectoryBuilder builder =
+				new EntityDescriptionDirectoryBuilder(changeSetUri);
 		
 		return builder.
 				restrict(restrictions).
@@ -156,7 +160,7 @@ public class ExistEntityDescriptionQueryService
 
 	private class EntityDescriptionDirectoryBuilder extends XpathDirectoryBuilder<EntityDescriptionDirectoryState,EntityDirectoryEntry> {
 
-		public EntityDescriptionDirectoryBuilder() {
+		public EntityDescriptionDirectoryBuilder(final String changeSetUri) {
 			super(new EntityDescriptionDirectoryState(), 
 					new Callback<EntityDescriptionDirectoryState, EntityDirectoryEntry>() {
 
@@ -166,6 +170,8 @@ public class ExistEntityDescriptionQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							ExistServiceUtils.createPath(state.getCodeSystemVersion()),
 							state.getXpath(), 
 							start, 
@@ -215,34 +221,67 @@ public class ExistEntityDescriptionQueryService
 			return this;
 		}
 	}
-
-	private DescriptionInCodeSystem[] getDescriptionsInCodeSystemVersion(
-			String codeSystem,
-			String codeSystemVersion,
-			EntityDescriptionBase entity){
-		List<DescriptionInCodeSystem> returnList = new ArrayList<DescriptionInCodeSystem>();
-		
-		for(Designation designation : entity.getDesignation()){
-			DescriptionInCodeSystem description = new DescriptionInCodeSystem();
-			description.setDesignation(designation.getValue().getContent());
 	
-			designation.setAssertedInCodeSystemVersion(
-					entity.getDescribingCodeSystemVersion());
-			designation.getAssertedInCodeSystemVersion().
-				getCodeSystem().
-					setHref(this.getUrlConstructor().createCodeSystemUrl(codeSystem));
-			
-			designation.getAssertedInCodeSystemVersion().getVersion().
-					setHref(this.getUrlConstructor().createCodeSystemVersionUrl(codeSystem,codeSystemVersion));
-			
-			description.setDescribingCodeSystemVersion(designation.getAssertedInCodeSystemVersion());
-			
-			returnList.add(description);
+	private Designation getPreferredDesignation(EntityDescriptionBase entity){
+		if(entity.getDesignationCount() == 1){
+			return entity.getDesignation(0);
 		}
 		
-		return Iterables.toArray(returnList, DescriptionInCodeSystem.class);
+		for(Designation designation : entity.getDesignation()){
+			if(designation.getDesignationRole().equals(DesignationRole.PREFERRED)){
+				return designation;
+			}
+		}
+		
+		return null;
 	}
 
+	private DescriptionInCodeSystem getDescriptionInCodeSystemVersion(
+			String codeSystem, 
+			String codeSystemVersion,
+			EntityDescriptionBase entity) {
+
+		Designation designation = this.getPreferredDesignation(entity);
+
+		DescriptionInCodeSystem description = new DescriptionInCodeSystem();
+		
+		if(designation != null && designation.getValue() != null){
+			description.setDesignation(designation.getValue().getContent());
+		}
+
+		description.setDescribingCodeSystemVersion(
+				this.buildCodeSystemVersionReference(codeSystem, codeSystemVersion));
+		
+		description.setHref(this.getUrlConstructor().createEntityUrl(codeSystem, codeSystemVersion, entity.getEntityID()));
+
+		return description;
+	}
+	
+	protected CodeSystemVersionReference buildCodeSystemVersionReference(String codeSystemName, String codeSystemVersionName){
+		CodeSystemVersionReference ref = new CodeSystemVersionReference();
+		
+		ref.setCodeSystem(this.buildCodeSystemReference(codeSystemName));
+		
+		NameAndMeaningReference version = new NameAndMeaningReference();
+		version.setContent(codeSystemVersionName);
+	
+		version.setHref(this.getUrlConstructor().createCodeSystemVersionUrl(codeSystemName, codeSystemVersionName));
+			
+		ref.setVersion(version);
+		
+		return ref;
+	}
+	
+	protected CodeSystemReference buildCodeSystemReference(String codeSystemName){
+		CodeSystemReference codeSystemReference = new CodeSystemReference();
+		String codeSystemPath = this.getUrlConstructor().createCodeSystemUrl(codeSystemName);
+
+		codeSystemReference.setContent(codeSystemName);
+		codeSystemReference.setHref(codeSystemPath);
+		
+		return codeSystemReference;
+	}
+	
 	@Override
 	protected EntityDirectoryEntry createSummary() {
 		return new EntityDirectoryEntry();
