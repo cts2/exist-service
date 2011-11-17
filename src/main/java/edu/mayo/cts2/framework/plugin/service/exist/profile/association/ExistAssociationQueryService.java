@@ -8,8 +8,9 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
-import edu.mayo.cts2.framework.model.association.AssociationGraph;
+import edu.mayo.cts2.framework.model.association.GraphNode;
 import edu.mayo.cts2.framework.model.association.types.GraphDirection;
+import edu.mayo.cts2.framework.model.association.types.GraphFocus;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
@@ -128,17 +129,22 @@ public class ExistAssociationQueryService
 	}
 
 	@Override
-	public AssociationGraph getAssociationGraph(EntityDescriptionReadId focus,
-			GraphDirection direction, long depth) {
+	public DirectoryResult<GraphNode> getAssociationGraph(
+			GraphFocus focusType,
+			EntityDescriptionReadId focusEntity, 
+			GraphDirection direction,
+			long depth) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public DirectoryResult<EntityDirectoryEntry> getChildrenAssociationsOfEntity(
-			Query query, Set<ResolvedFilter> filterComponent,
+			Query query, 
+			Set<ResolvedFilter> filterComponent,
 			EntityDescriptionReadId entity,
 			AssociationQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext, Page page) {
+			ResolvedReadContext readContext, 
+			Page page) {
 		throw new UnsupportedOperationException();
 	}
 

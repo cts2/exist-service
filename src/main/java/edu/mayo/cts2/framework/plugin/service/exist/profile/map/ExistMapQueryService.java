@@ -49,21 +49,11 @@ public class ExistMapQueryService
 	protected MapCatalogEntrySummary createSummary() {
 		return new MapCatalogEntrySummary();
 	}
-	private class CodeSystemNameStateUpdater implements StateUpdater<XpathState> {
-
-		@Override
-		public XpathState updateState(XpathState currentState, MatchAlgorithmReference matchAlgorithm, String queryString) {
-			currentState.setXpath("codesystem:CodeSystemCatalogEntry/@codeSystemName = '"
-						+ queryString + "'");
-
-			return currentState;
-		}
-	}
 
 	private class MapDirectoryBuilder extends
 			XpathDirectoryBuilder<XpathState,MapCatalogEntrySummary> {
 
-		public MapDirectoryBuilder() {
+		public MapDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, MapCatalogEntrySummary>() {
 
 				@Override
@@ -71,6 +61,8 @@ public class ExistMapQueryService
 						XpathState state, int start, int maxResults) {
 					
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"", 
 							state.getXpath(), 
 							start,
@@ -95,7 +87,8 @@ public class ExistMapQueryService
 			MapQueryServiceRestrictions restrictions, 
 			ResolvedReadContext readContext,
 			Page page) {
-		MapDirectoryBuilder builder = new MapDirectoryBuilder();
+		MapDirectoryBuilder builder = new MapDirectoryBuilder(
+				readContext.getChangeSetContextUri());
 
 		return builder.restrict(filterComponent).addStart(page.getStart())
 				.addMaxToReturn(page.getMaxToReturn()).resolve();
@@ -112,11 +105,11 @@ public class ExistMapQueryService
 	}
 
 	@Override
-	public int count(Query query, Set<ResolvedFilter> filterComponent,
+	public int count(
+			Query query, 
+			Set<ResolvedFilter> filterComponent,
 			MapQueryServiceRestrictions restrictions) {
-		MapDirectoryBuilder builder = new MapDirectoryBuilder();
-
-		return builder.restrict(filterComponent).count();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
