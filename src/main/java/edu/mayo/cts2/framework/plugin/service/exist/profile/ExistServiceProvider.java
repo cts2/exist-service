@@ -18,9 +18,15 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import edu.mayo.cts2.framework.core.config.option.Option;
+import edu.mayo.cts2.framework.core.config.option.StringOption;
+import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 import edu.mayo.cts2.framework.service.provider.AbstractSpringServiceProvider;
 
 /**
@@ -47,5 +53,22 @@ public class ExistServiceProvider extends AbstractSpringServiceProvider {
 				new ClassPathXmlApplicationContext(new String[]{"exist-validation-test-context.xml"}, parent);
 		
 		return ctx;
+	}
+
+	@Override
+	public Set<Option> getPluginOptions() {
+		Option existHome = new StringOption(ExistServiceConstants.EXIST_HOME_PROP, "");
+		Option password = new StringOption(ExistServiceConstants.PASSWORD_PROP, "");
+		Option url = new StringOption(ExistServiceConstants.URL_PROP, "");
+		Option userName = new StringOption(ExistServiceConstants.USER_NAME_PROP, "");
+		
+		Set<Option> options = new HashSet<Option>();
+		
+		options.add(existHome);
+		options.add(password);
+		options.add(url);
+		options.add(userName);
+		
+		return options;
 	}
 }

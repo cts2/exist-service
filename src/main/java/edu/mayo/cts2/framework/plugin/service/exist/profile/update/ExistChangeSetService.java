@@ -17,10 +17,13 @@ import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
 import edu.mayo.cts2.framework.model.core.OpaqueData;
 import edu.mayo.cts2.framework.model.core.SourceReference;
+import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
+import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService;
@@ -38,6 +41,9 @@ public class ExistChangeSetService implements ChangeSetService {
 	
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
+	
+	@Autowired
+	private ResourceMarshaller resourceMarshaller;
 	
 	@Override
 	public ChangeSet readChangeSet(String changeSetUri) {
@@ -98,9 +104,21 @@ public class ExistChangeSetService implements ChangeSetService {
 
 				String resourceId = StringUtils.removeSuffix(resource.getId(), ".xml");
 				
-				log.info("Moving resource: " + resource.getParentCollection().getName() + resourceId +
-					"To: " + parentCollectionName + resourceId);
-	
+				if(log.isDebugEnabled()){
+					log.debug("Moving resource: " + resource.getParentCollection().getName() + resourceId +
+						"To: " + parentCollectionName + resourceId);
+				}
+		
+				Object resourcObj = 
+						this.resourceUnmarshaller.unmarshallResource(resource);
+				
+				ModelUtils.getChangeableElementGroup(resourcObj).
+					getChangeDescription().
+						setCommitted(ChangeCommitted.COMMITTED);
+				
+				resource.setContent(
+						resourceMarshaller.marshallResource(resourcObj));
+
 				this.existResourceDao.storeResource(parentCollectionName, resourceId, resource);
 			}
 			

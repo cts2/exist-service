@@ -22,13 +22,9 @@ import org.xmldb.api.modules.XUpdateQueryService;
 import edu.mayo.cts2.framework.core.config.PluginConfig;
 import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
+import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 
-public class ExistManager implements InitializingBean {
-	
-	private static final String USER_NAME_PROP = "exist.username";
-	private static final String PASSWORD_PROP = "exist.password";
-	private static final String URL_PROP = "exist.url";
-	private static final String EXIST_HOME_PROP = "exist.home";
+public class ExistManager implements InitializingBean {	
 	
 	@javax.annotation.Resource
 	private PluginConfig pluginConfig;
@@ -52,7 +48,7 @@ public class ExistManager implements InitializingBean {
 		setPropertiesFromConfig();
 		
 		if(StringUtils.isNotBlank(this.existHome)){
-			System.setProperty(EXIST_HOME_PROP, this.existHome);
+			System.setProperty(ExistServiceConstants.EXIST_HOME_PROP, this.existHome);
 			System.setProperty("exist.initdb", "true");
 		}
 		
@@ -108,10 +104,10 @@ public class ExistManager implements InitializingBean {
 	}
 	
 	protected void setPropertiesFromConfig() {
-		this.uri = this.pluginConfig.getStringOption(URL_PROP).getOptionValue();
-		this.existHome = this.pluginConfig.getStringOption(EXIST_HOME_PROP).getOptionValue();
-		this.userName = this.pluginConfig.getStringOption(USER_NAME_PROP).getOptionValue();
-		this.password = this.pluginConfig.getStringOption(PASSWORD_PROP).getOptionValue();
+		this.uri = this.pluginConfig.getStringOption(ExistServiceConstants.URL_PROP).getOptionValue();
+		this.existHome = this.pluginConfig.getStringOption(ExistServiceConstants.EXIST_HOME_PROP).getOptionValue();
+		this.userName = this.pluginConfig.getStringOption(ExistServiceConstants.USER_NAME_PROP).getOptionValue();
+		this.password = this.pluginConfig.getStringOption(ExistServiceConstants.PASSWORD_PROP).getOptionValue();
 	}
 
 	public Collection getOrCreateCollection(String path) throws XMLDBException {

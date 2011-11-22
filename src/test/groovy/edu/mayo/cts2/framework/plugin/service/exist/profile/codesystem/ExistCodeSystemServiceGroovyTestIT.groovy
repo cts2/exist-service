@@ -13,10 +13,12 @@ import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference
 import edu.mayo.cts2.framework.model.core.ModelAttributeReference
+import edu.mayo.cts2.framework.model.core.types.ChangeCommitted
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.mapversion.*
 import edu.mayo.cts2.framework.model.service.core.NameOrURI
+import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
@@ -120,6 +122,27 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
 		assertEquals 1, query.getResourceSummaries(
 			null, [filter] as Set, null, null, new Page()).entries.size()
+	}
+	
+	@Test void TestCommittedChangeStatus(){
+		
+		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def cs1 = new CodeSystemCatalogEntry(about:"about",codeSystemName:"name")
+		cs1.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				committed: ChangeCommitted.PENDING,
+				changeType: ChangeType.CREATE,
+				changeDate: new Date(),
+				containingChangeSet: changeSetUri1)))
+		
+		maint.createResource(cs1)
+		changeSetService.commitChangeSet(changeSetUri1)
+		
+		def csFromRead = read.read(ModelUtils.nameOrUriFromName("name"), null);
+
+		assertEquals ChangeCommitted.COMMITTED, 
+			csFromRead.getChangeableElementGroup().getChangeDescription().getCommitted()
 	}
 	
 	@Test void TestQueryWithOpenAndCommittedChangeSetNoReadContext(){
