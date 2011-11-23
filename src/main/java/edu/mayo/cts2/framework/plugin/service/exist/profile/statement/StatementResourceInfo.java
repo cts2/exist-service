@@ -48,7 +48,7 @@ public class StatementResourceInfo implements ResourceInfo<Statement,String> {
 
 	@Override
 	public String getExistResourceNameFromResource(Statement resource) {
-		return resource.getStatementURI();
+		return ExistServiceUtils.uriToExistName(resource.getStatementURI());
 	}
 	
 	@Override
@@ -58,8 +58,7 @@ public class StatementResourceInfo implements ResourceInfo<Statement,String> {
 
 	@Override
 	public String getResourceNameXpath() {
-		throw new UnsupportedOperationException("Cannot reference Statement by name.");
-
+		return "@statementURI";
 	}
 
 }

@@ -105,11 +105,9 @@ public class ExistEntityDescriptionQueryService
 			EntityDescriptionQueryServiceRestrictions restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-		
-	    String changeSetUri = readContext != null ? readContext.getChangeSetContextUri() : null;
-	    
+		  
 		EntityDescriptionDirectoryBuilder builder =
-				new EntityDescriptionDirectoryBuilder(changeSetUri);
+				new EntityDescriptionDirectoryBuilder(this.getChangeSetUri(readContext));
 		
 		return builder.
 				restrict(restrictions).

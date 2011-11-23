@@ -1,10 +1,15 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
+import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
+import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
@@ -32,6 +37,15 @@ public class StateChangeCallback {
 		String changeSetUri = changeDescription.
 					getContainingChangeSet();
 		
+		this.addToChangeSet(changeSetUri, changeable);
+	}
+	
+	public void resourceDeleted(ChangeableResourceChoice changeable, String changeSetUri) {
+
+		this.addToChangeSet(changeSetUri, changeable);
+	}
+	
+	protected void addToChangeSet(String changeSetUri, ChangeableResourceChoice changeable){
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
 		Resource resource = 
@@ -47,7 +61,7 @@ public class StateChangeCallback {
 		changeSet.setEntryCount(count);
 		
 		changeSet.addMember(changeable);
-		
+
 		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
 	}
 	

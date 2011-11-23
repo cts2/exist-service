@@ -13,9 +13,13 @@ public interface ExistResourceDao {
 	
 	public void storeResource(String path, String resourceName, Object resource);
 	
+	public void storeBinaryResource(String path, String resourceName, Object resource);
+	
 	public void deleteResource(String path, String name);
 	
 	public Resource getResource(String path, String name);
+	
+	public Resource getBinaryResource(String path, String name);
 	
 	public Resource getResourceByXpath(String collectionPath, String xpathQuery);
 

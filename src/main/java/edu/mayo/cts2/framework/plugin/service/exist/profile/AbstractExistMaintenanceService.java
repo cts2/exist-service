@@ -18,12 +18,15 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.xmldb.api.base.Resource;
-import org.xmldb.api.base.XMLDBException;
 
+import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
-import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
+import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
+import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseMaintenanceService;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
@@ -49,13 +52,27 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 	}
 
 	@Override
-	public void deleteResource(I identifier) {
+	public void deleteResource(I identifier, String changeSetUri) {
 		Resource resource = this.getResource(identifier);
-		try {
-			resource.getParentCollection().removeResource(resource);
-		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
-		}
+		
+		@SuppressWarnings("unchecked")
+		R changeable = (R) this.getResourceUnmarshaller().unmarshallResource(resource);
+		
+		ChangeableElementGroup group = ModelUtils.
+				getChangeableElementGroup(changeable);
+		
+		ChangeDescription changeDescription = new ChangeDescription();
+		
+		changeDescription.setChangeDate(new Date());
+		changeDescription.setChangeType(ChangeType.DELETE);
+		changeDescription.setCommitted(ChangeCommitted.PENDING);
+		changeDescription.setContainingChangeSet(changeSetUri);
+		
+		group.setChangeDescription(changeDescription);
+
+		ChangeableResourceChoice choice = this.doStoreResource(changeable);
+		
+		this.stateChangeCallback.resourceDeleted(choice, changeSetUri);
 	}
 
 	@Override
@@ -64,7 +81,16 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 	}
 
 	@Override
-	public void createResource(R resource) {
+	public R createResource(R resource) {
+	
+		ChangeableResourceChoice choice = this.doStoreResource(resource);
+		
+		this.stateChangeCallback.resourceAdded(choice);
+		
+		return resource;
+	}
+	
+	protected ChangeableResourceChoice doStoreResource(R resource){
 		String path = 
 				this.getResourceInfo().createPathFromResource(resource);
 
@@ -87,9 +113,9 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 	
 		this.getExistResourceDao().storeResource(wholePath, name, resource);
 		
-		this.stateChangeCallback.resourceAdded(choice);
+		return choice;
 	}
-	
+
 	protected abstract void addResourceToChangeableResourceChoice(ChangeableResourceChoice choice, R resource);
 
 }

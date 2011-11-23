@@ -13,6 +13,7 @@ import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
+import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId
 
@@ -22,7 +23,7 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
   @Autowired var maintService: ExistAssociationMaintenanceService = null
   @Autowired var queryService: ExistAssociationQueryService = null
  
-  override def getName():String = {"someUri"}
+  override def getName():String = {"someLocalName"}
     
   override def getUri():String = {"someUri"}
    
@@ -34,14 +35,15 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
      queryService.getResourceSummaries(null,null,null,null,new Page());
   }
    
-  def createAssociation(name: String,changeSetUri:String):Association = {
+  def createAssociation(name: String,uri: String, changeSetUri:String):Association = {
     var entry = new Association()
-    entry.setAssociationID(name)
+    entry.setAssociationID(uri)
     entry.setSubject(new URIAndEntityName())
     entry.getSubject().setName("name")
     entry.getSubject().setNamespace("namespace")
 
     entry.addTarget(new StatementTarget())
+    entry.getTarget(0).setExternalIdentifier(name)
     entry.getTarget(0).setEntity(new URIAndEntityName())
     entry.getTarget(0).getEntity().setName("name")
     entry.getTarget(0).getEntity().setNamespace("namespace")
@@ -59,20 +61,20 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
   }
   
   def createResource(name: String, uri:String, changeSetUri:String) = {
-    var entry = createAssociation(uri,changeSetUri)
+    var entry = createAssociation(name,uri,changeSetUri)
     
     maintService.createResource(entry)
 
   }
 
-  def getResource(uri: String): Association = {
-    var id = new AssociationReadId(uri, "csv")
+  def getResource(name: String): Association = {
+    var id = new AssociationReadId(name, ModelUtils.nameOrUriFromName("csv"))
   
     readService.read(id, null)
   }
   
       def getResourceByUri(uri:String):Association = {
-         var id = new AssociationReadId(uri, "csv")
+         var id = new AssociationReadId(uri)
     	readService.read(id, null)
     }
 

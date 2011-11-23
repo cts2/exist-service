@@ -118,14 +118,9 @@ public class ExistCodeSystemQueryService
 			Void restrictions, 
 			ResolvedReadContext readContext,
 			Page page) {
-
-		String changeSetUri = null;
-		if(readContext != null){
-			changeSetUri = readContext.getChangeSetContextUri();
-		}
-		
+	
 		CodeSystemDirectoryBuilder builder = 
-				new CodeSystemDirectoryBuilder(changeSetUri);
+				new CodeSystemDirectoryBuilder(this.getChangeSetUri(readContext));
 		
 		return 
 			builder.restrict(filterComponent).

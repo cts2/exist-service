@@ -52,7 +52,7 @@ public class ExistValueSetQueryService
 
 	private class ValueSetDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ValueSetCatalogEntrySummary> {
 
-		public ValueSetDirectoryBuilder() {
+		public ValueSetDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, ValueSetCatalogEntrySummary>() {
 
 				@Override
@@ -61,6 +61,8 @@ public class ExistValueSetQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"",
 							state.getXpath(), 
 							start, 
@@ -85,7 +87,8 @@ public class ExistValueSetQueryService
 			ResolvedReadContext readContext,
 			Page page) {
 
-	ValueSetDirectoryBuilder builder = new ValueSetDirectoryBuilder();
+	ValueSetDirectoryBuilder builder =
+			new ValueSetDirectoryBuilder(this.getChangeSetUri(readContext));
 	
 	return 
 		builder.restrict(filterComponent).
@@ -109,11 +112,7 @@ public class ExistValueSetQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			ValueSetQueryServiceRestrictions restrictions) {
-		ValueSetDirectoryBuilder builder = new ValueSetDirectoryBuilder();
-		
-		return 
-				builder.restrict(filterComponent).
-					count();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

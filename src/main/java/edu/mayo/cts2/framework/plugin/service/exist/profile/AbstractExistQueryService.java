@@ -35,6 +35,7 @@ import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.core.url.UrlConstructor;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.ResourceDescription;
 import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
@@ -93,12 +94,8 @@ public abstract class AbstractExistQueryService
 		return DESCRIPTION;
 	}
 
-	public DirectoryResult<Summary> getResourceSummaries(
-			String collectionPath, 
-			String xpath,
-			int start, int max) {
-		
-		return this.getResourceSummaries(null, null, collectionPath, xpath, start, max);
+	protected String getChangeSetUri(ResolvedReadContext readContext){
+		return readContext == null ? null : readContext.getChangeSetContextUri();
 	}
 	
 	public DirectoryResult<Summary> getResourceSummaries(
@@ -106,7 +103,8 @@ public abstract class AbstractExistQueryService
 			String changeSetUri,
 			String collectionPath, 
 			String xpath,
-			int start, int max) {
+			int start, 
+			int max) {
 		
 		String queryString = this.getResourceInfo().getResourceXpath() + (StringUtils.isNotBlank(xpath) ? xpath : "");
 
@@ -136,6 +134,8 @@ public abstract class AbstractExistQueryService
 								changeSetSpecificCollectionPath, 
 									"string-join(/"+resourceInfo.getResourceXpath() + "/" + resourceInfo.getResourceNameXpath() +", '<->')", start, max);
 			
+				String allResourcesQueryString;
+				
 				ResourceIterator itr = rs.getIterator();
 				if(itr.hasMoreResources()){
 					String names = itr.nextResource().getContent().toString();
@@ -147,12 +147,23 @@ public abstract class AbstractExistQueryService
 						builder.except(namesArray[i]);
 					}
 		
-					queryString = queryString + " except " + resourceInfo.getResourceXpath() + builder.build();
+					allResourcesQueryString = queryString + " except " + resourceInfo.getResourceXpath() + builder.build();
+				} else {
+					allResourcesQueryString = queryString;
 				}
 				
 				collection = this.getExistResourceDao().query(
-						allResourcesCollectionPath, queryString, start, max);
+						allResourcesCollectionPath, allResourcesQueryString, start, max);
 				
+				queryString = queryString + " except " + resourceInfo.getResourceXpath() + "[core:changeDescription/@changeType='DELETE']";
+
+				changeSetResources = 
+						this.existResourceDao.query(
+								changeSetSpecificCollectionPath, 
+									queryString, 
+									start, 
+									max);
+
 				ResourceIterator changeSetItr = changeSetResources.getIterator();
 				
 				while(changeSetItr.hasMoreResources()){

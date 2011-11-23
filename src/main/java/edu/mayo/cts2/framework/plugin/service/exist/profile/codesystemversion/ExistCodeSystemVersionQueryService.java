@@ -36,7 +36,7 @@ public class ExistCodeSystemVersionQueryService
 	
 	private class CodeSystemVersionDirectoryBuilder extends XpathDirectoryBuilder<XpathState,CodeSystemVersionCatalogEntrySummary> {
 
-		public CodeSystemVersionDirectoryBuilder(final String codeSystem) {
+		public CodeSystemVersionDirectoryBuilder(final String codeSystem, final String changeSetUri) {
 			super(new XpathState(), 
 					new Callback<XpathState, CodeSystemVersionCatalogEntrySummary>() {
 
@@ -46,6 +46,8 @@ public class ExistCodeSystemVersionQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"",
 							getCodeSystemXpath(codeSystem), 
 							start, 
@@ -107,7 +109,9 @@ public class ExistCodeSystemVersionQueryService
 			ResolvedReadContext readContext,
 			Page page) {
 		CodeSystemVersionDirectoryBuilder builder = 
-				new CodeSystemVersionDirectoryBuilder(restrictions.getCodeSystem().getName());
+				new CodeSystemVersionDirectoryBuilder(
+						this.getRestrictedCodeSystemName(restrictions), 
+						this.getChangeSetUri(readContext));
 		
 		return builder.
 				restrict(filterComponent).
@@ -115,6 +119,15 @@ public class ExistCodeSystemVersionQueryService
 				addMaxToReturn(page.getEnd()).
 				addStart(page.getStart()).
 				resolve();
+	}
+	
+	private String getRestrictedCodeSystemName(
+			CodeSystemVersionQueryServiceRestrictions restrictions){
+		if(restrictions != null && restrictions.getCodeSystem() != null){
+			return restrictions.getCodeSystem().getName();
+		}
+		
+		return null;
 	}
 
 	@Override

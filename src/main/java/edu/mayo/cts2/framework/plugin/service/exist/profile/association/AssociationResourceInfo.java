@@ -24,12 +24,12 @@ public class AssociationResourceInfo implements ResourceInfo<Association,Associa
 	
 	@Override
 	public boolean isReadByUri(AssociationReadId identifier) {
-		return false;
+		return !(identifier.getUri() == null);
 	}
 
 	@Override
 	public String createPath(AssociationReadId id) {
-		return ExistServiceUtils.createPath(id.getCodeSystemVersion());
+		return ExistServiceUtils.createPath(id.getCodeSystemVersion().getName());
 	}
 
 	@Override
@@ -40,18 +40,18 @@ public class AssociationResourceInfo implements ResourceInfo<Association,Associa
 
 	@Override
 	public String getExistResourceName(AssociationReadId id) {
-		return ExistServiceUtils.uriToExistName(id.getAssociationUri());
+		return id.getName();
 	}
 
 	@Override
 	public String getResourceUri(AssociationReadId id) {
-		return id.getAssociationUri();
+		return id.getUri();
 	}
 
 
 	@Override
 	public String getExistResourceNameFromResource(Association entry) {
-		return ExistServiceUtils.uriToExistName(entry.getAssociationID());
+		return entry.getLocalID();
 	}
 	
 	@Override
@@ -61,8 +61,7 @@ public class AssociationResourceInfo implements ResourceInfo<Association,Associa
 
 	@Override
 	public String getResourceNameXpath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "@localID";
 	}
 	
 }

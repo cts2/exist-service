@@ -14,6 +14,7 @@ import edu.mayo.cts2.framework.model.association.types.GraphFocus;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
+import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
@@ -41,7 +42,7 @@ public class ExistAssociationQueryService
 	
 	private class AssociationDirectoryBuilder extends XpathDirectoryBuilder<XpathState,AssociationDirectoryEntry> {
 
-		public AssociationDirectoryBuilder() {
+		public AssociationDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, AssociationDirectoryEntry>() {
 
 				@Override
@@ -50,6 +51,8 @@ public class ExistAssociationQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"",
 							state.getXpath(), 
 							start, 
@@ -73,7 +76,8 @@ public class ExistAssociationQueryService
 			AssociationQueryServiceRestrictions restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder();
+		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder(
+				this.getChangeSetUri(readContext));
 		
 		return builder.restrict(filterComponent).
 				addStart(page.getStart())
@@ -96,11 +100,7 @@ public class ExistAssociationQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			AssociationQueryServiceRestrictions restrictions) {
-		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder();
-		
-		return builder.restrict(filterComponent).
-				restrict(query).
-				count();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -119,7 +119,28 @@ public class ExistAssociationQueryService
 			AssociationDirectoryEntry summary,
 			org.xmldb.api.base.Resource eXistResource) {
 		
+		CodeSystemVersionReference assertedIn = getAssertedIn(resource);
+		
+		summary.setAssertedBy(resource.getAssertedBy());
+		summary.setHref(
+				this.getUrlConstructor().createAssociationOfCodeSystemVersionUrl(
+						assertedIn.getCodeSystem().getContent(),
+						assertedIn.getVersion().getContent(),
+						resource.getLocalID()));
+		summary.setResourceName(resource.getLocalID());
+		summary.setSubject(resource.getSubject());
+		summary.setPredicate(resource.getPredicate());
+		summary.setTarget(resource.getTarget(0));
+		
 		return summary;
+	}
+	
+	private static CodeSystemVersionReference getAssertedIn(Association resource){
+		if(resource.getAssertedIn() != null){
+			return resource.getAssertedIn();
+		} else {
+			return resource.getAssertedBy();
+		}
 	}
 
 	@Override

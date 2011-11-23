@@ -80,7 +80,7 @@ public class ExistValueSetDefinitionQueryService
 	
 	private class ValueSetDefinitionDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ValueSetDefinitionDirectoryEntry> {
 		
-		public ValueSetDefinitionDirectoryBuilder() {
+		public ValueSetDefinitionDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, ValueSetDefinitionDirectoryEntry>() {
 
 				@Override
@@ -89,6 +89,8 @@ public class ExistValueSetDefinitionQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"",
 							state.getXpath(), 
 							start, 
@@ -112,7 +114,8 @@ public class ExistValueSetDefinitionQueryService
 			ValueSetDefinitionQueryServiceRestrictions restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-	ValueSetDefinitionDirectoryBuilder builder = new ValueSetDefinitionDirectoryBuilder();
+		ValueSetDefinitionDirectoryBuilder builder = 
+			new ValueSetDefinitionDirectoryBuilder(this.getChangeSetUri(readContext));
 		
 		return 
 			builder.restrict(filterComponent).
@@ -137,13 +140,7 @@ public class ExistValueSetDefinitionQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			ValueSetDefinitionQueryServiceRestrictions restrictions) {
-	ValueSetDefinitionDirectoryBuilder builder = new ValueSetDefinitionDirectoryBuilder();
-		
-		return 
-			builder.
-			restrict(query).
-			restrict(filterComponent).
-				count();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

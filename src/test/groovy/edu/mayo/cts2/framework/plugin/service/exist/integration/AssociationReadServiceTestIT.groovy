@@ -22,8 +22,6 @@ class AssociationReadServiceTestIT extends BaseServiceTestITBase {
 		def associationUri = "http://some/associ/1"
 
 		def postResourceURI = "association"
-		def getResourceURI = server +  "codesystem/TESTCS/version/TESTCSVERSION/association/"+associationUri+"?changeseturi=http://test/cs1"
-		
 		
 		def entry = new Association(associationID:associationUri)
 		entry.setSubject(new URIAndEntityName(name:"name", namespace:"ns"))
@@ -36,13 +34,11 @@ class AssociationReadServiceTestIT extends BaseServiceTestITBase {
 		entry.setAssertedBy(new CodeSystemVersionReference(
 			codeSystem: new CodeSystemReference(content:"TESTCS"),
 			version: new NameAndMeaningReference(content:"TESTCSVERSION")))
-		
-		entry.getAssertedBy().setVersion(new NameAndMeaningReference())
 
-		createResource(postResourceURI, entry)
+		def getResourceURI = createResource(postResourceURI, entry)
 		
 		def msg = 
-			client.getCts2Resource(getResourceURI, AssociationMsg.class)
+			client.getCts2Resource(server + getResourceURI.toString(), AssociationMsg.class)
 			
 		assertEquals entry.getAssociationID(), msg.getAssociation().getAssociationID()
 

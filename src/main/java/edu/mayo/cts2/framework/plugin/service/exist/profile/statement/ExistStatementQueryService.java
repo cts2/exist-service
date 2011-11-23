@@ -34,7 +34,7 @@ public class ExistStatementQueryService
 	
 	private class StatementDirectoryBuilder extends XpathDirectoryBuilder<XpathState,StatementDirectoryEntry> {
 
-		public StatementDirectoryBuilder() {
+		public StatementDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, StatementDirectoryEntry>() {
 
 				@Override
@@ -43,6 +43,8 @@ public class ExistStatementQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"",
 							state.getXpath(), 
 							start, 
@@ -66,7 +68,8 @@ public class ExistStatementQueryService
 			Void restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-		StatementDirectoryBuilder builder = new StatementDirectoryBuilder();
+		StatementDirectoryBuilder builder = 
+				new StatementDirectoryBuilder(this.getChangeSetUri(readContext));
 		
 		return 
 			builder.restrict(filterComponent).
@@ -83,8 +86,7 @@ public class ExistStatementQueryService
 			Void restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,12 +94,7 @@ public class ExistStatementQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			Void restrictions) {
-		StatementDirectoryBuilder builder = new StatementDirectoryBuilder();
-		
-		return 
-				builder.restrict(filterComponent).
-					restrict(query).
-					count();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

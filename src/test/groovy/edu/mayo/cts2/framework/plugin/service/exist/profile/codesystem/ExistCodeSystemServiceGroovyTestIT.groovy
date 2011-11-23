@@ -143,6 +143,28 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
 		assertEquals ChangeCommitted.COMMITTED, 
 			csFromRead.getChangeableElementGroup().getChangeDescription().getCommitted()
+	
+	}
+	
+	@Test void TestCommittedChangeStatusInChangeSet(){
+		
+		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def cs1 = new CodeSystemCatalogEntry(about:"about",codeSystemName:"name")
+		cs1.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				committed: ChangeCommitted.PENDING,
+				changeType: ChangeType.CREATE,
+				changeDate: new Date(),
+				containingChangeSet: changeSetUri1)))
+		
+		maint.createResource(cs1)
+		changeSetService.commitChangeSet(changeSetUri1)
+	
+		def changeSet = changeSetService.readChangeSet(changeSetUri1)
+			
+		assertEquals ChangeCommitted.COMMITTED,
+			ModelUtils.getChangeableElementGroup(changeSet.getMember(0)).getChangeDescription().getCommitted();
 	}
 	
 	@Test void TestQueryWithOpenAndCommittedChangeSetNoReadContext(){
@@ -312,4 +334,51 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		assertEquals 0, summaries.entries.size()
 	}
 	
+	@Test void TestQueryWithOpenAndCommittedChangeSetWithReadContextDelete(){
+		
+		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def cs1 = new CodeSystemCatalogEntry(about:"about",codeSystemName:"name")
+		cs1.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				changeType: ChangeType.CREATE,
+				changeDate: new Date(),
+				containingChangeSet: changeSetUri1)))
+		
+		maint.createResource(cs1)
+		changeSetService.commitChangeSet(changeSetUri1)
+	
+		def changeSetUri2 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		maint.deleteResource(ModelUtils.nameOrUriFromName("name"), changeSetUri2);
+		
+		assertEquals 1, query.getResourceSummaries(
+			null, null, null, null, new Page()).entries.size()
+
+		assertEquals 0, query.getResourceSummaries(
+			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page()).entries.size()
+	}
+	
+	@Test void TestQueryCommittedChangeSetWithReadContextDelete(){
+		
+		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def cs1 = new CodeSystemCatalogEntry(about:"about",codeSystemName:"name")
+		cs1.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				changeType: ChangeType.CREATE,
+				changeDate: new Date(),
+				containingChangeSet: changeSetUri1)))
+		
+		maint.createResource(cs1)
+		changeSetService.commitChangeSet(changeSetUri1)
+	
+		def changeSetUri2 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		maint.deleteResource(ModelUtils.nameOrUriFromName("name"), changeSetUri2);
+		changeSetService.commitChangeSet(changeSetUri2)
+		
+		assertEquals 0, query.getResourceSummaries(
+			null, null, null, null, new Page()).entries.size()
+	}
 }

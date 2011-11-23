@@ -68,7 +68,7 @@ public class ExistMapEntryQueryService
 			return this;
 		}
 
-		public MapEntryDirectoryBuilder() {
+		public MapEntryDirectoryBuilder(final String changeSetUri) {
 			super(new MapEntryDirectoryState(),
 					new Callback<MapEntryDirectoryState, MapEntryDirectoryEntry>() {
 
@@ -77,6 +77,8 @@ public class ExistMapEntryQueryService
 						MapEntryDirectoryState state, int start, int maxResults) {
 					
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							ExistServiceUtils.createPath(state.getMapVersion()), 
 							state.getXpath(), 
 							start,
@@ -100,7 +102,8 @@ public class ExistMapEntryQueryService
 			MapEntryQueryServiceRestrictions restrictions, 
 			ResolvedReadContext readContext,
 			Page page) {
-		MapEntryDirectoryBuilder builder = new MapEntryDirectoryBuilder();
+		MapEntryDirectoryBuilder builder = 
+				new MapEntryDirectoryBuilder(this.getChangeSetUri(readContext));
 
 		return builder.
 				restrict(restrictions).

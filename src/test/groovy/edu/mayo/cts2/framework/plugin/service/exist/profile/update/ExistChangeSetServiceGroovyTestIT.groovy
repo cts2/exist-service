@@ -25,5 +25,4 @@ class ExistChangeSetServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		assertEquals "changed!!", updatedChangeSet.changeSetElementGroup.changeInstructions.value.content;
 	}
-
 }

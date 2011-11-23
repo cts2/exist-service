@@ -18,7 +18,7 @@ class StatementReadServiceTestIT extends BaseServiceTestITBase {
 			
 	@Test void testGetStatementByURICycle(){
 
-		def getResourceURI = server +  "statement/http://some/stmnt1"
+		def getResourceURI = server +  "statementbyuri?uri=http://some/stmnt1"
 		def postResourceURI = "statement"
 		
 		def entry = new Statement(statementURI:"http://some/stmnt1")
@@ -37,6 +37,6 @@ class StatementReadServiceTestIT extends BaseServiceTestITBase {
 		def msg = 
 			client.getCts2Resource(getResourceURI,StatementMsg.class)
 			
-		assertEquals entry, msg.getStatement()
+		assertEquals entry.getStatementURI(), msg.getStatement().getStatementURI()
 	}
 }

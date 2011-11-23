@@ -58,7 +58,7 @@ public class ExistMapVersionQueryService
 	private class MapVersionDirectoryBuilder extends
 			XpathDirectoryBuilder<MapVersionDirectoryState,MapVersionDirectoryEntry> {
 
-		public MapVersionDirectoryBuilder() {
+		public MapVersionDirectoryBuilder(final String changeSetUri) {
 			super(new MapVersionDirectoryState(),
 					new Callback<MapVersionDirectoryState, MapVersionDirectoryEntry>() {
 
@@ -68,6 +68,8 @@ public class ExistMapVersionQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							ExistServiceUtils.createPath(state.getMap()), 
 							state.getXpath(), 
 							start,
@@ -93,7 +95,7 @@ public class ExistMapVersionQueryService
 			ResolvedReadContext readContext,
 			Page page) {
 		MapVersionDirectoryBuilder builder =
-				new MapVersionDirectoryBuilder();
+				new MapVersionDirectoryBuilder(this.getChangeSetUri(readContext));
 
 		return builder.addMaxToReturn(page.getEnd())
 				.addStart(page.getStart()).restrict(filterComponent)
@@ -115,12 +117,7 @@ public class ExistMapVersionQueryService
 			Query query, 
 			Set<ResolvedFilter> filterComponent,
 			MapVersionQueryServiceRestrictions restrictions) {
-		MapVersionDirectoryBuilder builder = 
-				new MapVersionDirectoryBuilder();
-
-		return builder.
-				restrict(filterComponent).
-				restrict(query).count();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

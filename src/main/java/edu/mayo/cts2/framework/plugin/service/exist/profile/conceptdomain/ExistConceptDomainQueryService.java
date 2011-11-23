@@ -35,7 +35,7 @@ public class ExistConceptDomainQueryService
 	private class ConceptDomainDirectoryBuilder extends
 			XpathDirectoryBuilder<XpathState,ConceptDomainCatalogEntrySummary> {
 
-		public ConceptDomainDirectoryBuilder() {
+		public ConceptDomainDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, ConceptDomainCatalogEntrySummary>() {
 
 				@Override
@@ -44,6 +44,8 @@ public class ExistConceptDomainQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
 							"",
 							state.getXpath(), 
 							start, 
@@ -67,7 +69,8 @@ public class ExistConceptDomainQueryService
 			ResolvedReadContext readContext,
 			Page page) {
 
-		ConceptDomainDirectoryBuilder builder = new ConceptDomainDirectoryBuilder();
+		ConceptDomainDirectoryBuilder builder = new ConceptDomainDirectoryBuilder(
+				this.getChangeSetUri(readContext));
 
 		return builder.
 				restrict(filterComponent).
@@ -90,10 +93,7 @@ public class ExistConceptDomainQueryService
 	@Override
 	public int count(Query query, Set<ResolvedFilter> filterComponent,
 			Void restrictions) {
-		ConceptDomainDirectoryBuilder builder = new ConceptDomainDirectoryBuilder();
-
-		return builder.restrict(filterComponent).restrict(query).count();
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

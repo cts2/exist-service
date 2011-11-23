@@ -86,7 +86,7 @@ public class ExistMapQueryService
 			ResolvedReadContext readContext,
 			Page page) {
 		MapDirectoryBuilder builder = new MapDirectoryBuilder(
-				readContext.getChangeSetContextUri());
+				this.getChangeSetUri(readContext));
 
 		return builder.restrict(filterComponent).addStart(page.getStart())
 				.addMaxToReturn(page.getMaxToReturn()).resolve();

@@ -102,6 +102,8 @@ public class ExistChangeSetQueryService
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
+							getResourceInfo(),
+							null,
 							"",
 							state.getXpath(), 
 							start, 

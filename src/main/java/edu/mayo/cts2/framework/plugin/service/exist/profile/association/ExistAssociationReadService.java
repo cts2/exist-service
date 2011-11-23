@@ -30,6 +30,8 @@ public class ExistAssociationReadService
 	protected ResourceInfo<Association, AssociationReadId> getResourceInfo() {
 		return this.associationResourceInfo;
 	}
+	
+	
 
 	@Override
 	public Association readByExternalStatementId(

@@ -29,6 +29,8 @@ public class ExistDaoImpl implements ExistResourceDao {
 	private ExistManager existManager;
 
 	private static final String XML_RESOURCE_TYPE = "XMLResource";
+	
+	private static final String BINARY_RESOURCE_TYPE = "BinaryResource";
 
 	private static final String CTS2_RESOURCES_PATH = "/cts2resources";
 	
@@ -36,6 +38,17 @@ public class ExistDaoImpl implements ExistResourceDao {
 
 	@Autowired
 	private Marshaller marshaller;
+	
+	protected void createAndStoreBinaryResource(Object obj,
+			Collection collection, String nameWithSuffix) throws XMLDBException {
+		Resource resource = collection.createResource(
+				ExistServiceUtils.getExistResourceName(nameWithSuffix),
+				BINARY_RESOURCE_TYPE);
+		
+		resource.setContent(obj);
+
+		collection.storeResource(resource);
+	}
 
 	protected void createAndStoreResource(Object obj,
 			Collection collection, String name) throws XMLDBException {
@@ -87,15 +100,42 @@ public class ExistDaoImpl implements ExistResourceDao {
 			}
 		}
 	}
+	
+	public void storeBinaryResource(String path, String name, Object entry) {
+		Collection collection = null;
+		try {
+			collection = this.getExistManager()
+					.getOrCreateCollection(this.getResourcePath(path));
+
+			this.createAndStoreBinaryResource(entry, collection, name );
+
+		} catch (XMLDBException e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				if(collection != null){
+					collection.close();
+				}
+			} catch (XMLDBException e) {
+				this.log.warn(e);
+			}
+		}
+	}
 
 	public Resource getResource(String path, String name) {
-		Resource resource = this.doGetResource(name, this.getResourcePath(path));
+		Resource resource = this.doGetResource(name, XML_SUFFIX, this.getResourcePath(path));
+
+		return resource;
+	}
+	
+	public Resource getBinaryResource(String path, String nameWithSuffix) {
+		Resource resource = this.doGetResource(nameWithSuffix, "", this.getResourcePath(path));
 
 		return resource;
 	}
 	
 	public void deleteResource(String path, String name) {
-		Resource resource = this.doGetResource(name, this.getResourcePath(path));
+		Resource resource = this.doGetResource(name, XML_SUFFIX, this.getResourcePath(path));
 		
 		try {
 			resource.getParentCollection().removeResource(resource);
@@ -172,10 +212,10 @@ public class ExistDaoImpl implements ExistResourceDao {
 		return CTS2_RESOURCES_PATH + "/" + path;
 	}
 
-	protected Resource doGetResource(String name, String collection) {
+	protected Resource doGetResource(String name, String suffix, String collection) {
 		try {
 			return existManager.getOrCreateCollection(collection)
-					.getResource(ExistServiceUtils.getExistResourceName(name) + XML_SUFFIX);
+					.getResource(ExistServiceUtils.getExistResourceName(name) + suffix);
 		} catch (XMLDBException e) {
 			throw new RuntimeException(e);
 		}
