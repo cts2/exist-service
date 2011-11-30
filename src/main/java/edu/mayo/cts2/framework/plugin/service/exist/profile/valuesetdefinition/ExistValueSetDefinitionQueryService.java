@@ -16,6 +16,7 @@ import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
@@ -144,7 +145,7 @@ public class ExistValueSetDefinitionQueryService
 	}
 
 	@Override
-	protected ResourceInfo<ValueSetDefinition, ?> getResourceInfo() {
+	protected ResourceInfo<LocalIdValueSetDefinition, ?> getResourceInfo() {
 		return this.valueSetDefinitionResourceInfo;
 	}
 

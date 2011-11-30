@@ -13,29 +13,50 @@ import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionMsg
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
 
-class EntityDescriptionReadServiceTestIT extends BaseServiceTestITBase {
-
+class EntityDescriptionReadServiceTestIT extends BaseReadServiceTestITBase {
 	
-	@Test void testGetEntityByNameCycle(){
+	@Override
+	public Object getResourceClass() {
+		EntityDescriptionMsg.class
+	}
 
-		def getResourceURI = server +  "codesystem/cs/version/2.0/entity/ns:name" 
-		def postResourceURI = "entity"
-		
-		def entry = new NamedEntityDescription(about:"about")
+	@Override
+	public Object getReadByNameUrl() {
+		"codesystem/cs/version/csversionentitycsv/entity/ns:name" 
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		"entitybyuri?uri=http://entity/about"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"entity"
+	}
+
+	@Override
+	public Object getResource() {
+		def entry = new NamedEntityDescription(about:"http://entity/about")
 		entry.setEntityID(new ScopedEntityName(name:"name", namespace:"ns"))
 		entry.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
     	entry.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
-    	entry.getDescribingCodeSystemVersion().getVersion().setContent("cs_2.0")
+    	entry.getDescribingCodeSystemVersion().getVersion().setContent("csversionentitycsv")
     	entry.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
     	entry.getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
 		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
 		
-		this.createResource(postResourceURI, new EntityDescription(namedEntity:entry))
+		EntityDescription ed = new EntityDescription()
+		ed.setNamedEntity(entry)
 		
-		def msg = 
-			client.getCts2Resource(getResourceURI, EntityDescriptionMsg.class)
-			
-		assertEquals entry.entityID, msg.getEntityDescription().getNamedEntity().getEntityID()
+		ed
 	}
+
+	@Override
+	public Object resourcesEqual(msg) {
+		msg.getEntityDescription().getNamedEntity().getEntityID().getName().equals("name")
+	}
+	
+	
 }

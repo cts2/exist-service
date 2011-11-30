@@ -2,11 +2,13 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomainbindin
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
+import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.name.ConceptDomainBindingReadId;
 
 @Component
-public class ConceptDomainBindingResourceInfo implements ResourceInfo<ConceptDomainBinding,String> {
+public class ConceptDomainBindingResourceInfo implements ResourceInfo<LocalIdConceptDomainBinding,ConceptDomainBindingReadId> {
 
 	private static final String CONCEPTDOMAINBINDINGS_PATH = "/conceptdomainbindings";
 	
@@ -21,44 +23,44 @@ public class ConceptDomainBindingResourceInfo implements ResourceInfo<ConceptDom
 	}
 	
 	@Override
-	public boolean isReadByUri(String identifier) {
-		return true;
+	public boolean isReadByUri(ConceptDomainBindingReadId identifier) {
+		return !(identifier.getUri() == null);
 	}
 
 	@Override
-	public String createPath(String resourceIdentifier) {
-		return "";
+	public String createPath(ConceptDomainBindingReadId id) {
+		return ExistServiceUtils.createPath(id.getConceptDomain().getName());
 	}
 
 	@Override
-	public String createPathFromResource(ConceptDomainBinding resource) {
-		return "";
+	public String createPathFromResource(LocalIdConceptDomainBinding resource) {
+		return ExistServiceUtils.createPath(
+				resource.getResource().getBindingFor().getContent());
 	}
 
 	@Override
-	public String getExistResourceName(String resourceIdentifier) {
-		throw new UnsupportedOperationException("Cannot reference ConceptDomainBinding by name.");
-
+	public String getExistResourceName(ConceptDomainBindingReadId resourceIdentifier) {
+		return resourceIdentifier.getName();
 	}
 
 	@Override
-	public String getResourceUri(String id) {
-		return id;
+	public String getResourceUri(ConceptDomainBindingReadId id) {
+		return id.getUri();
 	}
 
 	@Override
-	public String getExistResourceNameFromResource(ConceptDomainBinding resource) {
-		throw new UnsupportedOperationException("Cannot reference ConceptDomainBinding by name.");
+	public String getExistResourceNameFromResource(LocalIdConceptDomainBinding resource) {
+		return resource.getLocalID();
 	}
 	
 	@Override
 	public String getUriXpath() {
-		return "@bindingURI";
+		return "conceptdomainbinding:bindingURI/text()";
 	}
 
 	@Override
 	public String getResourceNameXpath() {
-		throw new UnsupportedOperationException("Cannot reference ConceptDomainBinding by name.");
+		return "@localID";
 	}
 
 }

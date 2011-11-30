@@ -10,6 +10,8 @@ public class ExistServiceUtils {
 	private static final String EXTERNAL_ENTITY_NAME_SEPERATOR = ":";
 
 	private static final String EXIST_ENTITY_NAME_SEPERATOR = "__";
+	
+	public static final String XML_SUFFIX = ".xml";
 
 	public static String getExistEntityName(ScopedEntityName name) {
 		return name.getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
@@ -53,6 +55,10 @@ public class ExistServiceUtils {
 	
 	public static String getExternalName(String existName){
 		return existName.replaceAll("__", ":");
+	}
+	
+	public static String getNameFromResourceName(String existName){
+		return StringUtils.substringBefore(existName, XML_SUFFIX);
 	}
 	
 	public static String getExternalEntityName(ScopedEntityName name, String codeSystemName) {

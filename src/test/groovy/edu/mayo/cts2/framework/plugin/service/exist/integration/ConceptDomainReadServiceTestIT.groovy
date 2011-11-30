@@ -8,21 +8,36 @@ import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntryMsg
 
 
-class ConceptDomainReadServiceTestIT extends BaseServiceTestITBase {
+class ConceptDomainReadServiceTestIT extends BaseReadServiceTestITBase {
 			
-	@Test void testGetConceptDomainByNameCycle(){
-
-		def getResourceURI = server +  "conceptdomain/TESTDOMAIN"
-		def postResourceURI = "conceptdomain"
-
-		def entry = new ConceptDomainCatalogEntry(conceptDomainName:"TESTDOMAIN", about:"http://about")
-	
-		this.createResource(postResourceURI, entry)	
-		
-		def msg = 
-			client.getCts2Resource(getResourceURI, ConceptDomainCatalogEntryMsg.class)
-			
-		assertEquals entry.getConceptDomainName(), msg.getConceptDomainCatalogEntry().getConceptDomainName()
-	
+	@Override
+	public Object getResourceClass() {
+		ConceptDomainCatalogEntryMsg.class
 	}
+
+	@Override
+	public Object getReadByNameUrl() {
+		"conceptdomain/TESTDOMAIN"
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		"conceptdomainbyuri?uri=http://about"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"conceptdomain"
+	}
+
+	@Override
+	public Object getResource() {
+		new ConceptDomainCatalogEntry(conceptDomainName:"TESTDOMAIN", about:"http://about")
+	}
+
+	@Override
+	public Object resourcesEqual(Object resource) {
+		resource.getConceptDomainCatalogEntry().getConceptDomainName().equals("TESTDOMAIN")
+	}
+
 }

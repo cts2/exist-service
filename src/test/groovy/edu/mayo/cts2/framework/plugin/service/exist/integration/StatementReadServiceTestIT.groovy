@@ -14,13 +14,30 @@ import edu.mayo.cts2.framework.model.statement.Statement
 import edu.mayo.cts2.framework.model.statement.StatementMsg
 import edu.mayo.cts2.framework.model.statement.StatementSubject
 
-class StatementReadServiceTestIT extends BaseServiceTestITBase {
-			
-	@Test void testGetStatementByURICycle(){
+class StatementReadServiceTestIT extends BaseReadServiceTestITBase {
+	
+	@Override
+	public Object getResourceClass() {
+		StatementMsg.class
+	}
 
-		def getResourceURI = server +  "statementbyuri?uri=http://some/stmnt1"
-		def postResourceURI = "statement"
-		
+	@Override
+	public Object getReadByNameUrl() {
+		return null;
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		"statementbyuri?uri=http://some/stmnt1"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"statement"
+	}
+
+	@Override
+	public Object getResource() {
 		def entry = new Statement(statementURI:"http://some/stmnt1")
 		entry.setSubject(new StatementSubject())
 		entry.setPredicate(new URIAndEntityName(name:"name",namespace:"namespace"))
@@ -29,14 +46,16 @@ class StatementReadServiceTestIT extends BaseServiceTestITBase {
 		entry.addTarget(new StatementTarget(entity:target))
 	
 		entry.setAssertedBy(new CodeSystemVersionReference())
-		entry.getAssertedBy().setCodeSystem(new CodeSystemReference())
-		entry.getAssertedBy().setVersion(new NameAndMeaningReference())
+		entry.getAssertedBy().setCodeSystem(new CodeSystemReference(content:"statementtestcs"))
+		entry.getAssertedBy().setVersion(new NameAndMeaningReference(content:"statementtestcsversion"))
 		
-		this.createResource(postResourceURI,entry)
-		
-		def msg = 
-			client.getCts2Resource(getResourceURI,StatementMsg.class)
-			
-		assertEquals entry.getStatementURI(), msg.getStatement().getStatementURI()
+		entry
 	}
+
+	@Override
+	public Object resourcesEqual(msg) {
+		msg.getStatement().getStatementURI().equals("http://some/stmnt1")
+	}
+	
+	
 }

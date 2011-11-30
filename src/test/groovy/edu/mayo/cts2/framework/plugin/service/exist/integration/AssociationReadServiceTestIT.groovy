@@ -2,7 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
 import static org.junit.Assert.*
 
-import org.junit.Test
+import org.apache.commons.lang.StringUtils
 
 import edu.mayo.cts2.framework.model.association.Association
 import edu.mayo.cts2.framework.model.association.AssociationMsg
@@ -14,15 +14,32 @@ import edu.mayo.cts2.framework.model.core.StatementTarget
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 
 
-class AssociationReadServiceTestIT extends BaseServiceTestITBase {
+class AssociationReadServiceTestIT extends BaseReadServiceTestITBase {
 
-	
-	@Test void testGetAssociationByNameCycle(){
-		
-		def associationUri = "http://some/associ/1"
+	def associationUri = "http://some/associ/1"
 
-		def postResourceURI = "association"
-		
+	@Override
+	public Object getResourceClass() {
+		AssociationMsg.class
+	}
+
+	@Override
+	public Object getReadByNameUrl() {
+		StringUtils.substringBefore(currentResourceUrl.toString(), "?")
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		"associationbyuri?uri="+associationUri
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"association"
+	}
+
+	@Override
+	public Object getResource() {
 		def entry = new Association(associationID:associationUri)
 		entry.setSubject(new URIAndEntityName(name:"name", namespace:"ns"))
 		
@@ -33,14 +50,15 @@ class AssociationReadServiceTestIT extends BaseServiceTestITBase {
 		
 		entry.setAssertedBy(new CodeSystemVersionReference(
 			codeSystem: new CodeSystemReference(content:"TESTCS"),
-			version: new NameAndMeaningReference(content:"TESTCSVERSION")))
-
-		def getResourceURI = createResource(postResourceURI, entry)
+			version: new NameAndMeaningReference(content:"TESTAssocCSVERSION")))
 		
-		def msg = 
-			client.getCts2Resource(server + getResourceURI.toString(), AssociationMsg.class)
-			
-		assertEquals entry.getAssociationID(), msg.getAssociation().getAssociationID()
-
+		entry
 	}
+
+	@Override
+	resourcesEqual(Object resource) {
+		true
+	}
+	
+	
 }

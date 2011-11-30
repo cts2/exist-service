@@ -84,9 +84,13 @@ public class ExistChangeSetService implements ChangeSetService {
 
 	@Override
 	public void rollbackChangeSet(String changeSetUri) {
+		//remove the actual ChangeSet
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
-		
 		this.existResourceDao.deleteResource(changeSetResourceInfo.getResourceBasePath(), name);
+		
+		//remove the ChangeSet contents and tmp directory
+		String changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+		this.existResourceDao.removeCollection(changeSetDir);
 	}
 
 	@Override

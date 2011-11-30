@@ -14,35 +14,30 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionMsg
 
-class ValueSetDefinitionReadServiceTestIT extends BaseServiceTestITBase {
-			
-	@Test void testGetValueSetDefinitionByNameCycle(){
+class ValueSetDefinitionReadServiceTestIT extends BaseReadServiceTestITBase {
 
-		def getResourceURI = server +  "valueset/TESTVALUESET/definition/http://def/uri/test"
-		def postResourceURI = "valuesetdefinition"
-
-		def entry = new ValueSetDefinition(about:"testAbout", documentURI:"http://def/uri/test")
-		entry.setSourceAndNotation(new SourceAndNotation())
-		entry.setDefinedValueSet(new ValueSetReference())
-		entry.addEntry(new ValueSetDefinitionEntry())
-		entry.getEntry(0).setCompleteCodeSystem(new CompleteCodeSystemReference())
-		entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())
-		entry.getEntry(0).setOperator(SetOperator.UNION)
-		entry.getEntry(0).setEntryOrder(1l);
-	
-		this.createResource(postResourceURI,entry)
-
-		def msg = 
-			client.getCts2Resource(getResourceURI,ValueSetDefinitionMsg.class)
-			
-		assertEquals entry.getDocumentURI(), msg.getValueSetDefinition().getDocumentURI()
+	@Override
+	public Object getResourceClass() {
+		ValueSetDefinitionMsg.class
 	}
-	
-	@Test void testGetValueSetByUriCycle(){
 
-		def getResourceURI = server +  "valuesetdefinitionbyuri?uri=http://def/uri/testByURI"
-		def postResourceURI = "valuesetdefinition"
+	@Override
+	public Object getReadByNameUrl() {
+		null
+	}
 
+	@Override
+	public Object getReadByUriUrl() {
+		"valuesetdefinitionbyuri?uri=http://def/uri/testByURI"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"valuesetdefinition"
+	}
+
+	@Override
+	public Object getResource() {
 		def entry = new ValueSetDefinition(about:"testAbout", documentURI:"http://def/uri/testByURI")
 		entry.setSourceAndNotation(new SourceAndNotation())
 		entry.setDefinedValueSet(new ValueSetReference())
@@ -51,12 +46,13 @@ class ValueSetDefinitionReadServiceTestIT extends BaseServiceTestITBase {
 		entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())
 		entry.getEntry(0).setOperator(SetOperator.UNION)
 		entry.getEntry(0).setEntryOrder(1l);
-
-		this.createResource(postResourceURI,entry)
-
-		def msg =
-				client.getCts2Resource(getResourceURI,ValueSetDefinitionMsg.class)
-
-		assertEquals entry.getDocumentURI(), msg.getValueSetDefinition().getDocumentURI()
+		
+		entry
 	}
+
+	@Override
+	public Object resourcesEqual(msg) {
+		msg.getValueSetDefinition().getDocumentURI().equals("http://def/uri/testByURI")
+	}
+
 }

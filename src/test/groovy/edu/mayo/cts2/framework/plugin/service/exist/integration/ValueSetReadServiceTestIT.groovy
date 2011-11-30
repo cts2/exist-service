@@ -8,20 +8,36 @@ import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntryMsg
 
 
-class ValueSetReadServiceTestIT extends BaseServiceTestITBase {
-			
-	@Test void testGetValueSetByNameCycle(){
-
-		def getResourceURI = server +  "valueset/TESTVALUESET"
-		def postResourceURI = "valueset"
-		
-		def entry = new ValueSetCatalogEntry(about:"testAbout", valueSetName:"TESTVALUESET")
+class ValueSetReadServiceTestIT extends BaseReadServiceTestITBase {
 	
-		this.createResource(postResourceURI,entry)
-		
-		def msg = 
-			client.getCts2Resource(getResourceURI,ValueSetCatalogEntryMsg.class)
-			
-		assertEquals entry.getValueSetName(), msg.getValueSetCatalogEntry().getValueSetName()
+	@Override
+	public Object getResourceClass() {
+		ValueSetCatalogEntryMsg.class
 	}
+
+	@Override
+	public Object getReadByNameUrl() {
+		"valueset/TESTVALUESET"
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		"valuesetbyuri?uri=http://vstestAbout"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"valueset"
+	}
+
+	@Override
+	public Object getResource() {
+		new ValueSetCatalogEntry(about:"http://vstestAbout", valueSetName:"TESTVALUESET")
+	}
+
+	@Override
+	public Object resourcesEqual(msg) {
+		msg.getValueSetCatalogEntry().getValueSetName().equals("TESTVALUESET")
+	}
+
 }

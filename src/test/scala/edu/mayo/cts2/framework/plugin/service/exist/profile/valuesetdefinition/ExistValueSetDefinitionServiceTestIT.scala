@@ -14,8 +14,11 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirect
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import junit.framework.Test
+import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext
 
-class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSetDefinition,ValueSetDefinitionDirectoryEntry] {
+class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[LocalIdValueSetDefinition,ValueSetDefinitionDirectoryEntry] {
 
   @Autowired var readService: ExistValueSetDefinitionReadService = null
   @Autowired var maintService: ExistValueSetDefinitionMaintenanceService = null
@@ -33,7 +36,7 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
     
      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
-     maintService.createResource(entry)
+     maintService.createResource(new LocalIdValueSetDefinition(entry))
   }
   
   def buildValueSetDefinition(uri:String):ValueSetDefinition = {
@@ -43,6 +46,7 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
     entry.setAbout(uri)
     entry.setSourceAndNotation(new SourceAndNotation())
     entry.setDefinedValueSet(new ValueSetReference())
+    entry.getDefinedValueSet().setContent("vs")
     entry.addEntry(new ValueSetDefinitionEntry())
     entry.getEntry(0).setCompleteCodeSystem(new CompleteCodeSystemReference())
     entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())
@@ -52,11 +56,15 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[ValueSe
     entry
   }
 
-  def getResource(uri: String): ValueSetDefinition = {
-    readService.read(uri,null)
+  def getResource(uri: String): LocalIdValueSetDefinition = {
+    var id = new ValueSetDefinitionReadId(uri);
+    
+    readService.read(id,new ResolvedReadContext())
   }
 
-    def getResourceByUri(uri:String):ValueSetDefinition = {
-    	readService.read(uri, null)
+    def getResourceByUri(uri:String):LocalIdValueSetDefinition = {
+       var id = new ValueSetDefinitionReadId(uri);
+       
+    	readService.read(id,new ResolvedReadContext())
     } 
 }

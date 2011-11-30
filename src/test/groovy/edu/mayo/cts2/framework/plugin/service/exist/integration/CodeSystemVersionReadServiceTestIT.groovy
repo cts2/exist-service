@@ -11,38 +11,56 @@ import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.SourceAndNotation
 
 
-class CodeSystemVersionReadServiceTestIT extends BaseServiceTestITBase {
+class CodeSystemVersionReadServiceTestIT extends BaseReadServiceTestITBase {
 
-	def getResourceURI = server +  "codesystem/TESTCS/version/2.0"
+	def getResourceURI = "codesystem/TESTCS/version/2.0"
 	def postResourceURI = "codesystemversion"
 	
 	@Test void testGetCodeSystemVersionByNameCycleWithNonExpectedNameFormat(){
 
-		def entry = new CodeSystemVersionCatalogEntry(documentURI:"docuri", about:"testAbout", codeSystemVersionName:"TESTCSVERSION")
+		def entry = getResource()
+
+		this.createResource(postResourceURI, entry)	
+
+		def msg = read(getResourceURI,getResourceClass())
+
+		assertEquals entry.documentURI, msg.getCodeSystemVersionCatalogEntry().getDocumentURI()
+	}
+
+	@Override
+	public Object getResourceClass() {
+		CodeSystemVersionCatalogEntryMsg.class
+	}
+
+	@Override
+	public Object getReadByNameUrl() {
+		getResourceURI
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		"codesystemversionbyuri?uri=http://test/docuri.org"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"codesystemversion"
+	}
+
+	@Override
+	public Object getResource() {
+		def entry = new CodeSystemVersionCatalogEntry(documentURI:"http://test/docuri.org", about:"http://testAbout.org", codeSystemVersionName:"TESTCSVERSION")
 		entry.setSourceAndNotation(new SourceAndNotation());
 		entry.setVersionOf(new CodeSystemReference(content:"TESTCS"));
 		entry.setOfficialResourceVersionId("2.0");
-
-		this.createResource(postResourceURI, entry)	
-
-		def msg =
-				client.getCts2Resource(getResourceURI, CodeSystemVersionCatalogEntryMsg.class)
-
-		assertEquals entry.documentURI, msg.getCodeSystemVersionCatalogEntry().getDocumentURI()
+		
+		entry
 	}
 
-	@Test void testGetCodeSystemVersionByNameWithExpectedNameFormat(){
-
-		def entry = new CodeSystemVersionCatalogEntry(documentURI:"docuri", about:"testAbout", codeSystemVersionName:"cs_2.0")
-		entry.setSourceAndNotation(new SourceAndNotation());
-		entry.setVersionOf(new CodeSystemReference(content:"cs"));
-		entry.setOfficialResourceVersionId("2.0");
-
-		this.createResource(postResourceURI, entry)	
-
-		def msg =
-				client.getCts2Resource(getResourceURI, CodeSystemVersionCatalogEntryMsg.class)
-
-		assertEquals entry.documentURI, msg.getCodeSystemVersionCatalogEntry().getDocumentURI()
+	@Override
+	public resourcesEqual(resource) {
+		resource.getCodeSystemVersionCatalogEntry().getDocumentURI().equals("http://test/docuri.org")
 	}
+	
+	
 }

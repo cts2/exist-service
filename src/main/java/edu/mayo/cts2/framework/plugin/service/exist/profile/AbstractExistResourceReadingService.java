@@ -23,7 +23,7 @@ public abstract class AbstractExistResourceReadingService<R,I,T extends BaseServ
 	protected Resource getResource(I resourceIdentifier, String changeSetUri) {
 		Resource resource;
 		
-		ResourceInfo<R,I> existResourceReader = getResourceInfo();
+		ResourceInfo<? extends R,I> existResourceReader = getResourceInfo();
 			
 		String changeSetDir = null;
 		if(StringUtils.isNotBlank(changeSetUri)){
@@ -45,6 +45,24 @@ public abstract class AbstractExistResourceReadingService<R,I,T extends BaseServ
 					this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath()), 
 					this.getResourceInfo().getResourceXpath() + "[" + getResourceInfo().getUriXpath() + " &= '" + uri + "']");
 		}
+		
+		return resource;
+	}
+	
+	protected Resource getResourceByXpath(String path, String xpath) {
+		return this.getResourceByXpath(path, xpath, null);
+	}
+	
+	protected Resource getResourceByXpath(String path, String xpath, String changeSetUri) {
+		
+		String changeSetDir = null;
+		if(StringUtils.isNotBlank(changeSetUri)){
+			changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+		}
+
+		Resource resource = this.getExistResourceDao().getResourceByXpath(
+			this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), path), 
+				this.getResourceInfo().getResourceXpath() + xpath);
 		
 		return resource;
 	}

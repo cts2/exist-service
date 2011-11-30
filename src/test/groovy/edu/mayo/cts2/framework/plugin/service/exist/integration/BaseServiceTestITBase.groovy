@@ -1,5 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.integration;
 
+import org.junit.After
 import org.junit.Before
 
 import edu.mayo.cts2.framework.core.client.Cts2RestClient
@@ -15,20 +16,54 @@ class BaseServiceTestITBase {
 	
 	public String server = "http://localhost:5150/webapp-rest/"
 	
-
-	URI createResource(url,resource){
+	def currentResourceUrl
+	
+	String changeSetUri
+	
+	@Before void createChangeSet(){
 		def uri = client.postCts2Resource(server + "changeset", null);
 		
 		def changeSet = client.getCts2Resource(server+uri, ChangeSet.class);
 		
-		def changeSetUri = changeSet.getChangeSetURI()
+		changeSetUri = changeSet.getChangeSetURI()
+	}
+	
+	@After void rollbackChangeSet(){
+		if(changeSetUri != null){
+			client.deleteCts2Resource(server + "changeset/"+changeSetUri,)
+		}
+	}
+	
+	
+	void commitChangeSet(){
+		def updateRequest = new UpdateChangeSetMetadataRequest()
+		updateRequest.setUpdatedState(new UpdatedState(state:FinalizableState.FINAL))
 		
+		client.postCts2Resource(server + "changeset/"+changeSetUri, updateRequest);
+		
+		changeSetUri = null
+	}
+	
+	void deleteResource(url){
+		client.deleteCts2Resource(server + url +"?changesetcontext="+changeSetUri);
+	}
+	
+	
+	def read(url,clazz){
+		def paramMark = url.contains("?")?"&":"?"
+
+		client.getCts2Resource(server+url+paramMark+"changesetcontext="+changeSetUri, clazz);
+
+	}
+	
+	def readCurrent(url,clazz){
+		client.getCts2Resource(server+url, clazz);
+	}
+
+	URI createResource(url,resource){
 		def returnuri = client.postCts2Resource(server + url +"?changesetcontext="+changeSetUri, resource);
 		
-		def update = new UpdateChangeSetMetadataRequest()
-		update.setUpdatedState(new UpdatedState(state: FinalizableState.FINAL))
-		
-		client.postCts2Resource(server + "changeset/"+changeSetUri, update);
+		currentResourceUrl = returnuri
 		
 		returnuri
 	}

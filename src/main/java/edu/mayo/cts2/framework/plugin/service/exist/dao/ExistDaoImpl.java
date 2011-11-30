@@ -33,8 +33,6 @@ public class ExistDaoImpl implements ExistResourceDao {
 	private static final String BINARY_RESOURCE_TYPE = "BinaryResource";
 
 	private static final String CTS2_RESOURCES_PATH = "/cts2resources";
-	
-	private static final String XML_SUFFIX = ".xml";
 
 	@Autowired
 	private Marshaller marshaller;
@@ -53,7 +51,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 	protected void createAndStoreResource(Object obj,
 			Collection collection, String name) throws XMLDBException {
 		Resource resource = collection.createResource(
-				ExistServiceUtils.getExistResourceName(name) + XML_SUFFIX,
+				ExistServiceUtils.getExistResourceName(name) + ExistServiceUtils.XML_SUFFIX,
 				XML_RESOURCE_TYPE);
 		
 		if(obj instanceof Resource){
@@ -123,7 +121,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 	}
 
 	public Resource getResource(String path, String name) {
-		Resource resource = this.doGetResource(name, XML_SUFFIX, this.getResourcePath(path));
+		Resource resource = this.doGetResource(name, ExistServiceUtils.XML_SUFFIX, this.getResourcePath(path));
 
 		return resource;
 	}
@@ -135,17 +133,15 @@ public class ExistDaoImpl implements ExistResourceDao {
 	}
 	
 	public void deleteResource(String path, String name) {
-		Resource resource = this.doGetResource(name, XML_SUFFIX, this.getResourcePath(path));
+		Resource resource = this.doGetResource(name, ExistServiceUtils.XML_SUFFIX, this.getResourcePath(path));
 		
 		try {
 			resource.getParentCollection().removeResource(resource);
 		} catch (XMLDBException e) {
 			throw new UnspecifiedCts2RuntimeException(e);
 		}
-
 	}
-	
-	
+
 	@Override
 	public void removeCollection(String collectionPath) {
 		

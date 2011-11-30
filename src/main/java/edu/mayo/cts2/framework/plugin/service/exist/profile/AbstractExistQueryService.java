@@ -320,6 +320,6 @@ public abstract class AbstractExistQueryService
 		return urlConstructor;
 	}
 
-	protected abstract ResourceInfo<R,?> getResourceInfo();
+	protected abstract PathInfo getResourceInfo();
 
 }

@@ -10,22 +10,39 @@ import edu.mayo.cts2.framework.model.mapversion.MapVersion
 import edu.mayo.cts2.framework.model.mapversion.MapVersionMsg
 
 
-class MapVersionReadServiceTestIT extends BaseServiceTestITBase {
-			
-	@Test void testGetCodeSystemByNameCycle(){
+class MapVersionReadServiceTestIT extends BaseReadServiceTestITBase {
 
-		def getResourceURI = server +  "map/TESTMAP/version/TESTMAPVERSION"
-		def postResourceURI = "mapversion"
-		
-		def entry = new MapVersion(documentURI:"docuri", about:"testAbout", mapVersionName:"TESTMAPVERSION")
+	@Override
+	public Object getResourceClass() {
+		MapVersionMsg.class
+	}
+
+	@Override
+	public Object getReadByNameUrl() {
+		 "map/TESTMAP/version/TESTMAPVERSION"
+	}
+
+	@Override
+	public Object getReadByUriUrl() {
+		 "mapversionbyuri?uri=http://docuri"
+	}
+
+	@Override
+	public Object getCreateUrl() {
+		"mapversion"
+	}
+
+	@Override
+	public Object getResource() {
+		def entry = new MapVersion(documentURI:"http://docuri", about:"http://testAbout", mapVersionName:"TESTMAPVERSION")
 		entry.setSourceAndNotation(new SourceAndNotation());
 		entry.setVersionOf(new MapReference())
 		
-		this.createResource(postResourceURI,entry)
-		
-		def msg = 
-			client.getCts2Resource(getResourceURI,MapVersionMsg.class)
-			
-		assertEquals entry.getMapVersionName(), msg.getMapVersion().getMapVersionName()
+		entry
+	}
+
+	@Override
+	public Object resourcesEqual(msg) {
+		msg.getMapVersion().getMapVersionName().equals("TESTMAPVERSION")
 	}
 }

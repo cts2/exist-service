@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.model.service.core.ReadContext;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService;
@@ -77,34 +76,20 @@ public class ExistCodeSystemVersionReadService
 	public CodeSystemVersionCatalogEntry getCodeSystemVersionForCodeSystem(
 			NameOrURI codeSystem, 
 			String tagName, 
-			ReadContext readContext) {
+			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
-	
-	public CodeSystemVersionCatalogEntry getCodeSystemVersionByOfficialResourceId(
-			String codeSystemName, 
-			String officialResourceId) {
-		org.xmldb.api.base.Resource resource =
-				this.getExistResourceDao().getResourceByXpath(
-						this.getResourceInfo().getResourceBasePath(),
-						this.getResourceInfo().getResourceXpath() +
-						"[core:officialResourceVersionId[text() &= (\""+officialResourceId+"\")] and " +
-						"codesystemversion:versionOf[text() &= (\""+codeSystemName+"\")]]");
-		
-		return (CodeSystemVersionCatalogEntry) this.getResourceUnmarshaller().unmarshallResource(resource);
-	}
-
 
 	@Override
 	public CodeSystemVersionCatalogEntry getCodeSystemByVersionId(
-			NameOrURI codeSystem, 
+			NameOrURI codeSystemName, 
 			String officialResourceVersionId,
-			ReadContext readContext) {
+			ResolvedReadContext readContext) {
 		
-		return this.
-				getCodeSystemVersionByOfficialResourceId(
-						codeSystem.getName(),
-						officialResourceVersionId);
+		String xpath = "[core:officialResourceVersionId[text() &= (\""+officialResourceVersionId+"\")] and " +
+				"codesystemversion:versionOf[text() &= (\""+codeSystemName.getName()+"\")]]";
+		
+		return this.readByXpath("", xpath, readContext);
 	}
 
 	@Override
