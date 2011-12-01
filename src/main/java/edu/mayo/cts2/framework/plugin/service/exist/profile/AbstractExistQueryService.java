@@ -39,6 +39,8 @@ import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.ResourceDescription;
 import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
+import edu.mayo.cts2.framework.model.core.ResourceVersionDescription;
+import edu.mayo.cts2.framework.model.core.ResourceVersionDescriptionDirectoryEntry;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
@@ -257,6 +259,17 @@ public abstract class AbstractExistQueryService
 		summary.setAbout(resource.getAbout());
 		summary.setFormalName(resource.getFormalName());
 		summary.setResourceSynopsis(resource.getResourceSynopsis());
+
+		return summary;
+	}
+	
+	protected <E extends ResourceVersionDescriptionDirectoryEntry, D extends ResourceVersionDescription > E baseTransformResourceVersion(
+			E summary, D resource) {
+
+		summary = this.baseTransform(summary, resource);
+		summary.setDocumentURI(resource.getDocumentURI());
+		summary.setOfficialReleaseDate(resource.getOfficialReleaseDate());
+		summary.setOfficialResourceVersionId(resource.getOfficialResourceVersionId());
 
 		return summary;
 	}

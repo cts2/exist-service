@@ -17,11 +17,18 @@ import junit.framework.Test
 import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
+import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
+import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
+import edu.mayo.cts2.framework.model.directory.DirectoryResult
+import edu.mayo.cts2.framework.model.command.Page
 
-class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[LocalIdValueSetDefinition,ValueSetDefinitionDirectoryEntry] {
+class ExistValueSetDefinitionServiceTestIT 
+	extends BaseServiceTestBaseIT[LocalIdValueSetDefinition,ValueSetDefinitionDirectoryEntry]
+			with TestResourceSummaries[LocalIdValueSetDefinition,ValueSetDefinitionDirectoryEntry] {
 
   @Autowired var readService: ExistValueSetDefinitionReadService = null
   @Autowired var maintService: ExistValueSetDefinitionMaintenanceService = null
+  @Autowired var queryService: ExistValueSetDefinitionQueryService = null
 
   def getExceptionClass(): Class[_ <: UnknownResourceReference] = {
     classOf[UnknownValueSetDefinition]
@@ -31,15 +38,29 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[LocalId
     
    override def getUri():String = {"someUri"}
 
+  def getResourceSummaries():DirectoryResult[ValueSetDefinitionDirectoryEntry] = {
+     queryService.getResourceSummaries(null,null,null,null,new Page());
+  }
+      
+  def createResources(changeSetUri:String):Int = {
+    val resources = List(
+        buildValueSetDefinition("http://Test1",changeSetUri), 
+        buildValueSetDefinition("http://Test2",changeSetUri));
+    
+    resources.foreach(resource => maintService.createResource(new LocalIdValueSetDefinition(resource)))
+    
+    resources.size
+   }
+      
   def createResource(name: String, uri:String, changeSetUri:String) = {
-	var entry = buildValueSetDefinition(uri)
+	var entry = buildValueSetDefinition(uri,changeSetUri)
     
      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(new LocalIdValueSetDefinition(entry))
   }
   
-  def buildValueSetDefinition(uri:String):ValueSetDefinition = {
+  def buildValueSetDefinition(uri:String,changeSetUri:String):ValueSetDefinition = {
     
     var entry = new ValueSetDefinition()
     entry.setDocumentURI(uri)
@@ -52,6 +73,8 @@ class ExistValueSetDefinitionServiceTestIT extends BaseServiceTestBaseIT[LocalId
     entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())
     entry.getEntry(0).setOperator(SetOperator.UNION)
     entry.getEntry(0).setEntryOrder(1l);
+    
+    entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
     entry
   }

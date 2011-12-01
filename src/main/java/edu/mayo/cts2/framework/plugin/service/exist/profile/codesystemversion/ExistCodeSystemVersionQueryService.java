@@ -81,8 +81,8 @@ public class ExistCodeSystemVersionQueryService
 	protected CodeSystemVersionCatalogEntrySummary doTransform(
 			CodeSystemVersionCatalogEntry resource,
 			CodeSystemVersionCatalogEntrySummary summary, org.xmldb.api.base.Resource eXistResource) {
-		summary = this.baseTransform(summary, resource);
-		summary.setDocumentURI(resource.getDocumentURI());
+		
+		summary = this.baseTransformResourceVersion(summary, resource);
 		summary.setCodeSystemVersionName(resource.getCodeSystemVersionName());
 
 		summary.setHref(getUrlConstructor().createCodeSystemVersionUrl(

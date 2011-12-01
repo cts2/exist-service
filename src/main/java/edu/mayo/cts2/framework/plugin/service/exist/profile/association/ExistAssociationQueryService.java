@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
@@ -120,6 +121,9 @@ public class ExistAssociationQueryService
 			org.xmldb.api.base.Resource eXistResource) {
 		
 		CodeSystemVersionReference assertedIn = getAssertedIn(resource);
+		
+		Assert.notNull(assertedIn.getCodeSystem(), "Association MUST have CodeSystem reference for 'assertedIn'.");
+		Assert.notNull(assertedIn.getVersion(), "Association MUST have CodeSystemVersion reference for 'assertedIn'.");
 		
 		summary.setAssertedBy(resource.getAssertedBy());
 		summary.setHref(

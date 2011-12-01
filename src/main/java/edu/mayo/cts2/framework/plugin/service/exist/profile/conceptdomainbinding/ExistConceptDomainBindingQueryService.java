@@ -13,9 +13,11 @@ import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingDirectoryEntry;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.ConceptDomainBindingQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQueryService;
@@ -31,6 +33,35 @@ public class ExistConceptDomainBindingQueryService
 
 	@Resource
 	private ConceptDomainBindingResourceInfo conceptDomainBindingResourceInfo;
+	
+	private class ConceptDomainBindingDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ConceptDomainBindingDirectoryEntry> {
+
+		public ConceptDomainBindingDirectoryBuilder(final String changeSetUri) {
+			super(new XpathState(), new Callback<XpathState, ConceptDomainBindingDirectoryEntry>() {
+
+				@Override
+				public DirectoryResult<ConceptDomainBindingDirectoryEntry> execute(
+						XpathState state, 
+						int start, 
+						int maxResults) {
+					return getResourceSummaries(
+							getResourceInfo(),
+							changeSetUri,
+							"",
+							state.getXpath(), 
+							start, 
+							maxResults);
+				}
+
+				@Override
+				public int executeCount(XpathState state) {
+					throw new UnsupportedOperationException();
+				}},
+				
+				getSupportedMatchAlgorithms(),
+				getSupportedModelAttributes());
+		}
+	}
 
 	@Override
 	public DirectoryResult<ConceptDomainBindingDirectoryEntry> getResourceSummaries(
@@ -39,7 +70,16 @@ public class ExistConceptDomainBindingQueryService
 			ConceptDomainBindingQueryServiceRestrictions restrictions,
 			ResolvedReadContext readContext,
 			Page page) {
-		throw new UnsupportedOperationException();
+		
+		ConceptDomainBindingDirectoryBuilder builder = new ConceptDomainBindingDirectoryBuilder(
+				this.getChangeSetUri(readContext));
+
+		return builder.
+				restrict(filterComponent).
+				restrict(query).
+				addStart(page.getStart()).
+				addMaxToReturn(page.getMaxToReturn()).
+				resolve();
 	}
 
 	@Override
@@ -71,11 +111,18 @@ public class ExistConceptDomainBindingQueryService
 			ConceptDomainBindingDirectoryEntry summary,
 			org.xmldb.api.base.Resource eXistResource) {
 		
+		summary.setAbout(resource.getBindingURI());
+		summary.setApplicableContext(resource.getApplicableContext());
+		summary.setBindingFor(resource.getBindingFor());
+		summary.setBindingQualifier(resource.getBindingQualifier());
+		summary.setBoundValueSet(resource.getBoundValueSet());
+		summary.setResourceName(resource.getBindingURI());
+		
 		return summary;
 	}
 
 	@Override
-	protected PathInfo getResourceInfo() {
+	protected ResourceInfo<LocalIdConceptDomainBinding, ?> getResourceInfo() {
 		return this.conceptDomainBindingResourceInfo;
 	}
 

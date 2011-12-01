@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile.association
+package edu.mayo.cts2.framework.plugin.service.exist.profile.concept
 
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -12,7 +12,8 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain.ExistC
 import edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain.ExistConceptDomainReadService
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 
-class ConceptDomainServiceTestIT extends BaseServiceTestBaseIT[ConceptDomainCatalogEntry,ConceptDomainCatalogEntrySummary] {
+class ConceptDomainServiceTestIT 
+	extends BaseServiceTestBaseIT[ConceptDomainCatalogEntry,ConceptDomainCatalogEntrySummary] {
 
   @Autowired var readService: ExistConceptDomainReadService = null
   @Autowired var maintService: ExistConceptDomainMaintenanceService = null

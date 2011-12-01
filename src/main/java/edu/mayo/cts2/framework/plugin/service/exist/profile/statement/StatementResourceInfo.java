@@ -2,12 +2,12 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.model.statement.Statement;
+import edu.mayo.cts2.framework.model.extension.LocalIdStatement;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
-import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.service.profile.statement.name.StatementReadId;
 
 @Component
-public class StatementResourceInfo implements ResourceInfo<Statement,String> {
+public class StatementResourceInfo implements ResourceInfo<LocalIdStatement,StatementReadId> {
 
 	private static final String STATEMENTS_PATH = "/statements";
 
@@ -22,43 +22,43 @@ public class StatementResourceInfo implements ResourceInfo<Statement,String> {
 	}
 	
 	@Override
-	public boolean isReadByUri(String identifier) {
-		return false;
+	public boolean isReadByUri(StatementReadId identifier) {
+		return !(identifier.getUri() == null);
 	}
 
 	@Override
-	public String createPath(String id) {
+	public String createPath(StatementReadId id) {
 		return "";
 	}
 
 	@Override
-	public String createPathFromResource(Statement resource) {
+	public String createPathFromResource(LocalIdStatement resource) {
 		return "";
 	}
 
 	@Override
-	public String getExistResourceName(String id) {
-		return ExistServiceUtils.uriToExistName(id);
+	public String getExistResourceName(StatementReadId id) {
+		return id.getName();
 	}
 
 	@Override
-	public String getResourceUri(String id) {
-		return id;
+	public String getResourceUri(StatementReadId id) {
+		return id.getUri();
 	}
 
 	@Override
-	public String getExistResourceNameFromResource(Statement resource) {
-		return ExistServiceUtils.uriToExistName(resource.getStatementURI());
+	public String getExistResourceNameFromResource(LocalIdStatement resource) {
+		return resource.getLocalID();
 	}
 	
 	@Override
 	public String getUriXpath() {
-		return "@statementURI";
+		return "statement:statementURI/text()";
 	}
 
 	@Override
 	public String getResourceNameXpath() {
-		return "@statementURI";
+		return "statement:statementURI/text()";
 	}
 
 }

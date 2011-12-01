@@ -49,9 +49,11 @@ public class ExistValueSetDefinitionQueryService
 	protected ValueSetDefinitionDirectoryEntry doTransform(
 			ValueSetDefinition resource,
 			ValueSetDefinitionDirectoryEntry summary, org.xmldb.api.base.Resource eXistResource) {
-		summary = this.baseTransform(summary, resource);
+		summary = this.baseTransformResourceVersion(summary, resource);
 		
-		summary.setDocumentURI(summary.getDocumentURI());
+		summary.setDefinedValueSet(resource.getDefinedValueSet());
+		summary.setVersionTag(resource.getVersionTag());
+
 		summary.setHref(getUrlConstructor().createValueSetDefinitionUrl(
 				"TODO",
 				resource.getDocumentURI()));

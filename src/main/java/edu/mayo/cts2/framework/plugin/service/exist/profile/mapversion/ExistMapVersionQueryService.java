@@ -43,8 +43,12 @@ public class ExistMapVersionQueryService
 	@Override
 	public MapVersionDirectoryEntry doTransform(MapVersion resource,
 			MapVersionDirectoryEntry summary, org.xmldb.api.base.Resource eXistResource) {
-		summary = this.baseTransform(summary, resource);
+		summary = this.baseTransformResourceVersion(summary, resource);
+		
 		summary.setMapVersionName(resource.getMapVersionName());
+		summary.setVersionOf(resource.getVersionOf());
+		summary.setVersionTag(resource.getVersionTag());
+		
 		summary.setHref(getUrlConstructor().createMapUrl(resource.getMapVersionName()));
 
 		return summary;
@@ -97,9 +101,11 @@ public class ExistMapVersionQueryService
 		MapVersionDirectoryBuilder builder =
 				new MapVersionDirectoryBuilder(this.getChangeSetUri(readContext));
 
-		return builder.addMaxToReturn(page.getEnd())
-				.addStart(page.getStart()).restrict(filterComponent)
-				.restrict(query).resolve();
+		return builder.addMaxToReturn(page.getEnd()).
+				addStart(page.getStart()).
+				restrict(filterComponent).
+				restrict(query).
+				resolve();
 	}
 
 	@Override

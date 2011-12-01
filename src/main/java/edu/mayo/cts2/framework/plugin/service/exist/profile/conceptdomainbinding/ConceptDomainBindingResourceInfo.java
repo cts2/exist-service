@@ -60,7 +60,7 @@ public class ConceptDomainBindingResourceInfo implements ResourceInfo<LocalIdCon
 
 	@Override
 	public String getResourceNameXpath() {
-		return "@localID";
+		return "conceptdomainbinding:bindingURI/text()";
 	}
 
 }

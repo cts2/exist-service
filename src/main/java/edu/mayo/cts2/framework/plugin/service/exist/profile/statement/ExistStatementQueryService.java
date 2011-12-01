@@ -1,9 +1,11 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
@@ -11,6 +13,7 @@ import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.extension.LocalIdStatement;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.model.statement.StatementDirectoryEntry;
@@ -106,11 +109,20 @@ public class ExistStatementQueryService
 	protected StatementDirectoryEntry doTransform(Statement resource,
 			StatementDirectoryEntry summary,
 			org.xmldb.api.base.Resource eXistResource) {
+		
+		try {
+			BeanUtils.copyProperties(summary, resource);
+		} catch (IllegalAccessException e) {
+			throw new IllegalStateException(e);
+		} catch (InvocationTargetException e) {
+			throw new IllegalStateException(e);
+		}
+		
 		return summary;
 	}
 
 	@Override
-	protected ResourceInfo<Statement, ?> getResourceInfo() {
+	protected ResourceInfo<LocalIdStatement, ?> getResourceInfo() {
 		return this.statementResourceInfo;
 	}
 

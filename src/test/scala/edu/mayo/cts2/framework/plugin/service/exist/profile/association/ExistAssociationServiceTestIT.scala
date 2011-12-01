@@ -1,10 +1,13 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association
 
+import java.lang.Override
+import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-
+import org.springframework.test.context.ContextConfiguration
 import edu.mayo.cts2.framework.model.association.Association
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
 import edu.mayo.cts2.framework.model.command.Page
+import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.PredicateReference
@@ -12,12 +15,15 @@ import edu.mayo.cts2.framework.model.core.StatementTarget
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.service.exception.UnknownAssociation
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
+import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 
-class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,AssociationDirectoryEntry] {
+class ExistAssociationServiceTestIT 
+	extends BaseServiceTestBaseIT[Association,AssociationDirectoryEntry]
+			with TestResourceSummaries[Association,AssociationDirectoryEntry] {
 
   @Autowired var readService: ExistAssociationReadService = null
   @Autowired var maintService: ExistAssociationMaintenanceService = null
@@ -27,6 +33,14 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
     
   override def getUri():String = {"someUri"}
    
+    @Override
+   def createResources(changeSetUri:String):Int = {
+    val resources = List(createAssociation("http://Test1", "someuri", changeSetUri), createAssociation("http://Test2", "someuri", changeSetUri));
+    resources.foreach(resource => maintService.createResource(resource))
+    
+    resources.size
+   }
+  
   def getExceptionClass(): Class[_ <: UnknownResourceReference] = {
     classOf[UnknownAssociation]
   }
@@ -55,6 +69,10 @@ class ExistAssociationServiceTestIT extends BaseServiceTestBaseIT[Association,As
     entry.setAssertedBy(new CodeSystemVersionReference())
     entry.getAssertedBy().setVersion(new NameAndMeaningReference())
     entry.getAssertedBy().getVersion().setContent("csv")
+    
+    entry.getAssertedBy().setCodeSystem(new CodeSystemReference())
+    entry.getAssertedBy().getCodeSystem().setContent("cs")
+    
     entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
     entry
