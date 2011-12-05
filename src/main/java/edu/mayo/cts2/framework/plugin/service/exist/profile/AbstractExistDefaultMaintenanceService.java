@@ -41,12 +41,7 @@ public abstract class AbstractExistDefaultMaintenanceService<
 	protected R resourceToIndentifiedResource(R resource){
 		return resource;
 	}
-/*
-	@SuppressWarnings("unchecked")
-	protected R resourceFromStorageResult(StorageResult result){
-		return (R)result.getResource().getChoiceValue();
-	}
-*/	
+
     protected abstract DefaultResourceInfo<R,I> getResourceInfo();
     
     protected R processResourceBeforeStore(R resource){
