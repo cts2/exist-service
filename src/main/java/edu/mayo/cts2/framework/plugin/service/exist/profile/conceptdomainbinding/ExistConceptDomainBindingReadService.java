@@ -8,7 +8,7 @@ import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
 import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingReadService;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.name.ConceptDomainBindingReadId;
 
@@ -26,7 +26,7 @@ public class ExistConceptDomainBindingReadService
 
 
 	@Override
-	protected ResourceInfo<LocalIdConceptDomainBinding, ConceptDomainBindingReadId> getResourceInfo() {
+	protected LocalIdResourceInfo<LocalIdConceptDomainBinding, ConceptDomainBindingReadId> getResourceInfo() {
 		return this.conceptDomainBindingResourceInfo;
 	}
 

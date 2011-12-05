@@ -3,12 +3,12 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomainbindin
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.name.ConceptDomainBindingReadId;
 
 @Component
-public class ConceptDomainBindingResourceInfo implements ResourceInfo<LocalIdConceptDomainBinding,ConceptDomainBindingReadId> {
+public class ConceptDomainBindingResourceInfo implements LocalIdResourceInfo<LocalIdConceptDomainBinding,ConceptDomainBindingReadId> {
 
 	private static final String CONCEPTDOMAINBINDINGS_PATH = "/conceptdomainbindings";
 	
@@ -46,11 +46,6 @@ public class ConceptDomainBindingResourceInfo implements ResourceInfo<LocalIdCon
 	@Override
 	public String getResourceUri(ConceptDomainBindingReadId id) {
 		return id.getUri();
-	}
-
-	@Override
-	public String getExistResourceNameFromResource(LocalIdConceptDomainBinding resource) {
-		return resource.getLocalID();
 	}
 	
 	@Override

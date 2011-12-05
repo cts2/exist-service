@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultMaintenanceService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionMaintenanceService;
 
 @Component
 public class ExistCodeSystemVersionMaintenanceService extends 
-	AbstractExistMaintenanceService<CodeSystemVersionCatalogEntry,NameOrURI,edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionMaintenanceService>
+	AbstractExistDefaultMaintenanceService<CodeSystemVersionCatalogEntry,NameOrURI,edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionMaintenanceService>
 implements CodeSystemVersionMaintenanceService {
 	
 	@Resource
 	private CodeSystemVersionResourceInfo codeSystemVersionResourceInfo;
 
 	@Override
-	protected ResourceInfo<CodeSystemVersionCatalogEntry, NameOrURI> getResourceInfo() {
+	protected DefaultResourceInfo<CodeSystemVersionCatalogEntry, NameOrURI> getResourceInfo() {
 		return this.codeSystemVersionResourceInfo;
 	}
 

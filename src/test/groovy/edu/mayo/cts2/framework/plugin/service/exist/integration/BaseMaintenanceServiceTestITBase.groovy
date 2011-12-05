@@ -26,7 +26,7 @@ abstract class BaseMaintenanceServiceTestITBase extends BaseServiceTestITBase {
 		
 		def choice = ModelUtils.createChangeableResourceChoice(updated)
 		
-		ModelUtils.setChangeableElementGroup(choice, 
+		choice.setChangeableElementGroup(
 			new ChangeableElementGroup(
 				changeDescription:new ChangeDescription(
 					changeDate:new Date(),
@@ -47,7 +47,7 @@ abstract class BaseMaintenanceServiceTestITBase extends BaseServiceTestITBase {
 		
 		try{
 		def returned = read(getReadByNameUrl(),getResourceClass())
-		println returned
+
 		} catch(HttpClientErrorException ex) {
 			assertEquals ex.getStatusCode(), HttpStatus.NOT_FOUND
 			return
@@ -59,10 +59,15 @@ abstract class BaseMaintenanceServiceTestITBase extends BaseServiceTestITBase {
 	void TestDeleteAfterCommit(){
 		this.createResource(getCreateUrl(), getResource())
 		
+		this.commitChangeSet();
+		
+		this.createChangeSet()
+
 		deleteResource(getReadByNameUrl())
+		this.commitChangeSet()
 		
 		try{
-		def returned = read(getReadByNameUrl(),getResourceClass())
+		def returned = readCurrent(getReadByNameUrl(),getResourceClass())
 
 		} catch(HttpClientErrorException ex) {
 			assertEquals ex.getStatusCode(), HttpStatus.NOT_FOUND

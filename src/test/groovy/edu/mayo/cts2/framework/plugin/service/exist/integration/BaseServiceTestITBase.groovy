@@ -14,7 +14,7 @@ class BaseServiceTestITBase {
 	
 	public Cts2RestClient client = new Cts2RestClient()
 	
-	public String server = "http://localhost:5150/webapp-rest/"
+	public String server = "http://localhost:8080/webapp-rest/"
 	
 	def currentResourceUrl
 	
@@ -43,11 +43,11 @@ class BaseServiceTestITBase {
 		
 		changeSetUri = null
 	}
-	
+
 	void deleteResource(url){
-		client.deleteCts2Resource(server + url +"?changesetcontext="+changeSetUri);
+		url = url +"?changesetcontext="+changeSetUri;
+		client.deleteCts2Resource(server + url);
 	}
-	
 	
 	def read(url,clazz){
 		def paramMark = url.contains("?")?"&":"?"

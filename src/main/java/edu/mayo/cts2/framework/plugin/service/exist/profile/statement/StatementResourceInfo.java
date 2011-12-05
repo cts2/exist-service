@@ -3,11 +3,11 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.extension.LocalIdStatement;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.service.profile.statement.name.StatementReadId;
 
 @Component
-public class StatementResourceInfo implements ResourceInfo<LocalIdStatement,StatementReadId> {
+public class StatementResourceInfo implements LocalIdResourceInfo<LocalIdStatement,StatementReadId> {
 
 	private static final String STATEMENTS_PATH = "/statements";
 
@@ -44,11 +44,6 @@ public class StatementResourceInfo implements ResourceInfo<LocalIdStatement,Stat
 	@Override
 	public String getResourceUri(StatementReadId id) {
 		return id.getUri();
-	}
-
-	@Override
-	public String getExistResourceNameFromResource(LocalIdStatement resource) {
-		return resource.getLocalID();
 	}
 	
 	@Override

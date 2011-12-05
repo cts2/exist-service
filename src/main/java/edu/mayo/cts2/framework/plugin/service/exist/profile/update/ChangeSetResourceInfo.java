@@ -3,11 +3,11 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
 @Component
-public class ChangeSetResourceInfo implements ResourceInfo<ChangeSet,String> {
+public class ChangeSetResourceInfo implements DefaultResourceInfo<ChangeSet,String> {
 
 	protected static final String CHANGESETS_PATH = "/changesets";
 

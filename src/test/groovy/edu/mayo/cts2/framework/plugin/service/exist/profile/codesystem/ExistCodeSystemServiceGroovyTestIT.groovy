@@ -164,7 +164,7 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def changeSet = changeSetService.readChangeSet(changeSetUri1)
 			
 		assertEquals ChangeCommitted.COMMITTED,
-			ModelUtils.getChangeableElementGroup(changeSet.getMember(0)).getChangeDescription().getCommitted();
+			changeSet.getMember(0).getChangeableElementGroup().getChangeDescription().getCommitted();
 	}
 	
 	@Test void TestQueryWithOpenAndCommittedChangeSetNoReadContext(){

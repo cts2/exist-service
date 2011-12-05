@@ -21,12 +21,11 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
-import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
 
 @Component
@@ -105,7 +104,7 @@ public class ExistAssociationQueryService
 	}
 
 	@Override
-	protected ResourceInfo<Association, AssociationReadId> getResourceInfo() {
+	protected PathInfo getResourceInfo() {
 		return this.associationResourceInfo;
 	}
 
@@ -211,5 +210,4 @@ public class ExistAssociationQueryService
 			EntityDescriptionReadId entity, ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
-
 }

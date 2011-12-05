@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionReadService;
 
 @Component
 public class ExistMapVersionReadService 
-	extends AbstractExistReadService<
+	extends AbstractExistDefaultReadService<
 		MapVersion,
 		NameOrURI,
 		edu.mayo.cts2.framework.model.service.mapversion.MapVersionReadService>
@@ -23,7 +23,7 @@ public class ExistMapVersionReadService
 	private MapVersionResourceInfo mapVersionResourceInfo;
 
 	@Override
-	protected ResourceInfo<MapVersion, NameOrURI> getResourceInfo() {
+	protected DefaultResourceInfo<MapVersion, NameOrURI> getResourceInfo() {
 		return this.mapVersionResourceInfo;
 	}
 

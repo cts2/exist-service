@@ -56,7 +56,7 @@ class ConceptDomainBindingServiceTestIT
     entry.setBoundValueSet(new ValueSetReference())
     entry.getBoundValueSet().setContent("vs")
     
-    maintService.createResource(new LocalIdConceptDomainBinding(entry))
+    maintService.createResource(entry)
   }
 
   def getResource(uri: String): LocalIdConceptDomainBinding = {

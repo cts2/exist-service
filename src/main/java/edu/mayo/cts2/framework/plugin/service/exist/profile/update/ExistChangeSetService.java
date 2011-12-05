@@ -16,6 +16,7 @@ import org.xmldb.api.base.XMLDBException;
 
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
+import edu.mayo.cts2.framework.model.core.IsChangeable;
 import edu.mayo.cts2.framework.model.core.OpaqueData;
 import edu.mayo.cts2.framework.model.core.SourceReference;
 import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
@@ -24,7 +25,6 @@ import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
-import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
@@ -116,12 +116,11 @@ public class ExistChangeSetService implements ChangeSetService {
 						"To: " + parentCollectionName + resourceId);
 				}
 		
-				Object resourcObj = 
-						this.resourceUnmarshaller.unmarshallResource(resource);
+				IsChangeable resourcObj = 
+						(IsChangeable)this.resourceUnmarshaller.unmarshallResource(resource);
 				
 				ChangeDescription changeDescription = 
-						ModelUtils.getChangeableElementGroup(resourcObj).
-					getChangeDescription();
+						resourcObj.getChangeableElementGroup().getChangeDescription();
 				
 				if(changeDescription.getChangeType().equals(ChangeType.DELETE)){
 					this.existResourceDao.deleteResource(parentCollectionName, resourceId);
@@ -140,7 +139,7 @@ public class ExistChangeSetService implements ChangeSetService {
 			ChangeSet changeSet = this.readChangeSet(changeSetUri);
 			
 			for(ChangeableResourceChoice change : changeSet.getMember()){
-				ModelUtils.getChangeableElementGroup(change).
+				change.getChangeableElementGroup().
 					getChangeDescription().setCommitted(ChangeCommitted.COMMITTED);
 			}
 	

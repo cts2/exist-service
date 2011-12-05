@@ -8,13 +8,18 @@ import edu.mayo.cts2.framework.core.url.UrlConstructor;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
+import edu.mayo.cts2.framework.model.core.IsChangeable;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
 import edu.mayo.cts2.framework.model.service.core.ReadContext;
-import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.service.profile.ReadService;
 
-public abstract class AbstractExistReadService<R,I,T extends BaseReadService> extends AbstractExistResourceReadingService<R,I,T> 
+public abstract class AbstractExistReadService<
+	C extends IsChangeable,
+	R extends IsChangeable,
+	I,
+	T extends BaseReadService> 
+	extends AbstractExistResourceReadingService<R,I,T> 
 	implements ReadService<R,I> {
 
 	@Autowired
@@ -99,8 +104,7 @@ public abstract class AbstractExistReadService<R,I,T extends BaseReadService> ex
 	}
 	
 	protected boolean isDeleted(R resource){
-		ChangeableElementGroup group = 
-				ModelUtils.getChangeableElementGroup(resource);
+		ChangeableElementGroup group = resource.getChangeableElementGroup();
 		
 		return this.isDeleted(group);
 	}

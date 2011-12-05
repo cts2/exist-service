@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService;
 
 @Component
 public class ExistCodeSystemVersionReadService 
-	extends AbstractExistReadService<
+	extends AbstractExistDefaultReadService<
 		CodeSystemVersionCatalogEntry,
 		NameOrURI,
 		edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionReadService>
@@ -93,7 +93,7 @@ public class ExistCodeSystemVersionReadService
 	}
 
 	@Override
-	protected ResourceInfo<CodeSystemVersionCatalogEntry, NameOrURI> getResourceInfo() {
+	protected DefaultResourceInfo<CodeSystemVersionCatalogEntry, NameOrURI> getResourceInfo() {
 		return this.codeSystemVersionResourceInfo;
 	}
 }

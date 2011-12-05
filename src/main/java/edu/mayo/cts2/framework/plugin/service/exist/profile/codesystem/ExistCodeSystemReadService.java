@@ -10,14 +10,14 @@ import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemReadService;
 
 @Component
 public class ExistCodeSystemReadService
 		extends
-		AbstractExistReadService<CodeSystemCatalogEntry, NameOrURI, edu.mayo.cts2.framework.model.service.codesystem.CodeSystemReadService>
+		AbstractExistDefaultReadService<CodeSystemCatalogEntry, NameOrURI, edu.mayo.cts2.framework.model.service.codesystem.CodeSystemReadService>
 		implements CodeSystemReadService {
 
 	@Resource
@@ -56,7 +56,7 @@ public class ExistCodeSystemReadService
 	}
 
 	@Override
-	protected ResourceInfo<CodeSystemCatalogEntry, NameOrURI> getResourceInfo() {
+	protected ResourceInfo<NameOrURI> getResourceInfo() {
 		return this.codeSystemResourceInfo;
 	}
 }

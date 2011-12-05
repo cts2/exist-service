@@ -5,14 +5,14 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryReadService;
 import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId;
 
 @Component
 public class ExistMapEntryReadService 
-	extends AbstractExistReadService<
+	extends AbstractExistDefaultReadService<
 	MapEntry,
 	MapEntryReadId,
 	edu.mayo.cts2.framework.model.service.mapentry.MapEntryReadService>
@@ -22,7 +22,7 @@ public class ExistMapEntryReadService
 	private MapEntryResourceInfo mapEntryResourceInfo;
 
 	@Override
-	protected ResourceInfo<MapEntry, MapEntryReadId> getResourceInfo() {
+	protected DefaultResourceInfo<MapEntry, MapEntryReadId> getResourceInfo() {
 		return this.mapEntryResourceInfo;
 	}
 

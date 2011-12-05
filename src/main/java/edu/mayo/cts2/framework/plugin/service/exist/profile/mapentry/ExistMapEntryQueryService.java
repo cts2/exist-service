@@ -17,7 +17,7 @@ import edu.mayo.cts2.framework.model.mapversion.MapEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
@@ -163,7 +163,7 @@ public class ExistMapEntryQueryService
 	}
 
 	@Override
-	protected ResourceInfo<MapEntry, ?> getResourceInfo() {
+	protected PathInfo getResourceInfo() {
 		return this.mapEntryResourceInfo;
 	}
 

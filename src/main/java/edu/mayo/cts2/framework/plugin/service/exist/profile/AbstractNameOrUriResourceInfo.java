@@ -4,7 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 
-public abstract class AbstractNameOrUriResourceInfo<R,I extends NameOrURI> implements ResourceInfo<R,I> {
+public abstract class AbstractNameOrUriResourceInfo<R,I extends NameOrURI> 
+	implements DefaultResourceInfo<R,I> {
 
 	@Override
 	public boolean isReadByUri(I id) {

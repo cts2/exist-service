@@ -34,7 +34,7 @@ import edu.mayo.cts2.framework.model.service.core.EntityNameOrURIList;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
@@ -286,7 +286,7 @@ public class ExistEntityDescriptionQueryService
 	}
 
 	@Override
-	protected ResourceInfo<EntityDescription, ?> getResourceInfo() {
+	protected PathInfo getResourceInfo() {
 		return this.entityDescriptionResourceInfo;
 	}
 

@@ -25,7 +25,7 @@ public class ExistValueSetDefinitionReadService
 	private ValueSetDefinitionResourceInfo valueSetDefinitionResourceInfo;
 
 	@Override
-	protected ResourceInfo<LocalIdValueSetDefinition, ValueSetDefinitionReadId> getResourceInfo() {
+	protected ResourceInfo<ValueSetDefinitionReadId> getResourceInfo() {
 		return this.valueSetDefinitionResourceInfo;
 	}
 

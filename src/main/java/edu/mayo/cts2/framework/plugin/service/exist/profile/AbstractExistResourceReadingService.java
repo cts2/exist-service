@@ -8,7 +8,11 @@ import edu.mayo.cts2.framework.model.service.core.BaseService;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
-public abstract class AbstractExistResourceReadingService<R,I,T extends BaseService > extends AbstractExistService<T> {
+public abstract class AbstractExistResourceReadingService<
+	R,
+	I,
+	T extends BaseService> 
+	extends AbstractExistService<T> {
 
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
@@ -23,7 +27,7 @@ public abstract class AbstractExistResourceReadingService<R,I,T extends BaseServ
 	protected Resource getResource(I resourceIdentifier, String changeSetUri) {
 		Resource resource;
 		
-		ResourceInfo<? extends R,I> existResourceReader = getResourceInfo();
+		ResourceInfo<I> existResourceReader = getResourceInfo();
 			
 		String changeSetDir = null;
 		if(StringUtils.isNotBlank(changeSetUri)){
@@ -79,6 +83,6 @@ public abstract class AbstractExistResourceReadingService<R,I,T extends BaseServ
 		return resourceUnmarshaller;
 	}
 	
-	protected abstract ResourceInfo<R,I> getResourceInfo();
+	protected abstract ResourceInfo<I> getResourceInfo();
 
 }

@@ -47,7 +47,7 @@ class ExistValueSetDefinitionServiceTestIT
         buildValueSetDefinition("http://Test1",changeSetUri), 
         buildValueSetDefinition("http://Test2",changeSetUri));
     
-    resources.foreach(resource => maintService.createResource(new LocalIdValueSetDefinition(resource)))
+    resources.foreach(resource => maintService.createResource(resource))
     
     resources.size
    }
@@ -57,7 +57,7 @@ class ExistValueSetDefinitionServiceTestIT
     
      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
-     maintService.createResource(new LocalIdValueSetDefinition(entry))
+     maintService.createResource(entry)
   }
   
   def buildValueSetDefinition(uri:String,changeSetUri:String):ValueSetDefinition = {

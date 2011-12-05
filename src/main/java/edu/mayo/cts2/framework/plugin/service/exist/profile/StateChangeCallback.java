@@ -7,7 +7,6 @@ import org.xmldb.api.base.Resource;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
-import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ChangeSetResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
@@ -25,9 +24,8 @@ public class StateChangeCallback {
 	private ChangeSetResourceInfo changeSetResourceInfo;
 	
 	public void resourceAdded(ChangeableResourceChoice changeable) {
-		ChangeDescription changeDescription = ModelUtils.
-			getChangeableElementGroup(changeable).
-				getChangeDescription();
+		ChangeDescription changeDescription = 
+				changeable.getChangeableElementGroup().getChangeDescription();
 		
 		String changeSetUri = changeDescription.
 					getContainingChangeSet();

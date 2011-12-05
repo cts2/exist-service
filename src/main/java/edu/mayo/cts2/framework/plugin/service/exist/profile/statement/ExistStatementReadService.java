@@ -8,7 +8,7 @@ import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
 import edu.mayo.cts2.framework.model.extension.LocalIdStatement;
 import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.service.profile.statement.StatementReadService;
 import edu.mayo.cts2.framework.service.profile.statement.name.StatementReadId;
 
@@ -25,7 +25,7 @@ public class ExistStatementReadService
 	private StatementResourceInfo statementResourceInfo;
 
 	@Override
-	protected ResourceInfo<LocalIdStatement, StatementReadId> getResourceInfo() {
+	protected LocalIdResourceInfo<LocalIdStatement, StatementReadId> getResourceInfo() {
 		return this.statementResourceInfo;
 	}
 

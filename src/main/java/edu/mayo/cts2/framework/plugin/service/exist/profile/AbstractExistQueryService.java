@@ -101,7 +101,7 @@ public abstract class AbstractExistQueryService
 	}
 	
 	public DirectoryResult<Summary> getResourceSummaries(
-			ResourceInfo<?,?> resourceInfo,
+			PathInfo resourceInfo,
 			String changeSetUri,
 			String collectionPath, 
 			String xpath,

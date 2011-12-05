@@ -173,10 +173,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-
+		
 		<repository>
-			<id>exist</id>
-			<url>file:///${basedir}/repo</url>
+			<id>edu.informatics.maven.thirdparty</id>
+			<name>Informatics Maven ThirdParty Repository</name>
+			<url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -184,6 +185,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+
 	</repositories>
 
 </project>

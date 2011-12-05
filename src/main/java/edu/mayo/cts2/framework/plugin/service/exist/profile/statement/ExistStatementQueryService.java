@@ -13,12 +13,11 @@ import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.extension.LocalIdStatement;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.model.statement.StatementDirectoryEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.profile.statement.StatementQueryService;
@@ -122,7 +121,7 @@ public class ExistStatementQueryService
 	}
 
 	@Override
-	protected ResourceInfo<LocalIdStatement, ?> getResourceInfo() {
+	protected PathInfo getResourceInfo() {
 		return this.statementResourceInfo;
 	}
 

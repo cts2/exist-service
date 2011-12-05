@@ -4,12 +4,12 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId;
 
 @Component
-public class MapEntryResourceInfo implements ResourceInfo<MapEntry,MapEntryReadId> {
+public class MapEntryResourceInfo implements DefaultResourceInfo<MapEntry,MapEntryReadId> {
 
 	private static final String MAPENTRIES_PATH = "/mapentries";
 

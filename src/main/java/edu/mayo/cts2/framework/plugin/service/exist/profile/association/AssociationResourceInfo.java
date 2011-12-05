@@ -3,12 +3,12 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.association.Association;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
 
 @Component
-public class AssociationResourceInfo implements ResourceInfo<Association,AssociationReadId> {
+public class AssociationResourceInfo implements DefaultResourceInfo<Association,AssociationReadId> {
 
 	private static final String ASSOCIATIONS_PATH = "/associations";
 

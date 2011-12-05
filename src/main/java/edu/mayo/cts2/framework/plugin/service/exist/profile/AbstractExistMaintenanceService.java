@@ -25,11 +25,11 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
+import edu.mayo.cts2.framework.model.core.IsChangeable;
 import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseMaintenanceService;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
-import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
 
@@ -38,8 +38,13 @@ import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
  *
  * @author <a href="mailto:kevin.peterson@mayo.edu">Kevin Peterson</a>
  */
-public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintenanceService> 
-	extends AbstractExistResourceReadingService<R,I,T> implements edu.mayo.cts2.framework.service.profile.BaseMaintenanceService<R,I> {
+public abstract class AbstractExistMaintenanceService<
+	D extends IsChangeable,
+	R extends IsChangeable,
+	I,
+	T extends BaseMaintenanceService> 
+	extends AbstractExistResourceReadingService<R,I,T> 
+	implements edu.mayo.cts2.framework.service.profile.BaseMaintenanceService<D,R,I> {
 
 	@javax.annotation.Resource
 	private StateChangeCallback stateChangeCallback;
@@ -61,12 +66,10 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 		if(resource == null){
 			resource = this.getResource(identifier);
 		}
+	
+		D changeable = this.doUnmarshall(resource);
 		
-		@SuppressWarnings("unchecked")
-		R changeable = (R) this.doUnmarshall(resource);
-		
-		ChangeableElementGroup group = this.
-				getChangeableElementGroup(changeable);
+		ChangeableElementGroup group = changeable.getChangeableElementGroup();
 		
 		ChangeDescription changeDescription = new ChangeDescription();
 		
@@ -77,46 +80,44 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 		
 		group.setChangeDescription(changeDescription);
 
-		ChangeableResourceChoice choice = this.doStoreResource(changeable).getResource();
+		this.doStoreResource(changeable);
+		
+		ChangeableResourceChoice choice = new ChangeableResourceChoice();
+		
+		this.addResourceToChangeableResourceChoice(choice, changeable);
 		
 		this.stateChangeCallback.resourceDeleted(choice, changeSetUri);
 	}
 	
-	protected Object doUnmarshall(Resource resource){
-		return this.getResourceUnmarshaller().unmarshallResource(resource);
-	}
-	
-	protected ChangeableElementGroup getChangeableElementGroup(R resource){
-		return ModelUtils.
-				getChangeableElementGroup(resource);
-	}
-
 	@Override
-	public void updateResource(R resource) {
-		this.createResource(resource);
-	}
-
-	public R createResource(R resource) {
-		
-		StorageResult choice = this.doCreateResource(resource);
-		
-		this.stateChangeCallback.resourceAdded(choice.getResource());
-		
-		return resourceFromStorageResult(choice);
+	public void updateResource(D resource) {
+		this.doStoreResource(resource);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected R resourceFromStorageResult(StorageResult result){
-		return (R)result.getResource().getChoiceValue();
+	protected D doUnmarshall(Resource resource){
+		return (D) this.getResourceUnmarshaller().unmarshallResource(resource);
 	}
 
-	protected StorageResult doCreateResource(R resource) {
-	
-		StorageResult choice = this.doStoreResource(resource);
+	public D createResource(R inputResource) {
 		
-		return choice;
+		D resource = this.resourceToIndentifiedResource(inputResource);
+
+		this.doStoreResource(resource);
+		
+		ChangeableResourceChoice choice = new ChangeableResourceChoice();
+		
+		this.addResourceToChangeableResourceChoice(choice, resource);
+		
+		this.stateChangeCallback.resourceAdded(choice);
+		
+		return resource;
 	}
 	
+	//protected abstract D resourceFromStorageResult(StorageResult result);
+	
+	protected abstract D resourceToIndentifiedResource(R resource);
+/*	
 	protected static class StorageResult {
 		ChangeableResourceChoice resource;
 		String path;
@@ -149,18 +150,17 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 			this.name = name;
 		}	
 	}
+	*/
+	protected abstract String getPathFromResource(D inputResource);
 
-	private StorageResult doStoreResource(R resource){
+	protected void doStoreResource(D resource){
+		
 		String path = 
-				this.getResourceInfo().createPathFromResource(resource);
+				this.getPathFromResource(resource);
 
-		String name = this.doGetResourceNameToStore(resource);
+		String name = this.getExistStorageNameForResource(resource);
 
-		ChangeableResourceChoice choice = new ChangeableResourceChoice();
-		
-		this.addResourceToChangeableResourceChoice(choice, resource);
-		
-		ChangeableElementGroup group = ModelUtils.getChangeableElementGroup(choice);
+		ChangeableElementGroup group = resource.getChangeableElementGroup();
 		
 		String changeSetUri = group.getChangeDescription().getContainingChangeSet();
 		
@@ -171,15 +171,14 @@ public abstract class AbstractExistMaintenanceService<R,I,T extends BaseMaintena
 		
 		String wholePath = this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), path);
 	
-		this.getExistResourceDao().storeResource(wholePath, name, choice.getChoiceValue());
-		
-		return new StorageResult(choice, path , name);
+		this.getExistResourceDao().storeResource(wholePath, name, 
+				this.processResourceBeforeStore(resource));
 	}
 	
-	protected String doGetResourceNameToStore(R resource){
-		return this.getResourceInfo().getExistResourceNameFromResource(resource);
-	}
+	protected abstract R processResourceBeforeStore(D resource);
+	
+	protected abstract String getExistStorageNameForResource(D resource);
 
-	protected abstract void addResourceToChangeableResourceChoice(ChangeableResourceChoice choice, R resource);
+	protected abstract void addResourceToChangeableResourceChoice(ChangeableResourceChoice choice, D resource);
 
 }

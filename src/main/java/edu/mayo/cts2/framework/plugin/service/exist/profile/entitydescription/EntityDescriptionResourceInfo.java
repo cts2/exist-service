@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
 
 @Component
-public class EntityDescriptionResourceInfo implements ResourceInfo<EntityDescription,EntityDescriptionReadId> {
+public class EntityDescriptionResourceInfo implements DefaultResourceInfo<EntityDescription,EntityDescriptionReadId> {
 
 	private static final String ENTITIES_PATH = "/entities";
 

@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.core.StatementTarget;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistMaintenanceService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.Incrementer;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.association.AssociationMaintenanceService;
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
 
 @Component
 public class ExistAssociationMaintenanceService 
-	extends AbstractExistMaintenanceService<Association,AssociationReadId,edu.mayo.cts2.framework.model.service.association.AssociationMaintenanceService>
+	extends AbstractExistDefaultMaintenanceService<Association,AssociationReadId,edu.mayo.cts2.framework.model.service.association.AssociationMaintenanceService>
 	implements AssociationMaintenanceService {
 
 	@Resource
 	private AssociationResourceInfo associationResourceInfo;
 
 	@Override
-	protected ResourceInfo<Association, AssociationReadId> getResourceInfo() {
+	protected DefaultResourceInfo<Association, AssociationReadId> getResourceInfo() {
 		return this.associationResourceInfo;
 	}
 

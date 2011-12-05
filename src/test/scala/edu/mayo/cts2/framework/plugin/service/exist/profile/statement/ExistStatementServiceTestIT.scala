@@ -58,7 +58,7 @@ class ExistStatementServiceTestIT
         buildEntry("http://Test2",changeSetUri));
     
     resources.foreach(resource => 
-      maintService.createResource(new LocalIdStatement(resource)))
+      maintService.createResource(resource))
     
     resources.size
    }
@@ -68,7 +68,7 @@ class ExistStatementServiceTestIT
     
      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
-     maintService.createResource(new LocalIdStatement(entry))
+     maintService.createResource(entry)
   }
   
   def buildEntry(uri:String,changeSetUri:String):Statement = {
