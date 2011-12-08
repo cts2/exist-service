@@ -20,7 +20,6 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
 import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
@@ -30,6 +29,7 @@ import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseMaintenanceService;
 import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.validator.ChangeSetUriValidator;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
 
@@ -48,6 +48,9 @@ public abstract class AbstractExistMaintenanceService<
 
 	@javax.annotation.Resource
 	private StateChangeCallback stateChangeCallback;
+	
+	@javax.annotation.Resource
+	private ChangeSetUriValidator changeSetUriValidator;
 	
 	@Override
 	public void updateChangeableMetadata(I identifier,
@@ -113,44 +116,9 @@ public abstract class AbstractExistMaintenanceService<
 		
 		return resource;
 	}
-	
-	//protected abstract D resourceFromStorageResult(StorageResult result);
-	
-	protected abstract D resourceToIndentifiedResource(R resource);
-/*	
-	protected static class StorageResult {
-		ChangeableResourceChoice resource;
-		String path;
-		String name;
 
-		public StorageResult(ChangeableResourceChoice resource, String path,
-				String name) {
-			super();
-			this.resource = resource;
-			this.path = path;
-			this.name = name;
-		}
-		
-		public ChangeableResourceChoice getResource() {
-			return resource;
-		}
-		public void setResource(ChangeableResourceChoice resource) {
-			this.resource = resource;
-		}
-		public String getPath() {
-			return path;
-		}
-		public void setPath(String path) {
-			this.path = path;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}	
-	}
-	*/
+	protected abstract D resourceToIndentifiedResource(R resource);
+
 	protected abstract String getPathFromResource(D inputResource);
 
 	protected void doStoreResource(D resource){
@@ -164,10 +132,9 @@ public abstract class AbstractExistMaintenanceService<
 		
 		String changeSetUri = group.getChangeDescription().getContainingChangeSet();
 		
-		String changeSetDir = null;
-		if(StringUtils.isNotBlank(changeSetUri)){
-			changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
-		}
+		this.changeSetUriValidator.validateChangeSet(changeSetUri);
+		
+		String changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
 		
 		String wholePath = this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), path);
 	

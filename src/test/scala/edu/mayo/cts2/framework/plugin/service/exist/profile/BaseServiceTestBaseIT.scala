@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile
 
-import java.lang.Override
 import java.util.Date
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -9,16 +8,17 @@ import org.junit.runner.RunWith
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.ContextConfiguration
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.exception.Cts2RestException
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
+import edu.mayo.cts2.framework.model.exception.changeset.ChangeSetIsNotOpenException
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(
@@ -60,6 +60,18 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
     	
     	assertNotNull(  getResource(name));
     
+  }
+   
+   @Test(expected = classOf[ChangeSetIsNotOpenException])
+   def testInsertWithClosedChangeSet() {
+        var name = getName()
+       var uri = getUri()
+         var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+
+    	 changeSetService.commitChangeSet(changeSetId)
+    	 
+    	 createResource(name, uri, changeSetId)
+
   }
    
     @Test def testInsertAndRetrieveWithChangeSetCommit() {

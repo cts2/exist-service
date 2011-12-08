@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
@@ -17,6 +18,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.ChangeSetQueryExtensionRestrictions;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetQueryExtension;
 
@@ -35,7 +37,8 @@ public class ExistChangeSetQueryService
 
 	@Override
 	public DirectoryResult<ChangeSetDirectoryEntry> getResourceSummaries(
-			Query query, Set<ResolvedFilter> filterComponent,
+			Query query, 
+			Set<ResolvedFilter> filterComponent,
 			ChangeSetQueryExtensionRestrictions restrictions, 
 			Page page) {
 		
@@ -90,6 +93,27 @@ public class ExistChangeSetQueryService
 		return 0;
 	}
 
+	@Override
+	public Set<StateAdjustingModelAttributeReference<XpathState>> getSupportedModelAttributes() {
+		Set<StateAdjustingModelAttributeReference<XpathState>> set = 
+				super.getSupportedModelAttributes();
+		
+		set.add(this.getFinalizableStateAdjustingReference());
+		
+		return set;
+	}
+
+	protected StateAdjustingModelAttributeReference<XpathState> getFinalizableStateAdjustingReference(){
+		XpathStateUpdater<XpathState> updater = new XpathStateUpdater<XpathState>("@state");
+		
+		StateAdjustingModelAttributeReference<XpathState> stateAdjustor = 
+				new StateAdjustingModelAttributeReference<XpathState>(updater);
+		
+		stateAdjustor.setContent("state");
+		
+		return stateAdjustor;
+	}
+
 	private class ChangeSetDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ChangeSetDirectoryEntry> {
 
 		public ChangeSetDirectoryBuilder() {
@@ -119,5 +143,6 @@ public class ExistChangeSetQueryService
 				getSupportedModelAttributes());
 		}
 	}
+
 
 }

@@ -36,9 +36,7 @@ import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
  */
 public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> {
 
-	//private String elementPath;
 	private String queryPath;
-	//private String queryAttributeOrText;
 	
 	/**
 	 * Instantiates a new xpath state updater.
@@ -52,12 +50,9 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 	 */
 	public XpathStateUpdater(
 			String queryPath
-			//String queryAttributeOrText
 			){
 		super();
-		//this.elementPath = elementPath;
 		this.queryPath = queryPath;
-		//this.queryAttributeOrText = queryAttributeOrText;
 	}
 	
 	/* (non-Javadoc)
