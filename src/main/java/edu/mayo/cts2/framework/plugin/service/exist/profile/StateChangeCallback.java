@@ -33,6 +33,16 @@ public class StateChangeCallback {
 		this.addToChangeSet(changeSetUri, changeable);
 	}
 	
+	public void resourceUpdated(ChangeableResourceChoice changeable) {
+		ChangeDescription changeDescription = 
+				changeable.getChangeableElementGroup().getChangeDescription();
+		
+		String changeSetUri = changeDescription.
+					getContainingChangeSet();
+		
+		this.addToChangeSet(changeSetUri, changeable);
+	}
+	
 	public void resourceDeleted(ChangeableResourceChoice changeable, String changeSetUri) {
 
 		this.addToChangeSet(changeSetUri, changeable);

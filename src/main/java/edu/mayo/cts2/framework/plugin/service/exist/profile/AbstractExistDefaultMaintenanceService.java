@@ -32,11 +32,6 @@ public abstract class AbstractExistDefaultMaintenanceService<
 	T extends BaseMaintenanceService> 
 	extends AbstractExistMaintenanceService<R,R,I,T> 
 	implements edu.mayo.cts2.framework.service.profile.MaintenanceService<R,I> {
-
-	@Override
-	public void updateResource(R resource) {
-		this.doStoreResource(resource);
-	}
 	
 	protected R resourceToIndentifiedResource(R resource){
 		return resource;

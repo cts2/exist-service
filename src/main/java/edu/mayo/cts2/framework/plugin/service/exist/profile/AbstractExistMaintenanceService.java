@@ -95,6 +95,12 @@ public abstract class AbstractExistMaintenanceService<
 	@Override
 	public void updateResource(D resource) {
 		this.doStoreResource(resource);
+		
+		ChangeableResourceChoice choice = new ChangeableResourceChoice();
+		
+		this.addResourceToChangeableResourceChoice(choice, resource);
+		
+		this.stateChangeCallback.resourceUpdated(choice);
 	}
 	
 	@SuppressWarnings("unchecked")
