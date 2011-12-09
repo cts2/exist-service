@@ -50,7 +50,7 @@ public class ExistMapVersionQueryService
 		summary.setVersionTag(resource.getVersionTag());
 		
 		summary.setHref(getUrlConstructor().createMapVersionUrl(
-				resource.getMapVersionName(),
+				resource.getVersionOf().getContent(),
 				resource.getMapVersionName()));
 
 		return summary;
