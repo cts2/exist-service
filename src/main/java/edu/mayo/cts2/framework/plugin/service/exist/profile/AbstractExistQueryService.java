@@ -139,11 +139,12 @@ public abstract class AbstractExistQueryService
 				String allResourcesQueryString;
 				
 				ResourceIterator itr = rs.getIterator();
-				if(itr.hasMoreResources()){
-					String names = itr.nextResource().getContent().toString();
+				String names = itr.nextResource().getContent().toString();
+				
+				String[] namesArray = StringUtils.split(names, "<->");
+				
+				if(namesArray != null && namesArray.length > 0){
 					
-					String[] namesArray = StringUtils.split(names, "<->");
-
 					XqueryExceptClauseBuilder builder = new XqueryExceptClauseBuilder(resourceInfo.getResourceNameXpath());
 					for(int i=0;i<namesArray.length;i++){
 						builder.except(namesArray[i]);

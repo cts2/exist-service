@@ -221,6 +221,26 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 			null, null, null, null, new Page()).entries.size()
 	}
 	
+	@Test void TestQueryWithOpenAndEmputCommittedChangeSetWithReadContext(){
+		
+		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def cs1 = new CodeSystemCatalogEntry(about:"about",codeSystemName:"name")
+		cs1.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				changeType: ChangeType.CREATE,
+				changeDate: new Date(),
+				containingChangeSet: changeSetUri1)))
+		
+		maint.createResource(cs1)
+		changeSetService.commitChangeSet(changeSetUri1)
+		
+		def changeSetUri2 = changeSetService.createChangeSet().getChangeSetURI()
+
+		assertEquals 1, query.getResourceSummaries(
+			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page()).entries.size()
+	}
+	
 	@Test void TestQueryWithOpenAndCommittedChangeSetWithReadContext(){
 		
 		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()
