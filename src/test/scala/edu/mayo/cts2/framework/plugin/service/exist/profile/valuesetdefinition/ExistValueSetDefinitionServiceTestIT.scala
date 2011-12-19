@@ -21,6 +21,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummarie
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.command.Page
+import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery
+import edu.mayo.cts2.framework.model.service.core.Query
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQuery
 
 class ExistValueSetDefinitionServiceTestIT 
 	extends BaseServiceTestBaseIT[LocalIdValueSetDefinition,ValueSetDefinitionDirectoryEntry]
@@ -39,7 +42,7 @@ class ExistValueSetDefinitionServiceTestIT
    override def getUri():String = {"someUri"}
 
   def getResourceSummaries():DirectoryResult[ValueSetDefinitionDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,null,new Page());
+     queryService.getResourceSummaries(new TestQuery(),null,new Page());
   }
       
   def createResources(changeSetUri:String):Int = {
@@ -90,4 +93,16 @@ class ExistValueSetDefinitionServiceTestIT
        
     	readService.read(id,new ResolvedReadContext())
     } 
+}
+
+class TestQuery extends ValueSetDefinitionQuery {
+
+	def getQuery():Query = {null}
+
+	def getFilterComponent() = {null}
+
+	def getReadContext():ResolvedReadContext = {null}
+
+	def getRestrictions() = {null}
+	
 }

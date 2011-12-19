@@ -8,16 +8,15 @@ import org.xmldb.api.base.Resource;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemQueryService;
 
 @Component
@@ -113,17 +112,16 @@ public class ExistCodeSystemQueryService
 
 	@Override
 	public DirectoryResult<CodeSystemCatalogEntrySummary> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			Void restrictions, 
-			ResolvedReadContext readContext,
+			ResourceQuery query, 
+			SortCriteria sortCriteria,
 			Page page) {
 	
 		CodeSystemDirectoryBuilder builder = 
-				new CodeSystemDirectoryBuilder(this.getChangeSetUri(readContext));
+				new CodeSystemDirectoryBuilder(this.getChangeSetUri(
+						query.getReadContext()));
 		
 		return 
-			builder.restrict(filterComponent).
+			builder.restrict(query.getFilterComponent()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
@@ -131,17 +129,14 @@ public class ExistCodeSystemQueryService
 
 	@Override
 	public DirectoryResult<CodeSystemCatalogEntry> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent, 
-			Void restrictions,
-			ResolvedReadContext readContext,
+			ResourceQuery query, 
+			SortCriteria sortCriteria,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public int count(Query query, Set<ResolvedFilter> filterComponent,
-			Void restrictions) {
+	public int count(ResourceQuery query) {
 		throw new UnsupportedOperationException();
 	}
 

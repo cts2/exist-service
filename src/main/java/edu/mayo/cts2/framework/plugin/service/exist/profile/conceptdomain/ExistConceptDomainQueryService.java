@@ -7,17 +7,16 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainQueryService;
 
 @Component
@@ -65,36 +64,34 @@ public class ExistConceptDomainQueryService
 
 	@Override
 	public DirectoryResult<ConceptDomainCatalogEntrySummary> getResourceSummaries(
-			Query query, Set<ResolvedFilter> filterComponent, Void restrictions,
-			ResolvedReadContext readContext,
+			ResourceQuery query, 
+			SortCriteria sort,
 			Page page) {
 
 		ConceptDomainDirectoryBuilder builder = new ConceptDomainDirectoryBuilder(
-				this.getChangeSetUri(readContext));
+				this.getChangeSetUri(query.getReadContext()));
 
 		return builder.
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
 	}
 
+	
 	@Override
 	public DirectoryResult<ConceptDomainCatalogEntry> getResourceList(
-			Query query, 
-			Set<ResolvedFilter> filterComponent, 
-			Void restrictions,
-			ResolvedReadContext readContext,
-			Page page) {
+			ResourceQuery query, SortCriteria sortCriteria, Page page) {
 		throw new UnsupportedOperationException();
 	}
 
+
 	@Override
-	public int count(Query query, Set<ResolvedFilter> filterComponent,
-			Void restrictions) {
+	public int count(ResourceQuery query) {
 		throw new UnsupportedOperationException();
 	}
+
 
 	@Override
 	protected ConceptDomainCatalogEntrySummary createSummary() {

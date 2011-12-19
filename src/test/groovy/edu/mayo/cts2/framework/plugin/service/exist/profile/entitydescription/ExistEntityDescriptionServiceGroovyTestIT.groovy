@@ -49,6 +49,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleanin
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery
 
 class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
@@ -62,7 +63,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 	ExistEntityDescriptionMaintenanceService maint
 
 	@Test
-	void "Get_Entity_Description_Summaries_With_Page_Limit"(){
+	void Get_Entity_Description_Summaries_With_Page_Limit(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
@@ -71,13 +72,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		changeSetService.commitChangeSet(changeSetUri)
 		
-		def summaries = query.getResourceSummaries(null, null, null, null, new Page(maxtoreturn:1))
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+		
+		def summaries = query.getResourceSummaries(q,null, new Page(maxtoreturn:1))
 
 		assertEquals 1, summaries.entries.size
 	}
 	
 	@Test 
-	void "Get_Entity_Description_Summaries_With_Contains_ResourceNameOrUri_Restriction"(){
+	void Get_Entity_Description_Summaries_With_Contains_ResourceNameOrUri_Restriction(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
@@ -92,13 +100,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		        modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
 		
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+		
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
 	
 	@Test
-	void "Get_Entity_Description_Summaries_With_Contains_ResourceSynopsis_Restriction"(){
+	void Get_Entity_Description_Summaries_With_Contains_ResourceSynopsis_Restriction(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
@@ -112,12 +127,19 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_SYNOPSIS_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
 		
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+		
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With Contains Wrong ResourceNameOrUri Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithContainsWrongResourceNameOrUriRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -134,12 +156,19 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def set = new HashSet()
 		set.add(fc)
 		
-		def summaries = query.getResourceSummaries(null, set, null, null, new Page())
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+		
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With ExactMatch ResourceNameOrUri Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithExactMatchResourceNameOrUriRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -152,13 +181,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchValue:"something",
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
 
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
 	
-	@Test void "Get Entity Description Summaries With ExactMatch Wrong ResourceNameOrUri Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithExactMatchWrongResourceNameOrUriRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -171,12 +207,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchValue:"somethin",
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+	
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With StartsWith ResourceNameOrUri Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithStartsWithResourceNameOrUriRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -189,12 +233,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchValue:"someth",
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+	
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
 	
-	@Test void "Get Entity Description Summaries With StartsWith Wrong ResourceNameOrUri Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithStartsWithWrongResourceNameOrUriRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -207,13 +259,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 				matchValue:"thing",
 				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 				referenceType:TargetReferenceType.ATTRIBUTE)
-		
-		def summaries = query.getResourceSummaries(null, [fc] as Set, null, null, new Page())
+
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as EntityDescriptionQuery
+	
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}
 	
-	@Test void "Get Entity Description Summaries With Entity Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithEntityRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -223,12 +282,19 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entities:[new EntityNameOrURI(entityName:new ScopedEntityName(name:"something"))])
 		
-		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { restrictions }
+		] as EntityDescriptionQuery
+	
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 1, summaries.entries.size
 	}
 	
-	@Test void "Get Entity Description Summaries With Two Entity Restrictions"(){
+	@Test void GetEntityDescriptionSummariesWithTwoEntityRestrictions(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -240,13 +306,20 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 			entities:[
 				new EntityNameOrURI(entityName:new ScopedEntityName(name:"something")),
 				new EntityNameOrURI(entityName:new ScopedEntityName(name:"name"))])
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { restrictions }
+		] as EntityDescriptionQuery
 
-		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 2, summaries.entries.size
 	}
 
-	@Test void "Get Entity Description Summaries With Wrong Entity Restriction"(){
+	@Test void GetEntityDescriptionSummariesWithWrongEntityRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
 		maint.createResource( createEntity("something",changeSetUri))
@@ -256,7 +329,14 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		def restrictions = new EntityDescriptionQueryServiceRestrictions(entities:[new EntityNameOrURI(entityName:new ScopedEntityName(name:"INVALID"))])
 
-		def summaries = query.getResourceSummaries(null, null, restrictions, null, new Page())
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { restrictions }
+		] as EntityDescriptionQuery
+	
+		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 0, summaries.entries.size
 	}

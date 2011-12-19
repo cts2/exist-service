@@ -1,21 +1,21 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry;
-import edu.mayo.cts2.framework.model.service.core.Query;
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
@@ -23,6 +23,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
 
 @Component
@@ -44,25 +45,32 @@ public class ExistMapEntryQueryService
 				final MapEntryQueryServiceRestrictions restrictions) {
 
 			if (restrictions != null) {
-				if(StringUtils.isNotBlank(restrictions.getMapversion())){
+				if(restrictions.getMapVersion() != null){
 					this.getRestrictions().add(new StateBuildingRestriction<MapEntryDirectoryState>() {
 
 						@Override
 						public MapEntryDirectoryState restrict(
 								MapEntryDirectoryState state) {
-							state.setMapVersion(restrictions.getMapversion());
+							state.setMapVersion(restrictions.getMapVersion().getName());
 							return state;
 						}
 					});
 				}
-				if(CollectionUtils.isNotEmpty(restrictions.getTargetentity())) {
+				if(CollectionUtils.isNotEmpty(restrictions.getTargetEntities())) {
+					
+					List<String> names = new ArrayList<String>();
+					
+					//TODO This doesn't account for URIs or Namespaces
+					for(EntityNameOrURI scopedName : restrictions.getTargetEntities()){
+						names.add(scopedName.getEntityName().getName());
+					}
 					
 					this.getRestrictions().add(
 						 new XpathStateBuildingRestriction<MapEntryDirectoryState>(
 								"mapversion:mapSet/mapversion:mapTarget/mapversion:mapTo/core:name", 
 								"text()",
 								AllOrAny.ANY,
-								restrictions.getTargetentity()));
+								names));
 				}
 			}
 			return this;
@@ -97,18 +105,19 @@ public class ExistMapEntryQueryService
 
 	@Override
 	public DirectoryResult<MapEntryDirectoryEntry> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			MapEntryQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			MapEntryQuery query, 
+			SortCriteria sortCriteria,
 			Page page) {
+		
 		MapEntryDirectoryBuilder builder = 
-				new MapEntryDirectoryBuilder(this.getChangeSetUri(readContext));
+				new MapEntryDirectoryBuilder(
+						this.getChangeSetUri(
+								query.getReadContext()));
 
 		return builder.
-				restrict(restrictions).
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getRestrictions()).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addMaxToReturn(page.getEnd()).
 				addStart(page.getStart()).
 				resolve();
@@ -116,10 +125,8 @@ public class ExistMapEntryQueryService
 
 	@Override
 	public DirectoryResult<MapEntry> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent,
-			MapEntryQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			MapEntryQuery query, 
+			SortCriteria sortCriteria,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
@@ -152,8 +159,7 @@ public class ExistMapEntryQueryService
 
 	
 	@Override
-	public int count(Query query, Set<ResolvedFilter> filterComponent,
-			MapEntryQueryServiceRestrictions restrictions) {
+	public int count(MapEntryQuery query) {
 		throw new UnsupportedOperationException();
 	}
 

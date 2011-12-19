@@ -33,10 +33,9 @@ import org.xmldb.api.base.XMLDBException;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetDirectoryEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
@@ -45,6 +44,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.restriction.ResolvedValueSetQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetQueryService;
 
 @Component
@@ -126,14 +126,15 @@ public class ExistResolvedValueSetQueryService
 
 	@Override
 	public DirectoryResult<ResolvedValueSetDirectoryEntry> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			ResolvedValueSetQueryServiceRestrictions restrictions, 
+			ResolvedValueSetQuery query, 
+			SortCriteria sort,
 			Page page) {
 		ResolvedValueSetDirectoryBuilder builder = new ResolvedValueSetDirectoryBuilder();
 
-		return builder.restrict(filterComponent).addStart(page.getStart())
-				.addMaxToReturn(page.getMaxToReturn()).resolve();
+		return builder.restrict(query.getFilterComponent()).
+				addStart(page.getStart()).
+				addMaxToReturn(page.getMaxToReturn()).
+				resolve();
 	}
 	
 	/* 

@@ -1,16 +1,22 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 
+import java.lang.Override
+import java.util.HashSet
+
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.runner.RunWith
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ContextConfiguration
+
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
-import edu.mayo.cts2.framework.model.core.FilterComponent
 import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.model.core.MapVersionReference
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference
+import edu.mayo.cts2.framework.model.core.ModelAttributeReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
@@ -20,13 +26,14 @@ import edu.mayo.cts2.framework.model.mapversion.MapEntry
 import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry
 import edu.mayo.cts2.framework.model.mapversion.MapSet
 import edu.mayo.cts2.framework.model.mapversion.MapTarget
+import edu.mayo.cts2.framework.model.service.core.Query
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
+import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId
-import edu.mayo.cts2.framework.model.core.ModelAttributeReference
-import java.util.HashSet
+import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery
 
 class ExistMapEntryServiceTestIT
 	extends BaseServiceTestBaseIT[MapEntry,MapEntryDirectoryEntry] 
@@ -80,7 +87,7 @@ class ExistMapEntryServiceTestIT
    }
     
    def getResourceSummaries():DirectoryResult[MapEntryDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,null,new Page())
+     queryService.getResourceSummaries(new TestQuery(),null,new Page())
    }
    
    @Test def testGetSummariesWithFilter() {
@@ -113,10 +120,33 @@ class ExistMapEntryServiceTestIT
      changeSetService.commitChangeSet(changeSetUri)
      
      val mapRestrictions = new MapEntryQueryServiceRestrictions()
-     mapRestrictions.setMapversion("mapversion")
-     mapRestrictions.getTargetentity().add("name2")
+     mapRestrictions.setMapVersion(ModelUtils.nameOrUriFromName("mapversion"))
      
-     val entries = queryService.getResourceSummaries(null,null,mapRestrictions,null,new Page());
+     val sec = new ScopedEntityName()
+     sec.setName("name2")
+     mapRestrictions.getTargetEntities().add(ModelUtils.entityNameOrUriFromName(sec))
+     
+     def mapEntryQuery = new MapEntryQuery {
+    	 def getRestrictions(): MapEntryQueryServiceRestrictions = {
+    	   mapRestrictions
+    	 }
+    	 
+    	def  getQuery():Query = {
+    	  null
+    	}
+	
+    	 def  getFilterComponent() = {
+    	   null
+    	 }	
+    	 
+    	 def getReadContext(): ResolvedReadContext = {
+    	   null
+    	 }
+    	 
+    	 
+     }
+     
+     def entries = queryService.getResourceSummaries(mapEntryQuery,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }
@@ -151,11 +181,31 @@ class ExistMapEntryServiceTestIT
      
      changeSetService.commitChangeSet(changeSetUri)
      
-     val mapRestrictions = new MapEntryQueryServiceRestrictions()
-     mapRestrictions.setMapversion("mapversion")
-     mapRestrictions.getTargetentity().add("ns:INVALID")
+     val restrictions = new MapEntryQueryServiceRestrictions()
+     restrictions.setMapVersion(ModelUtils.nameOrUriFromName("mapversion"))
      
-     val entries = queryService.getResourceSummaries(null,null,mapRestrictions,null,new Page());
+     def sec = new ScopedEntityName()
+     sec.setName("INVALID")
+     restrictions.getTargetEntities().add(ModelUtils.entityNameOrUriFromName(sec))
+     
+     def q = new MapEntryQuery(){
+    	 def getRestrictions(): MapEntryQueryServiceRestrictions = {
+    	   restrictions
+    	 }
+    	 
+    	 def  getQuery():Query = {
+    	  null
+    	}
+	
+    	 def  getFilterComponent() = {
+    	   null
+    	 }	
+    	 def getReadContext(): ResolvedReadContext = {
+    	   null
+    	 }
+     }
+     
+     val entries = queryService.getResourceSummaries(q,null,new Page());
      
      assertEquals(0, entries.getEntries().size())
    }
@@ -200,7 +250,26 @@ class ExistMapEntryServiceTestIT
      
      var set = new HashSet[ResolvedFilter]()
      set.add(filterComponent)
-     val entries = queryService.getResourceSummaries(null,set,null,null,new Page());
+     
+      val q = new MapEntryQuery {
+    	
+    	  def  getQuery():Query = {
+    	  null
+    	}
+	
+    	 def getRestrictions(): MapEntryQueryServiceRestrictions = {
+    	   null
+    	 }
+    	 
+    	 def  getFilterComponent() = {
+    	   set
+    	 }	
+    	 def getReadContext(): ResolvedReadContext = {
+    	   null
+    	 }
+     }
+     
+     val entries = queryService.getResourceSummaries(q,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }
@@ -246,7 +315,25 @@ class ExistMapEntryServiceTestIT
      var set = new HashSet[ResolvedFilter]()
      set.add(filterComponent)
      
-     val entries = queryService.getResourceSummaries(null,set,null,null,new Page());
+      def q = new MapEntryQuery(){
+    	 def getFilterComponent() = {
+    	   set
+    	 }
+    	 
+    	  def getRestrictions(): MapEntryQueryServiceRestrictions = {
+    	   null
+    	 }
+    	 
+    	 def  getQuery():Query = {
+    	  null
+    	}
+	
+    	 def getReadContext(): ResolvedReadContext = {
+    	   null
+    	 }
+     }
+     
+     val entries = queryService.getResourceSummaries(q,null,new Page());
      
      assertEquals(1, entries.getEntries().size())
    }
@@ -262,4 +349,18 @@ class ExistMapEntryServiceTestIT
      
     	readService.read(id, null)
     }
+
+}
+
+       
+class TestQuery extends MapEntryQuery {
+
+	def getQuery():Query = {null}
+
+	def getFilterComponent() = {null}
+
+	def getReadContext():ResolvedReadContext = {null}
+
+	def getRestrictions():MapEntryQueryServiceRestrictions = {null}
+	
 }

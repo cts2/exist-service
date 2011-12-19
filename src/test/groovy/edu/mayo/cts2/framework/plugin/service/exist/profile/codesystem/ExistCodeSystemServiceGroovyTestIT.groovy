@@ -22,6 +22,7 @@ import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
+import edu.mayo.cts2.framework.service.profile.ResourceQuery
 
 class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
@@ -78,9 +79,14 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 				containingChangeSet: changeSetUri)))
 		
 		maint.createResource(cs)
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri) },
+			getQuery : { }
+		] as ResourceQuery
 
-		assertEquals 1, query.getResourceSummaries(
-			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri), new Page()).entries.size()
+		assertEquals 1, query.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestQueryWithNoURI(){
@@ -95,9 +101,16 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 				containingChangeSet: changeSetUri)))
 		
 		maint.createResource(cs)
+		
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { }
+		] as ResourceQuery
 
 		assertEquals 0, query.getResourceSummaries(
-			null, null, null, null, new Page()).entries.size()
+			q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestQueryWithContains(){
@@ -119,9 +132,14 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 			matchValue:"am",
 			modelAttributeReference:new ModelAttributeReference(content:"resourceName")
 		)
+		
+		def q = [
+			getFilterComponent : { [filter] as Set },
+			getReadContext : { },
+			getQuery : { }
+		] as ResourceQuery
 
-		assertEquals 1, query.getResourceSummaries(
-			null, [filter] as Set, null, null, new Page()).entries.size()
+		assertEquals 1, query.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestCommittedChangeStatus(){
@@ -216,9 +234,15 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 				containingChangeSet: changeSetUri2)))
 		
 		maint.createResource(cs2)
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { }
+		] as ResourceQuery
 
 		assertEquals 1, query.getResourceSummaries(
-			null, null, null, null, new Page()).entries.size()
+			q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestQueryWithOpenAndEmputCommittedChangeSetWithReadContext(){
@@ -236,9 +260,14 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		changeSetService.commitChangeSet(changeSetUri1)
 		
 		def changeSetUri2 = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri2) },
+			getQuery : { }
+		] as ResourceQuery
 
-		assertEquals 1, query.getResourceSummaries(
-			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page()).entries.size()
+		assertEquals 1, query.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestQueryWithOpenAndCommittedChangeSetWithReadContext(){
@@ -265,9 +294,15 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 				containingChangeSet: changeSetUri2)))
 		
 		maint.createResource(cs2)
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri2) },
+			getQuery : { }
+		] as ResourceQuery
 
-		assertEquals 2, query.getResourceSummaries(
-			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page()).entries.size()
+
+		assertEquals 2, query.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestQueryWithOpenAndCommittedChangeSetWithReadContextModify(){
@@ -295,8 +330,13 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		maint.createResource(cs2)
 
-		def summaries = query.getResourceSummaries(
-			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page())
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri2) },
+			getQuery : { }
+		] as ResourceQuery
+	
+		def summaries = query.getResourceSummaries(q, null, new Page())
 		
 		assertEquals 1, summaries.entries.size()
 		
@@ -333,9 +373,14 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 			matchValue:"name",
 			modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 			referenceType:TargetReferenceType.ATTRIBUTE)
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri2) },
+			getQuery : { }
+		] as ResourceQuery
 
-		def summaries = query.getResourceSummaries(
-			null, [fc] as Set, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page())
+		def summaries = query.getResourceSummaries(q, null, new Page())
 		
 		assertEquals 1, summaries.entries.size()
 		
@@ -372,9 +417,14 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 			matchValue:"__INVALID__",
 			modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
 			referenceType:TargetReferenceType.ATTRIBUTE)
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri2) },
+			getQuery : { }
+		] as ResourceQuery
 
-		def summaries = query.getResourceSummaries(
-			null, [fc] as Set, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page())
+		def summaries = query.getResourceSummaries(q, null, new Page())
 		
 		assertEquals 0, summaries.entries.size()
 	}
@@ -397,11 +447,22 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		maint.deleteResource(ModelUtils.nameOrUriFromName("name"), changeSetUri2);
 		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : {  },
+			getQuery : { }
+		] as ResourceQuery
+		
 		assertEquals 1, query.getResourceSummaries(
-			null, null, null, null, new Page()).entries.size()
+			q, null, new Page()).entries.size()
+			
+		q = [
+				getFilterComponent : { },
+				getReadContext : { new ResolvedReadContext(changeSetContextUri:changeSetUri2) },
+				getQuery : { }
+			] as ResourceQuery
 
-		assertEquals 0, query.getResourceSummaries(
-			null, null, null, new ResolvedReadContext(changeSetContextUri:changeSetUri2), new Page()).entries.size()
+		assertEquals 0, query.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 	
 	@Test void TestQueryCommittedChangeSetWithReadContextDelete(){
@@ -423,7 +484,13 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		maint.deleteResource(ModelUtils.nameOrUriFromName("name"), changeSetUri2);
 		changeSetService.commitChangeSet(changeSetUri2)
 		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { }
+		] as ResourceQuery
+		
 		assertEquals 0, query.getResourceSummaries(
-			null, null, null, null, new Page()).entries.size()
+			q, null, new Page()).entries.size()
 	}
 }

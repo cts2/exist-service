@@ -21,6 +21,7 @@ import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.Designation;
@@ -42,6 +43,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRest
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
 
 @Component
@@ -100,19 +102,18 @@ public class ExistEntityDescriptionQueryService
 	
 	@Override
 	public DirectoryResult<EntityDirectoryEntry> getResourceSummaries(
-			Query query,
-			Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext,
+			EntityDescriptionQuery query,
+			SortCriteria sort,
 			Page page) {
 		  
 		EntityDescriptionDirectoryBuilder builder =
-				new EntityDescriptionDirectoryBuilder(this.getChangeSetUri(readContext));
+				new EntityDescriptionDirectoryBuilder(
+						this.getChangeSetUri(query.getReadContext()));
 		
 		return builder.
-				restrict(restrictions).
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getRestrictions()).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addMaxToReturn(page.getEnd()).
 				addStart(page.getStart()).
 				resolve();
@@ -120,10 +121,8 @@ public class ExistEntityDescriptionQueryService
 
 	@Override
 	public DirectoryResult<EntityDescription> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent, 
-			EntityDescriptionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext,
+			EntityDescriptionQuery query,
+			SortCriteria sort,
 			Page page) {
 		throw new UnsupportedOperationException();
 
@@ -131,9 +130,7 @@ public class ExistEntityDescriptionQueryService
 
 	@Override
 	public int count(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions) {
+			EntityDescriptionQuery query){
 		throw new UnsupportedOperationException();
 
 	}

@@ -10,12 +10,11 @@ import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ValueSetDefinitionReference
 import edu.mayo.cts2.framework.model.core.ValueSetReference
-import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetHeader
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
+import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetQuery
 import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetReference
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.name.ResolvedValueSetReadId
 
 class ExistResolvedValueSetQueryServiceIT extends BaseServiceDbCleaningBase {
 	
@@ -36,8 +35,14 @@ class ExistResolvedValueSetQueryServiceIT extends BaseServiceDbCleaningBase {
 		
 		ResolvedValueSetReference ref = load.load(rvs)
 		
+		def q = [
+			getFilterComponent : { },
+			getResolvedValueSetQueryServiceRestrictions : { },
+			getQuery : { }
+		] as ResolvedValueSetQuery
+		
 		def summaries = 
-			query.getResourceSummaries(null, null, null, new Page())
+			query.getResourceSummaries(q, null, new Page())
 			
 		assertEquals 1, summaries.getEntries().size()
 
@@ -54,8 +59,14 @@ class ExistResolvedValueSetQueryServiceIT extends BaseServiceDbCleaningBase {
 		
 		ResolvedValueSetReference ref = load.load(rvs)
 		
+		def q = [
+			getFilterComponent : { },
+			getResolvedValueSetQueryServiceRestrictions : { },
+			getQuery : { }
+		] as ResolvedValueSetQuery
+		
 		def summaries =
-			query.getResourceSummaries(null, null, null, new Page())
+			query.getResourceSummaries(q,null, new Page())
 		
 		assertNotNull summaries.getEntries().get(0).getHref()
 		

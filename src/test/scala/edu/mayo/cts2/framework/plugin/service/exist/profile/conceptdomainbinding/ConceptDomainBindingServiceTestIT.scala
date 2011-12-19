@@ -1,20 +1,22 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomainbinding
 
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import edu.mayo.cts2.framework.model.command.Page
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingDirectoryEntry
+import edu.mayo.cts2.framework.model.core.ConceptDomainReference
+import edu.mayo.cts2.framework.model.core.ValueSetReference
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding
+import edu.mayo.cts2.framework.model.service.core.Query
 import edu.mayo.cts2.framework.model.service.exception.UnknownConceptDomainBinding
+import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.name.ConceptDomainBindingReadId
-import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
-import edu.mayo.cts2.framework.model.core.ConceptDomainReference
-import edu.mayo.cts2.framework.model.core.ValueSetReference
+import edu.mayo.cts2.framework.service.profile.ResourceQuery
+import edu.mayo.cts2.framework.service.profile.valueset.ConceptDomainBindingQuery
 
 class ConceptDomainBindingServiceTestIT 
 	extends BaseServiceTestBaseIT[LocalIdConceptDomainBinding,ConceptDomainBindingDirectoryEntry] 
@@ -33,7 +35,7 @@ class ConceptDomainBindingServiceTestIT
   }
   
   def getResourceSummaries():DirectoryResult[ConceptDomainBindingDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,null,new Page());
+     queryService.getResourceSummaries(new TestQuery(),null,new Page());
   }
 
   def createResources(changeSetUri:String):Int = {
@@ -71,4 +73,16 @@ class ConceptDomainBindingServiceTestIT
            readService.read(id, null)
     }
 
+}
+
+class TestQuery extends ConceptDomainBindingQuery {
+
+	def getQuery():Query = {null}
+
+	def getFilterComponent() = {null}
+
+	def getReadContext():ResolvedReadContext = {null}
+	
+	def getRestrictions() = { null }
+	
 }

@@ -11,8 +11,8 @@ import edu.mayo.cts2.framework.model.core.ModelAttributeReference
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.mapversion.*
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
-import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
+import edu.mayo.cts2.framework.service.profile.update.ChangeSetQuery
 
 class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 
@@ -25,8 +25,15 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 	@Test void TestQuery(){
 		
 		changeSetService.createChangeSet().getChangeSetURI()
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as ChangeSetQuery
 
-		def result = query.getResourceSummaries(null, null, null, new Page())
+		def result = query.getResourceSummaries(q, null, new Page())
 		
 		assertEquals 1, result.getEntries().size()
 	}
@@ -44,8 +51,15 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 			matchValue:"FINAL",
 			modelAttributeReference: new ModelAttributeReference(content:"state"),
 			referenceType:TargetReferenceType.ATTRIBUTE)
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as ChangeSetQuery
 
-		def result = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def result = query.getResourceSummaries(q, null, new Page())
 		
 		assertEquals 1, result.getEntries().size()
 		
@@ -65,8 +79,15 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 			matchValue:"OPEN",
 			modelAttributeReference: new ModelAttributeReference(content:"state"),
 			referenceType:TargetReferenceType.ATTRIBUTE)
+		
+		def q = [
+			getFilterComponent : { [fc] as Set },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as ChangeSetQuery
 
-		def result = query.getResourceSummaries(null, [fc] as Set, null, new Page())
+		def result = query.getResourceSummaries(q, null, new Page())
 		
 		assertEquals 1, result.getEntries().size()
 		

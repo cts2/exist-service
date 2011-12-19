@@ -10,16 +10,15 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.CodeSystemVersionQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionQuery;
 import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionQueryService;
 
 @Component
@@ -104,18 +103,17 @@ public class ExistCodeSystemVersionQueryService
 
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntrySummary> getResourceSummaries(
-			Query query, Set<ResolvedFilter> filterComponent,
-			CodeSystemVersionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext,
+			CodeSystemVersionQuery query, 
+			SortCriteria sort,
 			Page page) {
 		CodeSystemVersionDirectoryBuilder builder = 
 				new CodeSystemVersionDirectoryBuilder(
-						this.getRestrictedCodeSystemName(restrictions), 
-						this.getChangeSetUri(readContext));
+						this.getRestrictedCodeSystemName(query.getRestrictions()), 
+						this.getChangeSetUri(query.getReadContext()));
 		
 		return builder.
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addMaxToReturn(page.getEnd()).
 				addStart(page.getStart()).
 				resolve();
@@ -132,19 +130,16 @@ public class ExistCodeSystemVersionQueryService
 
 	@Override
 	public DirectoryResult<CodeSystemVersionCatalogEntry> getResourceList(
-			Query query, Set<ResolvedFilter> filterComponent,
-			CodeSystemVersionQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			CodeSystemVersionQuery query, 
+			SortCriteria sort,
 			Page page) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public int count(Query query, Set<ResolvedFilter> filterComponent,
-			CodeSystemVersionQueryServiceRestrictions restrictions) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int count(CodeSystemVersionQuery query) {
+		throw new UnsupportedOperationException();
+
 	}
 
 	@Override

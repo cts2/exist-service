@@ -31,6 +31,8 @@ import edu.mayo.cts2.framework.model.core.StatementTarget
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.service.profile.statement.name.StatementReadId
+import edu.mayo.cts2.framework.model.service.core.Query
+import edu.mayo.cts2.framework.service.profile.ResourceQuery
 
 class ExistStatementServiceTestIT 
 	extends BaseServiceTestBaseIT[LocalIdStatement,StatementDirectoryEntry]
@@ -49,7 +51,7 @@ class ExistStatementServiceTestIT
    override def getUri():String = {"someUri"}
 
   def getResourceSummaries():DirectoryResult[StatementDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,null,new Page());
+     queryService.getResourceSummaries(new TestQuery(),null,new Page());
   }
       
   def createResources(changeSetUri:String):Int = {
@@ -111,4 +113,14 @@ class ExistStatementServiceTestIT
        
     	readService.read(id,new ResolvedReadContext())
     } 
+}
+
+class TestQuery extends ResourceQuery {
+
+	def getQuery():Query = {null}
+
+	def getFilterComponent() = {null}
+
+	def getReadContext():ResolvedReadContext = {null}
+	
 }

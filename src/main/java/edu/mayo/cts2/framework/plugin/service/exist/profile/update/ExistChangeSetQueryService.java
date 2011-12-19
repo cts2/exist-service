@@ -9,6 +9,7 @@ import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReferenc
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
 import edu.mayo.cts2.framework.model.service.core.Query;
@@ -20,6 +21,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.ChangeSetQueryExtensionRestrictions;
+import edu.mayo.cts2.framework.service.profile.update.ChangeSetQuery;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetQueryExtension;
 
 @Component
@@ -37,16 +39,15 @@ public class ExistChangeSetQueryService
 
 	@Override
 	public DirectoryResult<ChangeSetDirectoryEntry> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			ChangeSetQueryExtensionRestrictions restrictions, 
+			ChangeSetQuery query, 
+			SortCriteria sort,
 			Page page) {
 		
 		ChangeSetDirectoryBuilder builder = new ChangeSetDirectoryBuilder();
 
 		return builder.
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();

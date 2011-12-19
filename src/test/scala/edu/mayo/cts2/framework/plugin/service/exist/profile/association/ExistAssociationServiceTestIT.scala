@@ -20,6 +20,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseI
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext
+import edu.mayo.cts2.framework.service.profile.association.AssociationQuery
+import edu.mayo.cts2.framework.model.service.core.Query
 
 class ExistAssociationServiceTestIT 
 	extends BaseServiceTestBaseIT[Association,AssociationDirectoryEntry]
@@ -46,7 +49,7 @@ class ExistAssociationServiceTestIT
   }
     
    def getResourceSummaries():DirectoryResult[AssociationDirectoryEntry] = {
-     queryService.getResourceSummaries(null,null,null,null,new Page());
+     queryService.getResourceSummaries(new TestQuery(),null,new Page());
   }
    
   def createAssociation(name: String,uri: String, changeSetUri:String):Association = {
@@ -96,4 +99,16 @@ class ExistAssociationServiceTestIT
     	readService.read(id, null)
     }
 
+}
+
+class TestQuery extends AssociationQuery {
+
+	def getQuery():Query = {null}
+
+	def getFilterComponent() = {null}
+
+	def getReadContext():ResolvedReadContext = {null}
+	
+	def getRestrictions() = { null }
+	
 }

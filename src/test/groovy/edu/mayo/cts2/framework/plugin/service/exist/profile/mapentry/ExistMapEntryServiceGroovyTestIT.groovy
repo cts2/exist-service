@@ -11,12 +11,15 @@ import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.model.core.MapVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
+import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.mapversion.*
 import edu.mayo.cts2.framework.model.mapversion.types.MapProcessingRule
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
+import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery
 
 class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
@@ -29,7 +32,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 	@Autowired
 	ExistMapEntryMaintenanceService existMapEntryMaintenanceService
 
-	@Test void "Get Map Entries"(){
+	@Test void GetMapEntries(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
@@ -46,10 +49,17 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		changeSetService.commitChangeSet(changeSetUri)
 		
-		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, null, null, new Page()).entries.size()
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { }
+		] as MapEntryQuery
+		
+		assertEquals 1, existMapEntryQueryService.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 
-	@Test void "Get Map Entries with target code restriction NONE"(){
+	@Test void GetMapEntriesWithTargetCodeRestrictionNONE(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 		
@@ -75,11 +85,21 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		]
 
 
-		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["NS:___INVALID___"])
-		assertEquals 0, existMapEntryQueryService.getResourceSummaries(null, null, restritions, null, new Page()).entries.size()
+		def restritions = new MapEntryQueryServiceRestrictions(
+			targetEntities:[
+			new EntityNameOrURI(entityName: new ScopedEntityName(name:"NS:___INVALID___"))] as Set )
+
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { restritions }
+		] as MapEntryQuery
+	
+		assertEquals 0, existMapEntryQueryService.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 
-	@Test void "Get Map Entries with target code restriction ONE"(){
+	@Test void GetMapEntriesWithTargetCodeRestrictionONE(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 		
@@ -104,11 +124,20 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		changeSetService.commitChangeSet(changeSetUri)
 
-		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["targetName"])
-		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, null, new Page()).entries.size()
+		def restritions = new MapEntryQueryServiceRestrictions(targetEntities:[
+			new EntityNameOrURI(entityName: new ScopedEntityName(name:"targetName"))] as Set)
+		
+		def q = [			
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { restritions }
+		] as MapEntryQuery
+	
+		assertEquals 1, existMapEntryQueryService.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 
-	@Test void "Get Map Entries with target code restriction TWO"(){
+	@Test void GetMapEntriesWithTargetCodeRestrictionTWO(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 		
@@ -134,7 +163,16 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		changeSetService.commitChangeSet(changeSetUri)
 
-		def restritions = new MapEntryQueryServiceRestrictions(targetentity:["targetName2"])
-		assertEquals 1, existMapEntryQueryService.getResourceSummaries(null, null, restritions, null, new Page()).entries.size()
+		def restritions = new MapEntryQueryServiceRestrictions(targetEntities:[
+			new EntityNameOrURI(entityName: new ScopedEntityName(name:"targetName2"))] as Set)
+		
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : { restritions }
+		] as MapEntryQuery
+	
+		assertEquals 1, existMapEntryQueryService.getResourceSummaries(q, null, new Page()).entries.size()
 	}
 }

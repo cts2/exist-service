@@ -7,19 +7,18 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.MapQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.map.MapQueryService;
+import edu.mayo.cts2.framework.service.profile.valueset.MapQuery;
 
 @Component
 public class ExistMapQueryService 
@@ -80,33 +79,29 @@ public class ExistMapQueryService
 
 	@Override
 	public DirectoryResult<MapCatalogEntrySummary> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			MapQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			MapQuery query,
+			SortCriteria sortCriteria,
 			Page page) {
 		MapDirectoryBuilder builder = new MapDirectoryBuilder(
-				this.getChangeSetUri(readContext));
+				this.getChangeSetUri(query.getReadContext()));
 
-		return builder.restrict(filterComponent).addStart(page.getStart())
-				.addMaxToReturn(page.getMaxToReturn()).resolve();
+		return builder.restrict(query.getFilterComponent()).
+				addStart(page.getStart()).
+				addMaxToReturn(page.getMaxToReturn()).
+				resolve();
 	}
 
 	@Override
 	public DirectoryResult<MapCatalogEntry> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent,
-			MapQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			MapQuery query,
+			SortCriteria sortCriteria,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public int count(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			MapQueryServiceRestrictions restrictions) {
+			MapQuery query){
 		throw new UnsupportedOperationException();
 	}
 

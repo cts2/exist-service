@@ -7,19 +7,18 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingDirectoryEntry;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.ConceptDomainBindingQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQueryService;
+import edu.mayo.cts2.framework.service.profile.valueset.ConceptDomainBindingQuery;
 
 @Component
 public class ExistConceptDomainBindingQueryService 
@@ -64,18 +63,16 @@ public class ExistConceptDomainBindingQueryService
 
 	@Override
 	public DirectoryResult<ConceptDomainBindingDirectoryEntry> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent, 
-			ConceptDomainBindingQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext,
+			ConceptDomainBindingQuery query, 
+			SortCriteria sortCriteria,
 			Page page) {
 		
 		ConceptDomainBindingDirectoryBuilder builder = new ConceptDomainBindingDirectoryBuilder(
-				this.getChangeSetUri(readContext));
+				this.getChangeSetUri(query.getReadContext()));
 
 		return builder.
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
@@ -83,19 +80,13 @@ public class ExistConceptDomainBindingQueryService
 
 	@Override
 	public DirectoryResult<ConceptDomainBinding> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent, 
-			ConceptDomainBindingQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			ConceptDomainBindingQuery query, SortCriteria sortCriteria,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public int count(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			ConceptDomainBindingQueryServiceRestrictions restrictions) {
+	public int count(ConceptDomainBindingQuery query) {
 		throw new UnsupportedOperationException();
 	}
 

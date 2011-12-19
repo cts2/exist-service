@@ -7,25 +7,24 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.service.mapversion.types.MapRole;
 import edu.mayo.cts2.framework.model.service.mapversion.types.MapStatus;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.command.restriction.MapVersionQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery;
+import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQuery;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQueryService;
 
 @Component
@@ -95,36 +94,31 @@ public class ExistMapVersionQueryService
 
 	@Override
 	public DirectoryResult<MapVersionDirectoryEntry> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			MapVersionQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			MapVersionQuery query, 
+			SortCriteria sort,
 			Page page) {
 		MapVersionDirectoryBuilder builder =
-				new MapVersionDirectoryBuilder(this.getChangeSetUri(readContext));
+				new MapVersionDirectoryBuilder(
+						this.getChangeSetUri(query.getReadContext()));
 
 		return builder.addMaxToReturn(page.getEnd()).
 				addStart(page.getStart()).
-				restrict(filterComponent).
-				restrict(query).
+				restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				resolve();
 	}
 
 	@Override
 	public DirectoryResult<MapVersion> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent,
-			MapVersionQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			MapVersionQuery query, 
+			SortCriteria sort,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public int count(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			MapVersionQueryServiceRestrictions restrictions) {
+			MapVersionQuery query) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -136,35 +130,30 @@ public class ExistMapVersionQueryService
 
 	@Override
 	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public DirectoryResult<EntityDirectoryEntry> mapVersionEntities(
 			NameOrURI mapVersion, MapRole mapRole, MapStatus mapStatus,
-			Query query, Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext) {
+			EntityDescriptionQuery query, SortCriteria sort, Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public DirectoryResult<EntityDescription> mapVersionEntityList(
 			NameOrURI mapVersion, MapRole mapRole, MapStatus mapStatus,
-			Query query, Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext) {
+			EntityDescriptionQuery query, SortCriteria sort, Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public EntityReferenceList mapVersionEntityReferences(NameOrURI mapVersion,
-			MapRole mapRole, MapStatus mapStatus, Query query,
-			Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext) {
+			MapRole mapRole, MapStatus mapStatus, EntityDescriptionQuery query,
+			SortCriteria sort, Page page) {
 		throw new UnsupportedOperationException();
 	}
+
+
 
 }

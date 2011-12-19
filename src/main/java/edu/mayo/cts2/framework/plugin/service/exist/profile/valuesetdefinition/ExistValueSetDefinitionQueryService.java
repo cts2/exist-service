@@ -11,12 +11,10 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
@@ -24,6 +22,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
 
 @Component
@@ -110,17 +109,17 @@ public class ExistValueSetDefinitionQueryService
 
 	@Override
 	public DirectoryResult<ValueSetDefinitionDirectoryEntry> getResourceSummaries(
-			Query query, 
-			Set<ResolvedFilter> filterComponent, 
-			ValueSetDefinitionQueryServiceRestrictions restrictions,
-			ResolvedReadContext readContext,
+			ValueSetDefinitionQuery query, 
+			SortCriteria sort,
 			Page page) {
 		ValueSetDefinitionDirectoryBuilder builder = 
-			new ValueSetDefinitionDirectoryBuilder(this.getChangeSetUri(readContext));
+			new ValueSetDefinitionDirectoryBuilder(
+					this.getChangeSetUri(
+							query.getReadContext()));
 		
 		return 
-			builder.restrict(filterComponent).
-				restrict(query).
+			builder.restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
@@ -128,19 +127,15 @@ public class ExistValueSetDefinitionQueryService
 
 	@Override
 	public DirectoryResult<ValueSetDefinition> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent, 
-			ValueSetDefinitionQueryServiceRestrictions restrictions, 
-			ResolvedReadContext readContext,
+			ValueSetDefinitionQuery query, 
+			SortCriteria sort,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public int count(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			ValueSetDefinitionQueryServiceRestrictions restrictions) {
+			ValueSetDefinitionQuery query) {
 		throw new UnsupportedOperationException();
 	}
 

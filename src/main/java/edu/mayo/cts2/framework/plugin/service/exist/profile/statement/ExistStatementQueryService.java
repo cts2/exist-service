@@ -9,17 +9,16 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.model.statement.StatementDirectoryEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.statement.StatementQueryService;
 
 @Component
@@ -65,17 +64,17 @@ public class ExistStatementQueryService
 
 	@Override
 	public DirectoryResult<StatementDirectoryEntry> getResourceSummaries(
-			Query query,
-			Set<ResolvedFilter> filterComponent, 
-			Void restrictions,
-			ResolvedReadContext readContext,
+			ResourceQuery query,
+			SortCriteria sort,
 			Page page) {
 		StatementDirectoryBuilder builder = 
-				new StatementDirectoryBuilder(this.getChangeSetUri(readContext));
+				new StatementDirectoryBuilder(
+						this.getChangeSetUri(
+								query.getReadContext()));
 		
 		return 
-			builder.restrict(filterComponent).
-				restrict(query).
+			builder.restrict(query.getFilterComponent()).
+				restrict(query.getQuery()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();
@@ -83,19 +82,15 @@ public class ExistStatementQueryService
 
 	@Override
 	public DirectoryResult<Statement> getResourceList(
-			Query query,
-			Set<ResolvedFilter> filterComponent, 
-			Void restrictions,
-			ResolvedReadContext readContext,
+			ResourceQuery query,
+			SortCriteria sort,
 			Page page) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public int count(
-			Query query, 
-			Set<ResolvedFilter> filterComponent,
-			Void restrictions) {
+			ResourceQuery query) {
 		throw new UnsupportedOperationException();
 	}
 
