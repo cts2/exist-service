@@ -37,7 +37,7 @@
 	<properties>
 		<service.provider.class>edu.mayo.cts2.framework.plugin.service.exist.profile.ExistServiceProvider</service.provider.class>
 		<webapp.port>1984</webapp.port>
-	<properties>
+	</properties>
 
 	<pluginRepositories>
 		<pluginRepository>
