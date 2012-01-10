@@ -24,7 +24,7 @@ import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
@@ -138,7 +138,7 @@ public class ExistChangeSetService implements ChangeSetService {
 			
 			ChangeSet changeSet = this.readChangeSet(changeSetUri);
 			
-			for(ChangeableResourceChoice change : changeSet.getMember()){
+			for(ChangeableResource change : changeSet.getMember()){
 				change.getChangeableElementGroup().
 					getChangeDescription().setCommitted(ChangeCommitted.COMMITTED);
 			}

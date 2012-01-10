@@ -1,5 +1,5 @@
 /*
- * Copyright: (c) 2004-2011 Mayo Foundation for Medical Education and 
+a * Copyright: (c) 2004-2011 Mayo Foundation for Medical Education and 
  * Research (MFMER). All rights reserved. MAYO, MAYO CLINIC, and the
  * triple-shield Mayo logo are trademarks and service marks of MFMER.
  *
@@ -21,41 +21,22 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.core.config.option.Option;
 import edu.mayo.cts2.framework.core.config.option.StringOption;
 import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
-import edu.mayo.cts2.framework.service.provider.AbstractSpringServiceProvider;
+import edu.mayo.cts2.framework.util.spring.AbstractSpringServiceProvider;
 
 /**
  * The Class BioportalServiceProvider.
  *
  * @author <a href="mailto:kevin.peterson@mayo.edu">Kevin Peterson</a>
  */
+@Component("existServiceProvider")
 public class ExistServiceProvider extends AbstractSpringServiceProvider {
 
-	/* (non-Javadoc)
-	 * @see org.cts2.rest.service.provider.AbstractSpringServiceProvider#getApplicationContext()
-	 */
-	@Override
-	protected ApplicationContext getApplicationContext(ApplicationContext parent) {
-		ClassPathXmlApplicationContext ctx = 
-				new ClassPathXmlApplicationContext(new String[]{"exist-context.xml"}, parent);
-
-		return ctx;
-	}
-
-	@Override
-	protected ApplicationContext getIntegrationTestApplicationContext(ApplicationContext parent) {
-		ClassPathXmlApplicationContext ctx = 
-				new ClassPathXmlApplicationContext(new String[]{"exist-validation-test-context.xml"}, parent);
-		
-		return ctx;
-	}
-
-	@Override
+	
 	public Set<Option> getPluginOptions() {
 		Option existHome = new StringOption(ExistServiceConstants.EXIST_HOME_PROP, "");
 		Option password = new StringOption(ExistServiceConstants.PASSWORD_PROP, "");

@@ -5,15 +5,16 @@ import java.io.StringReader;
 import javax.xml.transform.stream.StreamSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
+
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 
 @Component
 public class ResourceUnmarshaller {
 
 	@Autowired
-	private Unmarshaller umarshaller;
+	private Cts2Marshaller umarshaller;
 
 	public Object unmarshallResource(Resource resource) {
 		if(resource == null){

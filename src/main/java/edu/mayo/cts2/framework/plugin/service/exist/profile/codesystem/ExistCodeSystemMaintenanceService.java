@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemMaintenanceService;
@@ -25,8 +25,8 @@ public class ExistCodeSystemMaintenanceService
 	}
 	
 	@Override
-	protected void addResourceToChangeableResourceChoice(
-			ChangeableResourceChoice choice, CodeSystemCatalogEntry resource) {
+	protected void addResourceToChangeableResource(
+			ChangeableResource choice, CodeSystemCatalogEntry resource) {
 		choice.setCodeSystem(resource);
 	}
 

@@ -8,8 +8,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.Marshaller;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Resource;
@@ -17,6 +15,7 @@ import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
 
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
@@ -25,7 +24,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 	
 	protected final Log log = LogFactory.getLog(getClass().getName());
 
-	@Autowired
+	@javax.annotation.Resource
 	private ExistManager existManager;
 
 	private static final String XML_RESOURCE_TYPE = "XMLResource";
@@ -34,8 +33,8 @@ public class ExistDaoImpl implements ExistResourceDao {
 
 	private static final String CTS2_RESOURCES_PATH = "/cts2resources";
 
-	@Autowired
-	private Marshaller marshaller;
+	@javax.annotation.Resource
+	private Cts2Marshaller cts2Marshaller;
 	
 	protected void createAndStoreBinaryResource(Object obj,
 			Collection collection, String nameWithSuffix) throws XMLDBException {
@@ -66,7 +65,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 	
 			try {
 	
-				this.marshaller.marshal(obj, sr);
+				this.cts2Marshaller.marshal(obj, sr);
 	
 			} catch (IOException e) {
 				throw new RuntimeException(e);

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.extension.LocalIdStatement;
 import edu.mayo.cts2.framework.model.statement.Statement;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.service.profile.statement.StatementMaintenanceService;
@@ -31,8 +31,8 @@ public class ExistStatementMaintenanceService
 	}
 
 	@Override
-	protected void addResourceToChangeableResourceChoice(
-			ChangeableResourceChoice choice, LocalIdStatement resource) {
+	protected void addResourceToChangeableResource(
+			ChangeableResource choice, LocalIdStatement resource) {
 		choice.setStatement(resource.getResource());
 	}
 

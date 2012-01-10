@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -8,8 +9,11 @@
 	</parent>
 
 	<artifactId>exist-service</artifactId>
-	<version>0.6.2-SNAPSHOT</version>
-	
+	<version>0.6.4-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<description>An eXist XML Database CTS2 Service Implementation</description>
+	<name>eXist Service</name>
+
 	<developers>
 		<developer>
 			<id>kevin</id>
@@ -22,7 +26,7 @@
 			<timezone>-5</timezone>
 		</developer>
 	</developers>
-	
+
 	<scm>
 		<developerConnection>scm:git:git@github.com:cts2/exist-service.git</developerConnection>
 	</scm>
@@ -35,11 +39,18 @@
 	</distributionManagement>
 
 	<properties>
-		<service.provider.class>edu.mayo.cts2.framework.plugin.service.exist.profile.ExistServiceProvider</service.provider.class>
+		<exist.home>${project.build.directory}/test-exist-home</exist.home>
 		<webapp.port>1984</webapp.port>
 	</properties>
 
 	<pluginRepositories>
+
+		<pluginRepository>
+			<id>com.springsource.repository.bundles.release</id>
+			<name>SpringSource Enterprise Bundle Repository</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</pluginRepository>
+
 		<pluginRepository>
 			<id>informatics-releases</id>
 			<url>http://informatics.mayo.edu/maven/content/repositories/releases</url>
@@ -49,7 +60,78 @@
 			<url>http://informatics.mayo.edu/maven/content/repositories/snapshots</url>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.6</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Import-Package>
+							!com.sun.*,
+							!org.apache.avalon.*,
+							!javax.mail.*,
+							!javax.jms.*,
+							!sun.*,
+							edu.mayo.cts2.*,
+							edu.mayo.cts2.framework.core.xml,
+							com.atlassian.plugin.spring,
+							org.springframework.context.config,
+							edu.mayo.cts2.framework.model.service.association,
+							edu.mayo.cts2.framework.model.service.codesystem,
+							edu.mayo.cts2.framework.model.service.codesystemversion,
+							edu.mayo.cts2.framework.model.service.conceptdomain,
+							edu.mayo.cts2.framework.model.service.conceptdomainbinding,
+							edu.mayo.cts2.framework.model.service.entitydescription,
+							edu.mayo.cts2.framework.model.service.map,
+							edu.mayo.cts2.framework.model.service.mapentry,
+							edu.mayo.cts2.framework.model.service.mapversion,
+							edu.mayo.cts2.framework.model.service.statement,
+							edu.mayo.cts2.framework.model.service.valueset,
+							edu.mayo.cts2.framework.model.service.valuesetdefinition,
+							edu.mayo.cts2.framework.service.provider,
+							*;resolution:=optional
+						</Import-Package>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Embed-Dependency>ws-commons-util,jing,antlr,quartz,xmldb,exist,xmlrpc-client,xmlrpc-common,org.antlr,xml-resolver,commons-io,commons-pool</Embed-Dependency>
+						<Spring-Context>*;timeout:=60</Spring-Context>
+						<_exportcontents>*</_exportcontents>
+						<_nouses>true</_nouses>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-exist-conf-file</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${exist.home}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/test/resources</directory>
+									<includes>
+										<include>conf.xml</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 
 		<dependency>
@@ -83,9 +165,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>3.8</version>
+		</dependency>
+
+		<dependency>
 			<groupId>xml-resolver</groupId>
 			<artifactId>xml-resolver</artifactId>
 			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ws-commons-util</groupId>
+			<artifactId>ws-commons-util</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -93,7 +187,13 @@
 			<artifactId>service</artifactId>
 			<version>${develpment.framework.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>edu.mayo.cts2.framework</groupId>
+			<artifactId>plugin-util</artifactId>
+			<version>${develpment.framework.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>edu.mayo.cts2.framework</groupId>
 			<artifactId>core</artifactId>
@@ -113,7 +213,6 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -123,10 +222,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-common</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>xmldb</groupId>
 			<artifactId>xmldb</artifactId>
 			<version>unknown</version>
 		</dependency>
+
 		<dependency>
 			<groupId>exist</groupId>
 			<artifactId>exist</artifactId>
@@ -143,49 +249,8 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.0.4</version>
-			<scope>provided</scope>
 		</dependency>
 
-
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>edu.informatics.maven.snapshot</id>
-			<name>Informatics Maven Snapshot Repository</name>
-			<url>http://informatics.mayo.edu/maven/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>edu.informatics.maven.releases</id>
-			<name>Informatics Maven Snapshot Repository</name>
-			<url>http://informatics.mayo.edu/maven/content/repositories/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>edu.informatics.maven.thirdparty</id>
-			<name>Informatics Maven ThirdParty Repository</name>
-			<url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-	</repositories>
 
 </project>

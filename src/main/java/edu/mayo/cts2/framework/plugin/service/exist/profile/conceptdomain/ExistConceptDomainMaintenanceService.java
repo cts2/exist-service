@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainMaintenanceService;
@@ -25,8 +25,8 @@ public class ExistConceptDomainMaintenanceService
 	}
 
 	@Override
-	protected void addResourceToChangeableResourceChoice(
-			ChangeableResourceChoice choice, ConceptDomainCatalogEntry resource) {
+	protected void addResourceToChangeableResource(
+			ChangeableResource choice, ConceptDomainCatalogEntry resource) {
 		choice.setConceptDomain(resource);
 	}
 

@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.framework.core.url.UrlConstructor;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
@@ -24,10 +23,7 @@ public abstract class AbstractExistReadService<
 
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
-	
-	@Autowired
-	private UrlConstructor urlConstructor;
-	
+
 	private interface GetResourceCallback {
 		Resource getResource();
 		Resource getResource(String changeSetUri);
@@ -125,9 +121,4 @@ public abstract class AbstractExistReadService<
 	public boolean exists(I identifier, ReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
-
-	protected UrlConstructor getUrlConstructor() {
-		return urlConstructor;
-	}
-
 }

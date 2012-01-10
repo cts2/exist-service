@@ -24,7 +24,7 @@ abstract class BaseMaintenanceServiceTestITBase extends BaseServiceTestITBase {
 	void TestUpdate(){
 		def updated = getUpdatedResource()
 		
-		def choice = ModelUtils.createChangeableResourceChoice(updated)
+		def choice = ModelUtils.createChangeableResource(updated)
 		
 		choice.setChangeableElementGroup(
 			new ChangeableElementGroup(

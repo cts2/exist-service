@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
@@ -61,13 +62,20 @@ public abstract class AbstractExistQueryService
 	<R,Summary,Restrictions,
 	T extends BaseQueryService,
 	S extends XpathState> 
-	extends AbstractQueryService<T> {
-	
-	@Autowired
-	private UrlConstructor urlConstructor;
+	extends AbstractQueryService<T> implements InitializingBean {
 	
 	@javax.annotation.Resource
 	private ExistResourceDao existResourceDao;
+	
+	@javax.annotation.Resource
+	private edu.mayo.cts2.framework.core.plugin.PluginConfigManager pluginConfigManager;
+	
+	private UrlConstructor urlConstructor;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.urlConstructor = new UrlConstructor(this.pluginConfigManager.getServerContext());
+	}
 	
 	protected ExistResourceDao getExistResourceDao() {
 		return existResourceDao;
@@ -326,14 +334,9 @@ public abstract class AbstractExistQueryService
 		
 	}
 
-	public void setUrlConstructor(UrlConstructor urlConstructor) {
-		this.urlConstructor = urlConstructor;
-	}
-
-	public UrlConstructor getUrlConstructor() {
-		return urlConstructor;
-	}
-
 	protected abstract PathInfo getResourceInfo();
 
+	protected UrlConstructor getUrlConstructor() {
+		return urlConstructor;
+	}
 }

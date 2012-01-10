@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingMaintenanceService;
@@ -30,8 +30,8 @@ public class ExistConceptDomainBindingMaintenanceService
 	}
 
 	@Override
-	protected void addResourceToChangeableResourceChoice(
-			ChangeableResourceChoice choice, LocalIdConceptDomainBinding resource) {
+	protected void addResourceToChangeableResource(
+			ChangeableResource choice, LocalIdConceptDomainBinding resource) {
 		choice.setConceptDomainBinding(resource.getResource());
 	}
 

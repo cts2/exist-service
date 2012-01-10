@@ -6,7 +6,7 @@ import org.xmldb.api.base.Resource;
 
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ChangeSetResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
@@ -23,7 +23,7 @@ public class StateChangeCallback {
 	@javax.annotation.Resource
 	private ChangeSetResourceInfo changeSetResourceInfo;
 	
-	public void resourceAdded(ChangeableResourceChoice changeable) {
+	public void resourceAdded(ChangeableResource changeable) {
 		ChangeDescription changeDescription = 
 				changeable.getChangeableElementGroup().getChangeDescription();
 		
@@ -33,7 +33,7 @@ public class StateChangeCallback {
 		this.addToChangeSet(changeSetUri, changeable);
 	}
 	
-	public void resourceUpdated(ChangeableResourceChoice changeable) {
+	public void resourceUpdated(ChangeableResource changeable) {
 		ChangeDescription changeDescription = 
 				changeable.getChangeableElementGroup().getChangeDescription();
 		
@@ -43,12 +43,12 @@ public class StateChangeCallback {
 		this.addToChangeSet(changeSetUri, changeable);
 	}
 	
-	public void resourceDeleted(ChangeableResourceChoice changeable, String changeSetUri) {
+	public void resourceDeleted(ChangeableResource changeable, String changeSetUri) {
 
 		this.addToChangeSet(changeSetUri, changeable);
 	}
 	
-	protected void addToChangeSet(String changeSetUri, ChangeableResourceChoice changeable){
+	protected void addToChangeSet(String changeSetUri, ChangeableResource changeable){
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
 		
 		Resource resource = 

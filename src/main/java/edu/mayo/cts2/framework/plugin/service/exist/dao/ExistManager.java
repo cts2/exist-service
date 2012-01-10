@@ -9,8 +9,6 @@ import org.exist.validation.service.ValidationService;
 import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.IndexQueryService;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -19,15 +17,24 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
-import edu.mayo.cts2.framework.core.config.PluginConfig;
-import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
+import edu.mayo.cts2.framework.core.plugin.PluginConfig;
+import edu.mayo.cts2.framework.core.url.UrlConstructor;
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 
 public class ExistManager implements InitializingBean {	
 	
+	private static final String EXIST_SERVICE_CONFIG_NAMESPACE = "exist-service";
+	
 	@javax.annotation.Resource
-	private PluginConfig pluginConfig;
+	private edu.mayo.cts2.framework.core.plugin.PluginConfigManager pluginConfigManager;
+	
+	@javax.annotation.Resource
+	private Cts2Marshaller cts2Marshaller;
+	
+	@javax.annotation.Resource(name="urlConstructor")
+	private UrlConstructor urlConstructor;
 
 	private String uri;
 	private String existHome;
@@ -51,7 +58,7 @@ public class ExistManager implements InitializingBean {
 			System.setProperty(ExistServiceConstants.EXIST_HOME_PROP, this.existHome);
 			System.setProperty("exist.initdb", "true");
 		}
-		
+
 		final String driver = "org.exist.xmldb.DatabaseImpl";
 
 		// initialize database driver
@@ -68,13 +75,9 @@ public class ExistManager implements InitializingBean {
 		indexQueryService = (IndexQueryService) root.getService("IndexQueryService", "1.0");
 		xUpdateQueryService = (XUpdateQueryService) root.getService("XUpdateQueryService", "1.0");
 		validationService = (ValidationService) root.getService("ValidationService", "1.0");	
-		
-		Resource namespaceResource = new ClassPathResource(DelegatingMarshaller.NAMESPACE_MAPPINGS_PROPS);
-		
-		this.namespaceMappingProperties = new Properties();
+
+		this.namespaceMappingProperties = this.cts2Marshaller.getNamespaceMappingProperties();
 	
-		this.namespaceMappingProperties.load(namespaceResource.getInputStream());
-		
 		this.xQueryService = this.createXQueryService("");
 	}
 	
@@ -104,10 +107,12 @@ public class ExistManager implements InitializingBean {
 	}
 	
 	protected void setPropertiesFromConfig() {
-		this.uri = this.pluginConfig.getStringOption(ExistServiceConstants.URL_PROP).getOptionValue();
-		this.existHome = this.pluginConfig.getStringOption(ExistServiceConstants.EXIST_HOME_PROP).getOptionValue();
-		this.userName = this.pluginConfig.getStringOption(ExistServiceConstants.USER_NAME_PROP).getOptionValue();
-		this.password = this.pluginConfig.getStringOption(ExistServiceConstants.PASSWORD_PROP).getOptionValue();
+		PluginConfig pluginConfig = this.pluginConfigManager.getPluginConfig(EXIST_SERVICE_CONFIG_NAMESPACE);
+		
+		this.uri = pluginConfig.getStringOption(ExistServiceConstants.URL_PROP).getOptionValue();
+		this.existHome = pluginConfig.getStringOption(ExistServiceConstants.EXIST_HOME_PROP).getOptionValue();
+		this.userName = pluginConfig.getStringOption(ExistServiceConstants.USER_NAME_PROP).getOptionValue();
+		this.password = pluginConfig.getStringOption(ExistServiceConstants.PASSWORD_PROP).getOptionValue();
 	}
 
 	public Collection getOrCreateCollection(String path) throws XMLDBException {

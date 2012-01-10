@@ -1,9 +1,11 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
 
+import edu.mayo.cts2.framework.core.url.UrlConstructor;
 import edu.mayo.cts2.framework.model.service.core.BaseService;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
@@ -12,13 +14,23 @@ public abstract class AbstractExistResourceReadingService<
 	R,
 	I,
 	T extends BaseService> 
-	extends AbstractExistService<T> {
+	extends AbstractExistService<T> implements InitializingBean{
 
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
 	
 	@javax.annotation.Resource
 	private ExistResourceDao existResourceDao;
+	
+	@javax.annotation.Resource
+	private edu.mayo.cts2.framework.core.plugin.PluginConfigManager pluginConfigManager;
+	
+	private UrlConstructor urlConstructor;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.urlConstructor = new UrlConstructor(this.pluginConfigManager.getServerContext());
+	}
 
 	protected Resource getResource(I resourceIdentifier) {
 		return this.getResource(resourceIdentifier, null);
@@ -85,4 +97,7 @@ public abstract class AbstractExistResourceReadingService<
 	
 	protected abstract ResourceInfo<I> getResourceInfo();
 
+	protected UrlConstructor getUrlConstructor() {
+		return urlConstructor;
+	}
 }

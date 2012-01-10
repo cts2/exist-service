@@ -28,7 +28,7 @@ import edu.mayo.cts2.framework.model.core.IsChangeable;
 import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseMaintenanceService;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.validator.ChangeSetUriValidator;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
@@ -85,9 +85,9 @@ public abstract class AbstractExistMaintenanceService<
 
 		this.doStoreResource(changeable);
 		
-		ChangeableResourceChoice choice = new ChangeableResourceChoice();
+		ChangeableResource choice = new ChangeableResource();
 		
-		this.addResourceToChangeableResourceChoice(choice, changeable);
+		this.addResourceToChangeableResource(choice, changeable);
 		
 		this.stateChangeCallback.resourceDeleted(choice, changeSetUri);
 	}
@@ -96,9 +96,9 @@ public abstract class AbstractExistMaintenanceService<
 	public void updateResource(D resource) {
 		this.doStoreResource(resource);
 		
-		ChangeableResourceChoice choice = new ChangeableResourceChoice();
+		ChangeableResource choice = new ChangeableResource();
 		
-		this.addResourceToChangeableResourceChoice(choice, resource);
+		this.addResourceToChangeableResource(choice, resource);
 		
 		this.stateChangeCallback.resourceUpdated(choice);
 	}
@@ -114,9 +114,9 @@ public abstract class AbstractExistMaintenanceService<
 
 		this.doStoreResource(resource);
 		
-		ChangeableResourceChoice choice = new ChangeableResourceChoice();
+		ChangeableResource choice = new ChangeableResource();
 		
-		this.addResourceToChangeableResourceChoice(choice, resource);
+		this.addResourceToChangeableResource(choice, resource);
 		
 		this.stateChangeCallback.resourceAdded(choice);
 		
@@ -152,6 +152,6 @@ public abstract class AbstractExistMaintenanceService<
 	
 	protected abstract String getExistStorageNameForResource(D resource);
 
-	protected abstract void addResourceToChangeableResourceChoice(ChangeableResourceChoice choice, D resource);
+	protected abstract void addResourceToChangeableResource(ChangeableResource choice, D resource);
 
 }

@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
@@ -37,8 +37,8 @@ public class ExistValueSetDefinitionMaintenanceService
 	}
 
 	@Override
-	protected void addResourceToChangeableResourceChoice(
-			ChangeableResourceChoice choice, LocalIdValueSetDefinition resource) {
+	protected void addResourceToChangeableResource(
+			ChangeableResource choice, LocalIdValueSetDefinition resource) {
 		choice.setValueSetDefinition(resource.getResource());
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.core.StatementTarget;
-import edu.mayo.cts2.framework.model.updates.ChangeableResourceChoice;
+import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultMaintenanceService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
@@ -67,8 +67,8 @@ public class ExistAssociationMaintenanceService
 	}
 
 	@Override
-	protected void addResourceToChangeableResourceChoice(
-			ChangeableResourceChoice choice, Association resource) {
+	protected void addResourceToChangeableResource(
+			ChangeableResource choice, Association resource) {
 		choice.setAssociation(resource);
 	}
 }
