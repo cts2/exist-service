@@ -86,6 +86,7 @@
 							!net.sf.saxon,
 							!org.iso_relax*,
 							!org.jedit*,
+							!javax.ejb*,
 							!org.jgroups*,
 							!org.mortbay.*,
 							!org.stringtemplate*,
