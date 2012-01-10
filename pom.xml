@@ -71,15 +71,24 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!com.sun.*,
+							!org.apache.catalina*,
+							!org.apache.cocoon*,
+							!org.antlr*,
 							!org.apache.avalon.*,
+							!org.apache.excalibur*,
 							!javax.mail.*,
-							!javax.jms.*,
-							!sun.*,
-							edu.mayo.cts2.*,
-							edu.mayo.cts2.framework.core.xml,
-							com.atlassian.plugin.spring,
-							org.springframework.context.config,
+							!org.apache.xmlrpc*,
+							!com.sun.*,
+							!com.icl.*,
+							!jline,
+							!com.izforge.*,
+							!org.exist.*;resolution:=optional,
+							!net.sf.saxon,
+							!org.iso_relax*,
+							!org.jedit*,
+							!org.jgroups*,
+							!org.mortbay.*,
+							!org.stringtemplate*,
 							edu.mayo.cts2.framework.model.service.association,
 							edu.mayo.cts2.framework.model.service.codesystem,
 							edu.mayo.cts2.framework.model.service.codesystemversion,
@@ -93,10 +102,10 @@
 							edu.mayo.cts2.framework.model.service.valueset,
 							edu.mayo.cts2.framework.model.service.valuesetdefinition,
 							edu.mayo.cts2.framework.service.provider,
-							*;resolution:=optional
+							*
 						</Import-Package>
 						<Embed-Transitive>true</Embed-Transitive>
-						<Embed-Dependency>ws-commons-util,jing,antlr,quartz,xmldb,exist,xmlrpc-client,xmlrpc-common,org.antlr,xml-resolver,commons-io,commons-pool</Embed-Dependency>
+						<Embed-Dependency>ws-commons-util,jing,antlr,quartz,xmldb,exist,xmlrpc-client,xmlrpc-common,org.antlr,xml-resolver,commons-io,commons-pool,commons-dbcp</Embed-Dependency>
 						<Spring-Context>*;timeout:=60</Spring-Context>
 						<_exportcontents>*</_exportcontents>
 						<_nouses>true</_nouses>
@@ -249,6 +258,12 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
 		</dependency>
 
 	</dependencies>

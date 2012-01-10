@@ -4,9 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
+import edu.mayo.cts2.framework.model.core.EntityReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
+import edu.mayo.cts2.framework.model.entity.EntityListEntry;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
@@ -75,9 +80,15 @@ public class ExistEntityDescriptionReadService
 	}
 
 	@Override
-	public boolean readEntityDescriptions(EntityNameOrURI entityId,
-			ResolvedReadContext readContext) {
+	public DirectoryResult<EntityListEntry> readEntityDescriptions(
+			EntityNameOrURI entityId, SortCriteria sortCriteria,
+			ResolvedReadContext readContext, Page page) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public EntityReference availableDescriptions(EntityNameOrURI entityId,
+			ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
 }
