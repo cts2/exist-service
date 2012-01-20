@@ -6,8 +6,8 @@ import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.XMLDBException;
 
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
-import edu.mayo.cts2.framework.model.exception.changeset.ChangeSetIsNotOpenException;
-import edu.mayo.cts2.framework.model.exception.changeset.UnknownChangeSetException;
+import edu.mayo.cts2.framework.model.service.exception.ChangeSetIsNotOpen;
+import edu.mayo.cts2.framework.model.service.exception.UnknownChangeSet;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ChangeSetResourceInfo;
 
@@ -26,7 +26,7 @@ public class ChangeSetUriValidator {
 				this.buildXquery(changeSetUri));
 		
 		if(resource == null){
-			throw new UnknownChangeSetException();
+			throw new UnknownChangeSet();
 		}
 
 		String resourceContent;
@@ -37,13 +37,13 @@ public class ChangeSetUriValidator {
 		}
 		
 		if(StringUtils.isBlank(resourceContent)){
-			throw new UnknownChangeSetException();
+			throw new UnknownChangeSet();
 		}
 		
 		FinalizableState state = FinalizableState.fromValue(resourceContent);
 		
 		if(state.equals(FinalizableState.FINAL)){
-			throw new ChangeSetIsNotOpenException(changeSetUri);
+			throw new ChangeSetIsNotOpen();
 		}
 	}
 	

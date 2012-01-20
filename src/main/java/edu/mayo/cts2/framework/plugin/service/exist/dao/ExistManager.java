@@ -18,9 +18,8 @@ import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
 import edu.mayo.cts2.framework.core.plugin.PluginConfig;
-import edu.mayo.cts2.framework.core.url.UrlConstructor;
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
-import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 
 public class ExistManager implements InitializingBean {	
@@ -32,9 +31,6 @@ public class ExistManager implements InitializingBean {
 	
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
-	
-	@javax.annotation.Resource(name="urlConstructor")
-	private UrlConstructor urlConstructor;
 
 	private String uri;
 	private String existHome;
@@ -92,7 +88,7 @@ public class ExistManager implements InitializingBean {
 			
 			service.setCollection(collection);
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 		
 		try {
@@ -100,7 +96,7 @@ public class ExistManager implements InitializingBean {
 				service.setNamespace((String)entry.getKey(), (String)entry.getValue());
 			}
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 		
 		return service;

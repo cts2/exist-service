@@ -16,7 +16,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
 
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
-import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
 @Component
@@ -137,7 +137,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 		try {
 			resource.getParentCollection().removeResource(resource);
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 	}
 
@@ -152,7 +152,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 			
 			this.getExistManager().getCollectionManagementService().removeCollection(collection.getName());
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 			return xqueryService.query(queryString);
 			
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 	}
 	
@@ -196,7 +196,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 			return resource;
 			
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 	}
 

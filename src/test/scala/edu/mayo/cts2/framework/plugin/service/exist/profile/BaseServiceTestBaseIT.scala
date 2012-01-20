@@ -14,11 +14,11 @@ import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
-import edu.mayo.cts2.framework.model.exception.Cts2RestException
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
-import edu.mayo.cts2.framework.model.exception.changeset.ChangeSetIsNotOpenException
+import edu.mayo.cts2.framework.model.service.exception.CTS2Exception
+import edu.mayo.cts2.framework.model.service.exception.ChangeSetIsNotOpen
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(
@@ -62,7 +62,7 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
     
   }
    
-   @Test(expected = classOf[ChangeSetIsNotOpenException])
+   @Test(expected = classOf[ChangeSetIsNotOpen])
    def testInsertWithClosedChangeSet() {
         var name = getName()
        var uri = getUri()
@@ -149,8 +149,8 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
 	    }
        
    
-   def checkCTS2RestException(ex:Cts2RestException){
-     var clazz = ex.getCts2Exception().getClass();
+   def checkCTS2RestException(ex:CTS2Exception){
+     var clazz = ex.getClass();
      
      assertEquals(clazz, getExceptionClass())
    }

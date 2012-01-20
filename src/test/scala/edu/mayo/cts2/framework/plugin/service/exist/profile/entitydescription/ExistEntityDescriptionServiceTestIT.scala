@@ -1,5 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription
 
+import java.util.Date
+
 import org.junit.Assert._
 import org.junit.Assert.assertEquals
 import org.junit.runner.RunWith
@@ -9,6 +11,10 @@ import org.scalatest.junit.AssertionsForJUnit
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.ContextConfiguration
+
+import edu.mayo.cts2.framework.model.core.types.ChangeType
+import edu.mayo.cts2.framework.model.core.ChangeDescription
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
@@ -16,15 +22,11 @@ import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
-import edu.mayo.cts2.framework.model.exception.Cts2RestException
+import edu.mayo.cts2.framework.model.service.exception.CTS2Exception
 import edu.mayo.cts2.framework.model.service.exception.UnknownEntity
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
-import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
-import edu.mayo.cts2.framework.model.core.ChangeDescription
-import edu.mayo.cts2.framework.model.core.types.ChangeType
-import java.util.Date
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
 
 
@@ -133,8 +135,8 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
     	
    }
    
-   def checkCTS2RestException(ex:Cts2RestException){
-     var clazz = ex.getCts2Exception().getClass();
+   def checkCTS2RestException(ex:CTS2Exception){
+     var clazz = ex.getClass();
      
      assertEquals(clazz, new UnknownEntity().getClass)
    }

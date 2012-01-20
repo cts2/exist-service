@@ -22,7 +22,7 @@ import edu.mayo.cts2.framework.model.core.SourceReference;
 import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
-import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2RuntimeException;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
@@ -152,7 +152,7 @@ public class ExistChangeSetService implements ChangeSetService {
 					changeSetResourceInfo.getResourceBasePath(), name, changeSet);
 			
 		} catch (XMLDBException e) {
-			throw new UnspecifiedCts2RuntimeException(e);
+			throw new Cts2RuntimeException(e);
 		}
 	}
 
