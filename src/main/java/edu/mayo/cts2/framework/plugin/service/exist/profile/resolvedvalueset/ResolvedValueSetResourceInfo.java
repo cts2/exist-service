@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetresolution;
+package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
 import org.springframework.stereotype.Component;
 
@@ -6,7 +6,7 @@ import edu.mayo.cts2.framework.model.core.ValueSetDefinitionReference;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.name.ResolvedValueSetReadId;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.name.ResolvedValueSetReadId;
 
 @Component
 public class ResolvedValueSetResourceInfo implements LocalIdResourceInfo<ResolvedValueSet,ResolvedValueSetReadId> {

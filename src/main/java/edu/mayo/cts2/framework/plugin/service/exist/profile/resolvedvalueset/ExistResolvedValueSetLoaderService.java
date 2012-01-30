@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetresolution;
+package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
 import javax.annotation.Resource;
 
@@ -9,9 +9,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.Incrementer;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetLoaderService;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetReference;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.name.ResolvedValueSetReadId;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetLoaderService;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetReference;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.name.ResolvedValueSetReadId;
 
 @Component
 public class ExistResolvedValueSetLoaderService implements ResolvedValueSetLoaderService {

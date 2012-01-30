@@ -21,7 +21,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetresolution;
+package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,8 +44,8 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.restriction.ResolvedValueSetQueryServiceRestrictions;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetQuery;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetQueryService;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetQuery;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetQueryService;
 
 @Component
 public class ExistResolvedValueSetQueryService 

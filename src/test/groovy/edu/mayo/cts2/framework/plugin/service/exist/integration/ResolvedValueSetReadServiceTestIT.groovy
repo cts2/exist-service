@@ -20,7 +20,7 @@ class ResolvedValueSetReadServiceTestIT extends BaseServiceTestITBase {
 	
 	@Test void readByName(){
 		def url = 
-			client.postCts2Resource(server+"valuesetresolution", getResource())
+			client.postCts2Resource(server+"resolvedvalueset", getResource())
 			
 		def rvs = client.getCts2Resource(server+url, ResolvedValueSetMsg.class)
 		

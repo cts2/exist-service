@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetresolution;
+package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
 import static org.junit.Assert.*
 
@@ -13,8 +13,8 @@ import edu.mayo.cts2.framework.model.core.ValueSetReference
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetHeader
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetQuery
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetReference
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetQuery
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetReference
 
 class ExistResolvedValueSetQueryServiceIT extends BaseServiceDbCleaningBase {
 	

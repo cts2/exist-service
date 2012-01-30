@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetresolution;
+package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
 import javax.annotation.Resource;
 
@@ -9,8 +9,8 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistResourceReadingService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.ResolvedValueSetReadService;
-import edu.mayo.cts2.framework.service.profile.valuesetresolution.name.ResolvedValueSetReadId;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetReadService;
+import edu.mayo.cts2.framework.service.profile.resolvedvalueset.name.ResolvedValueSetReadId;
 
 @Component
 public class ExistResolvedValueSetReadService 
