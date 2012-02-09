@@ -256,7 +256,7 @@ public abstract class AbstractExistQueryService
 				returnList.add(transform.transform(entry, res));
 			}
 		
-			return new DirectoryResult<Summary>(returnList, size <= returnList.size(), (start + max) >= size);
+			return new DirectoryResult<Summary>(returnList, (start + max) >= size);
 		} catch (XMLDBException e) {
 			throw new IllegalStateException(e);
 		}
