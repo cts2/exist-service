@@ -32,7 +32,7 @@ public class ExistMapEntryQueryService
 		<MapEntry,
 		MapEntryDirectoryEntry,
 		MapEntryQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.mapentry.MapEntryQueryService,MapEntryDirectoryState>
+		MapEntryDirectoryState>
 	implements MapEntryQueryService {
 	
 	@Resource

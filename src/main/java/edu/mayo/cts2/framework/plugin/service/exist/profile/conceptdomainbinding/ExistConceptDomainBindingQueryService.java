@@ -26,7 +26,7 @@ public class ExistConceptDomainBindingQueryService
 		<ConceptDomainBinding,
 		ConceptDomainBindingDirectoryEntry,
 		ConceptDomainBindingQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.conceptdomainbinding.ConceptDomainBindingQueryService,XpathState>
+		XpathState>
 	implements ConceptDomainBindingQueryService {
 
 	@Resource

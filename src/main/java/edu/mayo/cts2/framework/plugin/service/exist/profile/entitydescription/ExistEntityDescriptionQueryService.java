@@ -52,7 +52,6 @@ public class ExistEntityDescriptionQueryService
 		<EntityDescription,
 		EntityDirectoryEntry,
 		EntityDescriptionQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionQueryService,
 		EntityDescriptionDirectoryState>    
 	implements EntityDescriptionQueryService {
 

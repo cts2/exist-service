@@ -31,7 +31,7 @@ public class ExistValueSetDefinitionQueryService
 		<ValueSetDefinition,
 		ValueSetDefinitionDirectoryEntry,
 		ValueSetDefinitionQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.valuesetdefinition.ValueSetDefinitionQueryService,XpathState>
+		XpathState>
 	implements ValueSetDefinitionQueryService {
 
 	@Resource

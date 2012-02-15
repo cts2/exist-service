@@ -43,7 +43,6 @@ import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
 import edu.mayo.cts2.framework.model.core.ResourceVersionDescription;
 import edu.mayo.cts2.framework.model.core.ResourceVersionDescriptionDirectoryEntry;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.SummaryTransform;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
@@ -51,7 +50,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
-import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
+import edu.mayo.cts2.framework.service.profile.BaseQueryService;
 
 /**
  * The Class AbstractService.
@@ -60,15 +59,17 @@ import edu.mayo.cts2.framework.service.profile.AbstractQueryService;
  */
 public abstract class AbstractExistQueryService
 	<R,Summary,Restrictions,
-	T extends BaseQueryService,
-	S extends XpathState> 
-	extends AbstractQueryService<T> implements InitializingBean {
+	S extends XpathState> extends AbstractExistService
+	implements BaseQueryService, InitializingBean {
 	
 	@javax.annotation.Resource
 	private ExistResourceDao existResourceDao;
 	
 	@javax.annotation.Resource
 	private edu.mayo.cts2.framework.core.plugin.PluginConfigManager pluginConfigManager;
+	
+	@Autowired
+	private ResourceUnmarshaller resourceUnmarshaller;
 	
 	private UrlConstructor urlConstructor;
 
@@ -83,27 +84,7 @@ public abstract class AbstractExistQueryService
 	protected void setExistResourceDao(ExistResourceDao existResourceDao) {
 		this.existResourceDao = existResourceDao;
 	}
-
-	@Autowired
-	private ResourceUnmarshaller resourceUnmarshaller;
 	
-	private static final String MAYO = "Mayo Clinic";
-	private static final String DEFAULT_VERSION = "1.0";
-	private static final String DESCRIPTION = "CTS2 Service using eXist xml database.";
-	
-	@Override
-	protected String getVersion() {
-		return DEFAULT_VERSION;
-	}
-	@Override
-	protected String getProvider() {
-		return MAYO;
-	}
-	@Override
-	protected String getDescription() {
-		return DESCRIPTION;
-	}
-
 	protected String getChangeSetUri(ResolvedReadContext readContext){
 		return readContext == null ? null : readContext.getChangeSetContextUri();
 	}

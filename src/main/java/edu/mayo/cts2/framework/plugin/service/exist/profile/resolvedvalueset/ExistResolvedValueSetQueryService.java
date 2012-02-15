@@ -53,7 +53,7 @@ public class ExistResolvedValueSetQueryService
 	<ResolvedValueSet,
 	ResolvedValueSetDirectoryEntry,
 	ResolvedValueSetQueryServiceRestrictions,
-	edu.mayo.cts2.framework.model.service.valuesetdefinition.ResolvedValueSetQueryService,XpathState> 
+	XpathState> 
 	implements ResolvedValueSetQueryService {
 
 	@Resource

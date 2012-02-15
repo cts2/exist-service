@@ -37,7 +37,7 @@ public class ExistAssociationQueryService
 		<Association,
 		AssociationDirectoryEntry,
 		AssociationQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.association.AssociationQueryService,XpathState>
+		XpathState>
 	implements AssociationQueryService {
 	
 	@Resource

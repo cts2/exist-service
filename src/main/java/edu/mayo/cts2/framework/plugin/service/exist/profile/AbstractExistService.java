@@ -18,35 +18,67 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
-import edu.mayo.cts2.framework.model.service.core.BaseService;
+import edu.mayo.cts2.framework.model.core.FormatReference;
+import edu.mayo.cts2.framework.model.core.NamespaceReference;
+import edu.mayo.cts2.framework.model.core.OpaqueData;
+import edu.mayo.cts2.framework.model.core.SourceReference;
+import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
-import edu.mayo.cts2.framework.service.profile.AbstractService;
+import edu.mayo.cts2.framework.service.profile.BaseService;
 
 /**
  * The Class AbstractService.
  *
  * @author <a href="mailto:kevin.peterson@mayo.edu">Kevin Peterson</a>
  */
-public abstract class AbstractExistService<T extends BaseService> extends AbstractService<T> {
+public abstract class AbstractExistService implements BaseService {
 	
 	private static final String MAYO = "Mayo Clinic";
 	private static final String DEFAULT_VERSION = "1.0";
 	private static final String DESCRIPTION = "CTS2 Service using eXist xml database.";
 	
 	@Override
-	protected String getVersion() {
+	public String getServiceVersion() {
 		return DEFAULT_VERSION;
 	}
+	
 	@Override
-	protected String getProvider() {
-		return MAYO;
+	public SourceReference getServiceProvider() {
+		SourceReference ref = new SourceReference();
+		ref.setContent(MAYO);
+		
+		return ref;
 	}
+	
 	@Override
-	protected String getDescription() {
-		return DESCRIPTION;
+	public OpaqueData getServiceDescription() {
+		return ModelUtils.createOpaqueData(DESCRIPTION);
 	}
+
+	@Override
+	public String getServiceName() {
+		return this.getClass().getCanonicalName();
+	}
+
+	@Override
+	public List<FormatReference> getSupportedFormatList() {
+		return null;
+	}
+
+	@Override
+	public FormatReference getDefaultFormat() {
+		return null;
+	}
+
+	@Override
+	public List<NamespaceReference> getKnownNamespaceList() {
+		return null;
+	}
+	
 	
 	protected String createPath(String... path){
 		if(path == null){

@@ -11,7 +11,6 @@ import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.service.core.BaseQueryService;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeSetDirectoryEntry;
@@ -30,7 +29,6 @@ public class ExistChangeSetQueryService
 	<ChangeSet,
 	ChangeSetDirectoryEntry,
 	ChangeSetQueryExtensionRestrictions,
-	BaseQueryService,
 	XpathState> 
 	implements ChangeSetQueryExtension {
 	

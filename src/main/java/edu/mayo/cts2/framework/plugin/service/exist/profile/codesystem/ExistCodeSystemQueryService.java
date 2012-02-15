@@ -25,7 +25,6 @@ public class ExistCodeSystemQueryService
 		<CodeSystemCatalogEntry,
 		CodeSystemCatalogEntrySummary,
 		Void,
-		edu.mayo.cts2.framework.model.service.codesystem.CodeSystemQueryService,
 		XpathState> 
 	implements CodeSystemQueryService {
 

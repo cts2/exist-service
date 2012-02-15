@@ -26,7 +26,7 @@ public class ExistValueSetQueryService
 		<ValueSetCatalogEntry,
 		ValueSetCatalogEntrySummary,
 		ValueSetQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.valueset.ValueSetQueryService,XpathState>
+		XpathState>
 	implements ValueSetQueryService {
 
 	@Resource

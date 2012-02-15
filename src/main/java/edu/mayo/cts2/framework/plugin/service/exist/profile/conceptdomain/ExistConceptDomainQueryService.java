@@ -25,7 +25,7 @@ public class ExistConceptDomainQueryService
 		<ConceptDomainCatalogEntry,
 		ConceptDomainCatalogEntrySummary,
 		Void,
-		edu.mayo.cts2.framework.model.service.conceptdomain.ConceptDomainQueryService,XpathState>
+		XpathState>
 	implements ConceptDomainQueryService {
 	
 	@Resource

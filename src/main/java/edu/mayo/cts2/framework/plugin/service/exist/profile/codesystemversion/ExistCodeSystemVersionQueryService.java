@@ -27,7 +27,7 @@ public class ExistCodeSystemVersionQueryService
 		<CodeSystemVersionCatalogEntry,
 		CodeSystemVersionCatalogEntrySummary,
 		CodeSystemVersionQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.codesystemversion.CodeSystemVersionQueryService,XpathState> 
+		XpathState> 
 	implements CodeSystemVersionQueryService {
 	
 	@Resource

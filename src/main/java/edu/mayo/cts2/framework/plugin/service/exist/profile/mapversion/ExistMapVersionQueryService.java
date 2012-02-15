@@ -33,7 +33,7 @@ public class ExistMapVersionQueryService
 		<MapVersion,
 		MapVersionDirectoryEntry,
 		MapVersionQueryServiceRestrictions,
-		edu.mayo.cts2.framework.model.service.mapversion.MapVersionQueryService,MapVersionDirectoryState>
+		MapVersionDirectoryState>
 	implements MapVersionQueryService {
 
 	@Resource

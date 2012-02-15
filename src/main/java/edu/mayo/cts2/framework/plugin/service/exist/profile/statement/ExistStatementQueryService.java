@@ -27,7 +27,7 @@ public class ExistStatementQueryService
 		<Statement,
 		StatementDirectoryEntry,
 		Void,
-		edu.mayo.cts2.framework.model.service.statement.StatementQueryService,XpathState>
+		XpathState>
 	implements StatementQueryService {
 
 	@Resource

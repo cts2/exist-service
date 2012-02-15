@@ -14,7 +14,7 @@ public abstract class AbstractExistResourceReadingService<
 	R,
 	I,
 	T extends BaseService> 
-	extends AbstractExistService<T> implements InitializingBean{
+	extends AbstractExistService implements InitializingBean{
 
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;

@@ -26,7 +26,7 @@ public class ExistMapQueryService
 	<MapCatalogEntry,
 	MapCatalogEntrySummary,
 	MapQueryServiceRestrictions,
-	edu.mayo.cts2.framework.model.service.map.MapCatalogQueryService,XpathState> 
+	XpathState> 
 	implements MapQueryService {
 
 	@Resource
