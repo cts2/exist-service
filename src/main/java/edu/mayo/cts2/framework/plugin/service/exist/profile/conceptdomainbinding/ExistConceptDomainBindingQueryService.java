@@ -57,7 +57,7 @@ public class ExistConceptDomainBindingQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 
@@ -114,12 +114,6 @@ public class ExistConceptDomainBindingQueryService
 	@Override
 	protected PathInfo getResourceInfo() {
 		return this.conceptDomainBindingResourceInfo;
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

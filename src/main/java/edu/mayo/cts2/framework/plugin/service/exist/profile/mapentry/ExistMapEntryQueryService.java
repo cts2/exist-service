@@ -99,7 +99,7 @@ public class ExistMapEntryQueryService
 				}
 			}, 
 			getSupportedMatchAlgorithms(),
-			getSupportedModelAttributes());
+			getSupportedSearchReferences());
 		}
 	}
 
@@ -171,11 +171,5 @@ public class ExistMapEntryQueryService
 	@Override
 	protected PathInfo getResourceInfo() {
 		return this.mapEntryResourceInfo;
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

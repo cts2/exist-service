@@ -2,17 +2,15 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
@@ -69,10 +67,10 @@ public class ExistValueSetDefinitionQueryService
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<StateAdjustingModelAttributeReference<XpathState>> getAvailableModelAttributeReferences() {
-		StateAdjustingModelAttributeReference<XpathState> refName = 
-			StateAdjustingModelAttributeReference.toModelAttributeReference(
-					StandardModelAttributeReference.RESOURCE_NAME.getModelAttributeReference(), 
+	protected List<StateAdjustingPropertyReference<XpathState>> getAvailableModelAttributeReferences() {
+		StateAdjustingPropertyReference<XpathState> refName = 
+				StateAdjustingPropertyReference.toPropertyReference(
+					StandardModelAttributeReference.RESOURCE_NAME.getPropertyReference(),
 						new ValueSetNameStateUpdater());
 		
 		return Arrays.asList(refName);
@@ -103,7 +101,7 @@ public class ExistValueSetDefinitionQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 
@@ -142,11 +140,5 @@ public class ExistValueSetDefinitionQueryService
 	@Override
 	protected ValueSetDefinitionResourceInfo getResourceInfo() {
 		return this.valueSetDefinitionResourceInfo;
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

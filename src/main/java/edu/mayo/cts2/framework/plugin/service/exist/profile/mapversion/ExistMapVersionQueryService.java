@@ -88,7 +88,7 @@ public class ExistMapVersionQueryService
 			},
 
 			getSupportedMatchAlgorithms(),
-			getSupportedModelAttributes());
+			getSupportedSearchReferences());
 		}
 	}
 
@@ -125,12 +125,6 @@ public class ExistMapVersionQueryService
 	@Override
 	protected DefaultResourceInfo<MapVersion, ?> getResourceInfo() {
 		return this.mapVersionResourceInfo;
-	}
-
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

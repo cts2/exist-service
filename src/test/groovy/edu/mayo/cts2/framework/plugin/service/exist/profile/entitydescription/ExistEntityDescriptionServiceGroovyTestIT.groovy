@@ -49,6 +49,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleanin
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
+import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery
 
 class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBase {
@@ -97,8 +98,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"name",
-		        modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+		        propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -122,10 +122,9 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		changeSetService.commitChangeSet(changeSetUri)
 		
 		def fc = new ResolvedFilter(
-				matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
+				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"aname",
-				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_SYNOPSIS_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+				propertyReference: StandardModelAttributeReference.RESOURCE_SYNOPSIS.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -150,8 +149,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"asdfasdf",
-				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def set = new HashSet()
 		set.add(fc)
@@ -179,8 +177,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 				matchValue:"something",
-				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -205,8 +202,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 				matchValue:"somethin",
-				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -231,8 +227,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference(),
 				matchValue:"someth",
-				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -257,8 +252,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference(),
 				matchValue:"thing",
-				modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-				referenceType:TargetReferenceType.ATTRIBUTE)
+				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 
 		def q = [
 			getFilterComponent : { [fc] as Set },

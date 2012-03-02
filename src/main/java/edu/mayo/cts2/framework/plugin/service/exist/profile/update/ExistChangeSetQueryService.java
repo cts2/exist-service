@@ -5,11 +5,12 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.core.URIAndEntityName;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
@@ -78,13 +79,6 @@ public class ExistChangeSetQueryService
 		return this.changeSetResourceInfo;
 	}
 
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public int count(Query query, Set<ResolvedFilter> filterComponent,
 			ChangeSetQueryExtensionRestrictions restrictions) {
@@ -93,22 +87,23 @@ public class ExistChangeSetQueryService
 	}
 
 	@Override
-	public Set<StateAdjustingModelAttributeReference<XpathState>> getSupportedModelAttributes() {
-		Set<StateAdjustingModelAttributeReference<XpathState>> set = 
-				super.getSupportedModelAttributes();
+	public Set<StateAdjustingPropertyReference<XpathState>> getSupportedSearchReferences() {
+		Set<StateAdjustingPropertyReference<XpathState>> set = 
+				super.getSupportedSearchReferences();
 		
 		set.add(this.getFinalizableStateAdjustingReference());
 		
 		return set;
 	}
 
-	protected StateAdjustingModelAttributeReference<XpathState> getFinalizableStateAdjustingReference(){
+	protected StateAdjustingPropertyReference<XpathState> getFinalizableStateAdjustingReference(){
 		XpathStateUpdater<XpathState> updater = new XpathStateUpdater<XpathState>("@state");
 		
-		StateAdjustingModelAttributeReference<XpathState> stateAdjustor = 
-				new StateAdjustingModelAttributeReference<XpathState>(updater);
+		StateAdjustingPropertyReference<XpathState> stateAdjustor = 
+				new StateAdjustingPropertyReference<XpathState>(updater);
 		
-		stateAdjustor.setContent("state");
+		stateAdjustor.setReferenceTarget(new URIAndEntityName());
+		stateAdjustor.getReferenceTarget().setName("state");
 		
 		return stateAdjustor;
 	}
@@ -139,7 +134,7 @@ public class ExistChangeSetQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 

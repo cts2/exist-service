@@ -70,12 +70,7 @@ public class ExistCodeSystemQueryService
 		
 		return summary;
 	}
-	
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		return null;
-	}
-	
+
 	private class CodeSystemDirectoryBuilder extends XpathDirectoryBuilder<XpathState,CodeSystemCatalogEntrySummary> {
 
 		public CodeSystemDirectoryBuilder(final String changeSetUri) {
@@ -104,7 +99,7 @@ public class ExistCodeSystemQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 

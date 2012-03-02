@@ -5,6 +5,7 @@ import static org.junit.Assert.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
+
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
@@ -13,6 +14,8 @@ import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference
 import edu.mayo.cts2.framework.model.core.ModelAttributeReference
+import edu.mayo.cts2.framework.model.core.PropertyReference
+import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.core.types.ChangeCommitted
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
@@ -22,6 +25,7 @@ import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
+import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference
 import edu.mayo.cts2.framework.service.profile.ResourceQuery
 
 class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
@@ -130,7 +134,7 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def filter = new ResolvedFilter(
 			matchAlgorithmReference:new MatchAlgorithmReference(content:"contains"),
 			matchValue:"am",
-			modelAttributeReference:new ModelAttributeReference(content:"resourceName")
+			propertyReference:new PropertyReference(referenceTarget: new URIAndEntityName(name:"resourceName"))
 		)
 		
 		def q = [
@@ -371,8 +375,7 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def fc = new ResolvedFilter(
 			matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 			matchValue:"name",
-			modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-			referenceType:TargetReferenceType.ATTRIBUTE)
+			propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -415,8 +418,7 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def fc = new ResolvedFilter(
 			matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 			matchValue:"__INVALID__",
-			modelAttributeReference: new ModelAttributeReference(content:ExternalCts2Constants.MA_RESOURCE_NAME_NAME),
-			referenceType:TargetReferenceType.ATTRIBUTE)
+			propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },

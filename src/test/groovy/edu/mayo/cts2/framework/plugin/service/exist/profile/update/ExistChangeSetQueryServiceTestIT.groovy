@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
 import edu.mayo.cts2.framework.model.core.ModelAttributeReference
+import edu.mayo.cts2.framework.model.core.PropertyReference
+import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.mapversion.*
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
@@ -49,8 +51,7 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 		def fc = new ResolvedFilter(
 			matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 			matchValue:"FINAL",
-			modelAttributeReference: new ModelAttributeReference(content:"state"),
-			referenceType:TargetReferenceType.ATTRIBUTE)
+			propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"state")))
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -77,8 +78,7 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 		def fc = new ResolvedFilter(
 			matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 			matchValue:"OPEN",
-			modelAttributeReference: new ModelAttributeReference(content:"state"),
-			referenceType:TargetReferenceType.ATTRIBUTE)
+			propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"state")))
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },

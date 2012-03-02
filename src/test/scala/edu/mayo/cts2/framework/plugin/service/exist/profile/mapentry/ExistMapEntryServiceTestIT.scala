@@ -2,13 +2,11 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 
 import java.lang.Override
 import java.util.HashSet
-
 import org.junit.Assert.assertEquals
 import org.junit.runner.RunWith
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
-
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
@@ -34,6 +32,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummarie
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery
+import edu.mayo.cts2.framework.model.core.PropertyReference
 
 class ExistMapEntryServiceTestIT
 	extends BaseServiceTestBaseIT[MapEntry,MapEntryDirectoryEntry] 
@@ -243,9 +242,9 @@ class ExistMapEntryServiceTestIT
      val filterComponent = new ResolvedFilter()
      filterComponent.setMatchAlgorithmReference(new MatchAlgorithmReference())
      filterComponent.getMatchAlgorithmReference().setContent("exactMatch")
-     filterComponent.setReferenceType(TargetReferenceType.ATTRIBUTE)
-     filterComponent.setModelAttributeReference(new ModelAttributeReference())
-     filterComponent.getModelAttributeReference().setContent("resourceName")
+     filterComponent.setPropertyReference(new PropertyReference())
+     filterComponent.getPropertyReference().setReferenceTarget(new URIAndEntityName())
+     filterComponent.getPropertyReference().getReferenceTarget().setName("resourceName")
      filterComponent.setMatchValue("Test2")
      
      var set = new HashSet[ResolvedFilter]()
@@ -307,9 +306,9 @@ class ExistMapEntryServiceTestIT
      val filterComponent = new ResolvedFilter()
      filterComponent.setMatchAlgorithmReference(new MatchAlgorithmReference())
      filterComponent.getMatchAlgorithmReference().setContent("contains")
-     filterComponent.setReferenceType(TargetReferenceType.ATTRIBUTE)
-     filterComponent.setModelAttributeReference(new ModelAttributeReference())
-     filterComponent.getModelAttributeReference().setContent("resourceName")
+     filterComponent.setPropertyReference(new PropertyReference())
+     filterComponent.getPropertyReference().setReferenceTarget(new URIAndEntityName())
+     filterComponent.getPropertyReference().getReferenceTarget().setName("resourceName")
      filterComponent.setMatchValue("st2")
      
      var set = new HashSet[ResolvedFilter]()

@@ -23,7 +23,7 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.xpath;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;

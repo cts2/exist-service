@@ -74,7 +74,7 @@ public class ExistValueSetQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 
@@ -115,9 +115,4 @@ public class ExistValueSetQueryService
 		return this.valueSetResourceInfo;
 	}
 
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

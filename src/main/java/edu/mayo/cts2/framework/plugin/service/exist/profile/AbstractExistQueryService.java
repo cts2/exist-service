@@ -34,10 +34,12 @@ import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 
 import edu.mayo.cts2.framework.core.url.UrlConstructor;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.PropertyReference;
 import edu.mayo.cts2.framework.model.core.ResourceDescription;
 import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
 import edu.mayo.cts2.framework.model.core.ResourceVersionDescription;
@@ -294,13 +296,13 @@ public abstract class AbstractExistQueryService
 		return returnSet;
 	}
 
-	public Set<StateAdjustingModelAttributeReference<S>> getSupportedModelAttributes() {
-		Set<StateAdjustingModelAttributeReference<S>> returnSet = 
-				new HashSet<StateAdjustingModelAttributeReference<S>>();
+	public Set<StateAdjustingPropertyReference<S>> getSupportedSearchReferences() {
+		Set<StateAdjustingPropertyReference<S>> returnSet = 
+				new HashSet<StateAdjustingPropertyReference<S>>();
 		
-		StateAdjustingModelAttributeReference<S> resourceName = 
-			StateAdjustingModelAttributeReference.toModelAttributeReference(
-					StandardModelAttributeReference.RESOURCE_NAME.getModelAttributeReference(), 
+		StateAdjustingPropertyReference<S> resourceName = 
+				StateAdjustingPropertyReference.toPropertyReference(
+					StandardModelAttributeReference.RESOURCE_NAME.getPropertyReference(), 
 					getResourceNameStateUpdater());
 		
 		returnSet.add(resourceName);
@@ -308,6 +310,18 @@ public abstract class AbstractExistQueryService
 		return returnSet;
 	}
 	
+	
+	
+	@Override
+	public Set<? extends PropertyReference> getSupportedSortReferences() {
+		return null;
+	}
+
+	@Override
+	public Set<PredicateReference> getKnownProperties() {
+		return null;
+	}
+
 	private StateUpdater<S> getResourceNameStateUpdater(){
 		
 		return new XpathStateUpdater<S>(

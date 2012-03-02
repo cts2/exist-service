@@ -73,7 +73,7 @@ public class ExistMapQueryService
 			},
 
 			getSupportedMatchAlgorithms(),
-			getSupportedModelAttributes());
+			getSupportedSearchReferences());
 		}
 	}
 
@@ -108,11 +108,5 @@ public class ExistMapQueryService
 	@Override
 	protected PathInfo getResourceInfo() {
 		return this.mapResourceInfo;
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

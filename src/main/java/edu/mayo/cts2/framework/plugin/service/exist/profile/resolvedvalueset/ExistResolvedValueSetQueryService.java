@@ -31,9 +31,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.XMLDBException;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
@@ -120,7 +119,7 @@ public class ExistResolvedValueSetQueryService
 			},
 
 			getSupportedMatchAlgorithms(),
-			getSupportedModelAttributes());
+			getSupportedSearchReferences());
 		}
 	}
 
@@ -143,10 +142,10 @@ public class ExistResolvedValueSetQueryService
 	 * (non-Javadoc)
 	 * @see edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService#getSupportedModelAttributes()
 	 */
-	public Set<StateAdjustingModelAttributeReference<XpathState>> 
-		getSupportedModelAttributes(){
+	@Override
+	public Set<StateAdjustingPropertyReference<XpathState>> getSupportedSearchReferences(){
 
-		return new HashSet<StateAdjustingModelAttributeReference<XpathState>>();
+		return new HashSet<StateAdjustingPropertyReference<XpathState>>();
 	}
 
 
@@ -155,9 +154,4 @@ public class ExistResolvedValueSetQueryService
 		return this.resolvedValueSetResourceInfo;
 	}
 
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

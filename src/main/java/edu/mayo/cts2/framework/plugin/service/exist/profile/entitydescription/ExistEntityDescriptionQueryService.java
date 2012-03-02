@@ -9,8 +9,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingModelAttributeReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
@@ -19,7 +19,6 @@ import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
 import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.core.VersionTagReference;
@@ -135,12 +134,12 @@ public class ExistEntityDescriptionQueryService
 	}
 
 	
-	public Set<StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState>> getSupportedModelAttributes() {
-		Set<StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState>> set = super.getSupportedModelAttributes();
+	public Set<StateAdjustingPropertyReference<EntityDescriptionDirectoryState>> getSupportedSearchReferences() {
+		Set<StateAdjustingPropertyReference<EntityDescriptionDirectoryState>> set = super.getSupportedSearchReferences();
 		
-		StateAdjustingModelAttributeReference<EntityDescriptionDirectoryState> resourceSynopsis = 
-				StateAdjustingModelAttributeReference.toModelAttributeReference(
-						StandardModelAttributeReference.RESOURCE_SYNOPSIS.getModelAttributeReference(),
+		StateAdjustingPropertyReference<EntityDescriptionDirectoryState> resourceSynopsis = 
+				StateAdjustingPropertyReference.toPropertyReference(
+						StandardModelAttributeReference.RESOURCE_SYNOPSIS.getPropertyReference(),
 						getResourceSynopsisStateUpdater());
 			
 		set.add(resourceSynopsis);
@@ -178,7 +177,7 @@ public class ExistEntityDescriptionQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 		
 		public EntityDescriptionDirectoryBuilder restrict(final EntityDescriptionQueryServiceRestrictions restriction){
@@ -284,12 +283,6 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	protected PathInfo getResourceInfo() {
 		return this.entityDescriptionResourceInfo;
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

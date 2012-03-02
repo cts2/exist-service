@@ -67,7 +67,7 @@ public class ExistCodeSystemVersionQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 
@@ -145,12 +145,6 @@ public class ExistCodeSystemVersionQueryService
 	@Override
 	protected PathInfo getResourceInfo() {
 		return codeSystemVersionResourceInfo;
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

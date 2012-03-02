@@ -1,7 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
-import java.util.Set;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -15,7 +13,6 @@ import edu.mayo.cts2.framework.model.association.types.GraphFocus;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
@@ -68,7 +65,7 @@ public class ExistAssociationQueryService
 				}},
 				
 				getSupportedMatchAlgorithms(),
-				getSupportedModelAttributes());
+				getSupportedSearchReferences());
 		}
 	}
 
@@ -131,12 +128,6 @@ public class ExistAssociationQueryService
 		} else {
 			return resource.getAssertedBy();
 		}
-	}
-
-	@Override
-	public Set<? extends PredicateReference> getSupportedProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
