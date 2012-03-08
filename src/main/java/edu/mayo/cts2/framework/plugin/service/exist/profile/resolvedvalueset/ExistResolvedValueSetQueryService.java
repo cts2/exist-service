@@ -154,4 +154,9 @@ public class ExistResolvedValueSetQueryService
 		return this.resolvedValueSetResourceInfo;
 	}
 
+	@Override
+	public int count(ResolvedValueSetQuery query) {
+		throw new UnsupportedOperationException();
+	}
+
 }

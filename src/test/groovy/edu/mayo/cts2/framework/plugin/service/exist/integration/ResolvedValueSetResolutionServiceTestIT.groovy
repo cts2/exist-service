@@ -9,11 +9,12 @@ import org.springframework.web.client.HttpStatusCodeException
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ValueSetDefinitionReference
 import edu.mayo.cts2.framework.model.core.ValueSetReference
+import edu.mayo.cts2.framework.model.valuesetdefinition.IteratableResolvedValueSet
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetHeader
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetMsg
 
-class ResolvedValueSetReadServiceTestIT extends BaseServiceTestITBase {
+class ResolvedValueSetResolutionServiceTestIT extends BaseServiceTestITBase {
 	
 	void createChangeSet(){}
 	void rollbackChangeSet(){}
@@ -22,14 +23,14 @@ class ResolvedValueSetReadServiceTestIT extends BaseServiceTestITBase {
 		def url = 
 			client.postCts2Resource(server+"resolvedvalueset", getResource())
 			
-		def rvs = client.getCts2Resource(server+url, ResolvedValueSetMsg.class)
+		def rvs = client.getCts2Resource(server+url, IteratableResolvedValueSet.class)
 		
 		assertNotNull rvs
 		
 		client.deleteCts2Resource(server+url)
 		
 		try {
-			rvs = client.getCts2Resource(server+url, ResolvedValueSetMsg.class)
+			rvs = client.getCts2Resource(server+url, IteratableResolvedValueSet.class)
 		} catch(HttpStatusCodeException e){
 			assertEquals HttpStatus.NOT_FOUND , e.getStatusCode()
 			return

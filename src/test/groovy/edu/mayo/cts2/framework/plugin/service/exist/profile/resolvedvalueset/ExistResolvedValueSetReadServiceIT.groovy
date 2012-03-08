@@ -16,10 +16,10 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleanin
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetReference
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.name.ResolvedValueSetReadId
 
-class ExistResolvedValueSetReadServiceIT extends BaseServiceDbCleaningBase {
+class ExistResolvedValueSetResolutionServiceIT extends BaseServiceDbCleaningBase {
 	
 	@Resource
-	ExistResolvedValueSetReadService read
+	ExistResolvedValueSetResolutionService resolve
 	
 	@Resource
 	ExistResolvedValueSetLoaderService load
@@ -45,7 +45,7 @@ class ExistResolvedValueSetReadServiceIT extends BaseServiceDbCleaningBase {
 						getValueSet().
 							getContent())
 		def returned = 
-			read.read(
+			resolve.getResolution(
 				new ResolvedValueSetReadId(
 					ref.getLocalID(),
 					valueSet,
@@ -82,13 +82,13 @@ class ExistResolvedValueSetReadServiceIT extends BaseServiceDbCleaningBase {
 			valueSetDefinition);
 		
 		def returned =
-			read.read(id)
+			resolve.getResolution(id)
 		
 		assertNotNull returned
 		
 		this.load.delete(id)
 		
-		returned = read.read(id)
+		returned = resolve.getResolution(id)
 		
 		assertNull returned
 	}
