@@ -17,8 +17,8 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.ConceptDomainBindingQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQuery;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQueryService;
-import edu.mayo.cts2.framework.service.profile.valueset.ConceptDomainBindingQuery;
 
 @Component
 public class ExistConceptDomainBindingQueryService 

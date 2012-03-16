@@ -30,7 +30,7 @@ public class MapEntryResourceInfo implements DefaultResourceInfo<MapEntry,MapEnt
 
 	@Override
 	public String createPath(MapEntryReadId id) {
-		return ExistServiceUtils.createPath(id.getMapVersionName());
+		return ExistServiceUtils.createPath(id.getMapVersion().getName());
 	}
 
 	@Override

@@ -338,13 +338,13 @@ class ExistMapEntryServiceTestIT
    }
      
    def getMapEntryId(mapVersion:String, name:ScopedEntityName):MapEntryReadId = {
-     val id = new MapEntryReadId(name, mapVersion)
+     val id = new MapEntryReadId(name, ModelUtils.nameOrUriFromName(mapVersion))
      
      id
    }
    
        def getResourceByUri(uri:String):MapEntry = {
-    	val id = new MapEntryReadId(uri, "mapversion")
+    	val id = new MapEntryReadId(uri, ModelUtils.nameOrUriFromName("mapversion"))
      
     	readService.read(id, null)
     }

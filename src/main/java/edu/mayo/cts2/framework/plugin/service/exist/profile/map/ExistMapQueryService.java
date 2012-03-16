@@ -17,8 +17,8 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.MapQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.map.MapQuery;
 import edu.mayo.cts2.framework.service.profile.map.MapQueryService;
-import edu.mayo.cts2.framework.service.profile.valueset.MapQuery;
 
 @Component
 public class ExistMapQueryService 

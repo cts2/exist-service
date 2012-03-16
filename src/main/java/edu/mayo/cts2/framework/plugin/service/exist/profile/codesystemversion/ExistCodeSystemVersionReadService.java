@@ -22,13 +22,6 @@ public class ExistCodeSystemVersionReadService
 
 	@Resource
 	private CodeSystemVersionResourceInfo codeSystemVersionResourceInfo;
-
-	@Override
-	public boolean existsCodeSystemVersionForCodeSystem(
-			NameOrURI codeSystem,
-			String tagName) {
-		throw new UnsupportedOperationException();
-	}	
 	
 	@Override
 	public CodeSystemVersionCatalogEntry read(NameOrURI identifier, ResolvedReadContext readContext){
@@ -59,24 +52,9 @@ public class ExistCodeSystemVersionReadService
 	}
 
 	@Override
-	public CodeSystemVersionCatalogEntry getCodeSystemVersionForCodeSystem(
-			NameOrURI codeSystem, 
-			String tagName) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public boolean existsVersionId(
 			NameOrURI codeSystem,
 			String officialResourceVersionId) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public CodeSystemVersionCatalogEntry getCodeSystemVersionForCodeSystem(
-			NameOrURI codeSystem, 
-			String tagName, 
-			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
 

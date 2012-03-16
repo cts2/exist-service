@@ -16,7 +16,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseI
 import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummaries
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.name.ConceptDomainBindingReadId
 import edu.mayo.cts2.framework.service.profile.ResourceQuery
-import edu.mayo.cts2.framework.service.profile.valueset.ConceptDomainBindingQuery
+import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQuery
 
 class ConceptDomainBindingServiceTestIT 
 	extends BaseServiceTestBaseIT[LocalIdConceptDomainBinding,ConceptDomainBindingDirectoryEntry] 

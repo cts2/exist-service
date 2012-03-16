@@ -1,5 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xmldb.api.base.Resource;
@@ -8,9 +10,10 @@ import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
 import edu.mayo.cts2.framework.model.core.IsChangeable;
+import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
-import edu.mayo.cts2.framework.model.service.core.ReadContext;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.service.profile.ReadService;
 
 public abstract class AbstractExistReadService<
@@ -28,7 +31,19 @@ public abstract class AbstractExistReadService<
 		Resource getResource();
 		Resource getResource(String changeSetUri);
 	}
-
+	
+	public R readByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean existsByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public List<VersionTagReference> getSupportedTags(){
+		return null;
+	}
+	
 	@Override
 	public R read(final I resourceIdentifier, final ResolvedReadContext readContext) {
 		
@@ -118,7 +133,7 @@ public abstract class AbstractExistReadService<
 	}
 	
 	@Override
-	public boolean exists(I identifier, ReadContext readContext) {
+	public boolean exists(I identifier, ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
 }

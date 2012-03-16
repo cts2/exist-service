@@ -27,19 +27,4 @@ public class ExistMapVersionReadService
 		return this.mapVersionResourceInfo;
 	}
 
-	@Override
-	public boolean existsMapVersionForMap(
-			NameOrURI map, 
-			String tagName,
-			ResolvedReadContext readContext) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public MapVersion readMapVersionForMap(
-			NameOrURI map, 
-			String tagName,
-			ResolvedReadContext readContext) {
-		throw new UnsupportedOperationException();
-	}
 }
