@@ -9,18 +9,15 @@ import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
-import edu.mayo.cts2.framework.model.core.ModelAttributeReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.core.types.ChangeType
-import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
-import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
 
 import static org.junit.Assert.*
@@ -34,23 +31,22 @@ import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
-import edu.mayo.cts2.framework.model.core.ModelAttributeReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.TsAnyType
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.core.types.ChangeType
-import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.entity.Designation
 import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
+import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
-import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery
+import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 
 class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
@@ -333,6 +329,32 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def summaries = query.getResourceSummaries(q, null, new Page())
 
 		assertEquals 0, summaries.entries.size
+	}
+	
+	@Test void GetEntityDescriptionByUriWithCodeSystemVersion(){
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+		maint.createResource( createEntity("something",changeSetUri))
+		
+		changeSetService.commitChangeSet(changeSetUri)
+	
+		def entry = read.read(
+			new EntityDescriptionReadId("about", ModelUtils.nameOrUriFromName("TESTCSVERSION")), null)
+
+		assertNotNull entry
+	}
+	
+	@Test void GetEntityDescriptionByUriWithWrongCodeSystemVersion(){
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+		maint.createResource( createEntity("something",changeSetUri))
+		
+		changeSetService.commitChangeSet(changeSetUri)
+	
+		def entry = read.read(
+			new EntityDescriptionReadId("about", ModelUtils.nameOrUriFromName("__WRONG__VERSION__")), null)
+
+		assertNull entry
 	}
 
 	EntityDescription createEntity(name,changeSetUri,description){

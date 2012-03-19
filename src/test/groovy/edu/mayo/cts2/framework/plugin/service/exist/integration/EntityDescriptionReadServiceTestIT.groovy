@@ -27,7 +27,7 @@ class EntityDescriptionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
 	public Object getReadByUriUrl() {
-		"entitybyuri?uri=http://entity/about"
+		"codesystem/cs/version/csversionentitycsv/entitybyuri?uri=http://entity/about"
 	}
 
 	@Override

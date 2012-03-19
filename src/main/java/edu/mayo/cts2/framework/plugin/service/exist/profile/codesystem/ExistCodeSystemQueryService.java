@@ -1,7 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem;
 
-import java.util.Set;
-
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Resource;
 
@@ -9,7 +7,6 @@ import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;

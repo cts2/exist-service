@@ -1,7 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,7 +8,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.statement.Statement;

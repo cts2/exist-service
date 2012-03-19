@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.PropertyReference;
 import edu.mayo.cts2.framework.model.extension.LocalIdValueSetResolution;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistResourceReadingService;
@@ -63,6 +66,26 @@ public class ExistResolvedValueSetResolutionService
 				);
 		
 		return result;
+	}
+
+	@Override
+	public Set<? extends MatchAlgorithmReference> getSupportedMatchAlgorithms() {
+		return null;
+	}
+
+	@Override
+	public Set<? extends PropertyReference> getSupportedSearchReferences() {
+		return null;
+	}
+
+	@Override
+	public Set<? extends PropertyReference> getSupportedSortReferences() {
+		return null;
+	}
+
+	@Override
+	public Set<PredicateReference> getKnownProperties() {
+		return null;
 	}
 
 	@Override

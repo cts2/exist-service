@@ -58,11 +58,15 @@ public abstract class AbstractExistResourceReadingService<
 			String uri = existResourceReader.getResourceUri(resourceIdentifier);
 			
 			resource = this.getExistResourceDao().getResourceByXpath(
-					this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath()), 
+					this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), this.getExtraPathForUriLookup(resourceIdentifier) ), 
 					this.getResourceInfo().getResourceXpath() + "[" + getResourceInfo().getUriXpath() + " &= '" + uri + "']");
 		}
 		
 		return resource;
+	}
+	
+	protected String getExtraPathForUriLookup(I resourceIdentifier){
+		return "";
 	}
 	
 	protected Resource getResourceByXpath(String path, String xpath) {

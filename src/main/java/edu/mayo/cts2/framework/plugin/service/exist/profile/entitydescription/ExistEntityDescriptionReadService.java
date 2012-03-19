@@ -19,7 +19,6 @@ import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 import edu.mayo.cts2.framework.model.entity.EntityList;
 import edu.mayo.cts2.framework.model.entity.EntityListEntry;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
-import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
@@ -66,6 +65,11 @@ public class ExistEntityDescriptionReadService
 		return ed;
 	}
 
+	@Override
+	protected String getExtraPathForUriLookup(EntityDescriptionReadId resourceIdentifier){
+		return this.getResourceInfo().createPath(resourceIdentifier);
+	}
+	
 	@Override
 	protected DefaultResourceInfo<EntityDescription, EntityDescriptionReadId> getResourceInfo() {
 		return this.entityDescriptionResourceInfo;
