@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import edu.mayo.cts2.framework.model.core.FormatReference;
 import edu.mayo.cts2.framework.model.core.OpaqueData;
 import edu.mayo.cts2.framework.model.core.SourceReference;
 import edu.mayo.cts2.framework.model.service.core.DocumentedNamespaceReference;
@@ -62,16 +61,6 @@ public abstract class AbstractExistService implements BaseService {
 	@Override
 	public String getServiceName() {
 		return this.getClass().getCanonicalName();
-	}
-
-	@Override
-	public List<FormatReference> getSupportedFormatList() {
-		return null;
-	}
-
-	@Override
-	public FormatReference getDefaultFormat() {
-		return null;
 	}
 
 	@Override
