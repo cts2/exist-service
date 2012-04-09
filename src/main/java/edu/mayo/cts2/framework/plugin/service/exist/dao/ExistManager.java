@@ -17,17 +17,11 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
-import edu.mayo.cts2.framework.core.plugin.PluginConfig;
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 
 public class ExistManager implements InitializingBean {	
-	
-	private static final String EXIST_SERVICE_CONFIG_NAMESPACE = "exist-service";
-	
-	@javax.annotation.Resource
-	private edu.mayo.cts2.framework.core.plugin.PluginConfigManager pluginConfigManager;
 	
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
@@ -48,8 +42,7 @@ public class ExistManager implements InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		setPropertiesFromConfig();
-		
+
 		if(StringUtils.isNotBlank(this.existHome)){
 			System.setProperty(ExistServiceConstants.EXIST_HOME_PROP, this.existHome);
 			System.setProperty("exist.initdb", "true");
@@ -100,15 +93,6 @@ public class ExistManager implements InitializingBean {
 		}
 		
 		return service;
-	}
-	
-	protected void setPropertiesFromConfig() {
-		PluginConfig pluginConfig = this.pluginConfigManager.getPluginConfig(EXIST_SERVICE_CONFIG_NAMESPACE);
-		
-		this.uri = pluginConfig.getStringOption(ExistServiceConstants.URL_PROP).getOptionValue();
-		this.existHome = pluginConfig.getStringOption(ExistServiceConstants.EXIST_HOME_PROP).getOptionValue();
-		this.userName = pluginConfig.getStringOption(ExistServiceConstants.USER_NAME_PROP).getOptionValue();
-		this.password = pluginConfig.getStringOption(ExistServiceConstants.PASSWORD_PROP).getOptionValue();
 	}
 
 	public Collection getOrCreateCollection(String path) throws XMLDBException {
@@ -165,19 +149,36 @@ public class ExistManager implements InitializingBean {
 		return validationService;
 	}
 
-	protected String getUri() {
+	public String getUri() {
 		return uri;
 	}
 
-	protected void setUri(String uri) {
+	public void setUri(String uri) {
 		this.uri = uri;
 	}
 
-	protected void setUserName(String userName) {
+	public String getExistHome() {
+		return existHome;
+	}
+
+	public void setExistHome(String existHome) {
+		this.existHome = existHome;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	protected void setPassword(String password) {
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
 		this.password = password;
 	}
+
 }

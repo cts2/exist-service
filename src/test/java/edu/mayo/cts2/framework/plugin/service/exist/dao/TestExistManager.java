@@ -18,7 +18,7 @@ public class TestExistManager extends ExistManager {
 
 	
 	@Override
-	public void setPropertiesFromConfig() {
+	public void afterPropertiesSet() {
 		try {
 			File tmpDir = SystemUtils.getJavaIoTmpDir();
 
@@ -49,8 +49,10 @@ public class TestExistManager extends ExistManager {
 			
 			this.setUserName("admin");
 			this.setPassword("");
+			
+			super.afterPropertiesSet();
 		
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
