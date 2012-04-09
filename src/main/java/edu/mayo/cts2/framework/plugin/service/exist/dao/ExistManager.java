@@ -1,10 +1,13 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exist.validation.service.ValidationService;
 import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.IndexQueryService;
@@ -22,6 +25,8 @@ import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 
 public class ExistManager implements InitializingBean {	
+	
+	protected final Log log = LogFactory.getLog(getClass().getName());
 	
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
@@ -68,6 +73,22 @@ public class ExistManager implements InitializingBean {
 		this.namespaceMappingProperties = this.cts2Marshaller.getNamespaceMappingProperties();
 	
 		this.xQueryService = this.createXQueryService("");
+	}
+	
+	public void propertiesUpdated(Map<String,?> properties) throws Exception {
+		log.warn("Properties Reloading: " + properties);
+		
+		String userName = (String) properties.get("userName");
+		String uri = (String) properties.get("uri");
+		String existHome = (String) properties.get("existHome");
+		String password = (String) properties.get("password");
+		
+		this.userName = userName;
+		this.uri = uri;
+		this.existHome = existHome;
+		this.password = password;
+		
+		this.afterPropertiesSet();
 	}
 	
 	private XQueryService createXQueryService(String collectionPath){

@@ -12,7 +12,8 @@
 	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager">
 		<osgix:managed-properties 
 			persistent-id="edu.mayo.cts2.framework.plugin.service.exist" 
-			update-strategy="container-managed"/>
+			update-strategy="bean-managed" 
+			update-method="propertiesUpdated"/>
 	</bean>
 
 	<bean id="urlConstructor" name="urlConstructor" 
