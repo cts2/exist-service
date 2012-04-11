@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
-	<OCD description="eXist Service" name="Bioportal Service" id="edu.mayo.cts2.framework.plugin.service.exist">
+	<OCD description="eXist Service" name="eXist Service" id="edu.mayo.cts2.framework.plugin.service.exist">
 		<AD name="eXist Connection URL" id="uri" required="false" type="String"  />
-		<AD name="eXist Password" id="existHome" required="false" type="String"  />
+		<AD name="eXist Home" id="existHome" required="false" type="String"  />
 		<AD name="eXist User Name" id="userName" required="false" type="String"  />
 		<AD name="eXist Password" id="password" required="false" type="String"  />
 	</OCD>

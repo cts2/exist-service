@@ -294,7 +294,7 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	public boolean isEntityInSet(EntityNameOrURI entity, Query query,
 			Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
+			EntityDescriptionQuery restrictions,
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
@@ -302,7 +302,7 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	public EntityReferenceList resolveAsEntityReferenceList(Query query,
 			Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
+			EntityDescriptionQuery restrictions,
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
@@ -311,7 +311,7 @@ public class ExistEntityDescriptionQueryService
 	public EntityNameOrURIList intersectEntityList(
 			Set<EntityNameOrURI> entities, Query query,
 			Set<ResolvedFilter> filterComponent,
-			EntityDescriptionQueryServiceRestrictions restrictions,
+			EntityDescriptionQuery restrictions,
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
