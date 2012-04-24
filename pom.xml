@@ -107,6 +107,8 @@
 							!org.jgroups*,
 							!org.mortbay.*,
 							!org.stringtemplate*,
+							!javax.servlet.jsp,
+							!javax.servlet.jsp.*,
 							edu.mayo.cts2.framework.model.service.association,
 							edu.mayo.cts2.framework.model.service.codesystem,
 							edu.mayo.cts2.framework.model.service.codesystemversion,
@@ -285,9 +287,9 @@
 		</dependency>
 
 	</dependencies>
-	
+
 	<repositories>
-			<repository>
+		<repository>
 			<id>edu.informatics.maven.snapshot</id>
 			<name>Informatics Maven Snapshot Repository</name>
 			<url>http://informatics.mayo.edu/maven/content/repositories/snapshots</url>
