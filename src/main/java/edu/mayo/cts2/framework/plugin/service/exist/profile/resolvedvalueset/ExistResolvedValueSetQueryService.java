@@ -79,11 +79,14 @@ public class ExistResolvedValueSetQueryService
 			throw new IllegalStateException(e);
 		}
 		
-		summary.setHref(
-				this.getUrlConstructor().createResolvedValueSetUrl(
-						valueSetName, 
-						valueSetDefinitionName, 
-						name));
+		String url = this.getUrlConstructor().createResolvedValueSetUrl(
+				valueSetName, 
+				valueSetDefinitionName, 
+				name);
+		
+		summary.setHref(url);
+		
+		summary.setResolvedValueSetURI(url);
 
 		return summary;
 	}
