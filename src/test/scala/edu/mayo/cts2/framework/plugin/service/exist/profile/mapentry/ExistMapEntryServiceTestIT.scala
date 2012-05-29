@@ -101,6 +101,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri1")
     
      val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
 
@@ -112,6 +113,7 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri2")
      
      maintService.createResource(entry1);
      maintService.createResource(entry2);
@@ -162,6 +164,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri")
      entry1.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
      val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
@@ -173,6 +176,7 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri")
      entry2.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(entry1);
@@ -221,6 +225,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri1")
      entry1.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
      val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
@@ -232,6 +237,7 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri2")
      entry2.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(entry1);
@@ -285,6 +291,7 @@ class ExistMapEntryServiceTestIT
      entry1.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setName("name1")
      entry1.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry1.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri1")
      entry1.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
     
      val entry2 = createMapEntry("Test2", "someuri", changeSetUri)
@@ -296,6 +303,7 @@ class ExistMapEntryServiceTestIT
      entry2.getMapSet(0).getMapTarget(0).setMapTo(new URIAndEntityName())
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setName("name2")
      entry2.getMapSet(0).getMapTarget(0).getMapTo().setNamespace("ns")
+     entry2.getMapSet(0).getMapTarget(0).getMapTo().setUri("uri2")
      entry2.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      maintService.createResource(entry1);

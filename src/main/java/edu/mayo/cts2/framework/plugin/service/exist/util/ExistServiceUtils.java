@@ -3,6 +3,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.util;
 import org.apache.commons.lang.StringUtils;
 
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
+import edu.mayo.cts2.framework.model.core.URIAndEntityName;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
 
 public class ExistServiceUtils {
@@ -13,6 +14,11 @@ public class ExistServiceUtils {
 	
 	public static final String XML_SUFFIX = ".xml";
 
+	public static String getExistEntityName(URIAndEntityName name) {
+		return name.getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
+				+ name.getName();
+	}
+	
 	public static String getExistEntityName(ScopedEntityName name) {
 		return name.getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
 				+ name.getName();

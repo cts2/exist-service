@@ -36,7 +36,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 
-		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns"))
+		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns", uri:"uri"))
 		mapEntry.setChangeableElementGroup(new ChangeableElementGroup(
 			changeDescription: new ChangeDescription(
 				changeType: ChangeType.CREATE, 
@@ -64,7 +64,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 		
 
-		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns"))
+		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns", uri:"uri"))
 		mapEntry.setChangeableElementGroup(new ChangeableElementGroup(
 			changeDescription: new ChangeDescription(
 				changeType: ChangeType.CREATE, 
@@ -80,7 +80,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		mapEntry.mapSet = [
 			new MapSet(entryOrder:1, processingRule:MapProcessingRule.FIRST_MATCH,
 			mapTarget:[
-				new MapTarget(entryOrder:1, mapTo: new URIAndEntityName(name:"asdf",namespace:"asdfa"))
+				new MapTarget(entryOrder:1, mapTo: new URIAndEntityName(name:"asdf",namespace:"asdfa", uri:"uri"))
 			])
 		]
 
@@ -104,7 +104,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 		
 
-		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns"))
+		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns", uri:"uri"))
 		mapEntry.setChangeableElementGroup(new ChangeableElementGroup(
 			changeDescription: new ChangeDescription(
 				changeType: ChangeType.CREATE, 
@@ -116,7 +116,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		mapEntry.mapSet = [
 			new MapSet(entryOrder:1, processingRule:MapProcessingRule.FIRST_MATCH,
 			mapTarget:[
-				new MapTarget(entryOrder:1, mapTo: new URIAndEntityName(name:"targetName",namespace:"targetNs"))
+				new MapTarget(entryOrder:1, mapTo: new URIAndEntityName(name:"targetName",namespace:"targetNs", uri:"uri"))
 			])
 		]
 
@@ -142,7 +142,7 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 		
 
-		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns"))
+		def mapEntry = new MapEntry(mapFrom: new URIAndEntityName(name:"test", namespace:"ns", uri:"uri"))
 		mapEntry.setChangeableElementGroup(new ChangeableElementGroup(
 			changeDescription: new ChangeDescription(
 				changeType: ChangeType.CREATE, 
@@ -154,8 +154,8 @@ class ExistMapEntryServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		mapEntry.mapSet = [
 			new MapSet(entryOrder:1, processingRule:MapProcessingRule.FIRST_MATCH,
 			mapTarget:[
-				new MapTarget(entryOrder:1, mapTo: new URIAndEntityName(name:"targetName1",namespace:"targetNs")),
-				new MapTarget(entryOrder:2, mapTo: new URIAndEntityName(name:"targetName2",namespace:"targetNs"))
+				new MapTarget(entryOrder:1, mapTo: new URIAndEntityName(name:"targetName1",namespace:"targetNs", uri:"uri")),
+				new MapTarget(entryOrder:2, mapTo: new URIAndEntityName(name:"targetName2",namespace:"targetNs", uri:"uri"))
 			])
 		]
 

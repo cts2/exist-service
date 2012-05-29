@@ -369,7 +369,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 			entry.addDesignation(new Designation(value:new TsAnyType(content:description)))
 		}
 
-		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
+		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns", uri:"uri"))
 
 		entry.setChangeableElementGroup(new ChangeableElementGroup(
 			changeDescription: new ChangeDescription(

@@ -45,7 +45,7 @@ class EntityDescriptionReadServiceTestIT extends BaseReadServiceTestITBase {
     	entry.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
     	entry.getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
-		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
+		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns", uri:"uri"))
 		
 		EntityDescription ed = new EntityDescription()
 		ed.setNamedEntity(entry)

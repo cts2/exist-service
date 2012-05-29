@@ -154,6 +154,7 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
 	 entity.addEntityType(new URIAndEntityName())
 	 entity.getEntityType(0).setName("name")
 	 entity.getEntityType(0).setNamespace("ns")
+	 entity.getEntityType(0).setUri("uri")
 	 entity.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
      
      entity

@@ -81,10 +81,12 @@ class ExistStatementServiceTestIT
 	entry.setPredicate(new URIAndEntityName())
 	entry.getPredicate().setName("name")
 	entry.getPredicate().setNamespace("ns")
+	entry.getPredicate().setUri("uri")
 	
 	var urientityname = new URIAndEntityName()
 	urientityname.setName("name")
 	urientityname.setNamespace("ns")
+	urientityname.setUri("uri")
 	
 	var entityTarget = new StatementTarget()
     entityTarget.setEntity(urientityname);

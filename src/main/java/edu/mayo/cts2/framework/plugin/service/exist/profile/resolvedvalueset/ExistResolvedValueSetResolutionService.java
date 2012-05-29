@@ -8,9 +8,14 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
+import edu.mayo.cts2.framework.model.core.EntitySynopsis;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.PredicateReference;
 import edu.mayo.cts2.framework.model.core.PropertyReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.entity.EntityDescription;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.extension.LocalIdValueSetResolution;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistResourceReadingService;
@@ -18,6 +23,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetResolutionService;
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.name.ResolvedValueSetReadId;
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResolutionEntityQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResult;
 
 @Component
@@ -47,7 +53,7 @@ public class ExistResolvedValueSetResolutionService
 	}
 
 	@Override
-	public ResolvedValueSetResult getResolution(
+	public ResolvedValueSetResult<EntitySynopsis> getResolution(
 			ResolvedValueSetReadId identifier,
 			Set<ResolvedFilter> filterComponent, 
 			Page page) {
@@ -59,7 +65,8 @@ public class ExistResolvedValueSetResolutionService
 		}
 	
 		//TODO: Fix this
-		ResolvedValueSetResult result = new ResolvedValueSetResult(
+		ResolvedValueSetResult<EntitySynopsis> result = 
+			new ResolvedValueSetResult<EntitySynopsis>(
 				resolvedValueSet.getResolutionInfo(),
 				resolvedValueSet.getMemberAsReference(),
 				true
@@ -91,6 +98,24 @@ public class ExistResolvedValueSetResolutionService
 	@Override
 	protected ResourceInfo<ResolvedValueSetReadId> getResourceInfo() {
 		return this.resolvedValueSetResourceInfo;
+	}
+
+	@Override
+	public ResolvedValueSetResult<EntityDirectoryEntry> getEntities(
+			ResolvedValueSetReadId identifier,
+			ResolvedValueSetResolutionEntityQuery query,
+			SortCriteria sortCriteria, Page page) {
+		
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DirectoryResult<EntityDescription> getEntityList(
+			ResolvedValueSetReadId identifier,
+			ResolvedValueSetResolutionEntityQuery query,
+			SortCriteria sortCriteria, Page page) {
+		
+		throw new UnsupportedOperationException();
 	}
 
 

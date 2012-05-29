@@ -48,7 +48,7 @@ class EntityDescriptionQueryServiceTestIT extends BaseQueryServiceTestITBase {
     	entry.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
     	entry.getDescribingCodeSystemVersion().getCodeSystem().setContent("cs")
 
-		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns"))
+		entry.addEntityType(new URIAndEntityName(name:"name", namespace:"ns", uri:"uri"))
 		
 		EntityDescription desc = new EntityDescription()
 		desc.setNamedEntity(entry)

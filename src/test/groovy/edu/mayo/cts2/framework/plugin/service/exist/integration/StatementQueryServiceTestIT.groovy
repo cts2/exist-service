@@ -37,9 +37,9 @@ class StatementQueryServiceTestIT extends BaseQueryServiceTestITBase {
 	def createEntry(uri) {
 		def entry = new Statement(statementURI:uri)
 		entry.setSubject(new StatementSubject())
-		entry.setPredicate(new URIAndEntityName(name:"name",namespace:"namespace"))
+		entry.setPredicate(new URIAndEntityName(name:"name",namespace:"namespace", uri:"uri"))
 		
-		def target = (new URIAndEntityName(name:"entityname",namespace:"namespace"))
+		def target = (new URIAndEntityName(name:"entityname",namespace:"namespace", uri:"uri"))
 		entry.addTarget(new StatementTarget(entity:target))
 	
 		entry.setAssertedBy(new CodeSystemVersionReference())

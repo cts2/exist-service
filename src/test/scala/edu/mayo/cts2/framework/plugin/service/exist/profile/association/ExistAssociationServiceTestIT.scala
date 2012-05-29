@@ -58,16 +58,19 @@ class ExistAssociationServiceTestIT
     entry.setSubject(new URIAndEntityName())
     entry.getSubject().setName("name")
     entry.getSubject().setNamespace("namespace")
+    entry.getSubject().setUri("uri")
 
     entry.addTarget(new StatementTarget())
     entry.getTarget(0).setExternalIdentifier(name)
     entry.getTarget(0).setEntity(new URIAndEntityName())
     entry.getTarget(0).getEntity().setName("name")
     entry.getTarget(0).getEntity().setNamespace("namespace")
+    entry.getTarget(0).getEntity().setUri("uri")
 
     entry.setPredicate(new PredicateReference())
     entry.getPredicate().setName("name")
     entry.getPredicate().setNamespace("namespace")
+    entry.getPredicate().setUri("uri")
 
     entry.setAssertedBy(new CodeSystemVersionReference())
     entry.getAssertedBy().setVersion(new NameAndMeaningReference())

@@ -41,12 +41,12 @@ class AssociationReadServiceTestIT extends BaseReadServiceTestITBase {
 	@Override
 	public Object getResource() {
 		def entry = new Association(associationID:associationUri)
-		entry.setSubject(new URIAndEntityName(name:"name", namespace:"ns"))
+		entry.setSubject(new URIAndEntityName(name:"name", namespace:"ns", uri:"uri"))
 		
 		entry.addTarget(new StatementTarget())
-		entry.getTarget(0).setEntity(new URIAndEntityName(name:"target", namespace:"ns"))
+		entry.getTarget(0).setEntity(new URIAndEntityName(name:"target", namespace:"ns", uri:"uri"))
 		
-		entry.setPredicate(new PredicateReference(name:"predicatename", namespace:"ns"))
+		entry.setPredicate(new PredicateReference(name:"predicatename", namespace:"ns", uri:"uri"))
 		
 		entry.setAssertedBy(new CodeSystemVersionReference(
 			codeSystem: new CodeSystemReference(content:"TESTCS"),
