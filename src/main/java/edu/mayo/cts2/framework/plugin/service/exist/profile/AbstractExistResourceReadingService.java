@@ -57,9 +57,11 @@ public abstract class AbstractExistResourceReadingService<
 		} else {
 			String uri = existResourceReader.getResourceUri(resourceIdentifier);
 			
+			//lookup by designated uri or alternateId
 			resource = this.getExistResourceDao().getResourceByXpath(
 					this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), this.getExtraPathForUriLookup(resourceIdentifier) ), 
-					this.getResourceInfo().getResourceXpath() + "[" + getResourceInfo().getUriXpath() + " &= '" + uri + "']");
+					this.getResourceInfo().getResourceXpath() + 
+					"[" + getResourceInfo().getUriXpath() + " &= '" + uri + "' or core:alternateID &='" + uri + "']");
 		}
 		
 		return resource;

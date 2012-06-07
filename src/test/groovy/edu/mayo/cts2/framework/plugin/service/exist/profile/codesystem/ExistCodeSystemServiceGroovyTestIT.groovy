@@ -71,6 +71,25 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		assertNotNull read.read(new NameOrURI(name:"name"), new ResolvedReadContext(changeSetContextUri:changeSetUri))
 	}
 	
+	@Test void TestReadContextWithAlternateID(){
+		
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+		
+		def cs = new CodeSystemCatalogEntry(
+			about:"about",
+			codeSystemName:"name", 
+			alternateID:["http://something/different"])
+		cs.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				changeType: ChangeType.CREATE,
+				changeDate: new Date(),
+				containingChangeSet: changeSetUri)))
+		
+		maint.createResource(cs)
+
+		assertNotNull read.read(new NameOrURI(uri:"http://something/different"), new ResolvedReadContext(changeSetContextUri:changeSetUri))
+	}
+	
 	@Test void TestQueryWithURI(){
 		
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
