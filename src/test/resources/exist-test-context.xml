@@ -6,6 +6,8 @@
 
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.exist"/>
 	
+	<bean id="existDaoImpl" class="edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDaoImpl"/>
+	
 	<bean id="urlConstructor" name="urlConstructor" 
 		class="edu.mayo.cts2.framework.util.spring.UrlConstructorSpringFactory"/>
 

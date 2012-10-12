@@ -13,7 +13,8 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
-import junit.framework.Test
+import org.junit.Test
+import org.junit.Assert._
 import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
@@ -24,6 +25,8 @@ import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery
 import edu.mayo.cts2.framework.model.service.core.Query
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQuery
+import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry
+import edu.mayo.cts2.framework.model.core.VersionTagReference
 
 class ExistValueSetDefinitionServiceTestIT 
 	extends BaseServiceTestBaseIT[LocalIdValueSetDefinition,ValueSetDefinitionDirectoryEntry]
@@ -93,6 +96,28 @@ class ExistValueSetDefinitionServiceTestIT
        
     	readService.read(id,new ResolvedReadContext())
     } 
+    
+    @Test def testInsertAndRetrieveCurrent() {
+      var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
+     
+      val vs1 = buildValueSetDefinition("uri1", changeSetId)
+      vs1.addVersionTag(new VersionTagReference("NOT_CURRENT"))
+     
+      val vs2 = buildValueSetDefinition("uri2", changeSetId)
+      vs2.addVersionTag(new VersionTagReference("CURRENT"))
+    	
+	  maintService.createResource(vs1)
+	  maintService.createResource(vs2)
+
+	 changeSetService.commitChangeSet(changeSetId)
+	 
+	 val tag = new VersionTagReference("CURRENT");
+     val parent = ModelUtils.nameOrUriFromName("vs")
+     
+     val vs = readService.readByTag(parent,tag,null)
+	 assertNotNull( vs )
+	 assertEquals( "uri2", vs.getResource().getDocumentURI() )
+  }
 }
 
 class TestQuery extends ValueSetDefinitionQuery {

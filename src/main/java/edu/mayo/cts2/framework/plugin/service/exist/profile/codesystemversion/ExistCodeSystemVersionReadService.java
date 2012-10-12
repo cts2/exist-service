@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
+import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
@@ -55,6 +56,14 @@ public class ExistCodeSystemVersionReadService
 	public boolean existsVersionId(
 			NameOrURI codeSystem,
 			String officialResourceVersionId) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public CodeSystemVersionCatalogEntry readByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
+		return null;
+	}
+		
+	public boolean existsByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
 

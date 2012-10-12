@@ -15,6 +15,12 @@
 			update-strategy="bean-managed" 
 			update-method="propertiesUpdated"/>
 	</bean>
+	
+	<bean id="existDaoImpl" class="edu.mayo.cts2.framework.plugin.service.exist.dao.ExistDaoImpl">
+		<osgix:managed-properties 
+			persistent-id="edu.mayo.cts2.framework.plugin.service.exist" 
+			update-strategy="container-managed" />
+	</bean>
 
 	<bean id="urlConstructor" name="urlConstructor" 
 		class="edu.mayo.cts2.framework.util.spring.UrlConstructorSpringFactory"/>

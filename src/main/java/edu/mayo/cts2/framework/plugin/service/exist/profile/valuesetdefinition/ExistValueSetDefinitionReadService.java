@@ -4,8 +4,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
+import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition;
+import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
@@ -40,5 +43,18 @@ public class ExistValueSetDefinitionReadService
 			ValueSetDefinition resource) {
 		return new LocalIdValueSetDefinition(id, resource);
 	}
-
+	
+	public LocalIdValueSetDefinition readByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
+		String parentName = parentId.getName();
+		String tagName = tag.getContent();
+		
+		String xpath = "[valuesetdefinition:definedValueSet[text() &= (\""+parentName+"\")] and " +
+				"valuesetdefinition:versionTag[text() &= (\""+tagName+"\")]]";
+	
+		return this.readByXpath("", xpath, readContext);
+	}
+		
+	public boolean existsByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
+		throw new UnsupportedOperationException();
+	}
 }

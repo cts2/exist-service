@@ -85,6 +85,7 @@ public class ExistResolvedValueSetQueryService
 				name);
 		
 		summary.setHref(url);
+		summary.setResourceName(name);
 		
 		summary.setResolvedValueSetURI(url);
 

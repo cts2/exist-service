@@ -8,7 +8,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceSet;
@@ -19,7 +18,6 @@ import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
-@Component
 public class ExistDaoImpl implements ExistResourceDao {
 	
 	protected final Log log = LogFactory.getLog(getClass().getName());
@@ -31,7 +29,9 @@ public class ExistDaoImpl implements ExistResourceDao {
 	
 	private static final String BINARY_RESOURCE_TYPE = "BinaryResource";
 
-	private static final String CTS2_RESOURCES_PATH = "/cts2resources";
+	private static final String DEFAULT_COLLECTION_PATH = "/cts2resources";
+	
+	private String collectionPath = DEFAULT_COLLECTION_PATH;
 
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
@@ -201,10 +201,20 @@ public class ExistDaoImpl implements ExistResourceDao {
 	}
 
 	protected String getResourcePath(String path) {
-		if(path.contains(CTS2_RESOURCES_PATH)){
-			path = StringUtils.substringAfter(path, CTS2_RESOURCES_PATH);
+		String basePath = this.getBaseCollectionPath();
+		
+		if(path.contains(basePath)){
+			path = StringUtils.substringAfter(path, basePath);
 		}
-		return CTS2_RESOURCES_PATH + "/" + path;
+		return basePath + "/" + path;
+	}
+	
+	private String getBaseCollectionPath(){
+		if(StringUtils.isNotBlank(this.collectionPath)){
+			return this.collectionPath;
+		} else {
+			return DEFAULT_COLLECTION_PATH;
+		}
 	}
 
 	protected Resource doGetResource(String name, String suffix, String collection) {
@@ -223,5 +233,13 @@ public class ExistDaoImpl implements ExistResourceDao {
 	protected void setExistManager(
 			ExistManager existManager) {
 		this.existManager = existManager;
+	}
+
+	public String getCollectionPath() {
+		return collectionPath;
+	}
+
+	public void setCollectionPath(String collectionPath) {
+		this.collectionPath = collectionPath;
 	}
 }

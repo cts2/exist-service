@@ -13,7 +13,6 @@ import edu.mayo.cts2.framework.model.core.IsChangeable;
 import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
-import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.service.profile.ReadService;
 
 public abstract class AbstractExistReadService<
@@ -31,15 +30,7 @@ public abstract class AbstractExistReadService<
 		Resource getResource();
 		Resource getResource(String changeSetUri);
 	}
-	
-	public R readByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean existsByTag(NameOrURI parentId, VersionTagReference tag, ResolvedReadContext readContext) {
-		throw new UnsupportedOperationException();
-	}
-	
+
 	public List<VersionTagReference> getSupportedTags(){
 		return null;
 	}
