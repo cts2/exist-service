@@ -29,9 +29,9 @@ public class ExistDaoImpl implements ExistResourceDao {
 	
 	private static final String BINARY_RESOURCE_TYPE = "BinaryResource";
 
-	private static final String DEFAULT_COLLECTION_PATH = "/cts2resources";
+	private static final String DEFAULT_COLLECTION_ROOT = "/cts2resources";
 	
-	private String collectionPath = DEFAULT_COLLECTION_PATH;
+	private String collectionRoot = DEFAULT_COLLECTION_ROOT;
 
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
@@ -210,10 +210,10 @@ public class ExistDaoImpl implements ExistResourceDao {
 	}
 	
 	private String getBaseCollectionPath(){
-		if(StringUtils.isNotBlank(this.collectionPath)){
-			return this.collectionPath;
+		if(StringUtils.isNotBlank(this.collectionRoot)){
+			return this.collectionRoot;
 		} else {
-			return DEFAULT_COLLECTION_PATH;
+			return DEFAULT_COLLECTION_ROOT;
 		}
 	}
 
@@ -234,12 +234,13 @@ public class ExistDaoImpl implements ExistResourceDao {
 			ExistManager existManager) {
 		this.existManager = existManager;
 	}
-
-	public String getCollectionPath() {
-		return collectionPath;
+	
+	public String getCollectionRoot() {
+		return collectionRoot;
 	}
 
-	public void setCollectionPath(String collectionPath) {
-		this.collectionPath = collectionPath;
+	public void setCollectionRoot(String collectionRoot) {
+		this.collectionRoot = collectionRoot;
 	}
+
 }
