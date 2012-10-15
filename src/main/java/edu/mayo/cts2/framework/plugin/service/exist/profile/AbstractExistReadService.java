@@ -1,5 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,7 +33,7 @@ public abstract class AbstractExistReadService<
 	}
 
 	public List<VersionTagReference> getSupportedTags(){
-		return null;
+		return Arrays.asList(new VersionTagReference("CURRENT"));
 	}
 	
 	@Override

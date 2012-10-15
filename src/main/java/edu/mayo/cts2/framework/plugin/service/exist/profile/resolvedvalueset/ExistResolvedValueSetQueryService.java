@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.XMLDBException;
 
@@ -100,7 +101,7 @@ public class ExistResolvedValueSetQueryService
 	private class ResolvedValueSetDirectoryBuilder extends
 			XpathDirectoryBuilder<XpathState,ResolvedValueSetDirectoryEntry> {
 
-		public ResolvedValueSetDirectoryBuilder() {
+		public ResolvedValueSetDirectoryBuilder(final String definitionName) {
 			super(new XpathState(), new Callback<XpathState, ResolvedValueSetDirectoryEntry>() {
 
 				@Override
@@ -110,7 +111,7 @@ public class ExistResolvedValueSetQueryService
 					return getResourceSummaries(
 							getResourceInfo(),
 							null,
-							"", 
+							definitionName, 
 							state.getXpath(), 
 							start,
 							maxResults);
@@ -132,9 +133,19 @@ public class ExistResolvedValueSetQueryService
 			ResolvedValueSetQuery query, 
 			SortCriteria sort,
 			Page page) {
-		ResolvedValueSetDirectoryBuilder builder = new ResolvedValueSetDirectoryBuilder();
+		ResolvedValueSetDirectoryBuilder builder;
+		if(query != null && query.getResolvedValueSetQueryServiceRestrictions() != null
+				&& CollectionUtils.isNotEmpty(
+						query.getResolvedValueSetQueryServiceRestrictions().getValueSets())){
+			String defName = 
+				query.getResolvedValueSetQueryServiceRestrictions().getValueSets().iterator().next().getName();
+			builder = new ResolvedValueSetDirectoryBuilder(defName);
+		} else {
+			builder = new ResolvedValueSetDirectoryBuilder("");
+		}
 
-		return builder.restrict(query.getFilterComponent()).
+		return builder.restrict(
+				query.getFilterComponent()).
 				addStart(page.getStart()).
 				addMaxToReturn(page.getMaxToReturn()).
 				resolve();

@@ -50,4 +50,36 @@ class ExistValueSetDefinitionResolutionServiceIT extends BaseServiceDbCleaningBa
 		assertNotNull returned
 	}
 	
+	@Test
+	void testResolveWithTwo(){
+		def rvs1 = new ResolvedValueSet(
+			resolutionInfo: new ResolvedValueSetHeader(
+				resolutionOf: new ValueSetDefinitionReference(
+					valueSetDefinition: new NameAndMeaningReference(content:"vsd"),
+					valueSet: new ValueSetReference(content:"vs")
+					)));
+		
+		def rvs2 = new ResolvedValueSet(
+			resolutionInfo: new ResolvedValueSetHeader(
+				resolutionOf: new ValueSetDefinitionReference(
+					valueSetDefinition: new NameAndMeaningReference(content:"vsd2"),
+					valueSet: new ValueSetReference(content:"vs2")
+					)));
+		
+		load.load(rvs1)
+		load.load(rvs2)
+		
+		def valueSet = ModelUtils.nameOrUriFromName("vs");
+
+		def returned =
+			resolve.resolveDefinition(
+				new ValueSetDefinitionReadId(
+					"vsd",
+					valueSet),
+				null,null,null,null,null,new Page()
+				)
+		
+		assertNotNull returned
+	}
+	
 }

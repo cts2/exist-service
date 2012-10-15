@@ -1,5 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -64,16 +66,31 @@ public class ExistResolvedValueSetResolutionService
 			return null;
 		}
 	
-		//TODO: Fix this
+		List<EntitySynopsis> slice = this.slice(
+				resolvedValueSet.getMemberAsReference(),
+				page.getStart(), 
+				page.getMaxToReturn());
+
 		ResolvedValueSetResult<EntitySynopsis> result = 
 			new ResolvedValueSetResult<EntitySynopsis>(
 				resolvedValueSet.getResolutionInfo(),
-				resolvedValueSet.getMemberAsReference(),
-				true
+				slice,
+				resolvedValueSet.getMemberAsReference().size() == page.getEnd()
 				);
 		
 		return result;
 	}
+	
+	public <T> List<T> slice(List<T> list, int index, int count) {
+	    List<T> result = new ArrayList<T>();
+	    if (index >= 0 && index < list.size()) {
+	      int end = index + count < list.size() ? index + count : list.size();
+	      for (int i = index; i < end; i++) {
+	        result.add(list.get(i));
+	      }
+	    }
+	    return result;
+	  }
 
 	@Override
 	public Set<? extends MatchAlgorithmReference> getSupportedMatchAlgorithms() {
