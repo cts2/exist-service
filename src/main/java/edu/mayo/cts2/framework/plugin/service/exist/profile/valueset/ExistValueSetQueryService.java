@@ -1,9 +1,13 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset;
 
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -13,7 +17,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQuery;
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQueryService;
 
@@ -34,6 +40,23 @@ public class ExistValueSetQueryService
 		return new ValueSetCatalogEntrySummary();
 	}
 
+	public Set<StateAdjustingPropertyReference<XpathState>> getSupportedSearchReferences() {
+		Set<StateAdjustingPropertyReference<XpathState>> set = super.getSupportedSearchReferences();
+		
+		StateAdjustingPropertyReference<XpathState> resourceSynopsis = 
+				StateAdjustingPropertyReference.toPropertyReference(
+						StandardModelAttributeReference.RESOURCE_SYNOPSIS.getPropertyReference(),
+						getResourceSynopsisStateUpdater());
+			
+		set.add(resourceSynopsis);
+		
+		return set;
+	}
+	
+	private StateUpdater<XpathState> getResourceSynopsisStateUpdater() {
+		return new XpathStateUpdater<XpathState>(".//core:resourceSynopsis/core:value/text()");
+	}
+	
 	@Override
 	protected ValueSetCatalogEntrySummary doTransform(
 			ValueSetCatalogEntry resource,

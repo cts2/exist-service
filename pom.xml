@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.mayo.cts2.framework</groupId>
 		<artifactId>base-service-plugin</artifactId>
-		<version>0.8.0</version>
+		<version>0.8.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>exist-service</artifactId>
@@ -88,27 +88,6 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!org.apache.catalina*,
-							!org.apache.cocoon*,
-							!org.antlr*,
-							!org.apache.avalon.*,
-							!org.apache.excalibur*,
-							!javax.mail.*,
-							!org.apache.xmlrpc*,
-							!com.sun.*,
-							!com.icl.*,
-							!jline,
-							!com.izforge.*,
-							!org.exist.*;resolution:=optional,
-							!net.sf.saxon,
-							!org.iso_relax*,
-							!org.jedit*,
-							!javax.ejb*,
-							!org.jgroups*,
-							!org.mortbay.*,
-							!org.stringtemplate*,
-							!javax.servlet.jsp,
-							!javax.servlet.jsp.*,
 							edu.mayo.cts2.framework.model.service.association,
 							edu.mayo.cts2.framework.model.service.codesystem,
 							edu.mayo.cts2.framework.model.service.codesystemversion,
@@ -122,10 +101,10 @@
 							edu.mayo.cts2.framework.model.service.valueset,
 							edu.mayo.cts2.framework.model.service.valuesetdefinition,
 							edu.mayo.cts2.framework.service.provider,
-							*
+							*;resolution:=optional
 						</Import-Package>
 						<Embed-Transitive>true</Embed-Transitive>
-						<Embed-Dependency>ws-commons-util,jing,antlr,quartz,xmldb,exist,xmlrpc-client,xmlrpc-common,org.antlr,xml-resolver,commons-io,commons-pool,commons-dbcp</Embed-Dependency>
+						<Embed-Dependency>xercesImpl,ws-commons-util,jing,antlr,quartz,xmldb,exist,xmlrpc-client,xmlrpc-common,org.antlr,xml-resolver,commons-io,commons-pool,commons-dbcp</Embed-Dependency>
 						<Spring-Context>*;timeout:=60</Spring-Context>
 						<_exportcontents>*</_exportcontents>
 						<_nouses>true</_nouses>

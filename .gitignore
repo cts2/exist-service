@@ -1,4 +1,8 @@
 /target
 .cache
 .settings
+*.iml
+*.ipr
+*.iws
+.idea/
 /.DS_Store
