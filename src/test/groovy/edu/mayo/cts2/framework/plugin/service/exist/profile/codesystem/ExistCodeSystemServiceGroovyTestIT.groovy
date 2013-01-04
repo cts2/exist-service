@@ -1,5 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem
 
+import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
+import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
+
 import static org.junit.Assert.*
 
 import org.junit.Test
@@ -135,6 +138,37 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 		assertEquals 0, query.getResourceSummaries(
 			q, null, new Page()).entries.size()
 	}
+
+    @Test void TestQueryWithContainsCurrentVersion(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def cs = new CodeSystemCatalogEntry(about:"about",codeSystemName:"name")
+        cs.setChangeableElementGroup(new ChangeableElementGroup(
+                changeDescription: new ChangeDescription(
+                        changeType: ChangeType.CREATE,
+                        changeDate: new Date(),
+                        containingChangeSet: changeSetUri)))
+        cs.currentVersion = new CodeSystemVersionReference(
+                version:new NameAndMeaningReference(content:"test", uri:"test"))
+
+        maint.createResource(cs)
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def filter = new ResolvedFilter(
+                matchAlgorithmReference:new MatchAlgorithmReference(content:"contains"),
+                matchValue:"am",
+                propertyReference:new PropertyReference(referenceTarget: new URIAndEntityName(name:"resourceName"))
+        )
+
+        def q = [
+                getFilterComponent : { [filter] as Set },
+                getReadContext : { },
+                getQuery : { }
+        ] as ResourceQuery
+
+        assertEquals 1, query.getResourceSummaries(q, null, new Page()).entries.size()
+    }
 	
 	@Test void TestQueryWithContains(){
 		
