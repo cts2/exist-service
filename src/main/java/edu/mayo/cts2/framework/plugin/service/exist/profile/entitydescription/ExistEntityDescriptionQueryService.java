@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.CodeSystemReference;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
@@ -31,7 +30,6 @@ import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
 import edu.mayo.cts2.framework.model.entity.types.DesignationRole;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURIList;
-import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
@@ -287,21 +285,19 @@ public class ExistEntityDescriptionQueryService
 
 	@Override
 	public Set<? extends VersionTagReference> getSupportedTags() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isEntityInSet(EntityNameOrURI entity, Query query,
-			Set<ResolvedFilter> filterComponent,
+	public boolean isEntityInSet(
+			EntityNameOrURI entity,
 			EntityDescriptionQuery restrictions,
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public EntityReferenceList resolveAsEntityReferenceList(Query query,
-			Set<ResolvedFilter> filterComponent,
+	public EntityReferenceList resolveAsEntityReferenceList(
 			EntityDescriptionQuery restrictions,
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
@@ -309,8 +305,7 @@ public class ExistEntityDescriptionQueryService
 
 	@Override
 	public EntityNameOrURIList intersectEntityList(
-			Set<EntityNameOrURI> entities, Query query,
-			Set<ResolvedFilter> filterComponent,
+			Set<EntityNameOrURI> entities,
 			EntityDescriptionQuery restrictions,
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
