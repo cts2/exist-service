@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>exist-service</artifactId>
-	<version>0.8.0</version>
+	<version>0.8.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<description>An eXist XML Database CTS2 Service Implementation</description>
 	<name>eXist Service</name>
@@ -46,7 +46,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@github.com:cts2/exist-service.git</developerConnection>
-	  <tag>exist-service-0.8.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<distributionManagement>
