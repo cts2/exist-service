@@ -39,6 +39,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRest
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction.AllOrAny;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions.HierarchyRestriction.HierarchyType;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
@@ -101,7 +102,7 @@ public class ExistEntityDescriptionQueryService
 			EntityDescriptionQuery query,
 			SortCriteria sort,
 			Page page) {
-		  
+		
 		EntityDescriptionDirectoryBuilder builder =
 				new EntityDescriptionDirectoryBuilder(
 						this.getChangeSetUri(query.getReadContext()));
@@ -209,6 +210,14 @@ public class ExistEntityDescriptionQueryService
 								names));
 			}
 			
+			if(restriction != null && restriction.getHierarchyRestriction()!= null){
+
+				if(restriction.getHierarchyRestriction().getHierarchyType() != HierarchyType.CHILDREN){
+					throw new UnsupportedOperationException("Only CHILDREN queries supported.");
+				}
+				//TODO: Implement the children query
+				throw new UnsupportedOperationException("Service is not implemented"); 
+			}
 			return this;
 		}
 	}
