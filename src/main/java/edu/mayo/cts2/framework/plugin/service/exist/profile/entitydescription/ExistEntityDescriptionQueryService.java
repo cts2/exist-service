@@ -1,5 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -215,8 +216,25 @@ public class ExistEntityDescriptionQueryService
 				if(restriction.getHierarchyRestriction().getHierarchyType() != HierarchyType.CHILDREN){
 					throw new UnsupportedOperationException("Only CHILDREN queries supported.");
 				}
-				//TODO: Implement the children query
-				throw new UnsupportedOperationException("Service is not implemented"); 
+				
+				EntityNameOrURI parent = 
+					restriction.getHierarchyRestriction().getEntity();
+				
+				if(parent.getEntityName() != null){
+					getRestrictions().add(
+						new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
+								".//entity:parent/core:name", 
+								"text()", 
+								AllOrAny.ANY,
+								Arrays.asList(parent.getEntityName().getName())));
+				} else {
+					getRestrictions().add(
+							new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
+								".//entity:parent", 
+								"@uri", 
+								AllOrAny.ANY,
+								Arrays.asList(parent.getUri())));
+				}
 			}
 			return this;
 		}

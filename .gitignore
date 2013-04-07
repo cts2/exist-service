@@ -1,6 +1,7 @@
 /target
 .cache
 .settings
+.project
 *.iml
 *.ipr
 *.iws

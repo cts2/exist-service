@@ -43,6 +43,8 @@ import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions.HierarchyRestriction
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions.HierarchyRestriction.HierarchyType
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery
@@ -355,6 +357,92 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 			new EntityDescriptionReadId("about", ModelUtils.nameOrUriFromName("__WRONG__VERSION__")), null)
 
 		assertNull entry
+	}
+	
+	@Test
+	void Get_Entity_Description_Children_Name(){
+		
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+		def parent = createEntity("p",changeSetUri,"desc")
+		parent.namedEntity.about = "http://parent"
+		
+		def child = createEntity("c",changeSetUri,"desc")
+		child.namedEntity.parent = new URIAndEntityName(
+			name:"p",
+			namespace:"ns",
+			uri:"http://parent")
+		
+		def other = createEntity("z",changeSetUri,"desc")
+		
+		maint.createResource(parent)
+		maint.createResource(child)
+		maint.createResource(other)
+		
+		changeSetService.commitChangeSet(changeSetUri)
+			
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : {
+				new EntityDescriptionQueryServiceRestrictions(
+					hierarchyRestriction: new HierarchyRestriction(
+						hierarchyType: HierarchyType.CHILDREN,
+						entity: new EntityNameOrURI(
+							entityName : new ScopedEntityName(name:"p"))
+					)
+				)
+			}
+		] as EntityDescriptionQuery
+		
+		def summaries = query.getResourceSummaries(q, null, new Page())
+
+		assertEquals 1, summaries.entries.size
+		assertEquals "c", summaries.entries.get(0).name.name
+		
+	}
+
+	@Test
+	void Get_Entity_Description_Children_Uri(){
+		
+		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+		def parent = createEntity("p",changeSetUri,"desc")
+		parent.namedEntity.about = "http://parent"
+		
+		def child = createEntity("c",changeSetUri,"desc")
+		child.namedEntity.parent = new URIAndEntityName(
+			name:"p",
+			namespace:"ns",
+			uri:"http://parent")
+		
+		def other = createEntity("z",changeSetUri,"desc")
+		
+		maint.createResource(parent)
+		maint.createResource(child)
+		maint.createResource(other)
+		
+		changeSetService.commitChangeSet(changeSetUri)
+			
+		def q = [
+			getFilterComponent : { },
+			getReadContext : { },
+			getQuery : { },
+			getRestrictions : {
+				new EntityDescriptionQueryServiceRestrictions(
+					hierarchyRestriction: new HierarchyRestriction(
+						hierarchyType: HierarchyType.CHILDREN,
+						entity: new EntityNameOrURI(uri:"http://parent")
+					)
+				)
+			}
+		] as EntityDescriptionQuery
+		
+		def summaries = query.getResourceSummaries(q, null, new Page())
+
+		assertEquals 1, summaries.entries.size
+		assertEquals "c", summaries.entries.get(0).name.name
 	}
 
 	EntityDescription createEntity(name,changeSetUri,description){
