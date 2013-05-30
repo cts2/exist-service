@@ -30,4 +30,10 @@ public class ExistCodeSystemMaintenanceService
 		choice.setCodeSystem(resource);
 	}
 
+	@Override
+	protected CodeSystemCatalogEntry getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getCodeSystem();
+	}
+
 }

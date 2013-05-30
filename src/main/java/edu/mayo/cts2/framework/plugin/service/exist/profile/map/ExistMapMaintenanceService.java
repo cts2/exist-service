@@ -30,4 +30,10 @@ public class ExistMapMaintenanceService
 		choice.setMap(resource);
 	}
 
+	@Override
+	protected MapCatalogEntry getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getMap();
+	}
+	
 }

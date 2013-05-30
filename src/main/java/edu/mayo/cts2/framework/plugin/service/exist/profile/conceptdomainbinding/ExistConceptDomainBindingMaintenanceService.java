@@ -40,4 +40,11 @@ public class ExistConceptDomainBindingMaintenanceService
 			ConceptDomainBinding resource) {
 		return new LocalIdConceptDomainBinding(localId, resource);
 	}
+
+	@Override
+	protected ConceptDomainBinding getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getConceptDomainBinding();
+	}
+
 }

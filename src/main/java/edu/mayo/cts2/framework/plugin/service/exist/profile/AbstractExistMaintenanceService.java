@@ -44,7 +44,8 @@ public abstract class AbstractExistMaintenanceService<
 	I,
 	T extends BaseMaintenanceService> 
 	extends AbstractExistResourceReadingService<R,I,T> 
-	implements edu.mayo.cts2.framework.service.profile.BaseMaintenanceService<D,R,I> {
+	implements edu.mayo.cts2.framework.service.profile.BaseMaintenanceService<D,R,I>, 
+	ChangeableResourceHandler {
 
 	@javax.annotation.Resource
 	private StateChangeCallback stateChangeCallback;
@@ -153,5 +154,46 @@ public abstract class AbstractExistMaintenanceService<
 	protected abstract String getExistStorageNameForResource(D resource);
 
 	protected abstract void addResourceToChangeableResource(ChangeableResource choice, D resource);
-
+	
+	/**
+	 * Gets the resource from changeable resource.
+	 * 
+	 * Return NULL if the ChangeableResource contains an element that this service cannot process.
+	 *
+	 * @param choice the choice
+	 * @return the resource from changeable resource
+	 */
+	protected abstract R getResourceFromChangeableResource(ChangeableResource choice);
+	
+	public void handle(ChangeableResource changeableResource){
+		R resource = this.getResourceFromChangeableResource(changeableResource);
+		if(resource == null){
+			return;
+		}
+		
+		D identifiedResource = this.resourceToIndentifiedResource(resource);
+		
+		ChangeType changeType = 
+			changeableResource.getChangeableElementGroup().getChangeDescription().getChangeType();
+				
+		switch(changeType){
+		case UPDATE:
+			this.updateResource(identifiedResource);
+			break;
+		case CLONE:
+			throw new UnsupportedOperationException();
+		case CREATE:
+			this.createResource(resource);
+			break;
+		case DELETE:
+			break;
+		case IMPORT:
+			this.createResource(resource);
+			break;
+		case METADATA:
+			throw new UnsupportedOperationException();
+		default:
+			throw new UnsupportedOperationException();
+		}
+	}
 }

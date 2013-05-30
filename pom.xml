@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>edu.mayo.cts2.framework</groupId>
 		<artifactId>base-service-plugin</artifactId>
-		<version>0.8.2-SNAPSHOT</version>
+		<version>0.8.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>exist-service</artifactId>
-	<version>0.8.1-SNAPSHOT</version>
+	<version>0.8.2-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<description>An eXist XML Database CTS2 Service Implementation</description>
 	<name>eXist Service</name>
@@ -105,7 +105,23 @@
 							*;resolution:=optional
 						</Import-Package>
 						<Embed-Transitive>true</Embed-Transitive>
-						<Embed-Dependency>xercesImpl,ws-commons-util,jing,antlr,quartz,xmldb,exist,xmlrpc-client,xmlrpc-common,org.antlr,xml-resolver,commons-io,commons-pool,commons-dbcp</Embed-Dependency>
+						<Embed-Dependency>
+							plugin-util,
+							xercesImpl,
+							ws-commons-util,
+							jing,
+							antlr,
+							quartz,
+							xmldb,
+							exist,
+							xmlrpc-client,
+							xmlrpc-common,
+							org.antlr,
+							xml-resolver,
+							commons-io,
+							commons-pool,
+							commons-dbcp
+						</Embed-Dependency>
 						<Spring-Context>*;timeout:=60</Spring-Context>
 						<_exportcontents>*</_exportcontents>
 						<_nouses>true</_nouses>

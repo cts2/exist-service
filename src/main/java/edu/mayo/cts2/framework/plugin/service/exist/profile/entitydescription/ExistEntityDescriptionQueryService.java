@@ -162,10 +162,20 @@ public class ExistEntityDescriptionQueryService
 						EntityDescriptionDirectoryState state, 
 						int start, 
 						int maxResults) {
+					String codeSystemVersion = "";
+					
+					if(state.getCodeSystemVersions() != null &&
+							state.getCodeSystemVersions().size() == 1){
+						codeSystemVersion = state.getCodeSystemVersions().iterator().next().getName();
+					} else if(state.getCodeSystemVersions() != null &&
+							state.getCodeSystemVersions().size() > 1){
+						throw new UnsupportedOperationException("Cannot currently restrict to more than one CodeSystemVersion.");
+					}
+					
 					return getResourceSummaries(
 							getResourceInfo(),
 							changeSetUri,
-							ExistServiceUtils.createPath(state.getCodeSystemVersion()),
+							ExistServiceUtils.createPath(codeSystemVersion),
 							state.getXpath(), 
 							start, 
 							maxResults);
@@ -187,8 +197,8 @@ public class ExistEntityDescriptionQueryService
 						@Override
 						public EntityDescriptionDirectoryState restrict(EntityDescriptionDirectoryState currentState) {
 							if(restriction != null &&
-									restriction.getCodeSystemVersion() != null){
-								currentState.setCodeSystemVersion(restriction.getCodeSystemVersion().getName());
+									restriction.getCodeSystemVersions() != null){
+								currentState.setCodeSystemVersions(restriction.getCodeSystemVersions());
 							}
 							
 							return currentState;

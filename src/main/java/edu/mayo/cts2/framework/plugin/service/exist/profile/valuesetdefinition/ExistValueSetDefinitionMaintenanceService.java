@@ -48,4 +48,10 @@ public class ExistValueSetDefinitionMaintenanceService
 				resource.getResource().getDefinedValueSet().getContent());
 	}
 
+	@Override
+	protected ValueSetDefinition getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getValueSetDefinition();
+	}
+
 }

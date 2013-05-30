@@ -30,4 +30,10 @@ public class ExistValueSetMaintenanceService
 		choice.setValueSet(resource);
 	}
 
+	@Override
+	protected ValueSetCatalogEntry getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getValueSet();
+	}
+
 }

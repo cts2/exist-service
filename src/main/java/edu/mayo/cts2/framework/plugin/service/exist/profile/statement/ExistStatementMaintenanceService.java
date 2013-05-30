@@ -42,4 +42,10 @@ public class ExistStatementMaintenanceService
 		return new LocalIdStatement(id, resource);
 	}
 
+	@Override
+	protected Statement getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getStatement();
+	}
+
 }

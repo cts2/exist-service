@@ -1,7 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 
-import java.net.URI;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
@@ -16,6 +16,7 @@ import org.xmldb.api.base.XMLDBException;
 
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
 import edu.mayo.cts2.framework.model.core.IsChangeable;
 import edu.mayo.cts2.framework.model.core.OpaqueData;
 import edu.mayo.cts2.framework.model.core.SourceReference;
@@ -26,6 +27,7 @@ import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ChangeableResourceHandler;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
@@ -48,6 +50,8 @@ public class ExistChangeSetService implements ChangeSetService {
 	@Autowired
 	private ResourceMarshaller resourceMarshaller;
 	
+	private List<ChangeableResourceHandler> changeableResourceHandlers;
+
 	@Override
 	public ChangeSet readChangeSet(String changeSetUri) {
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
@@ -139,6 +143,18 @@ public class ExistChangeSetService implements ChangeSetService {
 			ChangeSet changeSet = this.readChangeSet(changeSetUri);
 			
 			for(ChangeableResource change : changeSet.getMember()){
+				if(change.getChangeableElementGroup() == null){
+					change.setChangeableElementGroup(new ChangeableElementGroup());
+				}
+				
+				if(change.getChangeableElementGroup().getChangeDescription() == null){
+					ChangeDescription description = new ChangeDescription();
+					description.setContainingChangeSet(changeSet.getChangeSetURI());
+					description.setChangeType(ChangeType.CREATE);
+					description.setChangeDate(new Date());
+					change.getChangeableElementGroup().setChangeDescription(description);
+				}
+				
 				change.getChangeableElementGroup().
 					getChangeDescription().setCommitted(ChangeCommitted.COMMITTED);
 			}
@@ -157,8 +173,22 @@ public class ExistChangeSetService implements ChangeSetService {
 	}
 
 	@Override
-	public String importChangeSet(URI changeSetUri) {
-		throw new UnsupportedOperationException();
+	public String importChangeSet(ChangeSet changeSet) {
+		String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);
+		
+		ChangeableResource[] members = changeSet.getMember();
+		changeSet.removeAllMember();
+		changeSet.setState(FinalizableState.OPEN);
+		
+		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
+		
+		for(ChangeableResource member : members){
+			for(ChangeableResourceHandler handler : this.changeableResourceHandlers){
+				handler.handle(member);
+			}
+		}
+
+		return changeSet.getChangeSetURI();
 	}
 	
 	private void addChangeSetElementGroupIfNecessary(ChangeSet changeSet){
@@ -191,6 +221,12 @@ public class ExistChangeSetService implements ChangeSetService {
 		
 		this.existResourceDao.storeResource(
 				changeSetResourceInfo.getResourceBasePath(), name, changeSet);
+	}
+
+	@Autowired
+	public void setChangeableResourceHandlers(
+			List<ChangeableResourceHandler> changeableResourceHandlers) {
+		this.changeableResourceHandlers = changeableResourceHandlers;
 	}
 
 }

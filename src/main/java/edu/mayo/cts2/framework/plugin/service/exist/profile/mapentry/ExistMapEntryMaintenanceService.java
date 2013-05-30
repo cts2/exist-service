@@ -29,4 +29,11 @@ public class ExistMapEntryMaintenanceService
 			ChangeableResource choice, MapEntry resource) {
 		choice.setMapEntry(resource);
 	}
+
+	@Override
+	protected MapEntry getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getMapEntry();
+	}
+
 }

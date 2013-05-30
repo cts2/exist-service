@@ -30,4 +30,10 @@ public class ExistConceptDomainMaintenanceService
 		choice.setConceptDomain(resource);
 	}
 
+	@Override
+	protected ConceptDomainCatalogEntry getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getConceptDomain();
+	}
+
 }

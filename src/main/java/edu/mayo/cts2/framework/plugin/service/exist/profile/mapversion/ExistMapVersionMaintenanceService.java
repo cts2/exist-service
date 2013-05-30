@@ -30,4 +30,10 @@ public class ExistMapVersionMaintenanceService
 		choice.setMapVersion(resource);
 	}
 
+	@Override
+	protected MapVersion getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getMapVersion();
+	}
+	
 }

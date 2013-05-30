@@ -31,4 +31,10 @@ implements CodeSystemVersionMaintenanceService {
 		choice.setCodeSystemVersion(resource);
 	}
 
+	@Override
+	protected CodeSystemVersionCatalogEntry getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getCodeSystemVersion();
+	}
+
 }

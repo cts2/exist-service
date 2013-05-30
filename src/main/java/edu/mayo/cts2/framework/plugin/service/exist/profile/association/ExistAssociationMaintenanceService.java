@@ -71,4 +71,11 @@ public class ExistAssociationMaintenanceService
 			ChangeableResource choice, Association resource) {
 		choice.setAssociation(resource);
 	}
+
+	@Override
+	protected Association getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getAssociation();
+	}
+
 }

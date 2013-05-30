@@ -33,4 +33,10 @@ public class ExistEntityDescriptionMaintenanceService
 		choice.setEntityDescription(resource);
 	}
 
+	@Override
+	protected EntityDescription getResourceFromChangeableResource(
+			ChangeableResource choice) {
+		return choice.getEntityDescription();
+	}
+
 }
