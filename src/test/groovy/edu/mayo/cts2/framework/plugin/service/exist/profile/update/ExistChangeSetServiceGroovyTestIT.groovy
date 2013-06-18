@@ -6,7 +6,9 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry
+import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
+import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.types.FinalizableState
 import edu.mayo.cts2.framework.model.mapversion.*
 import edu.mayo.cts2.framework.model.updates.ChangeSet
@@ -35,22 +37,26 @@ class ExistChangeSetServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 	}
 	
 	@Test void TesImportChangeSet(){
-		
-		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+		def changeable = new ChangeableResource()
+		changeable.codeSystem = new CodeSystemCatalogEntry(codeSystemName:"csName", about:"http://test");
+		changeable.setChangeableElementGroup(new ChangeableElementGroup(
+			changeDescription: new ChangeDescription(
+				changeType: ChangeType.CREATE,
+				containingChangeSet: "urn:oid:12345",
+				changeDate: new Date()
+			)
+		))
+		changeable.entryOrder = 1
 		
 		def changeSet = new ChangeSet()
 		changeSet.state = FinalizableState.OPEN
 		changeSet.changeSetURI = "urn:oid:12345"
 		changeSet.creationDate = new Date()
-		changeSet.addMember(new ChangeableResource(
-			entryOrder: 1,
-			codeSystem: new CodeSystemCatalogEntry(codeSystemName:"csName", about:"http://test")
-		)
-		)
+		changeSet.addMember(changeable)
 	
 		service.importChangeSet(changeSet)
 		
-		changeSetService.commitChangeSet(changeSet.changeSetURI);
+		service.commitChangeSet(changeSet.changeSetURI);
 		
 		assertNotNull csService.read(ModelUtils.nameOrUriFromName("csName"), null)
 	}
