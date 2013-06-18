@@ -2,6 +2,7 @@
 .cache
 .settings
 .project
+.classpath
 *.iml
 *.ipr
 *.iws
