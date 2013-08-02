@@ -1,15 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 
-import java.util.Set;
-
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.Resource;
-
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
-import edu.mayo.cts2.framework.model.core.URIAndEntityName;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
@@ -22,6 +16,10 @@ import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.ChangeSetQueryExtensionRestrictions;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetQuery;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetQueryExtension;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.Resource;
+
+import java.util.Set;
 
 @Component
 public class ExistChangeSetQueryService 
@@ -86,8 +84,8 @@ public class ExistChangeSetQueryService
 	}
 
 	@Override
-	public Set<StateAdjustingPropertyReference<XpathState>> getSupportedSearchReferences() {
-		Set<StateAdjustingPropertyReference<XpathState>> set = 
+	public Set<StateAdjustingComponentReference<XpathState>> getSupportedSearchReferences() {
+		Set<StateAdjustingComponentReference<XpathState>> set =
 				super.getSupportedSearchReferences();
 		
 		set.add(this.getFinalizableStateAdjustingReference());
@@ -95,14 +93,13 @@ public class ExistChangeSetQueryService
 		return set;
 	}
 
-	protected StateAdjustingPropertyReference<XpathState> getFinalizableStateAdjustingReference(){
+	protected StateAdjustingComponentReference<XpathState> getFinalizableStateAdjustingReference(){
 		XpathStateUpdater<XpathState> updater = new XpathStateUpdater<XpathState>("@state");
-		
-		StateAdjustingPropertyReference<XpathState> stateAdjustor = 
-				new StateAdjustingPropertyReference<XpathState>(updater);
-		
-		stateAdjustor.setReferenceTarget(new URIAndEntityName());
-		stateAdjustor.getReferenceTarget().setName("state");
+
+        StateAdjustingComponentReference<XpathState> stateAdjustor =
+				new StateAdjustingComponentReference<XpathState>(updater);
+
+		stateAdjustor.setAttributeReference("state");
 		
 		return stateAdjustor;
 	}
@@ -136,6 +133,5 @@ public class ExistChangeSetQueryService
 				getSupportedSearchReferences());
 		}
 	}
-
 
 }

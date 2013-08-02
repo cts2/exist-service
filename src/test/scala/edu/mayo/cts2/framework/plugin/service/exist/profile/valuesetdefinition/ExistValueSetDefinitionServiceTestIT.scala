@@ -40,7 +40,7 @@ class ExistValueSetDefinitionServiceTestIT
     classOf[UnknownValueSetDefinition]
   }
   
-  override def getName():String = {"someUri"}
+  override def getName():String = {"1"}
     
    override def getUri():String = {"someUri"}
 
@@ -85,8 +85,8 @@ class ExistValueSetDefinitionServiceTestIT
     entry
   }
 
-  def getResource(uri: String): LocalIdValueSetDefinition = {
-    var id = new ValueSetDefinitionReadId(uri);
+  def getResource(name: String): LocalIdValueSetDefinition = {
+    var id = new ValueSetDefinitionReadId(name, ModelUtils.nameOrUriFromName("vs"));
     
     readService.read(id,new ResolvedReadContext())
   }

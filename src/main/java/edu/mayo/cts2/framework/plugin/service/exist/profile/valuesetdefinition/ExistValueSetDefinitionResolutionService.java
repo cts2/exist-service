@@ -23,22 +23,10 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.EntitySynopsis;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
-import edu.mayo.cts2.framework.model.core.PropertyReference;
-import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
@@ -56,6 +44,12 @@ import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueS
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResult;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionResolutionService;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class ExistValueSetDefinitionResolutionService 
@@ -79,12 +73,12 @@ public class ExistValueSetDefinitionResolutionService
 	}
 
 	@Override
-	public Set<? extends PropertyReference> getSupportedSearchReferences() {
+	public Set<? extends ComponentReference> getSupportedSearchReferences() {
 		return null;
 	}
 
 	@Override
-	public Set<? extends PropertyReference> getSupportedSortReferences() {
+	public Set<? extends ComponentReference> getSupportedSortReferences() {
 		return null;
 	}
 
@@ -98,14 +92,14 @@ public class ExistValueSetDefinitionResolutionService
 	 * @see edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionResolutionService#resolveDefinition(edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId, java.util.Set, edu.mayo.cts2.framework.model.service.core.NameOrURI, edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResolutionEntityQuery, edu.mayo.cts2.framework.model.core.SortCriteria, edu.mayo.cts2.framework.model.command.ResolvedReadContext, edu.mayo.cts2.framework.model.command.Page)
 	 */
 	@Override
-	public ResolvedValueSetResult<EntitySynopsis> resolveDefinition(
-			final ValueSetDefinitionReadId id, 
-			Set<NameOrURI> codeSystemVersions, 
-			NameOrURI tag,
-			ResolvedValueSetResolutionEntityQuery query, 
-			SortCriteria sort,
-			ResolvedReadContext context, 
-			Page page) {
+	public ResolvedValueSetResult<URIAndEntityName> resolveDefinition(
+            final ValueSetDefinitionReadId id,
+            Set<NameOrURI> codeSystemVersions,
+            NameOrURI tag,
+            ResolvedValueSetResolutionEntityQuery query,
+            SortCriteria sort,
+            ResolvedReadContext context,
+            Page page) {
 		
 		ResolvedValueSetQuery resolvedValueSetQuery = new ResolvedValueSetQuery(){
 

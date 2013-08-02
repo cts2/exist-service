@@ -1,10 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.exist.integration;
-
-import static org.junit.Assert.*
-
-import org.junit.Ignore
-import org.junit.Test
-
+package edu.mayo.cts2.framework.plugin.service.exist.integration
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.SourceAndNotation
 import edu.mayo.cts2.framework.model.core.ValueSetReference
@@ -13,7 +7,9 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.CompleteCodeSystemRefere
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionMsg
+import org.junit.Ignore
 
+@Ignore
 class ValueSetDefinitionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
@@ -38,9 +34,9 @@ class ValueSetDefinitionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
 	public Object getResource() {
-		def entry = new ValueSetDefinition(about:"testAbout", documentURI:"http://def/uri/testByURI")
+		def entry = new ValueSetDefinition(about:"http://def/uri/testByURI")
 		entry.setSourceAndNotation(new SourceAndNotation())
-		entry.setDefinedValueSet(new ValueSetReference())
+		entry.setDefinedValueSet(new ValueSetReference("vsname"))
 		entry.addEntry(new ValueSetDefinitionEntry())
 		entry.getEntry(0).setCompleteCodeSystem(new CompleteCodeSystemReference())
 		entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())

@@ -1,38 +1,36 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
+import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
+import edu.mayo.cts2.framework.model.extension.LocalIdAssociation;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdReadService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
 import edu.mayo.cts2.framework.service.profile.association.AssociationReadService;
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistAssociationReadService 
-	extends AbstractExistDefaultReadService<
-		Association,
-		AssociationReadId,
-		edu.mayo.cts2.framework.model.service.association.AssociationReadService>
+	extends AbstractExistLocalIdReadService<
+            Association,
+            LocalIdAssociation,
+            AssociationReadId,
+            edu.mayo.cts2.framework.model.service.association.AssociationReadService>
 	implements AssociationReadService {
 
 	@Resource
 	private AssociationResourceInfo associationResourceInfo;
 
-	protected boolean isReadByUri(AssociationReadId resourceIdentifier){
-		return true;
-	}
-
 	@Override
-	protected DefaultResourceInfo<Association, AssociationReadId> getResourceInfo() {
+	protected ResourceInfo<AssociationReadId> getResourceInfo() {
 		return this.associationResourceInfo;
 	}
 
 	@Override
-	public Association readByExternalStatementId(
+	public LocalIdAssociation readByExternalStatementId(
 			String exteralStatementId,
 			String scopingNamespaceName, 
 			ResolvedReadContext readContext) {
@@ -46,4 +44,14 @@ public class ExistAssociationReadService
 			ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
+
+    @Override
+    protected ChangeableElementGroup getChangeableElementGroup(LocalIdAssociation resource) {
+        return resource.getChangeableElementGroup();
+    }
+
+    @Override
+    protected LocalIdAssociation createLocalIdResource(String id, Association resource) {
+        return new LocalIdAssociation(id, resource);
+    }
 }

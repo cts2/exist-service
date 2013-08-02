@@ -1,13 +1,10 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.map;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntry;
+import edu.mayo.cts2.framework.model.map.MapCatalogEntryListEntry;
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
@@ -16,6 +13,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.service.command.restriction.MapQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.map.MapQuery;
 import edu.mayo.cts2.framework.service.profile.map.MapQueryService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistMapQueryService 
@@ -89,7 +89,7 @@ public class ExistMapQueryService
 	}
 
 	@Override
-	public DirectoryResult<MapCatalogEntry> getResourceList(
+	public DirectoryResult<MapCatalogEntryListEntry> getResourceList(
 			MapQuery query,
 			SortCriteria sortCriteria,
 			Page page) {

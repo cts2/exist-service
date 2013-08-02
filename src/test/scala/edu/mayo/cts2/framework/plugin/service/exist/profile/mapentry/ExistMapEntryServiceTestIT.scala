@@ -3,18 +3,14 @@ package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 import java.lang.Override
 import java.util.HashSet
 import org.junit.Assert.assertEquals
-import org.junit.runner.RunWith
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
-import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.core.MapReference
 import edu.mayo.cts2.framework.model.core.MapVersionReference
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference
-import edu.mayo.cts2.framework.model.core.ModelAttributeReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.URIAndEntityName
@@ -32,7 +28,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.TestResourceSummarie
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.profile.mapentry.name.MapEntryReadId
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery
-import edu.mayo.cts2.framework.model.core.PropertyReference
+import edu.mayo.cts2.framework.model.core.ComponentReference
 
 class ExistMapEntryServiceTestIT
 	extends BaseServiceTestBaseIT[MapEntry,MapEntryDirectoryEntry] 
@@ -248,9 +244,8 @@ class ExistMapEntryServiceTestIT
      val filterComponent = new ResolvedFilter()
      filterComponent.setMatchAlgorithmReference(new MatchAlgorithmReference())
      filterComponent.getMatchAlgorithmReference().setContent("exactMatch")
-     filterComponent.setPropertyReference(new PropertyReference())
-     filterComponent.getPropertyReference().setReferenceTarget(new URIAndEntityName())
-     filterComponent.getPropertyReference().getReferenceTarget().setName("resourceName")
+     filterComponent.setComponentReference(new ComponentReference())
+     filterComponent.getComponentReference().setAttributeReference("resourceName")
      filterComponent.setMatchValue("Test2")
      
      var set = new HashSet[ResolvedFilter]()
@@ -314,9 +309,8 @@ class ExistMapEntryServiceTestIT
      val filterComponent = new ResolvedFilter()
      filterComponent.setMatchAlgorithmReference(new MatchAlgorithmReference())
      filterComponent.getMatchAlgorithmReference().setContent("contains")
-     filterComponent.setPropertyReference(new PropertyReference())
-     filterComponent.getPropertyReference().setReferenceTarget(new URIAndEntityName())
-     filterComponent.getPropertyReference().getReferenceTarget().setName("resourceName")
+     filterComponent.setComponentReference(new ComponentReference())
+     filterComponent.getComponentReference().setAttributeReference("resourceName")
      filterComponent.setMatchValue("st2")
      
      var set = new HashSet[ResolvedFilter]()

@@ -1,23 +1,22 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.statement;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.statement.Statement;
 import edu.mayo.cts2.framework.model.statement.StatementDirectoryEntry;
+import edu.mayo.cts2.framework.model.statement.StatementListEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.statement.StatementQueryService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 
 @Component
 public class ExistStatementQueryService
@@ -79,7 +78,7 @@ public class ExistStatementQueryService
 	}
 
 	@Override
-	public DirectoryResult<Statement> getResourceList(
+	public DirectoryResult<StatementListEntry> getResourceList(
 			ResourceQuery query,
 			SortCriteria sort,
 			Page page) {

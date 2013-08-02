@@ -1,14 +1,13 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
-import org.springframework.stereotype.Component;
-
-import edu.mayo.cts2.framework.model.association.Association;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
+import edu.mayo.cts2.framework.model.extension.LocalIdAssociation;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.LocalIdResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
+import org.springframework.stereotype.Component;
 
 @Component
-public class AssociationResourceInfo implements DefaultResourceInfo<Association,AssociationReadId> {
+public class AssociationResourceInfo implements LocalIdResourceInfo<LocalIdAssociation,AssociationReadId> {
 
 	private static final String ASSOCIATIONS_PATH = "/associations";
 
@@ -33,9 +32,9 @@ public class AssociationResourceInfo implements DefaultResourceInfo<Association,
 	}
 
 	@Override
-	public String createPathFromResource(Association resource) {
+	public String createPathFromResource(LocalIdAssociation resource) {
 		return ExistServiceUtils.createPath(
-				resource.getAssertedBy().getVersion().getContent());
+				resource.getResource().getAssertedBy().getVersion().getContent());
 	}
 
 	@Override
@@ -46,12 +45,6 @@ public class AssociationResourceInfo implements DefaultResourceInfo<Association,
 	@Override
 	public String getResourceUri(AssociationReadId id) {
 		return id.getUri();
-	}
-
-
-	@Override
-	public String getExistResourceNameFromResource(Association entry) {
-		return entry.getLocalID();
 	}
 	
 	@Override

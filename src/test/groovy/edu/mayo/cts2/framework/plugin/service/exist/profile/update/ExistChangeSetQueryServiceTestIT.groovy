@@ -1,20 +1,14 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update
-
-import static org.junit.Assert.*
-
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
-import edu.mayo.cts2.framework.model.core.ModelAttributeReference
-import edu.mayo.cts2.framework.model.core.PropertyReference
-import edu.mayo.cts2.framework.model.core.URIAndEntityName
-import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
-import edu.mayo.cts2.framework.model.mapversion.*
+import edu.mayo.cts2.framework.model.core.ComponentReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetQuery
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+import static org.junit.Assert.assertEquals
 
 class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 
@@ -51,7 +45,7 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 		def fc = new ResolvedFilter(
 			matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 			matchValue:"FINAL",
-			propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"state")))
+			componentReference: new ComponentReference(attributeReference: "state"))
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -78,7 +72,7 @@ class ExistChangeSetQueryServiceTestIT extends BaseServiceDbCleaningBase {
 		def fc = new ResolvedFilter(
 			matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 			matchValue:"OPEN",
-			propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"state")))
+                componentReference: new ComponentReference(attributeReference: "state"))
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },

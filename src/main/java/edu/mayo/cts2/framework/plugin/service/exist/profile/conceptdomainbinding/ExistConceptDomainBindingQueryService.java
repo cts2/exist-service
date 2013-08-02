@@ -1,12 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomainbinding;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBinding;
 import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingDirectoryEntry;
+import edu.mayo.cts2.framework.model.conceptdomainbinding.ConceptDomainBindingListEntry;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
@@ -16,6 +13,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.service.command.restriction.ConceptDomainBindingQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQuery;
 import edu.mayo.cts2.framework.service.profile.conceptdomainbinding.ConceptDomainBindingQueryService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistConceptDomainBindingQueryService 
@@ -76,7 +76,7 @@ public class ExistConceptDomainBindingQueryService
 	}
 
 	@Override
-	public DirectoryResult<ConceptDomainBinding> getResourceList(
+	public DirectoryResult<ConceptDomainBindingListEntry> getResourceList(
 			ConceptDomainBindingQuery query, SortCriteria sortCriteria,
 			Page page) {
 		throw new UnsupportedOperationException();

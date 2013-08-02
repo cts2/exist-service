@@ -1,27 +1,22 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
+import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionListEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
-import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistValueSetDefinitionQueryService 
@@ -48,10 +43,6 @@ public class ExistValueSetDefinitionQueryService
 		
 		summary.setDefinedValueSet(resource.getDefinedValueSet());
 		summary.setVersionTag(resource.getVersionTag());
-
-		summary.setHref(getUrlConstructor().createValueSetDefinitionUrl(
-				"TODO",
-				resource.getDocumentURI()));
 		
 		return summary;
 	}
@@ -65,17 +56,7 @@ public class ExistValueSetDefinitionQueryService
 			return currentState;
 		}	
 	}
-	
-	@SuppressWarnings("unchecked")
-	protected List<StateAdjustingPropertyReference<XpathState>> getAvailableModelAttributeReferences() {
-		StateAdjustingPropertyReference<XpathState> refName = 
-				StateAdjustingPropertyReference.toPropertyReference(
-					StandardModelAttributeReference.RESOURCE_NAME.getPropertyReference(),
-						new ValueSetNameStateUpdater());
-		
-		return Arrays.asList(refName);
-	}
-	
+
 	private class ValueSetDefinitionDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ValueSetDefinitionDirectoryEntry> {
 		
 		public ValueSetDefinitionDirectoryBuilder(final String changeSetUri) {
@@ -124,7 +105,7 @@ public class ExistValueSetDefinitionQueryService
 	}
 
 	@Override
-	public DirectoryResult<ValueSetDefinition> getResourceList(
+	public DirectoryResult<ValueSetDefinitionListEntry> getResourceList(
 			ValueSetDefinitionQuery query, 
 			SortCriteria sort,
 			Page page) {

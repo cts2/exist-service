@@ -46,12 +46,12 @@ public class ValueSetDefinitionResourceInfo
 
 	@Override
 	public String getUriXpath() {
-		return "@documentURI";
+		return "@about";
 	}
 
 	@Override
 	public String getResourceNameXpath() {
-		return "@documentURI";
+		return "@about";
 	}
 
 	@Override

@@ -1,40 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription
-
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
-import edu.mayo.cts2.framework.model.core.ChangeDescription
-import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
-import edu.mayo.cts2.framework.model.core.CodeSystemReference
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
-import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
-import edu.mayo.cts2.framework.model.core.ScopedEntityName
-import edu.mayo.cts2.framework.model.core.URIAndEntityName
-import edu.mayo.cts2.framework.model.core.types.ChangeType
-import edu.mayo.cts2.framework.model.entity.EntityDescription
-import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
-import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
-import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
-import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
-import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
-
-import static org.junit.Assert.*
-
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
-
-import edu.mayo.cts2.framework.model.command.Page
-import edu.mayo.cts2.framework.model.command.ResolvedFilter
-import edu.mayo.cts2.framework.model.core.ChangeDescription
-import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
-import edu.mayo.cts2.framework.model.core.CodeSystemReference
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
-import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
-import edu.mayo.cts2.framework.model.core.ScopedEntityName
-import edu.mayo.cts2.framework.model.core.TsAnyType
-import edu.mayo.cts2.framework.model.core.URIAndEntityName
+import edu.mayo.cts2.framework.model.core.*
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.entity.Designation
 import edu.mayo.cts2.framework.model.entity.EntityDescription
@@ -49,6 +16,10 @@ import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+import static org.junit.Assert.*
 
 class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
@@ -96,7 +67,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"name",
-		        propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
+		        componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -122,7 +93,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"aname",
-				propertyReference: StandardModelAttributeReference.RESOURCE_SYNOPSIS.propertyReference)
+				componentReference: StandardModelAttributeReference.RESOURCE_SYNOPSIS.componentReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -147,7 +118,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
 				matchValue:"asdfasdf",
-				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
+				componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
 		
 		def set = new HashSet()
 		set.add(fc)
@@ -175,7 +146,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 				matchValue:"something",
-				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
+				componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -200,7 +171,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference(),
 				matchValue:"somethin",
-				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
+				componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -225,7 +196,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference(),
 				matchValue:"someth",
-				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
+				componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
 		
 		def q = [
 			getFilterComponent : { [fc] as Set },
@@ -250,7 +221,7 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		def fc = new ResolvedFilter(
 				matchAlgorithmReference:StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference(),
 				matchValue:"thing",
-				propertyReference: StandardModelAttributeReference.RESOURCE_NAME.propertyReference)
+				componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
 
 		def q = [
 			getFilterComponent : { [fc] as Set },

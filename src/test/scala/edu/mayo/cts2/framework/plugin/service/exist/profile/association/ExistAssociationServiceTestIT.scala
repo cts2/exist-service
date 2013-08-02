@@ -23,16 +23,17 @@ import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
 import edu.mayo.cts2.framework.service.profile.association.AssociationQuery
 import edu.mayo.cts2.framework.model.service.core.Query
+import edu.mayo.cts2.framework.model.extension.LocalIdAssociation
 
 class ExistAssociationServiceTestIT 
-	extends BaseServiceTestBaseIT[Association,AssociationDirectoryEntry]
-			with TestResourceSummaries[Association,AssociationDirectoryEntry] {
+	extends BaseServiceTestBaseIT[LocalIdAssociation,AssociationDirectoryEntry]
+			with TestResourceSummaries[LocalIdAssociation,AssociationDirectoryEntry] {
 
   @Autowired var readService: ExistAssociationReadService = null
   @Autowired var maintService: ExistAssociationMaintenanceService = null
   @Autowired var queryService: ExistAssociationQueryService = null
  
-  override def getName():String = {"someLocalName"}
+  override def getName():String = {"1"}
     
   override def getUri():String = {"someUri"}
    
@@ -91,15 +92,17 @@ class ExistAssociationServiceTestIT
 
   }
 
-  def getResource(name: String): Association = {
+  def getResource(name: String): LocalIdAssociation = {
     var id = new AssociationReadId(name, ModelUtils.nameOrUriFromName("csv"))
   
     readService.read(id, null)
   }
   
-      def getResourceByUri(uri:String):Association = {
-         var id = new AssociationReadId(uri)
-    	readService.read(id, null)
+      def getResourceByUri(uri:String):LocalIdAssociation = {
+        var id = new AssociationReadId(uri)
+
+        readService.read(id, null)
+
     }
 
 }

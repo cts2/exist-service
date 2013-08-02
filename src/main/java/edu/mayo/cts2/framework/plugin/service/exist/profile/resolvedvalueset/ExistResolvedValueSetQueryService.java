@@ -23,16 +23,7 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.XMLDBException;
-
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -46,6 +37,13 @@ import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.restriction.ResolvedValueSetQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetQuery;
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetQueryService;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.XMLDBException;
+
+import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class ExistResolvedValueSetQueryService 
@@ -158,9 +156,9 @@ public class ExistResolvedValueSetQueryService
 	 * @see edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService#getSupportedModelAttributes()
 	 */
 	@Override
-	public Set<StateAdjustingPropertyReference<XpathState>> getSupportedSearchReferences(){
+	public Set<StateAdjustingComponentReference<XpathState>> getSupportedSearchReferences(){
 
-		return new HashSet<StateAdjustingPropertyReference<XpathState>>();
+		return new HashSet<StateAdjustingComponentReference<XpathState>>();
 	}
 
 

@@ -23,8 +23,7 @@ class ExistMapVersionServiceTestIT extends BaseServiceTestBaseIT[MapVersion,MapV
     def createResource(name:String, uri:String, changeSetUri:String) = {
       var entry = new MapVersion()
       entry.setMapVersionName(name);
-      entry.setAbout("about")
-      entry.setDocumentURI(uri)
+      entry.setAbout(uri)
       entry.setSourceAndNotation(new SourceAndNotation());
       entry.setVersionOf(new MapReference())
       entry.getVersionOf().setContent("map")

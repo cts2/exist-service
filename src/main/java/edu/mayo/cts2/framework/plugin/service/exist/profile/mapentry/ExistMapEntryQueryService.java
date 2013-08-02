@@ -1,18 +1,11 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapentry;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.mapversion.MapEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapEntryDirectoryEntry;
+import edu.mayo.cts2.framework.model.mapversion.MapEntryListEntry;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
@@ -23,6 +16,12 @@ import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRest
 import edu.mayo.cts2.framework.service.command.restriction.MapEntryQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQuery;
 import edu.mayo.cts2.framework.service.profile.mapentry.MapEntryQueryService;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ExistMapEntryQueryService
@@ -122,7 +121,7 @@ public class ExistMapEntryQueryService
 	}
 
 	@Override
-	public DirectoryResult<MapEntry> getResourceList(
+	public DirectoryResult<MapEntryListEntry> getResourceList(
 			MapEntryQuery query, 
 			SortCriteria sortCriteria,
 			Page page) {

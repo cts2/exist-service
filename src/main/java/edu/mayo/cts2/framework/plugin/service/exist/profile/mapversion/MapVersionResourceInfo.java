@@ -38,7 +38,7 @@ public class MapVersionResourceInfo extends AbstractNameOrUriResourceInfo<MapVer
 
 	@Override
 	public String getUriXpath() {
-		return "@documentURI";
+		return "@about";
 	}
 
 	@Override

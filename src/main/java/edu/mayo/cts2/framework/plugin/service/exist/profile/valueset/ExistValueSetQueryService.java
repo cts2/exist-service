@@ -1,17 +1,12 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset;
 
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry;
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntryListEntry;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
@@ -22,6 +17,10 @@ import edu.mayo.cts2.framework.service.command.restriction.ValueSetQueryServiceR
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQuery;
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQueryService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Set;
 
 @Component
 public class ExistValueSetQueryService 
@@ -40,13 +39,13 @@ public class ExistValueSetQueryService
 		return new ValueSetCatalogEntrySummary();
 	}
 
-	public Set<StateAdjustingPropertyReference<XpathState>> getSupportedSearchReferences() {
-		Set<StateAdjustingPropertyReference<XpathState>> set = super.getSupportedSearchReferences();
-		
-		StateAdjustingPropertyReference<XpathState> resourceSynopsis = 
-				StateAdjustingPropertyReference.toPropertyReference(
-						StandardModelAttributeReference.RESOURCE_SYNOPSIS.getPropertyReference(),
-						getResourceSynopsisStateUpdater());
+	public Set<StateAdjustingComponentReference<XpathState>> getSupportedSearchReferences() {
+		Set<StateAdjustingComponentReference<XpathState>> set = super.getSupportedSearchReferences();
+
+        StateAdjustingComponentReference<XpathState> resourceSynopsis =
+                StateAdjustingComponentReference.toComponentReference(
+                        StandardModelAttributeReference.RESOURCE_SYNOPSIS.getComponentReference(),
+                        getResourceSynopsisStateUpdater());
 			
 		set.add(resourceSynopsis);
 		
@@ -117,7 +116,7 @@ public class ExistValueSetQueryService
 	}
 
 	@Override
-	public DirectoryResult<ValueSetCatalogEntry> getResourceList(
+	public DirectoryResult<ValueSetCatalogEntryListEntry> getResourceList(
 			ValueSetQuery query, 
 			SortCriteria sort,
 			Page page) {

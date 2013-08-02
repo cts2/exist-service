@@ -1,9 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.mapversion;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.EntityReferenceList;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
@@ -12,6 +8,7 @@ import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.mapversion.MapVersion;
 import edu.mayo.cts2.framework.model.mapversion.MapVersionDirectoryEntry;
+import edu.mayo.cts2.framework.model.mapversion.MapVersionListEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.service.mapversion.types.MapRole;
 import edu.mayo.cts2.framework.model.service.mapversion.types.MapStatus;
@@ -23,6 +20,9 @@ import edu.mayo.cts2.framework.service.command.restriction.MapVersionQueryServic
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQuery;
 import edu.mayo.cts2.framework.service.profile.mapversion.MapVersionQueryService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistMapVersionQueryService 
@@ -106,7 +106,7 @@ public class ExistMapVersionQueryService
 	}
 
 	@Override
-	public DirectoryResult<MapVersion> getResourceList(
+	public DirectoryResult<MapVersionListEntry> getResourceList(
 			MapVersionQuery query, 
 			SortCriteria sort,
 			Page page) {

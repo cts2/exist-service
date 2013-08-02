@@ -1,10 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
-
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
 import edu.mayo.cts2.framework.model.association.GraphNode;
@@ -22,6 +17,10 @@ import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServi
 import edu.mayo.cts2.framework.service.profile.association.AssociationQuery;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
+import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistAssociationQueryService 	
@@ -104,12 +103,6 @@ public class ExistAssociationQueryService
 		Assert.notNull(assertedIn.getVersion(), "Association MUST have CodeSystemVersion reference for 'assertedIn'.");
 		
 		summary.setAssertedBy(resource.getAssertedBy());
-		summary.setHref(
-				this.getUrlConstructor().createAssociationOfCodeSystemVersionUrl(
-						assertedIn.getCodeSystem().getContent(),
-						assertedIn.getVersion().getContent(),
-						resource.getLocalID()));
-		summary.setResourceName(resource.getLocalID());
 		summary.setSubject(resource.getSubject());
 		summary.setPredicate(resource.getPredicate());
 		summary.setTarget(resource.getTarget(0));

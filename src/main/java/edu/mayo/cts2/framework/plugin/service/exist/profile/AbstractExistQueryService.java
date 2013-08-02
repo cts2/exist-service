@@ -18,32 +18,11 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.xmldb.api.base.Resource;
-import org.xmldb.api.base.ResourceIterator;
-import org.xmldb.api.base.ResourceSet;
-import org.xmldb.api.base.XMLDBException;
-
 import edu.mayo.cts2.framework.core.url.UrlConstructor;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingPropertyReference.StateUpdater;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
-import edu.mayo.cts2.framework.model.core.PropertyReference;
-import edu.mayo.cts2.framework.model.core.ResourceDescription;
-import edu.mayo.cts2.framework.model.core.ResourceDescriptionDirectoryEntry;
-import edu.mayo.cts2.framework.model.core.ResourceVersionDescription;
-import edu.mayo.cts2.framework.model.core.ResourceVersionDescriptionDirectoryEntry;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.SummaryTransform;
@@ -53,6 +32,15 @@ import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.BaseQueryService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
+
+import java.util.*;
 
 /**
  * The Class AbstractService.
@@ -296,13 +284,13 @@ public abstract class AbstractExistQueryService
 		return returnSet;
 	}
 
-	public Set<StateAdjustingPropertyReference<S>> getSupportedSearchReferences() {
-		Set<StateAdjustingPropertyReference<S>> returnSet = 
-				new HashSet<StateAdjustingPropertyReference<S>>();
-		
-		StateAdjustingPropertyReference<S> resourceName = 
-				StateAdjustingPropertyReference.toPropertyReference(
-					StandardModelAttributeReference.RESOURCE_NAME.getPropertyReference(), 
+	public Set<StateAdjustingComponentReference<S>> getSupportedSearchReferences() {
+		Set<StateAdjustingComponentReference<S>> returnSet =
+				new HashSet<StateAdjustingComponentReference<S>>();
+
+        StateAdjustingComponentReference<S> resourceName =
+                StateAdjustingComponentReference.toComponentReference(
+					StandardModelAttributeReference.RESOURCE_NAME.getComponentReference(),
 					getResourceNameStateUpdater());
 		
 		returnSet.add(resourceName);
@@ -313,7 +301,7 @@ public abstract class AbstractExistQueryService
 	
 	
 	@Override
-	public Set<? extends PropertyReference> getSupportedSortReferences() {
+	public Set<? extends ComponentReference> getSupportedSortReferences() {
 		return null;
 	}
 

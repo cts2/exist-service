@@ -1,9 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem;
 
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.Resource;
-
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryListEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
@@ -15,6 +13,8 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemQueryService;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.Resource;
 
 @Component
 public class ExistCodeSystemQueryService 
@@ -119,7 +119,7 @@ public class ExistCodeSystemQueryService
 	}
 
 	@Override
-	public DirectoryResult<CodeSystemCatalogEntry> getResourceList(
+	public DirectoryResult<CodeSystemCatalogEntryListEntry> getResourceList(
 			ResourceQuery query, 
 			SortCriteria sortCriteria,
 			Page page) {

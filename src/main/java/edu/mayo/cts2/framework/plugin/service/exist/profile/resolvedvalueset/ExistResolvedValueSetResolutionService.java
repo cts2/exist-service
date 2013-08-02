@@ -1,20 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
-import edu.mayo.cts2.framework.model.core.EntitySynopsis;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
-import edu.mayo.cts2.framework.model.core.PropertyReference;
-import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
@@ -27,6 +15,12 @@ import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSet
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.name.ResolvedValueSetReadId;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResolutionEntityQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResult;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class ExistResolvedValueSetResolutionService 
@@ -55,7 +49,7 @@ public class ExistResolvedValueSetResolutionService
 	}
 
 	@Override
-	public ResolvedValueSetResult<EntitySynopsis> getResolution(
+	public ResolvedValueSetResult<URIAndEntityName> getResolution(
 			ResolvedValueSetReadId identifier,
 			Set<ResolvedFilter> filterComponent, 
 			Page page) {
@@ -66,16 +60,16 @@ public class ExistResolvedValueSetResolutionService
 			return null;
 		}
 	
-		List<EntitySynopsis> slice = this.slice(
-				resolvedValueSet.getMemberAsReference(),
+		List<URIAndEntityName> slice = this.slice(
+				resolvedValueSet.getEntryAsReference(),
 				page.getStart(), 
 				page.getMaxToReturn());
 
-		ResolvedValueSetResult<EntitySynopsis> result = 
-			new ResolvedValueSetResult<EntitySynopsis>(
+		ResolvedValueSetResult<URIAndEntityName> result =
+			new ResolvedValueSetResult<URIAndEntityName>(
 				resolvedValueSet.getResolutionInfo(),
 				slice,
-				resolvedValueSet.getMemberAsReference().size() == page.getEnd()
+				resolvedValueSet.getEntryAsReference().size() == page.getEnd()
 				);
 		
 		return result;
@@ -98,12 +92,12 @@ public class ExistResolvedValueSetResolutionService
 	}
 
 	@Override
-	public Set<? extends PropertyReference> getSupportedSearchReferences() {
+	public Set<? extends ComponentReference> getSupportedSearchReferences() {
 		return null;
 	}
 
 	@Override
-	public Set<? extends PropertyReference> getSupportedSortReferences() {
+	public Set<? extends ComponentReference> getSupportedSortReferences() {
 		return null;
 	}
 

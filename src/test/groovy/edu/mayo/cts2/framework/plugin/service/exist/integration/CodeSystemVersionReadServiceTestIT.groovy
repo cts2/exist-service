@@ -1,14 +1,11 @@
-package edu.mayo.cts2.framework.plugin.service.exist.integration;
-
-import static org.junit.Assert.*
-
-import org.junit.Ignore
-import org.junit.Test
-
+package edu.mayo.cts2.framework.plugin.service.exist.integration
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry
 import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntryMsg
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.SourceAndNotation
+import org.junit.Test
+
+import static org.junit.Assert.assertEquals
 
 
 class CodeSystemVersionReadServiceTestIT extends BaseReadServiceTestITBase {
@@ -39,7 +36,7 @@ class CodeSystemVersionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
 	public Object getReadByUriUrl() {
-		"codesystemversionbyuri?uri=http://test/docuri.org"
+		"codesystemversionbyuri?uri=http://testAbout.org"
 	}
 
 	@Override
@@ -49,7 +46,7 @@ class CodeSystemVersionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
 	public Object getResource() {
-		def entry = new CodeSystemVersionCatalogEntry(documentURI:"http://test/docuri.org", about:"http://testAbout.org", codeSystemVersionName:"TESTCSVERSION")
+		def entry = new CodeSystemVersionCatalogEntry(about:"http://testAbout.org", codeSystemVersionName:"TESTCSVERSION")
 		entry.setSourceAndNotation(new SourceAndNotation());
 		entry.setVersionOf(new CodeSystemReference(content:"TESTCS"));
 		entry.setOfficialResourceVersionId("2.0");
@@ -59,7 +56,7 @@ class CodeSystemVersionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
 	public resourcesEqual(resource) {
-		resource.getCodeSystemVersionCatalogEntry().getDocumentURI().equals("http://test/docuri.org")
+		resource.getCodeSystemVersionCatalogEntry().getAbout().equals("http://testAbout.org")
 	}
 	
 	

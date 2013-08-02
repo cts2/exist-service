@@ -27,8 +27,7 @@ class ExistCodeSystemVersionServiceTestIT extends BaseServiceTestBaseIT[CodeSyst
     def createResource(name:String, uri:String, changeSetUri:String) = {
       var entry = new CodeSystemVersionCatalogEntry()
       entry.setCodeSystemVersionName(name);
-      entry.setAbout("about")
-      entry.setDocumentURI(uri)
+      entry.setAbout(uri)
       entry.setSourceAndNotation(new SourceAndNotation());
 	  entry.setVersionOf(new CodeSystemReference());
 	  entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))

@@ -1,11 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.conceptdomain;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntry;
+import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntryListEntry;
 import edu.mayo.cts2.framework.model.conceptdomain.ConceptDomainCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
@@ -15,6 +12,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.conceptdomain.ConceptDomainQueryService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class ExistConceptDomainQueryService 
@@ -78,7 +78,7 @@ public class ExistConceptDomainQueryService
 
 	
 	@Override
-	public DirectoryResult<ConceptDomainCatalogEntry> getResourceList(
+	public DirectoryResult<ConceptDomainCatalogEntryListEntry> getResourceList(
 			ResourceQuery query, SortCriteria sortCriteria, Page page) {
 		throw new UnsupportedOperationException();
 	}

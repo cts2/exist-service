@@ -17,7 +17,6 @@ import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ScopedEntityName
 import edu.mayo.cts2.framework.model.core.TsAnyType
 import edu.mayo.cts2.framework.model.core.types.ChangeType
-import edu.mayo.cts2.framework.model.core.types.TargetReferenceType
 import edu.mayo.cts2.framework.model.entity.Designation
 import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription

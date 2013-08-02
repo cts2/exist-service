@@ -1,23 +1,17 @@
-package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset;
-
-import static org.junit.Assert.*
-
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
-
+package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
-import edu.mayo.cts2.framework.model.core.ChangeDescription
-import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
-import edu.mayo.cts2.framework.model.core.EntryDescription
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference
-import edu.mayo.cts2.framework.model.core.PropertyReference
-import edu.mayo.cts2.framework.model.core.URIAndEntityName
+import edu.mayo.cts2.framework.model.core.*
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntry
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQuery
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 
 class ExistValueSetQueryServiceTest extends BaseServiceDbCleaningBase {
 
@@ -68,7 +62,7 @@ class ExistValueSetQueryServiceTest extends BaseServiceDbCleaningBase {
 					[new ResolvedFilter(
 						matchValue:"m",
 						matchAlgorithmReference: new MatchAlgorithmReference("contains"),
-						propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"resourceName"))
+						componentReference: new ComponentReference(attributeReference: "resourceName")
 						)] as Set
 				}
 				
@@ -101,7 +95,7 @@ class ExistValueSetQueryServiceTest extends BaseServiceDbCleaningBase {
 					[new ResolvedFilter(
 						matchValue:"des",
 						matchAlgorithmReference: new MatchAlgorithmReference("contains"),
-						propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"resourceSynopsis"))
+						componentReference: new ComponentReference(attributeReference: "resourceSynopsis")
 						)] as Set
 				}
 				
@@ -134,7 +128,7 @@ class ExistValueSetQueryServiceTest extends BaseServiceDbCleaningBase {
 					[new ResolvedFilter(
 						matchValue:"__INVALID__",
 						matchAlgorithmReference: new MatchAlgorithmReference("contains"),
-						propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"resourceSynopsis"))
+                        componentReference: new ComponentReference(attributeReference: "resourceSynopsis")
 						)] as Set
 				}
 				
@@ -165,7 +159,7 @@ class ExistValueSetQueryServiceTest extends BaseServiceDbCleaningBase {
 					[new ResolvedFilter(
 						matchValue:"__INVALID__",
 						matchAlgorithmReference: new MatchAlgorithmReference("contains"),
-						propertyReference: new PropertyReference(referenceTarget: new URIAndEntityName(name:"resourceName"))
+                        componentReference: new ComponentReference(attributeReference: "resourceSynopsis")
 						)] as Set
 				}
 				

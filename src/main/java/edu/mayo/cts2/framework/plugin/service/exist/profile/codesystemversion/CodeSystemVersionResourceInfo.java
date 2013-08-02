@@ -38,7 +38,7 @@ public class CodeSystemVersionResourceInfo extends AbstractNameOrUriResourceInfo
 	
 	@Override
 	public String getUriXpath() {
-		return "@documentURI";
+		return "@about";
 	}
 
 	@Override
