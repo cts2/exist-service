@@ -1,4 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription
+
+import edu.mayo.cts2.framework.model.association.Association
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedFilter
 import edu.mayo.cts2.framework.model.core.*
@@ -9,6 +11,7 @@ import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
+import edu.mayo.cts2.framework.plugin.service.exist.profile.association.ExistAssociationMaintenanceService
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions.HierarchyRestriction
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions.HierarchyRestriction.HierarchyType
@@ -31,6 +34,9 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 	@Autowired
 	ExistEntityDescriptionMaintenanceService maint
+
+    @Autowired
+    ExistAssociationMaintenanceService assocMaint
 
 	@Test
 	void Get_Entity_Description_Summaries_With_Page_Limit(){
@@ -373,6 +379,176 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		assertEquals "c", summaries.entries.get(0).name.name
 		
 	}
+
+    @Test
+    void Get_Entity_Description_Has_Subject_Of_Href(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def parent = createEntity("p",changeSetUri,"desc")
+        parent.namedEntity.about = "http://p"
+        parent.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        parent.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+
+        def child = createEntity("c",changeSetUri,"desc")
+        child.namedEntity.about = "http://c"
+        child.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        child.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        child.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+
+        def assoc = new Association(associationID:"http://someAssoc")
+        assoc.setSubject(new URIAndEntityName(name:"p", namespace:"ns", uri:"http://p"))
+
+        assoc.addTarget(new StatementTarget())
+        assoc.getTarget(0).setEntity(new URIAndEntityName(name:"c", namespace:"ns", uri:"http://c"))
+
+        assoc.setPredicate(new PredicateReference(name:"predicatename", namespace:"ns", uri:"uri"))
+
+        assoc.setAssertedBy(new CodeSystemVersionReference(
+                codeSystem: new CodeSystemReference(content:"TESTCS"),
+                version: new NameAndMeaningReference(content:"TESTCSVERSION")))
+
+        assoc.setChangeableElementGroup(new ChangeableElementGroup(
+                changeDescription: new ChangeDescription(
+                        changeType: ChangeType.CREATE,
+                        changeDate: new Date(),
+                        containingChangeSet: changeSetUri)))
+
+        maint.createResource(parent)
+        maint.createResource(child)
+        assocMaint.createResource(assoc)
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def ed = read.read(new EntityDescriptionReadId("http://p", ModelUtils.nameOrUriFromName("TESTCSVERSION")), null)
+
+        assertNotNull ed.namedEntity.subjectOf
+    }
+
+    @Test
+    void Get_Entity_Description_Has_Subject_Of_Href_Invalid(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def parent = createEntity("p",changeSetUri,"desc")
+        parent.namedEntity.about = "http://p"
+        parent.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        parent.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+
+        def child = createEntity("c",changeSetUri,"desc")
+        child.namedEntity.about = "http://c"
+        child.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        child.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        child.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+
+        def assoc = new Association(associationID:"http://someAssoc")
+        assoc.setSubject(new URIAndEntityName(name:"__INVALID__", namespace:"__INVALID__", uri:"__INVALID__"))
+
+        assoc.addTarget(new StatementTarget())
+        assoc.getTarget(0).setEntity(new URIAndEntityName(name:"c", namespace:"ns", uri:"http://c"))
+
+        assoc.setPredicate(new PredicateReference(name:"predicatename", namespace:"ns", uri:"uri"))
+
+        assoc.setAssertedBy(new CodeSystemVersionReference(
+                codeSystem: new CodeSystemReference(content:"TESTCS"),
+                version: new NameAndMeaningReference(content:"TESTCSVERSION")))
+
+        assoc.setChangeableElementGroup(new ChangeableElementGroup(
+                changeDescription: new ChangeDescription(
+                        changeType: ChangeType.CREATE,
+                        changeDate: new Date(),
+                        containingChangeSet: changeSetUri)))
+
+        maint.createResource(parent)
+        maint.createResource(child)
+        assocMaint.createResource(assoc)
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def ed = read.read(new EntityDescriptionReadId("http://p", ModelUtils.nameOrUriFromName("TESTCSVERSION")), null)
+
+        assertNull ed.namedEntity.subjectOf
+    }
+
+    @Test
+    void Get_Entity_Description_Has_Children_Href(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def parent = createEntity("p",changeSetUri,"desc")
+        parent.namedEntity.about = "http://parent"
+        parent.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        parent.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+
+        def child = createEntity("c",changeSetUri,"desc")
+        child.namedEntity.about = "http://child"
+        child.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        child.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        child.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+        child.namedEntity.parent = new URIAndEntityName(
+                name:"p",
+                namespace:"ns",
+                uri:"http://parent")
+
+        maint.createResource(parent)
+        maint.createResource(child)
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def ed = read.read(new EntityDescriptionReadId("http://parent", ModelUtils.nameOrUriFromName("TESTCSVERSION")), null)
+
+        assertNotNull ed.namedEntity.children
+    }
+
+    @Test
+    void Get_Entity_Description_Has_Children_No_Href(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def parent = createEntity("p",changeSetUri,"desc")
+        parent.namedEntity.about = "http://parent"
+        parent.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        parent.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        parent.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+
+        def child = createEntity("c",changeSetUri,"desc")
+        child.namedEntity.about = "http://child"
+        child.namedEntity.setDescribingCodeSystemVersion(new CodeSystemVersionReference())
+        child.namedEntity.getDescribingCodeSystemVersion().setVersion(new NameAndMeaningReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getVersion().setContent("TESTCSVERSION")
+        child.namedEntity.getDescribingCodeSystemVersion().setCodeSystem(new CodeSystemReference())
+        child.namedEntity.getDescribingCodeSystemVersion().getCodeSystem().setContent("TESTCS")
+        child.namedEntity.parent = new URIAndEntityName(
+                name:"p",
+                namespace:"ns",
+                uri:"http://parent")
+
+        maint.createResource(parent)
+        maint.createResource(child)
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def ed = read.read(new EntityDescriptionReadId("http://child", ModelUtils.nameOrUriFromName("TESTCSVERSION")), null)
+
+        assertNull ed.namedEntity.children
+    }
 
 	@Test
 	void Get_Entity_Description_Children_Uri(){

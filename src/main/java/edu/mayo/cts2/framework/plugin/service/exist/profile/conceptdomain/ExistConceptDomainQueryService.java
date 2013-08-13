@@ -100,8 +100,12 @@ public class ExistConceptDomainQueryService
 			ConceptDomainCatalogEntry resource,
 			ConceptDomainCatalogEntrySummary summary,
 			org.xmldb.api.base.Resource eXistResource) {
-		
-		return this.baseTransform(summary, resource);
+
+        ConceptDomainCatalogEntrySummary entry = this.baseTransform(summary, resource);
+        entry.setConceptDomainName(resource.getConceptDomainName());
+        entry.setHref(this.getUrlConstructor().getServerRootWithAppName() + "/conceptdomain/" + entry.getConceptDomainName());
+
+        return entry;
 	}
 
 	@Override

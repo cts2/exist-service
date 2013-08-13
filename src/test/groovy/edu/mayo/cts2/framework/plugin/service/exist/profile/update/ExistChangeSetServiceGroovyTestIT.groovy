@@ -1,21 +1,19 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update
-
-import static org.junit.Assert.*
-
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
-
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry
 import edu.mayo.cts2.framework.model.core.ChangeDescription
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup
 import edu.mayo.cts2.framework.model.core.types.ChangeType
 import edu.mayo.cts2.framework.model.core.types.FinalizableState
-import edu.mayo.cts2.framework.model.mapversion.*
 import edu.mayo.cts2.framework.model.updates.ChangeSet
 import edu.mayo.cts2.framework.model.updates.ChangeableResource
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceDbCleaningBase
 import edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem.ExistCodeSystemReadService
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 
 class ExistChangeSetServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 

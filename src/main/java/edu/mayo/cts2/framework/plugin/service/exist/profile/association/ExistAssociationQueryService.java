@@ -13,6 +13,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQuery;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
@@ -21,9 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 @Component
-public class ExistAssociationQueryService 	
+public class ExistAssociationQueryService
 	extends AbstractExistQueryService
 		<Association,
 		AssociationDirectoryEntry,
@@ -61,7 +63,34 @@ public class ExistAssociationQueryService
 				getSupportedMatchAlgorithms(),
 				getSupportedSearchReferences());
 		}
-	}
+
+        public AssociationDirectoryBuilder restrict(final AssociationQueryServiceRestrictions restriction){
+
+            if(restriction != null &&
+                    restriction.getSourceEntity() != null) {
+
+                getRestrictions().add(
+                        new XpathStateBuildingRestriction<XpathState>(
+                                ".//association:subject/core:name",
+                                "text()",
+                                XpathStateBuildingRestriction.AllOrAny.ALL,
+                                Arrays.asList(restriction.getSourceEntity().getEntityName().getName())));
+            }
+
+            if(restriction != null
+                    && restriction.getTargetEntity() != null) {
+
+                getRestrictions().add(
+                        new XpathStateBuildingRestriction<XpathState>(
+                                ".//association:target/core:entity/core:name",
+                                "text()",
+                                XpathStateBuildingRestriction.AllOrAny.ALL,
+                                Arrays.asList(restriction.getTargetEntity().getEntityName().getName())));
+            }
+
+            return this;
+        }
+    }
 
 	@Override
 	public DirectoryResult<AssociationDirectoryEntry> getResourceSummaries(
@@ -70,9 +99,10 @@ public class ExistAssociationQueryService
 			Page page) {
 		AssociationDirectoryBuilder builder = new AssociationDirectoryBuilder(
 				this.getChangeSetUri(query.getReadContext()));
-		
-		//TODO
+
 		AssociationQueryServiceRestrictions restrictions = query.getRestrictions();
+
+        builder =  builder.restrict(restrictions);
 		
 		return builder.restrict(
 				query.getFilterComponent()).
@@ -99,8 +129,8 @@ public class ExistAssociationQueryService
 		
 		CodeSystemVersionReference assertedIn = getAssertedIn(resource);
 		
-		Assert.notNull(assertedIn.getCodeSystem(), "Association MUST have CodeSystem reference for 'assertedIn'.");
-		Assert.notNull(assertedIn.getVersion(), "Association MUST have CodeSystemVersion reference for 'assertedIn'.");
+		Assert.notNull(assertedIn.getCodeSystem(), "association MUST have CodeSystem reference for 'assertedIn'.");
+		Assert.notNull(assertedIn.getVersion(), "association MUST have CodeSystemVersion reference for 'assertedIn'.");
 		
 		summary.setAssertedBy(resource.getAssertedBy());
 		summary.setSubject(resource.getSubject());

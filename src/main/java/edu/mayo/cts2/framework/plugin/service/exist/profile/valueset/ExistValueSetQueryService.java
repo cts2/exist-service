@@ -64,7 +64,7 @@ public class ExistValueSetQueryService
 		
 		summary.setValueSetName(resource.getValueSetName());
 		summary.setHref(getUrlConstructor().createValueSetUrl(resource.getValueSetName()));
-		
+
 		return summary;
 	}
 

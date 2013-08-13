@@ -1,18 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.CodeSystemReference;
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
-import edu.mayo.cts2.framework.model.core.EntityReference;
-import edu.mayo.cts2.framework.model.core.SortCriteria;
-import edu.mayo.cts2.framework.model.core.VersionTagReference;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
@@ -21,8 +11,17 @@ import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.association.AssociationResourceInfo;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.XMLDBException;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @Component
 public class ExistEntityDescriptionReadService 
@@ -31,9 +30,14 @@ public class ExistEntityDescriptionReadService
 		EntityDescriptionReadId,
 		edu.mayo.cts2.framework.model.service.entitydescription.EntityDescriptionReadService>   
 	implements EntityDescriptionReadService {
+
+    protected final Log log = LogFactory.getLog(getClass().getName());
 	
 	@Resource
 	private EntityDescriptionResourceInfo entityDescriptionResourceInfo;
+
+    @Resource
+    private AssociationResourceInfo associationResourceInfo;
 
 	@Override
 	public EntityDescription read(EntityDescriptionReadId id, ResolvedReadContext readContext) {
@@ -60,9 +64,60 @@ public class ExistEntityDescriptionReadService
 		entity.getDescribingCodeSystemVersion().
 			getVersion().
 			setHref(this.getUrlConstructor().createCodeSystemVersionUrl(codeSystemName, codeSystemVersionName));
-	
-		return ed;
+
+        try {
+            if(this.hasParents(entity.getAbout())){
+                entity.setChildren(
+                    this.getUrlConstructor().createChildrenUrl(
+                        codeSystemName, codeSystemVersionName,
+                            ExistServiceUtils.getExternalEntityName(entity.getEntityID(), codeSystemName)));
+            }
+        } catch(XMLDBException e){
+            log.warn(e);
+        }
+
+        try {
+            if(this.hasSubjectOf(entity.getAbout())){
+                entity.setSubjectOf(
+                        this.getUrlConstructor().createChildrenUrl(
+                                codeSystemName, codeSystemVersionName,
+                                ExistServiceUtils.getExternalEntityName(entity.getEntityID(), codeSystemName)));
+            }
+        } catch(XMLDBException e){
+            log.warn(e);
+        }
+
+        try {
+            if(this.hasTargetOf(entity.getAbout())){
+                entity.setTargetOf(
+                        this.getUrlConstructor().createChildrenUrl(
+                                codeSystemName, codeSystemVersionName,
+                                ExistServiceUtils.getExternalEntityName(entity.getEntityID(), codeSystemName)));
+            }
+        } catch(XMLDBException e){
+            log.warn(e);
+        }
+
+
+        return ed;
 	}
+
+    protected boolean hasSubjectOf(String entityUri) throws XMLDBException {
+        return this.getExistResourceDao().
+            query(this.associationResourceInfo.getResourceBasePath(),
+                    "//association:Association/association:subject[@uri &= \"" + entityUri + "\"]", 0, 1).getIterator().hasMoreResources();
+    }
+
+    protected boolean hasTargetOf(String entityUri) throws XMLDBException {
+        return this.getExistResourceDao().
+                query(this.associationResourceInfo.getResourceBasePath(),
+                        "//association:Association/association:target/core:entity[@uri &= \""+entityUri+"\"]", 0, 1).getIterator().hasMoreResources();
+    }
+
+    protected boolean hasParents(String entityUri) throws XMLDBException {
+        return this.getExistResourceDao().
+                query(this.getResourceInfo().getResourceBasePath(), "//entity:parent[@uri &= \""+entityUri+"\"]", 0, 1).getIterator().hasMoreResources();
+    }
 
 	@Override
 	protected String getExtraPathForUriLookup(EntityDescriptionReadId resourceIdentifier){

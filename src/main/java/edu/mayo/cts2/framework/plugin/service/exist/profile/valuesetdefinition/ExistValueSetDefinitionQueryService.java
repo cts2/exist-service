@@ -11,10 +11,12 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionListEn
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
 import org.springframework.stereotype.Component;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.Resource;
 
@@ -43,6 +45,16 @@ public class ExistValueSetDefinitionQueryService
 		
 		summary.setDefinedValueSet(resource.getDefinedValueSet());
 		summary.setVersionTag(resource.getVersionTag());
+
+        String name;
+        try {
+            name = ExistServiceUtils.getNameFromResourceName(eXistResource.getId());
+        } catch (XMLDBException e) {
+            throw new IllegalStateException(e);
+        }
+
+        summary.setHref(
+            this.getUrlConstructor().createValueSetDefinitionUrl(resource.getDefinedValueSet().getContent(), name));
 		
 		return summary;
 	}
