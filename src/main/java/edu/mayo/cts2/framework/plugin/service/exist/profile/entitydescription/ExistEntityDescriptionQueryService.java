@@ -194,18 +194,46 @@ public class ExistEntityDescriptionQueryService
 			if(restriction != null &&
 					CollectionUtils.isNotEmpty(restriction.getEntities())){
 				
-				//TODO: This currently does NOT resolve URIs
-				Set<String> names = new HashSet<String>();
+				Set<ScopedEntityName> names = new HashSet<ScopedEntityName>();
+                Set<String> uris = new HashSet<String>();
 				for(EntityNameOrURI entityNameOrUri : restriction.getEntities()){
-					names.add(entityNameOrUri.getEntityName().getName());
+                    if(entityNameOrUri.getEntityName() != null){
+                        names.add(entityNameOrUri.getEntityName());
+                    } else {
+                        uris.add(entityNameOrUri.getUri());
+                    }
 				}
-		
-				getRestrictions().add(
-						new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
-								".//entity:entityID/core:name", 
-								"text()", 
-								AllOrAny.ANY,
-								names));
+
+                if(names.size() > 0){
+                    for(final ScopedEntityName name : names){
+                        getRestrictions().add(new StateBuildingRestriction<EntityDescriptionDirectoryState>() {
+                            @Override
+                            public EntityDescriptionDirectoryState restrict(EntityDescriptionDirectoryState state) {
+                                boolean isBlankState = StringUtils.isBlank(state.getXpath());
+
+                                String namespaceXpath = "";
+                                if(! StringUtils.isBlank(name.getNamespace())){
+                                    namespaceXpath = " and core:namespace/text() &= '" + name.getNamespace() + "'";
+                                }
+
+                                state.setXpath(
+                                    state.getXpath() + (isBlankState ? "" : " | " + entityDescriptionResourceInfo.getResourceXpath()) +
+                                            "[.//entity:entityID[core:name/text() &= '" + name.getName() + "'" + namespaceXpath + "]]");
+
+                                return state;
+                            }
+                        });
+                    }
+                }
+
+                if(uris.size() > 0){
+                    getRestrictions().add(
+                            new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
+                                    "*",
+                                    "@about",
+                                    AllOrAny.ANY,
+                                    uris));
+                }
 			}
 			
 			if(restriction != null && restriction.getHierarchyRestriction()!= null){
@@ -227,8 +255,8 @@ public class ExistEntityDescriptionQueryService
 				} else {
 					getRestrictions().add(
 							new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
-								".//entity:parent", 
-								"@uri", 
+								".//entity:parent",
+								"@uri",
 								AllOrAny.ANY,
 								Arrays.asList(parent.getUri())));
 				}

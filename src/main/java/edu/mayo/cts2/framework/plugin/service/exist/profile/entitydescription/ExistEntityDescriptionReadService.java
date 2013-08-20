@@ -1,27 +1,38 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
 import edu.mayo.cts2.framework.model.command.Page;
+import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.entity.EntityListEntry;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
+import edu.mayo.cts2.framework.model.service.core.Query;
 import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistDefaultReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.DefaultResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.association.AssociationResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntitiesFromAssociationsQuery;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery;
+import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ExistEntityDescriptionReadService 
@@ -38,6 +49,9 @@ public class ExistEntityDescriptionReadService
 
     @Resource
     private AssociationResourceInfo associationResourceInfo;
+
+    @Resource
+    private EntityDescriptionQueryService entityDescriptionQueryService;
 
 	@Override
 	public EntityDescription read(EntityDescriptionReadId id, ResolvedReadContext readContext) {
@@ -66,7 +80,7 @@ public class ExistEntityDescriptionReadService
 			setHref(this.getUrlConstructor().createCodeSystemVersionUrl(codeSystemName, codeSystemVersionName));
 
         try {
-            if(this.hasParents(entity.getAbout())){
+            if(this.hasChildren(entity.getAbout())){
                 entity.setChildren(
                     this.getUrlConstructor().createChildrenUrl(
                         codeSystemName, codeSystemVersionName,
@@ -79,7 +93,7 @@ public class ExistEntityDescriptionReadService
         try {
             if(this.hasSubjectOf(entity.getAbout())){
                 entity.setSubjectOf(
-                        this.getUrlConstructor().createChildrenUrl(
+                        this.getUrlConstructor().createSubjectOfUrl(
                                 codeSystemName, codeSystemVersionName,
                                 ExistServiceUtils.getExternalEntityName(entity.getEntityID(), codeSystemName)));
             }
@@ -90,7 +104,7 @@ public class ExistEntityDescriptionReadService
         try {
             if(this.hasTargetOf(entity.getAbout())){
                 entity.setTargetOf(
-                        this.getUrlConstructor().createChildrenUrl(
+                        this.getUrlConstructor().createTargetOfUrl(
                                 codeSystemName, codeSystemVersionName,
                                 ExistServiceUtils.getExternalEntityName(entity.getEntityID(), codeSystemName)));
             }
@@ -114,7 +128,7 @@ public class ExistEntityDescriptionReadService
                         "//association:Association/association:target/core:entity[@uri &= \""+entityUri+"\"]", 0, 1).getIterator().hasMoreResources();
     }
 
-    protected boolean hasParents(String entityUri) throws XMLDBException {
+    protected boolean hasChildren(String entityUri) throws XMLDBException {
         return this.getExistResourceDao().
                 query(this.getResourceInfo().getResourceBasePath(), "//entity:parent[@uri &= \""+entityUri+"\"]", 0, 1).getIterator().hasMoreResources();
     }
@@ -131,20 +145,73 @@ public class ExistEntityDescriptionReadService
 
 	@Override
 	public DirectoryResult<EntityListEntry> readEntityDescriptions(
-			EntityNameOrURI entityId, SortCriteria sortCriteria,
-			ResolvedReadContext readContext, Page page) {
-		throw new UnsupportedOperationException();
+			final EntityNameOrURI entityId,
+            SortCriteria sortCriteria,
+			final ResolvedReadContext readContext,
+            Page page) {
+        throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public EntityReference availableDescriptions(EntityNameOrURI entityId,
-			ResolvedReadContext readContext) {
-		throw new UnsupportedOperationException();
+	public EntityReference availableDescriptions(
+            final EntityNameOrURI entityId,
+			final ResolvedReadContext readContext) {
+        Page page = new Page();
+        page.setMaxToReturn(Integer.MAX_VALUE);
+
+        DirectoryResult<EntityDirectoryEntry> result = this.entityDescriptionQueryService.getResourceSummaries(new EntityDescriptionQuery() {
+            @Override
+            public EntitiesFromAssociationsQuery getEntitiesFromAssociationsQuery() {
+                return null;
+            }
+
+            @Override
+            public EntityDescriptionQueryServiceRestrictions getRestrictions() {
+                EntityDescriptionQueryServiceRestrictions restrictions = new EntityDescriptionQueryServiceRestrictions();
+                restrictions.setEntities(new HashSet<EntityNameOrURI>(Arrays.asList(entityId)));
+
+                return restrictions;
+            }
+
+            @Override
+            public Query getQuery() {
+                return null;
+            }
+
+            @Override
+            public Set<ResolvedFilter> getFilterComponent() {
+                return null;
+            }
+
+            @Override
+            public ResolvedReadContext getReadContext() {
+                return readContext;
+            }
+        }, null, page);
+
+        if(result == null || CollectionUtils.isEmpty(result.getEntries())){
+            return null;
+        } else {
+            EntityReference reference = new EntityReference();
+
+            EntityDirectoryEntry firstEntry = result.getEntries().get(0);
+
+            reference.setAbout(firstEntry.getAbout());
+            reference.setName(firstEntry.getName());
+
+            for(EntityDirectoryEntry entry : result.getEntries()){
+                for(DescriptionInCodeSystem description : entry.getKnownEntityDescription()){
+                    reference.addKnownEntityDescription(description);
+                }
+            }
+
+            return reference;
+        }
 	}
 
 	@Override
 	public List<EntityListEntry> readEntityDescriptions(EntityNameOrURI entityId,
-			ResolvedReadContext readContext) {
+                ResolvedReadContext readContext) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,17 +1,14 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.UUID;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager;
+import java.io.File;
+import java.io.StringWriter;
+import java.util.UUID;
 
 
 public class TestExistManager extends ExistManager {

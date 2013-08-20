@@ -1,9 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
+import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -11,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.exist.validation.service.ValidationService;
 import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.IndexQueryService;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
@@ -20,11 +20,11 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
-import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
-import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
-import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
-public class ExistManager implements InitializingBean {	
+public class ExistManager implements InitializingBean, DisposableBean {
 	
 	protected final Log log = LogFactory.getLog(getClass().getName());
 	
@@ -44,8 +44,15 @@ public class ExistManager implements InitializingBean {
 	private ValidationService validationService;
 	
 	private Properties namespaceMappingProperties;
-	
-	@Override
+
+    @Override
+    public void destroy() throws Exception {
+        if(StringUtils.isNotBlank(this.existHome)){
+            this.databaseInstanceManager.shutdown();
+        }
+    }
+
+    @Override
 	public void afterPropertiesSet() throws Exception {
 
 		if(StringUtils.isNotBlank(this.existHome)){
@@ -60,7 +67,7 @@ public class ExistManager implements InitializingBean {
 		Database database = (Database) cl.newInstance();
 		database.setProperty("create-database", "true");
 		DatabaseManager.registerDatabase(database);
-		
+
 		Collection root = this.getOrCreateCollection("");
 		
 		xQueryService = (XQueryService) root.getService("XPathQueryService", "1.0");

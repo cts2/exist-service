@@ -335,6 +335,84 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		assertNull entry
 	}
+
+    @Test void GetAvailableDescriptionsName(){
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource( createEntity("something",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def nameOrUri = new EntityNameOrURI(entityName: new ScopedEntityName(name: "something", namespace: "ns"))
+        def entry = read.availableDescriptions(nameOrUri, null)
+
+        assertNotNull entry
+    }
+
+    @Test void GetAvailableDescriptionsNameWrongNamespace(){
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource( createEntity("something",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def nameOrUri = new EntityNameOrURI(entityName: new ScopedEntityName(name: "something", namespace: "__INVALID__"))
+        def entry = read.availableDescriptions(nameOrUri, null)
+
+        assertNull entry
+    }
+
+    @Test void GetAvailableDescriptionsNameNoNamespace(){
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource( createEntity("something",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def nameOrUri = new EntityNameOrURI(entityName: new ScopedEntityName(name: "something"))
+        def entry = read.availableDescriptions(nameOrUri, null)
+
+        assertNotNull entry
+    }
+
+    @Test void GetAvailableDescriptionsNameInvalid(){
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource( createEntity("something",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def nameOrUri = new EntityNameOrURI(entityName: new ScopedEntityName(name: "__INVALID__", namespace: "__INVALID__"))
+        def entry = read.availableDescriptions(nameOrUri, null)
+
+        assertNull entry
+    }
+
+    @Test void GetAvailableDescriptionsUri(){
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource( createEntity("something",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def nameOrUri = new EntityNameOrURI(uri: "about")
+        def entry = read.availableDescriptions(nameOrUri, null)
+
+        assertNotNull entry
+    }
+
+    @Test void GetAvailableDescriptionsUriInvalid(){
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource( createEntity("something",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def nameOrUri = new EntityNameOrURI(uri: "__INVALID__")
+        def entry = read.availableDescriptions(nameOrUri, null)
+
+        assertNull entry
+    }
 	
 	@Test
 	void Get_Entity_Description_Children_Name(){

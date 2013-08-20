@@ -7,22 +7,22 @@ import edu.mayo.cts2.framework.model.association.types.GraphDirection;
 import edu.mayo.cts2.framework.model.association.types.GraphFocus;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
+import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
-import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRestriction;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQuery;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 
 @Component
 public class ExistAssociationQueryService
@@ -69,23 +69,49 @@ public class ExistAssociationQueryService
             if(restriction != null &&
                     restriction.getSourceEntity() != null) {
 
-                getRestrictions().add(
-                        new XpathStateBuildingRestriction<XpathState>(
-                                ".//association:subject/core:name",
-                                "text()",
-                                XpathStateBuildingRestriction.AllOrAny.ALL,
-                                Arrays.asList(restriction.getSourceEntity().getEntityName().getName())));
+                final ScopedEntityName name = restriction.getSourceEntity().getEntityName();
+
+                getRestrictions().add(new StateBuildingRestriction<XpathState>() {
+                    @Override
+                    public XpathState restrict(XpathState state) {
+                        boolean isBlankState = StringUtils.isBlank(state.getXpath());
+
+                        String namespaceXpath = "";
+                        if(! StringUtils.isBlank(name.getNamespace())){
+                            namespaceXpath = " and core:namespace/text() &= '" + name.getNamespace() + "'";
+                        }
+
+                        state.setXpath(
+                                state.getXpath() + (isBlankState ? "" : " | " + associationResourceInfo.getResourceXpath()) +
+                                        "[.//association:subject[core:name/text() &= '" + name.getName() + "'" + namespaceXpath + "]]");
+
+                        return state;
+                    }
+                });
             }
 
             if(restriction != null
                     && restriction.getTargetEntity() != null) {
 
-                getRestrictions().add(
-                        new XpathStateBuildingRestriction<XpathState>(
-                                ".//association:target/core:entity/core:name",
-                                "text()",
-                                XpathStateBuildingRestriction.AllOrAny.ALL,
-                                Arrays.asList(restriction.getTargetEntity().getEntityName().getName())));
+                final ScopedEntityName name = restriction.getTargetEntity().getEntityName();
+
+                getRestrictions().add(new StateBuildingRestriction<XpathState>() {
+                    @Override
+                    public XpathState restrict(XpathState state) {
+                        boolean isBlankState = StringUtils.isBlank(state.getXpath());
+
+                        String namespaceXpath = "";
+                        if(! StringUtils.isBlank(name.getNamespace())){
+                            namespaceXpath = " and core:namespace/text() &= '" + name.getNamespace() + "'";
+                        }
+
+                        state.setXpath(
+                                state.getXpath() + (isBlankState ? "" : " | " + associationResourceInfo.getResourceXpath()) +
+                                        "[.//association:target/core:entity[core:name/text() &= '" + name.getName() + "'" + namespaceXpath + "]]");
+
+                        return state;
+                    }
+                });
             }
 
             return this;
