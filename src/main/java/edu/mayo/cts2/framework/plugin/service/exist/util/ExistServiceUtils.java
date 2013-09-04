@@ -1,10 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.util;
 
-import org.apache.commons.lang.StringUtils;
-
 import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.core.URIAndEntityName;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
+import org.apache.commons.lang.StringUtils;
 
 public class ExistServiceUtils {
 		
@@ -14,16 +13,24 @@ public class ExistServiceUtils {
 	
 	public static final String XML_SUFFIX = ".xml";
 
+    public static String getExistEntityName(EntityDescriptionBase entity) {
+        return getExistEntityName(entity.getEntityID());
+    }
+
 	public static String getExistEntityName(URIAndEntityName name) {
-		return name.getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
-				+ name.getName();
-	}
+        return getExistEntityName(name.getNamespace(), name.getName());
+    }
 	
 	public static String getExistEntityName(ScopedEntityName name) {
-		return name.getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
-				+ name.getName();
+		return getExistEntityName(name.getNamespace(), name.getName());
 	}
-	
+
+    private static String getExistEntityName(String namespace, String name) {
+        String encodedName = getExistResourceName(namespace + EXIST_ENTITY_NAME_SEPERATOR + name);
+
+        return encodedName + "_" + Integer.toHexString(encodedName.hashCode());
+    }
+
 	public static String getTempChangeSetContentDirName(String changeSetUri){
 		return "tmpChangeSet-" + uriToExistName(changeSetUri);
 	}
@@ -48,19 +55,13 @@ public class ExistServiceUtils {
 			}
 		}
 		
-		return ExistServiceUtils.getExistResourceName(sb.toString());
-	}
-	public static String getExistEntityName(EntityDescriptionBase entity) {
-		return entity.getEntityID().getNamespace() + EXIST_ENTITY_NAME_SEPERATOR
-				+ entity.getEntityID().getName();
+		return sb.toString();
 	}
 	
 	public static String getExistResourceName(String externalName){
-		return externalName.replaceAll(":", "__");
-	}
-	
-	public static String getExternalName(String existName){
-		return existName.replaceAll("__", ":");
+		String name = externalName.replaceAll("[^a-zA-Z0-9.\\-/]", "_");
+
+        return name;
 	}
 	
 	public static String getNameFromResourceName(String existName){
