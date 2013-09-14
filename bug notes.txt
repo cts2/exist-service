@@ -1,0 +1,16 @@
+A few issues have been observed in the underlying existDB.
+
+Collection Removals are logging FATAL errors during testing:
+https://sourceforge.net/p/exist/bugs/829/
+Not sure if these are harmful or not - they may be corrupting the recovery log.  Doesn't impact any tests.
+
+Collection Removal can deadlock the main thread if another thread is active:
+https://sourceforge.net/p/exist/bugs/830/
+
+The Lucene indexes are logging a warning upon server start.  This has been investigated, and is harmless.
+https://sourceforge.net/p/exist/bugs/828/
+
+The nuisance warnings that are logged when checking to see if a resource exits has been logged as a bug:
+https://sourceforge.net/p/exist/bugs/827/
+This causes the WARN : org.exist.xmldb.LocalCollection - Resource counter not found messages.  These are harmless.
+
