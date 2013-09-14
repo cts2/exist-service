@@ -28,6 +28,9 @@ import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
+import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer
+import org.xmldb.api.base.ErrorCodes;
+import org.xmldb.api.base.XMLDBException;
 
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
@@ -44,8 +47,21 @@ class ExistEntityDescriptionServiceTestIT extends AssertionsForJUnit {
   @Autowired var changeSetService:ChangeSetService = null
   
   @Before def cleanExist() {
-    	manager.getCollectionManagementService().removeCollection("/db");
-  }
+		CountingIncrementer.waitForPendingWrites();
+		try
+		{
+			manager.getCollectionManagementService().removeCollection(manager.getCollectionRoot());
+		}
+		catch
+		{
+			case e: XMLDBException =>
+			if (e.errorCode != ErrorCodes.INVALID_COLLECTION)
+			{
+				throw e;
+			}
+		}
+		manager.getOrCreateCollection(manager.getCollectionRoot());
+	}
   
     def buildChangeableElementGroup(uri:String):ChangeableElementGroup = {
 	  var g = new ChangeableElementGroup()

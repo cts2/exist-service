@@ -12,6 +12,9 @@ import org.junit.Before
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import edu.mayo.cts2.framework.model.map.MapCatalogEntrySummary
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
+import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer
+import org.xmldb.api.base.ErrorCodes;
+import org.xmldb.api.base.XMLDBException;
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(
@@ -23,7 +26,20 @@ class MapExistDaoTestIT extends AssertionsForJUnit {
   @Autowired var dao:ExistDaoImpl = null
   
   @Before def cleanExist() {
-    dao.getExistManager().getCollectionManagementService().removeCollection("/db");
+    CountingIncrementer.waitForPendingWrites();
+	try
+	{
+		dao.getExistManager().getCollectionManagementService().removeCollection(dao.getExistManager().getCollectionRoot());
+	}
+	catch
+	{
+		case e: XMLDBException =>
+		if (e.errorCode != ErrorCodes.INVALID_COLLECTION)
+		{
+			throw e;
+		}
+	}
+    dao.getExistManager().getOrCreateCollection(dao.getExistManager().getCollectionRoot());
   }
    
   @Test def testInsertMap() {
