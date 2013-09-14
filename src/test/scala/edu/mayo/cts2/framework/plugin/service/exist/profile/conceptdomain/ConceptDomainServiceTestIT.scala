@@ -25,7 +25,7 @@ class ConceptDomainServiceTestIT
 
   
   
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):ConceptDomainCatalogEntry = {
     var entry = new ConceptDomainCatalogEntry()
     entry.setConceptDomainName(name)
     entry.setAbout(uri)

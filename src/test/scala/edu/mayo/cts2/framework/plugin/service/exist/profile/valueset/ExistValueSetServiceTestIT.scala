@@ -18,7 +18,7 @@ class ExistValueSetServiceTestIT extends BaseServiceTestBaseIT[ValueSetCatalogEn
     classOf[UnknownValueSet]
   }
 
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):ValueSetCatalogEntry = {
     var entry = new ValueSetCatalogEntry()
     entry.setAbout(uri)
     entry.setValueSetName(name)

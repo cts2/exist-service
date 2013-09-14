@@ -19,6 +19,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService
 import edu.mayo.cts2.framework.model.service.exception.CTS2Exception
 import edu.mayo.cts2.framework.model.service.exception.ChangeSetIsNotOpen
+import edu.mayo.cts2.framework.model.extension.LocalIdResource
+import org.xmldb.api.base.ErrorCodes;
+import org.xmldb.api.base.XMLDBException;
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @ContextConfiguration(
@@ -31,7 +34,20 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
   @Autowired var changeSetService:ChangeSetService = null
   
   @Before def cleanExist() {
-    	manager.getCollectionManagementService().removeCollection("/db");
+		CountingIncrementer.waitForPendingWrites();
+		try
+		{
+			manager.getCollectionManagementService().removeCollection(manager.getCollectionRoot());
+		}
+		catch
+		{
+			case e: XMLDBException =>
+			if (e.errorCode != ErrorCodes.INVALID_COLLECTION)
+			{
+				throw e;
+			}
+		}
+    	manager.getOrCreateCollection(manager.getCollectionRoot());
   }
   
   def buildChangeableElementGroup(uri:String):ChangeableElementGroup = {
@@ -54,7 +70,13 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
        var uri = getUri()
          var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
     
-    	 createResource(name, uri, changeSetId)
+    	var resource = createResource(name, uri, changeSetId);
+    	
+    	if (resource.isInstanceOf[LocalIdResource[T]])
+    	{
+    		def temp = resource.asInstanceOf[LocalIdResource[T]]
+    		name = temp.getLocalID();
+    	}
     	
     	changeSetService.commitChangeSet(changeSetId)
     	
@@ -79,7 +101,12 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
        var uri = getUri()
          var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
            
-    	 createResource(name, uri, changeSetId)
+    	var resource = createResource(name, uri, changeSetId);
+    	if (resource.isInstanceOf[LocalIdResource[T]])
+    	{
+    		def temp = resource.asInstanceOf[LocalIdResource[T]]
+    		name = temp.getLocalID();
+    	}
     	
     	 changeSetService.commitChangeSet(changeSetId)
     	
@@ -95,7 +122,12 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
        var uri = getUri()
          var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
            
-    	 createResource(name, uri, changeSetId)
+    	var resource = createResource(name, uri, changeSetId);
+    	if (resource.isInstanceOf[LocalIdResource[T]])
+    	{
+    		def temp = resource.asInstanceOf[LocalIdResource[T]]
+    		name = temp.getLocalID();
+    	}
     	
     	assertNull(  getResource(name));
     
@@ -109,9 +141,14 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
        var uri = getUri()
          var changeSetId = changeSetService.createChangeSet().getChangeSetURI();
            
-    	 createResource(name, uri, changeSetId)
-    	 
-    	 changeSetService.rollbackChangeSet(changeSetId);
+    	var resource = createResource(name, uri, changeSetId);
+    	if (resource.isInstanceOf[LocalIdResource[T]])
+    	{
+    		def temp = resource.asInstanceOf[LocalIdResource[T]]
+    		name = temp.getLocalID();
+    	}
+    	
+    	changeSetService.rollbackChangeSet(changeSetId);
     	
     	assertNull(  getResource(name));
     
@@ -157,7 +194,7 @@ abstract class BaseServiceTestBaseIT[T,S] extends BaseServiceTestBase {
    
    def getExceptionClass():Class[_<:UnknownResourceReference]
   
-    def createResource(name:String, uri:String, changeSetId:String)
+    def createResource(name:String, uri:String, changeSetId:String):T
       
     def getResource(name:String):T
     

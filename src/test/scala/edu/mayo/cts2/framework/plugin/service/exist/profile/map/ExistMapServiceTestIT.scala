@@ -18,7 +18,7 @@ class ExistMapServiceTestIT extends BaseServiceTestBaseIT[MapCatalogEntry,MapCat
        classOf[UnknownMap]
     }
   
-    def createResource(name:String, uri:String, changeSetUri:String) = {
+    def createResource(name:String, uri:String, changeSetUri:String):MapCatalogEntry = {
       var entry = new MapCatalogEntry()
       entry.setMapName(name)
       entry.setAbout(uri)

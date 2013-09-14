@@ -32,6 +32,7 @@ import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.service.profile.statement.name.StatementReadId
 import edu.mayo.cts2.framework.model.service.core.Query
+import edu.mayo.cts2.framework.model.service.core.NameOrURI
 import edu.mayo.cts2.framework.service.profile.ResourceQuery
 
 class ExistStatementServiceTestIT 
@@ -46,7 +47,7 @@ class ExistStatementServiceTestIT
     classOf[UnknownStatement]
   }
   
-  override def getName():String = {"someUri"}
+  override def getName():String = {"someName"}
     
    override def getUri():String = {"someUri"}
 
@@ -65,7 +66,7 @@ class ExistStatementServiceTestIT
     resources.size
    }
       
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):LocalIdStatement = {
 	var entry = buildEntry(uri,changeSetUri)
     
      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
@@ -104,8 +105,10 @@ class ExistStatementServiceTestIT
     entry
   }
 
-  def getResource(uri: String): LocalIdStatement = {
-    var id = new StatementReadId(uri);
+  def getResource(name: String): LocalIdStatement = {
+    var nameOrURI = new NameOrURI();
+    nameOrURI.setName("statementtestcsversion");
+    var id = new StatementReadId(name, nameOrURI);
     
     readService.read(id,new ResolvedReadContext())
   }

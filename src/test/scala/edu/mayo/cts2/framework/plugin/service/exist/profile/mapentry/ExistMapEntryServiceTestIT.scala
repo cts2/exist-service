@@ -42,7 +42,7 @@ class ExistMapEntryServiceTestIT
     classOf[UnknownResourceReference]
   }
 
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):MapEntry = {
     var entry = createMapEntry(name, uri, changeSetUri)
 
     maintService.createResource(entry)

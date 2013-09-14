@@ -10,6 +10,7 @@ import edu.mayo.cts2.framework.model.core.ValueSetReference
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.extension.LocalIdConceptDomainBinding
 import edu.mayo.cts2.framework.model.service.core.Query
+import edu.mayo.cts2.framework.model.service.core.NameOrURI
 import edu.mayo.cts2.framework.model.service.exception.UnknownConceptDomainBinding
 import edu.mayo.cts2.framework.model.service.exception.UnknownResourceReference
 import edu.mayo.cts2.framework.plugin.service.exist.profile.BaseServiceTestBaseIT
@@ -26,7 +27,7 @@ class ConceptDomainBindingServiceTestIT
   @Autowired var maintService: ExistConceptDomainBindingMaintenanceService = null
   @Autowired var queryService: ExistConceptDomainBindingQueryService = null
  
-  override def getName():String = {"http://def/uri/1"}
+  override def getName():String = {"some name"}
     
    override def getUri():String = {"http://def/uri/1"}
    
@@ -48,7 +49,7 @@ class ConceptDomainBindingServiceTestIT
     resources.size
    }
     
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):LocalIdConceptDomainBinding = {
     var entry = new ConceptDomainBinding()
     entry.setBindingURI(uri)
     entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
@@ -62,7 +63,9 @@ class ConceptDomainBindingServiceTestIT
   }
 
   def getResource(uri: String): LocalIdConceptDomainBinding = {
-    var id = new ConceptDomainBindingReadId(uri);
+    var nameOrURI = new NameOrURI();
+    nameOrURI.setName("cd");
+    var id = new ConceptDomainBindingReadId(uri, nameOrURI);
   
     readService.read(id, null)
   }

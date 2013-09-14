@@ -21,7 +21,7 @@ class ExistCodeSystemServiceTestIT
        classOf[UnknownCodeSystem]
     }
   
-    def createResource(name:String, uri:String, changeSetId:String) = {
+    def createResource(name:String, uri:String, changeSetId:String):CodeSystemCatalogEntry = {
       var entry = new CodeSystemCatalogEntry()
       entry.setCodeSystemName(name);
       entry.setAbout(uri)

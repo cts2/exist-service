@@ -40,10 +40,6 @@ class ExistValueSetDefinitionServiceTestIT
     classOf[UnknownValueSetDefinition]
   }
   
-  override def getName():String = {"1"}
-    
-   override def getUri():String = {"someUri"}
-
   def getResourceSummaries():DirectoryResult[ValueSetDefinitionDirectoryEntry] = {
      queryService.getResourceSummaries(new TestQuery(),null,new Page());
   }
@@ -58,11 +54,11 @@ class ExistValueSetDefinitionServiceTestIT
     resources.size
    }
       
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):LocalIdValueSetDefinition = {
 	var entry = buildValueSetDefinition(uri,changeSetUri)
     
      entry.setChangeableElementGroup(buildChangeableElementGroup(changeSetUri))
-     
+     entry.setFormalName(name)
      maintService.createResource(entry)
   }
   

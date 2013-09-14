@@ -33,8 +33,6 @@ class ExistAssociationServiceTestIT
   @Autowired var maintService: ExistAssociationMaintenanceService = null
   @Autowired var queryService: ExistAssociationQueryService = null
  
-  override def getName():String = {"1"}
-    
   override def getUri():String = {"someUri"}
    
     @Override
@@ -85,7 +83,7 @@ class ExistAssociationServiceTestIT
     entry
   }
   
-  def createResource(name: String, uri:String, changeSetUri:String) = {
+  def createResource(name: String, uri:String, changeSetUri:String):LocalIdAssociation = {
     var entry = createAssociation(name,uri,changeSetUri)
     
     maintService.createResource(entry)
