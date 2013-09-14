@@ -1,8 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
@@ -15,10 +16,6 @@ import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetDefinitionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionQueryService;
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.XMLDBException;
-
-import javax.annotation.Resource;
 
 @Component
 public class ExistValueSetDefinitionQueryService 
@@ -46,27 +43,17 @@ public class ExistValueSetDefinitionQueryService
 		summary.setDefinedValueSet(resource.getDefinedValueSet());
 		summary.setVersionTag(resource.getVersionTag());
 
-        String name;
-        try {
-            name = ExistServiceUtils.getNameFromResourceName(eXistResource.getId());
-        } catch (XMLDBException e) {
-            throw new IllegalStateException(e);
-        }
-
-        summary.setHref(
-            this.getUrlConstructor().createValueSetDefinitionUrl(resource.getDefinedValueSet().getContent(), name));
+		String name;
+		try {
+			name = ExistServiceUtils.getNameFromResourceName(eXistResource.getId());
+		} catch (XMLDBException e) {
+			throw new IllegalStateException(e);
+	}
+	
+	summary.setHref(
+		this.getUrlConstructor().createValueSetDefinitionUrl(resource.getDefinedValueSet().getContent(), name));
 		
 		return summary;
-	}
-
-	private class ValueSetNameStateUpdater implements StateUpdater<XpathState> {
-
-		@Override
-		public XpathState updateState(XpathState currentState, MatchAlgorithmReference matchAlgorithm, String queryString) {
-			currentState.setXpath("valueset:ValueSetCatalogEntry/@valueSetName = '" + queryString + "'");
-			
-			return currentState;
-		}	
 	}
 
 	private class ValueSetDefinitionDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ValueSetDefinitionDirectoryEntry> {
