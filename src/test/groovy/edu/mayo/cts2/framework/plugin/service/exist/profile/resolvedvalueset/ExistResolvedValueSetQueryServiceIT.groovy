@@ -70,7 +70,7 @@ class ExistResolvedValueSetQueryServiceIT extends BaseServiceDbCleaningBase {
 		
 		assertNotNull summaries.getEntries().get(0).getHref()
 		
-		assertEquals "http://localhost:8080/webapp/valueset/vs/definition/vsd/resolution/1", summaries.getEntries().get(0).getHref()
+		assertEquals "http://localhost:8080/webapp/valueset/vs/definition/vsd/resolution/" + ref.getLocalID(), summaries.getEntries().get(0).getHref()
 	}
 
 }
