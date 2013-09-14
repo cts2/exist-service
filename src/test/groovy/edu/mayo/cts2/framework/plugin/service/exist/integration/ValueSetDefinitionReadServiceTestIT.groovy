@@ -9,7 +9,6 @@ import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionEntry
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionMsg
 import org.junit.Ignore
 
-@Ignore
 class ValueSetDefinitionReadServiceTestIT extends BaseReadServiceTestITBase {
 
 	@Override
@@ -37,6 +36,7 @@ class ValueSetDefinitionReadServiceTestIT extends BaseReadServiceTestITBase {
 		def entry = new ValueSetDefinition(about:"http://def/uri/testByURI")
 		entry.setSourceAndNotation(new SourceAndNotation())
 		entry.setDefinedValueSet(new ValueSetReference("vsname"))
+		entry.setDocumentURI("http://def/uri/testByURI")
 		entry.addEntry(new ValueSetDefinitionEntry())
 		entry.getEntry(0).setCompleteCodeSystem(new CompleteCodeSystemReference())
 		entry.getEntry(0).getCompleteCodeSystem().setCodeSystem(new CodeSystemReference())
