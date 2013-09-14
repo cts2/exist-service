@@ -1,9 +1,17 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.ant.util.StringUtils;
@@ -13,7 +21,6 @@ import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
-
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
@@ -30,6 +37,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ChangeableResourceHandler;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.StateChangeCallback;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService;
 
@@ -51,7 +59,10 @@ public class ExistChangeSetService implements ChangeSetService {
 	private ResourceMarshaller resourceMarshaller;
 	
 	private List<ChangeableResourceHandler> changeableResourceHandlers;
-
+	
+	@javax.annotation.Resource
+	private StateChangeCallback stateChangeCallback;
+	
 	@Override
 	public ChangeSet readChangeSet(String changeSetUri) {
 		String name = ExistServiceUtils.uriToExistName(changeSetUri);
@@ -174,21 +185,99 @@ public class ExistChangeSetService implements ChangeSetService {
 
 	@Override
 	public String importChangeSet(ChangeSet changeSet) {
-		String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);
-		
-		ChangeableResource[] members = changeSet.getMember();
-		changeSet.removeAllMember();
-		changeSet.setState(FinalizableState.OPEN);
-		
-		this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
-		
-		for(ChangeableResource member : members){
-			for(ChangeableResourceHandler handler : this.changeableResourceHandlers){
-				handler.handle(member);
+		try
+		{
+			String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);
+			
+			ArrayList<ChangeableResource> members = new ArrayList<ChangeableResource>();
+			members.addAll(changeSet.getMemberAsReference());
+			changeSet.removeAllMember();
+			changeSet.setState(FinalizableState.OPEN);
+			
+			this.existResourceDao.storeResource(changeSetResourceInfo.getResourceBasePath(), name, changeSet);
+			stateChangeCallback.beginBulkLoadMode(changeSet.getChangeSetURI());
+			
+			int threads = Runtime.getRuntime().availableProcessors() - 2;
+			if (threads < 1)
+			{
+				threads = 1;
 			}
+			
+			//For now, only multi-thread when the change type consists entirely of CREATE items.
+			//eventually, we could be clever, and multi-thread inter-mingled change sets in smaller batches...
+			for (ChangeableResource cr : changeSet.getMemberAsReference())
+			{
+				if (!cr.getChangeableElementGroup().getChangeDescription().getChangeType().equals(ChangeType.CREATE))
+				{
+					threads = 1;
+					break;
+				}
+			}
+			
+			log.info("Processing changeSet items with '" + threads + "' threads");
+			
+			ExecutorService threadPool = new ThreadPoolExecutor(threads, threads, 5, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(), new ThreadFactory()
+			{
+				@Override
+				public Thread newThread(Runnable r)
+				{
+					Thread thread = new Thread(r);
+					thread.setDaemon(true);
+					thread.setName("ChangeSetImportThread");
+					return thread;
+				}
+			});
+			
+			ArrayList<Future<Boolean>> results = new ArrayList<Future<Boolean>>();
+			
+			for(final ChangeableResource member : members)
+			{
+				results.add(threadPool.submit(new Callable<Boolean>()
+				{
+					@Override
+					public Boolean call()
+					{
+						try
+						{
+							log.info("Processing change set item with entryOrder of '" + member.getEntryOrder() + "'");
+							for(ChangeableResourceHandler handler : ExistChangeSetService.this.changeableResourceHandlers){
+								handler.handle(member);
+							}
+							return true;
+						}
+						catch (RuntimeException e)
+						{
+							log.error("Death on changeSet item with entryOrder" + member.getEntryOrder(), e);
+							throw e;
+						}
+					}
+				}));
+			}
+			
+			threadPool.shutdown();
+			
+			//Make sure none threw exceptions
+			for (Future<Boolean> f : results)
+			{
+				try
+				{
+					f.get();
+				}
+				catch (InterruptedException e)
+				{
+					throw new Cts2RuntimeException(e);
+				}
+				catch (ExecutionException e)
+				{
+					throw new Cts2RuntimeException(e);
+				}
+			}
+			return changeSet.getChangeSetURI();
 		}
-
-		return changeSet.getChangeSetURI();
+		finally
+		{
+			stateChangeCallback.endBulkLoadMode(changeSet.getChangeSetURI());
+		}
 	}
 	
 	private void addChangeSetElementGroupIfNecessary(ChangeSet changeSet){
