@@ -33,7 +33,7 @@ class CountingIncrementerTestIT extends BaseServiceDbCleaningBase {
 	@Test
 	void TestLargeIncrement(){
 		
-		def inc = new CountingIncrementer(dao, "testPath2")
+		def inc = new CountingIncrementer(dao, "testPath3")
 		
 		for(int i=0;i<100;i++){
 			inc.getNext()
