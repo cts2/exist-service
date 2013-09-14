@@ -5,8 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.xmldb.api.base.ErrorCodes;
 import org.xmldb.api.base.XMLDBException;
-
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ExistChangeSetService;
 
@@ -22,6 +22,18 @@ public class BaseServiceDbCleaningBase {
 	
 	@Before
 	public void cleanExist() throws XMLDBException {
-		  existManager.getCollectionManagementService().removeCollection("/db");
+		CountingIncrementer.waitForPendingWrites();
+		try
+		{
+			existManager.getCollectionManagementService().removeCollection(existManager.getCollectionRoot());
+		}
+		catch (XMLDBException e)
+		{
+			if (e.errorCode != ErrorCodes.INVALID_COLLECTION)
+			{
+				throw e;
+			}
+		}
+		existManager.getOrCreateCollection(existManager.getCollectionRoot());
 	}
 }
