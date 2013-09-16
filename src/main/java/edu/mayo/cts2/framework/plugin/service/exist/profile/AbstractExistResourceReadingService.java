@@ -61,7 +61,7 @@ public abstract class AbstractExistResourceReadingService<
 			resource = this.getExistResourceDao().getResourceByXpath(
 					this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), this.getExtraPathForUriLookup(resourceIdentifier) ), 
 					this.getResourceInfo().getResourceXpath() + 
-					"[" + getResourceInfo().getUriXpath() + " &= '" + uri + "' or core:alternateID &='" + uri + "']");
+					"[" + getResourceInfo().getUriXpath() + " = '" + uri + "' or core:alternateID = '" + uri + "']");
 		}
 		
 		return resource;

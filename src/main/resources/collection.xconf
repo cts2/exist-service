@@ -1,0 +1,64 @@
+<collection xmlns="http://exist-db.org/collection-config/1.0">
+	<index xmlns:core="http://www.omg.org/spec/CTS2/1.1/Core"
+		xmlns:conceptdomainbinding="http://www.omg.org/spec/CTS2/1.1/ConceptDomainBinding"
+		xmlns:codesystemversion="http://www.omg.org/spec/CTS2/1.1/CodeSystemVersion"
+		xmlns:valuesetdefinition="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition"
+		xmlns:statement="http://www.omg.org/spec/CTS2/1.1/Statement">
+		
+		<!-- This is the configuration for all of the existDB indexes.  I have only indexed things that we currently search on.
+		If other attributes or value nodes are added in the future, they should be added here as well.
+		Index usage can be verified by turning on TRACE debugging in the log4j configuration - example in the log4j.xml file
+		in the test resources folder. -->
+		
+		<!-- Disable the old full text index -->
+		<fulltext default="none" attributes="no" />
+		
+		<!-- Configure Lucene indexes on things that we search.-->
+		<lucene>
+			<analyzer class="org.apache.lucene.analysis.standard.StandardAnalyzer" />
+			
+			<!-- Indexed text items -->
+			<text qname="core:value"/>
+			<text qname="core:name"/>
+			<text qname="core:keyword"/>
+			<text qname="conceptdomainbinding:bindingURI"/>
+			<text qname="statement:statementURI"/>
+			
+			<!-- indexed attributes-->
+			<text qname="@valueSetName"/>
+			<text qname="@codeSystemName"/>
+			<text qname="@codeSystemVersionName"/>
+			<text qname="@conceptDomainName"/>
+			<text qname="@formalName"/>
+			<text qname="@localID"/>
+			<text qname="@mapName"/>
+			<text qname="@mapVersionName"/>
+			<text qname="@changeSetURI"/>
+			<text qname="@about"/>
+			<text qname="@state"/>
+		</lucene>
+		
+		<!--Range indexes to speed up 'contains' or exact match searches on attributes-->
+		<create qname="@valueSetName" type="xs:string"/>
+		<create qname="@codeSystemName" type="xs:string"/>
+		<create qname="@codeSystemVersionName" type="xs:string"/>
+		<create qname="@conceptDomainName" type="xs:string"/>
+		<create qname="@formalName" type="xs:string"/>
+		<create qname="@localID" type="xs:string"/>
+		<create qname="@mapName" type="xs:string"/>
+		<create qname="@mapVersionName" type="xs:string"/>
+		<create qname="@changeSetURI" type="xs:string"/>
+		<create qname="@about" type="xs:string"/>
+		<create qname="@state" type="xs:string"/>
+		<create qname="@uri" type="xs:string"/>
+		
+		<!-- Range indexes for exact matches on particular nodes content-->
+		<create qname="core:alternateID" type="xs:string"/>
+		<create qname="core:namespace" type="xs:string"/>
+		<create qname="core:name" type="xs:string"/>
+		<create qname="core:officialResourceVersionId" type="xs:string"/>
+		<create qname="codesystemversion:versionOf" type="xs:string"/>
+		<create qname="valuesetdefinition:definedValueSet" type="xs:string"/>
+		<create qname="valuesetdefinition:versionTag" type="xs:string"/>
+	</index>
+</collection>

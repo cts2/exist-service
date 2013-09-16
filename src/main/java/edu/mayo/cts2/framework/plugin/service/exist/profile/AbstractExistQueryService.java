@@ -52,6 +52,8 @@ public abstract class AbstractExistQueryService
 	S extends XpathState> extends AbstractExistService
 	implements BaseQueryService, InitializingBean {
 	
+	public static final String REPLACE_INDICATOR = "(:PATH_INSERT_HERE:)";
+	
 	@javax.annotation.Resource
 	private ExistResourceDao existResourceDao;
 	
@@ -87,7 +89,17 @@ public abstract class AbstractExistQueryService
 			int start, 
 			int max) {
 		
-		String queryString = this.getResourceInfo().getResourceXpath() + (StringUtils.isNotBlank(xpath) ? xpath : "");
+		String queryString = (StringUtils.isNotBlank(xpath) ? xpath : "");
+		
+		int pos = queryString.indexOf(REPLACE_INDICATOR);
+		if (pos >=0)
+		{
+			queryString = queryString.substring(0, pos) + this.getResourceInfo().getResourceXpath() + queryString.substring(pos + REPLACE_INDICATOR.length());
+		}
+		else
+		{
+			queryString = this.getResourceInfo().getResourceXpath() + queryString;
+		}
 
 		String allResourcesCollectionPath = ExistServiceUtils.createPath(
 				this.getResourceInfo().getResourceBasePath(),
@@ -280,7 +292,7 @@ public abstract class AbstractExistQueryService
 		returnSet.add(StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference());
 		returnSet.add(StandardMatchAlgorithmReference.EXACT_MATCH.getMatchAlgorithmReference());
 		returnSet.add(StandardMatchAlgorithmReference.STARTS_WITH.getMatchAlgorithmReference());
-
+		returnSet.add(new MatchAlgorithmReference("lucene"));
 		return returnSet;
 	}
 

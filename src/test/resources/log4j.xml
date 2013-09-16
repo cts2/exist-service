@@ -17,7 +17,19 @@
 	<logger name="org.exist.storage.DBBroker">
 		<level value="warn" />
 	</logger>
-
+	
+	<logger name="org.exist.statistics">
+		<level value="warn" />
+	</logger>
+	
+	<logger name="org.exist.storage.journal.Journal">
+		<level value="warn"/>
+	</logger>
+	
+	<!--logger name="org.exist">
+		<level value="trace" />
+	</logger-->
+	
 	<!-- Root Logger -->
 	<root>
 		<priority value="info" />

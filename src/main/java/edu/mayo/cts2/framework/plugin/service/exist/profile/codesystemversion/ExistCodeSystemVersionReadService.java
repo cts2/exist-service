@@ -73,8 +73,8 @@ public class ExistCodeSystemVersionReadService
 			String officialResourceVersionId,
 			ResolvedReadContext readContext) {
 		
-		String xpath = "[core:officialResourceVersionId[text() &= (\""+officialResourceVersionId+"\")] and " +
-				"codesystemversion:versionOf[text() &= (\""+codeSystemName.getName()+"\")]]";
+		String xpath = "[core:officialResourceVersionId = '" + officialResourceVersionId + "' and " +
+				"codesystemversion:versionOf = '"+codeSystemName.getName()+"']";
 		
 		return this.readByXpath("", xpath, readContext);
 	}

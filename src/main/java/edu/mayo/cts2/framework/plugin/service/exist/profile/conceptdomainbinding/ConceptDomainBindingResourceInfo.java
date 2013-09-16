@@ -50,12 +50,12 @@ public class ConceptDomainBindingResourceInfo implements LocalIdResourceInfo<Loc
 	
 	@Override
 	public String getUriXpath() {
-		return "conceptdomainbinding:bindingURI/text()";
+		return "conceptdomainbinding:bindingURI";
 	}
 
 	@Override
 	public String getResourceNameXpath() {
-		return "conceptdomainbinding:bindingURI/text()";
+		return "conceptdomainbinding:bindingURI";
 	}
 
 }

@@ -65,7 +65,7 @@ public class ExistMapEntryQueryService
 					this.getRestrictions().add(
 						 new XpathStateBuildingRestriction<MapEntryDirectoryState>(
 								"mapversion:mapSet/mapversion:mapTarget/mapversion:mapTo/core:name", 
-								"text()",
+								".",
 								AllOrAny.ANY,
 								names));
 				}

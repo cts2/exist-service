@@ -78,12 +78,12 @@ public class ExistAssociationQueryService
 
                         String namespaceXpath = "";
                         if(! StringUtils.isBlank(name.getNamespace())){
-                            namespaceXpath = " and core:namespace/text() &= '" + name.getNamespace() + "'";
+                            namespaceXpath = " and core:namespace = '" + name.getNamespace() + "'";
                         }
 
                         state.setXpath(
                                 state.getXpath() + (isBlankState ? "" : " | " + associationResourceInfo.getResourceXpath()) +
-                                        "[.//association:subject[core:name/text() &= '" + name.getName() + "'" + namespaceXpath + "]]");
+                                        "[.//association:subject[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
 
                         return state;
                     }
@@ -102,12 +102,12 @@ public class ExistAssociationQueryService
 
                         String namespaceXpath = "";
                         if(! StringUtils.isBlank(name.getNamespace())){
-                            namespaceXpath = " and core:namespace/text() &= '" + name.getNamespace() + "'";
+                            namespaceXpath = " and core:namespace = '" + name.getNamespace() + "'";
                         }
 
                         state.setXpath(
                                 state.getXpath() + (isBlankState ? "" : " | " + associationResourceInfo.getResourceXpath()) +
-                                        "[.//association:target/core:entity[core:name/text() &= '" + name.getName() + "'" + namespaceXpath + "]]");
+                                        "[.//association:target/core:entity[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
 
                         return state;
                     }

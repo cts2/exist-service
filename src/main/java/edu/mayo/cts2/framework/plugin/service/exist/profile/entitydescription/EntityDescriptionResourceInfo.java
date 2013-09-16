@@ -66,7 +66,7 @@ public class EntityDescriptionResourceInfo implements DefaultResourceInfo<Entity
 
 	@Override
 	public String getResourceNameXpath() {
-		return ".//entity:entityID/core:name/text()";
+		return ".//entity:entityID/core:name";
 	}
 
 }

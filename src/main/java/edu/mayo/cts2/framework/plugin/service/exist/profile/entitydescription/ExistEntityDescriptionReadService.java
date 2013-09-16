@@ -119,18 +119,18 @@ public class ExistEntityDescriptionReadService
     protected boolean hasSubjectOf(String entityUri) throws XMLDBException {
         return this.getExistResourceDao().
             query(this.associationResourceInfo.getResourceBasePath(),
-                    "//association:Association/association:subject[@uri &= \"" + entityUri + "\"]", 0, 1).getIterator().hasMoreResources();
+                    "//association:Association/association:subject[@uri = '" + entityUri + "']", 0, 1).getIterator().hasMoreResources();
     }
 
     protected boolean hasTargetOf(String entityUri) throws XMLDBException {
         return this.getExistResourceDao().
                 query(this.associationResourceInfo.getResourceBasePath(),
-                        "//association:Association/association:target/core:entity[@uri &= \""+entityUri+"\"]", 0, 1).getIterator().hasMoreResources();
+                        "//association:Association/association:target/core:entity[@uri = '"+entityUri+"']", 0, 1).getIterator().hasMoreResources();
     }
 
     protected boolean hasChildren(String entityUri) throws XMLDBException {
         return this.getExistResourceDao().
-                query(this.getResourceInfo().getResourceBasePath(), "//entity:parent[@uri &= \""+entityUri+"\"]", 0, 1).getIterator().hasMoreResources();
+                query(this.getResourceInfo().getResourceBasePath(), "//entity:parent[@uri = '"+entityUri+"']", 0, 1).getIterator().hasMoreResources();
     }
 
 	@Override

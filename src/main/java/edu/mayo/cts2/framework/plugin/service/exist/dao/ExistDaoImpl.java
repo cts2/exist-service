@@ -2,9 +2,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,9 +11,9 @@ import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
-
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 
 public class ExistDaoImpl implements ExistResourceDao {
@@ -28,10 +26,6 @@ public class ExistDaoImpl implements ExistResourceDao {
 	private static final String XML_RESOURCE_TYPE = "XMLResource";
 	
 	private static final String BINARY_RESOURCE_TYPE = "BinaryResource";
-
-	private static final String DEFAULT_COLLECTION_ROOT = "/cts2resources";
-	
-	private String collectionRoot = DEFAULT_COLLECTION_ROOT;
 
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
@@ -150,6 +144,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 			Collection collection =
 					this.getExistManager().getOrCreateCollection(collectionPath);
 			
+			CountingIncrementer.waitForPendingWrites();
 			this.getExistManager().getCollectionManagementService().removeCollection(collection.getName());
 		} catch (XMLDBException e) {
 			throw new Cts2RuntimeException(e);
@@ -199,9 +194,33 @@ public class ExistDaoImpl implements ExistResourceDao {
 			throw new Cts2RuntimeException(e);
 		}
 	}
+	
+	public long update(String collectionPath, String commands)
+	{
+		try
+		{
+			return this.getExistManager().getXupdateQueryService(collectionPath).update(commands);
+		}
+		catch (XMLDBException e)
+		{
+			throw new Cts2RuntimeException(e);
+		}
+	}
+	
+	public long updateResource(String collectionPath, String resourceId, String commands)
+	{
+		try
+		{
+			return this.getExistManager().getXupdateQueryService(collectionPath).updateResource(resourceId, commands);
+		}
+		catch (XMLDBException e)
+		{
+			throw new Cts2RuntimeException(e);
+		}
+	}
 
 	protected String getResourcePath(String path) {
-		String basePath = this.getBaseCollectionPath();
+		String basePath = existManager.getBaseCollectionPath();
 		
 		if(path.contains(basePath)){
 			path = StringUtils.substringAfter(path, basePath);
@@ -209,13 +228,7 @@ public class ExistDaoImpl implements ExistResourceDao {
 		return basePath + "/" + path;
 	}
 	
-	private String getBaseCollectionPath(){
-		if(StringUtils.isNotBlank(this.collectionRoot)){
-			return this.collectionRoot;
-		} else {
-			return DEFAULT_COLLECTION_ROOT;
-		}
-	}
+
 
 	protected Resource doGetResource(String name, String suffix, String collection) {
 		try {
@@ -234,13 +247,4 @@ public class ExistDaoImpl implements ExistResourceDao {
 			ExistManager existManager) {
 		this.existManager = existManager;
 	}
-	
-	public String getCollectionRoot() {
-		return collectionRoot;
-	}
-
-	public void setCollectionRoot(String collectionRoot) {
-		this.collectionRoot = collectionRoot;
-	}
-
 }

@@ -38,10 +38,11 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
  */
 public class XpathStateBuildingRestriction<T extends XpathState> implements StateBuildingRestriction<T> {
 	
-	public enum AllOrAny {ALL, ANY}
+	//TODO removed ALL - ask Kevin.  I don't think it makes any sense here...
+	public enum AllOrAny {ANY}
 
 	private String queryPath;
-	private String queryAttributeOrText;
+	private String queryAttributeOrPeriod;
 	private AllOrAny allOrAny;
 	private Iterable<String> restrictions;
 	
@@ -52,17 +53,17 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 	 *  Example: /entity:EntityDescription
 	 * @param queryPath the query path
 	 * 	Example: .//entity:entityID/core:name
-	 * @param queryAttributeOrText the query attribute or text
+	 * @param queryAttributeOrPeriod the query attribute or period (for node)
 	 *  Example: text()
 	 */
 	public XpathStateBuildingRestriction(
 			String queryPath,
-			String queryAttributeOrText,
+			String queryAttributeOrPeriod,
 			AllOrAny allOrAny,
 			Iterable<String> restrictions){
 		super();
 		this.queryPath = queryPath;
-		this.queryAttributeOrText = queryAttributeOrText;
+		this.queryAttributeOrPeriod = queryAttributeOrPeriod;
 		this.allOrAny = allOrAny;
 		this.restrictions = restrictions;
 	}
@@ -73,30 +74,15 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 	@Override
 	public T restrict(
 			T currentState) {
-
-		
-		StringBuffer queryString = new StringBuffer();
-		
-		Iterator<String> itr = this.restrictions.iterator();
-		
-		while(itr.hasNext()){
-			queryString.append('\'');
-			queryString.append(itr.next());
-			queryString.append('\'');
-			if(itr.hasNext()){
-				queryString.append(',');
-			}
-		}
-		
 		String algorithm;
 		
 		switch(this.allOrAny){
-			case ALL : {
-				algorithm = "&=";
-				break;
-			}
+//			case ALL : {
+//				algorithm = "and";
+//				break;
+//			}
 			case ANY : {
-				algorithm = "|=";
+				algorithm = "or";
 				break;
 			}
 			default : throw new IllegalStateException();
@@ -109,7 +95,16 @@ public class XpathStateBuildingRestriction<T extends XpathState> implements Stat
 			sb.append(" | ");
 		}
 		
-		sb.append("["+ this.queryPath + "["+this.queryAttributeOrText+" " + algorithm + " (\""+queryString.toString()+"\")]]");
+		sb.append("[" + this.queryPath + "[");
+		Iterator<String> itr = this.restrictions.iterator();
+		
+		while(itr.hasNext()){
+			sb.append(this.queryAttributeOrPeriod + " = '" +itr.next()+"'");
+			if(itr.hasNext()){
+				sb.append(" " + algorithm + " ");
+			}
+		}
+		sb.append("]]");
 		
 		currentState.setXpath(sb.toString());
 		

@@ -25,6 +25,7 @@ package edu.mayo.cts2.framework.plugin.service.exist.xpath;
 
 import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
 
@@ -68,18 +69,37 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 		if(matchAlgorithm.equals(
 				StandardMatchAlgorithmReference.
 					CONTAINS.getMatchAlgorithmReference())){
-			queryString =  "*"+queryString+"*";
+			
+			if (this.queryPath.indexOf("@") >= 0)
+			{
+				//If it is an attribute search, we can simply do a contains search, as this will hit our attribute range index - 
+				//which is likely (but untested) faster than a lucene leading wildcard search (which is known to be slow)
+				sb.append("[fn:contains(" + this.queryPath  + ", '" + queryString + "')]");
+			}
+			else
+			{
+				//Otherwise, do a lucene leading-wildcard search
+				//There are bugs in existdb - this is the only way to get it to parse the lucene query properly.
+				sb.append("let $query := <query><wildcard>*" + queryString + "*</wildcard></query>\r\n");
+				sb.append("return\r\n");
+				//insert a comment for later processing... if there is an additional path, it should be placed here (instead of prefixed)
+				sb.append(AbstractExistQueryService.REPLACE_INDICATOR);  
+				sb.append("[ft:query(" + this.queryPath  + ", $query)]");
+			}
 		} else if(matchAlgorithm.equals(
 				StandardMatchAlgorithmReference.
 					STARTS_WITH.getMatchAlgorithmReference())){
-			queryString = queryString+"*";
+			sb.append("[ft:query(" + this.queryPath  + ", '" + queryString + "*')]");
+		} else if(matchAlgorithm.getContent().equals("lucene")){
+			sb.append("[ft:query(" + this.queryPath  + ", '" + queryString + "')]");
 		} else if(matchAlgorithm.equals(
 				StandardMatchAlgorithmReference.
 					EXACT_MATCH.getMatchAlgorithmReference())){
-			// nop for exact match
+			sb.append("[" + this.queryPath  + " = '" + queryString + "']");
 		} 
-			
-		sb.append("["+ this.queryPath +" &= '"+queryString+"']");
+		else {
+			throw new RuntimeException("Unsupported match algorithm '" + matchAlgorithm.toString() + "'"); 
+		}
 		
 		currentState.setXpath(sb.toString());
 		

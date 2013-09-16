@@ -1,17 +1,19 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
-import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
-import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
-import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
+import java.io.StringWriter;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exist.validation.service.ValidationService;
 import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.IndexQueryService;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.ClassPathResource;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -19,18 +21,21 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
-
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
+import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 
 public class ExistManager implements InitializingBean, DisposableBean {
 	
 	protected final Log log = LogFactory.getLog(getClass().getName());
 	
+	private static final String DEFAULT_COLLECTION_ROOT = "/cts2resources";
+	
+	private String collectionRoot = DEFAULT_COLLECTION_ROOT;
+	
 	@javax.annotation.Resource
 	private Cts2Marshaller cts2Marshaller;
-
+	
 	private String uri;
 	private String existHome;
 	private String userName;
@@ -41,7 +46,8 @@ public class ExistManager implements InitializingBean, DisposableBean {
 	private DatabaseInstanceManager databaseInstanceManager;
 	private IndexQueryService indexQueryService;
 	private XUpdateQueryService xUpdateQueryService;
-	private ValidationService validationService;
+//	private ValidationService validationService;
+	private Object syncLock = new Object();
 	
 	private Properties namespaceMappingProperties;
 
@@ -75,7 +81,8 @@ public class ExistManager implements InitializingBean, DisposableBean {
 		databaseInstanceManager = (DatabaseInstanceManager) root.getService("DatabaseInstanceManager", "1.0");
 		indexQueryService = (IndexQueryService) root.getService("IndexQueryService", "1.0");
 		xUpdateQueryService = (XUpdateQueryService) root.getService("XUpdateQueryService", "1.0");
-		validationService = (ValidationService) root.getService("ValidationService", "1.0");	
+		//This doesn't exist in existDB 2.1.  ValidationModule now maybe?  Not sure.  possibly an extension not loaded...
+//		validationService = (ValidationService) root.getService("ValidationService", "1.0");	
 
 		this.namespaceMappingProperties = this.cts2Marshaller.getNamespaceMappingProperties();
 	
@@ -136,15 +143,47 @@ public class ExistManager implements InitializingBean, DisposableBean {
 		if (col != null) {
 			return col;
 		} else {
-			String[] paths = path.split("/");
+			synchronized (syncLock)
+			{
+				col = DatabaseManager.getCollection( pathWithURI, userName, password);
+				if (col != null)
+				{
+					return col;
+				}
+				String[] paths = path.split("/");
+	
+				String[] parentPath = (String[]) ArrayUtils.remove(paths, paths.length - 1);
+				
+				this.getOrCreateCollection(StringUtils.join(parentPath, '/'));
+	
+				CollectionManagementService mgt = this.getCollectionManagementService();
+	
+				col = mgt.createCollection(StringUtils.join(paths, '/'));
 
-			String[] parentPath = (String[]) ArrayUtils.remove(paths, paths.length - 1);
-			
-			this.getOrCreateCollection(StringUtils.join(parentPath, '/'));
-
-			CollectionManagementService mgt = this.getCollectionManagementService();
-
-			return mgt.createCollection(StringUtils.join(paths, '/'));
+				//If we are creating a new root collection, we need to set up the indexing configuration for this collection, 
+				//which is done by placing a collection.xconf file into the config path structure.
+				if (paths.length == 1 && getCollectionRoot().endsWith(paths[0]))
+				{
+					log.info("Configuring Indexes for Collection " + paths[0]);
+					//Add the index configuration file for our root config
+					try
+					{
+						ClassPathResource indexXml = new ClassPathResource("collection.xconf");
+						StringWriter writer = new StringWriter();
+						IOUtils.copy(indexXml.getInputStream(), writer);
+						Collection configCol = getOrCreateCollection("/system/config/db/" + paths[0]);
+						org.xmldb.api.base.Resource r = configCol.createResource("collection.xconf", "XMLResource");
+						r.setContent(writer.toString());
+						configCol.storeResource(r);
+						log.info("Wrote index configuration " + r.getParentCollection().getName() + "/"+ r.getId());
+					}
+					catch (Exception e)
+					{
+						log.error("Failure configuring indexes for collection " + paths[0] + " - indexes will not be available!");
+					}
+				}
+				return col;
+			}
 		}
 	}
 
@@ -156,7 +195,7 @@ public class ExistManager implements InitializingBean, DisposableBean {
 		return this.createXQueryService(path);
 	}
 
-	public CollectionManagementService getCollectionManagementService() {
+	protected CollectionManagementService getCollectionManagementService() {
 		return collectionManagementService;
 	}
 	
@@ -171,11 +210,31 @@ public class ExistManager implements InitializingBean, DisposableBean {
 	public XUpdateQueryService getXupdateQueryService() {
 		return xUpdateQueryService;
 	}
-
-
-	public ValidationService getValidationService() {
-		return validationService;
+	
+	public XUpdateQueryService getXupdateQueryService(String path) {
+		return this.createXQueryUpdateService(path);
 	}
+	
+	private XUpdateQueryService createXQueryUpdateService(String collectionPath){
+		XUpdateQueryService service;
+		Collection collection;
+		try 
+		{
+			collection = this.getOrCreateCollection(collectionPath);
+			service = (XUpdateQueryService)collection.getService("XUpdateQueryService", "1.0");
+			service.setCollection(collection);
+		} 
+		catch (XMLDBException e) 
+		{
+			throw new Cts2RuntimeException(e);
+		}
+		return service;
+	}
+
+
+//	public ValidationService getValidationService() {
+//		return validationService;
+//	}
 
 	public String getUri() {
 		return uri;
@@ -207,6 +266,22 @@ public class ExistManager implements InitializingBean, DisposableBean {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getCollectionRoot() {
+		return collectionRoot;
+	}
+
+	public void setCollectionRoot(String collectionRoot) {
+		this.collectionRoot = collectionRoot;
+	}
+	
+	protected String getBaseCollectionPath(){
+		if(StringUtils.isNotBlank(this.collectionRoot)){
+			return this.collectionRoot;
+		} else {
+			return DEFAULT_COLLECTION_ROOT;
+		}
 	}
 
 }

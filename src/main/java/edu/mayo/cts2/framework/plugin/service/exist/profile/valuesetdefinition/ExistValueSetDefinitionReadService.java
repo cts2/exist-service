@@ -48,8 +48,8 @@ public class ExistValueSetDefinitionReadService
 		String parentName = parentId.getName();
 		String tagName = tag.getContent();
 		
-		String xpath = "[valuesetdefinition:definedValueSet[text() &= (\""+parentName+"\")] and " +
-				"valuesetdefinition:versionTag[text() &= (\""+tagName+"\")]]";
+		String xpath = "[valuesetdefinition:definedValueSet = '"+parentName+"' and " +
+				"valuesetdefinition:versionTag = '"+tagName+"']";
 	
 		return this.readByXpath("", xpath, readContext);
 	}

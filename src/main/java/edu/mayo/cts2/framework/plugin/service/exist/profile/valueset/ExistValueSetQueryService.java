@@ -53,7 +53,7 @@ public class ExistValueSetQueryService
 	}
 	
 	private StateUpdater<XpathState> getResourceSynopsisStateUpdater() {
-		return new XpathStateUpdater<XpathState>(".//core:resourceSynopsis/core:value/text()");
+		return new XpathStateUpdater<XpathState>(".//core:resourceSynopsis/core:value");
 	}
 	
 	@Override

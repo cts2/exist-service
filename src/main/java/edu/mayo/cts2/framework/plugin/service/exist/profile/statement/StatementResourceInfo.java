@@ -48,12 +48,12 @@ public class StatementResourceInfo implements LocalIdResourceInfo<LocalIdStateme
 	
 	@Override
 	public String getUriXpath() {
-		return "statement:statementURI/text()";
+		return "statement:statementURI";
 	}
 
 	@Override
 	public String getResourceNameXpath() {
-		return "statement:statementURI/text()";
+		return "statement:statementURI";
 	}
 
 }
