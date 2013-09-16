@@ -138,7 +138,6 @@ public class CountingIncrementer implements Incrementer {
 				return false;
 			}
 		}
-		
 	}
 	
 	private class Update
