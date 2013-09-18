@@ -116,7 +116,7 @@
 						</Import-Package>
 						<Embed-Transitive>true</Embed-Transitive>
 						<Embed-Dependency>
-							plugin-util,
+							cts2-plugin-util,
 							xercesImpl,
 							ws-commons-util,
 							jing,
