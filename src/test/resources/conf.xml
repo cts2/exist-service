@@ -17,7 +17,7 @@
 
 <exist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/conf.xsd">
 
-	<db-connection cacheSize="2048M" checkMaxCacheSize="true" collectionCache="1024M" database="native"
+	<db-connection cacheSize="512M" checkMaxCacheSize="true" collectionCache="1024M" database="native"
 		files="" pageSize="4096" nodesBuffer="1000" cacheShrinkThreshold="10000" doc-ids="default" minDiskSpace="128M">
 		<startup />
 		<pool max="20" min="1" sync-period="120000" wait-before-shutdown="120000" />
