@@ -13,4 +13,6 @@
 	
 	<osgi:service ref="existServiceProvider" interface="edu.mayo.cts2.framework.service.provider.ServiceProvider"/>
 	
+	<osgi:reference id="serverContext" interface="edu.mayo.cts2.framework.core.config.ServerContext"/>
+	
 </beans>

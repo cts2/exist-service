@@ -2,12 +2,22 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" 
 	xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
 	xsi:schemaLocation="http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.exist"/>
+	
+	<!-- ValueSetDefinitionResolution module configuration -->
+	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.valueSetDefinitionResolutionServices.ctsUtility"/>
+	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.valueSetDefinitionResolutionServices.valueSetDefinitionResolutionImpl"/>
+	<util:properties id="valueSetDefinitionResolutionBuildProperties" location="classpath:valueSetDefinition_build-info.properties" />
+	<util:properties id="valueSetDefinitionResolutionConfigProperties" location="classpath:valueSetDefinition_config_blank.properties" />
+	<!-- End of ValueSetDefinitionResolution module configuration  -->
+
 
 	<bean id="existManager" class="edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager">
 		<osgix:managed-properties 
@@ -22,7 +32,6 @@
 			update-strategy="container-managed" />
 	</bean>
 
-	<bean id="urlConstructor" name="urlConstructor" 
-		class="edu.mayo.cts2.framework.util.spring.UrlConstructorSpringFactory"/>
+	<bean id="urlConstructor" name="urlConstructor" class="edu.mayo.cts2.framework.util.spring.UrlConstructorSpringFactory"/>
 	
 </beans>

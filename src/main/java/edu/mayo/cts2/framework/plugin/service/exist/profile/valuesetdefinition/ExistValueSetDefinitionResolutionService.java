@@ -23,10 +23,21 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.*;
+import edu.mayo.cts2.framework.model.core.ComponentReference;
+import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.core.PredicateReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.core.URIAndEntityName;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
@@ -44,17 +55,17 @@ import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueS
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResult;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionResolutionService;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import edu.mayo.cts2.framework.util.spring.AggregateService;
 
 @Component
+@AggregateService
 public class ExistValueSetDefinitionResolutionService 
 	extends AbstractExistService 
 	implements ValueSetDefinitionResolutionService {
+
+	@Autowired(required = false) 
+	@Qualifier("valueSetDefinitionResolutionServiceImpl")
+	private ValueSetDefinitionResolutionService valueSetResolutionImpl;
 	
 	@Resource
 	private ExistResolvedValueSetQueryService existResolvedValueSetQueryService;
@@ -64,29 +75,47 @@ public class ExistValueSetDefinitionResolutionService
 
 	@Override
 	public Set<PredicateReference> getKnownProperties() {
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.getKnownProperties();
+		}
 		return null;
 	}
 
 	@Override
 	public Set<? extends MatchAlgorithmReference> getSupportedMatchAlgorithms() {
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.getSupportedMatchAlgorithms();
+		}
 		return null;
 	}
 
 	@Override
 	public Set<? extends ComponentReference> getSupportedSearchReferences() {
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.getSupportedSearchReferences();
+		}
 		return null;
 	}
 
 	@Override
 	public Set<? extends ComponentReference> getSupportedSortReferences() {
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.getSupportedSortReferences();
+		}
 		return null;
 	}
 
-	/* 
-	 * This doesn't really resolve anything... it looks to see if there is one (and only one)
+	/*
+	 * If the valueSetResolutionImpl is not provided - this falls through to the old implementation 
+	 * that doesn't really resolve anything... it looks to see if there is one (and only one)
 	 * ResolvedValueSet for the definition. If so, return that.
 	 * 
-	 * TODO: we'll need to give this actual resolution logic someday...
+	 * TODO: decide if the old code should just be removed - assume valueSetResolutionImpl will be deployed with this?
+	 * Or otherwise retire this T ODO?
 	 * 
 	 * (non-Javadoc)
 	 * @see edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionResolutionService#resolveDefinition(edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId, java.util.Set, edu.mayo.cts2.framework.model.service.core.NameOrURI, edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResolutionEntityQuery, edu.mayo.cts2.framework.model.core.SortCriteria, edu.mayo.cts2.framework.model.command.ResolvedReadContext, edu.mayo.cts2.framework.model.command.Page)
@@ -100,6 +129,11 @@ public class ExistValueSetDefinitionResolutionService
             SortCriteria sort,
             ResolvedReadContext context,
             Page page) {
+		
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, query, sort, context, page);
+		}
 		
 		ResolvedValueSetQuery resolvedValueSetQuery = new ResolvedValueSetQuery(){
 
@@ -151,6 +185,10 @@ public class ExistValueSetDefinitionResolutionService
 			Set<NameOrURI> arg1, 
 			NameOrURI arg2,
 			ResolvedReadContext arg3) {
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.resolveDefinitionAsCompleteSet(arg0, arg1, arg2, arg3);
+		}
 		throw new UnsupportedOperationException();
 	}
 
@@ -162,6 +200,10 @@ public class ExistValueSetDefinitionResolutionService
 			ResolvedValueSetResolutionEntityQuery arg3, 
 			SortCriteria arg4,
 			ResolvedReadContext arg5, Page arg6) {
+		if (valueSetResolutionImpl != null)
+		{
+			return valueSetResolutionImpl.resolveDefinitionAsEntityDirectory(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+		}
 		throw new UnsupportedOperationException();
 	}
 

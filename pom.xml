@@ -116,6 +116,8 @@
 						</Import-Package>
 						<Embed-Transitive>true</Embed-Transitive>
 						<Embed-Dependency>
+							valueSetDefinitionResolution-service,
+							guava,  <!-- not sure why this isn't being picked up as transitive? -->
 							cts2-plugin-util,
 							xercesImpl,
 							ws-commons-util,
@@ -395,6 +397,12 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-regex</artifactId>
 			<version>3.0.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>edu.mayo.cts2.framework</groupId>
+			<artifactId>valueSetDefinitionResolution-service</artifactId>
+			<version>cts-1.1-0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
