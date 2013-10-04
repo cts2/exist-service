@@ -1,9 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
-import java.io.StringWriter;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
+import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +12,6 @@ import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.IndexQueryService;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.ClassPathResource;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -21,9 +19,10 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
-import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
-import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
-import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 public class ExistManager implements InitializingBean, DisposableBean {
 	
@@ -168,18 +167,17 @@ public class ExistManager implements InitializingBean, DisposableBean {
 					//Add the index configuration file for our root config
 					try
 					{
-						ClassPathResource indexXml = new ClassPathResource("collection.xconf");
-						StringWriter writer = new StringWriter();
-						IOUtils.copy(indexXml.getInputStream(), writer);
+                        String confFilePath = "/collection.xconf";
+						String confFileXml = IOUtils.toString(this.getClass().getResourceAsStream(confFilePath), "UTF-8");
 						Collection configCol = getOrCreateCollection("/system/config/db/" + paths[0]);
 						org.xmldb.api.base.Resource r = configCol.createResource("collection.xconf", "XMLResource");
-						r.setContent(writer.toString());
+						r.setContent(confFileXml);
 						configCol.storeResource(r);
 						log.info("Wrote index configuration " + r.getParentCollection().getName() + "/"+ r.getId());
 					}
 					catch (Exception e)
 					{
-						log.error("Failure configuring indexes for collection " + paths[0] + " - indexes will not be available!");
+						log.error("Failure configuring indexes for collection " + paths[0] + " - indexes will not be available!", e);
 					}
 				}
 				return col;

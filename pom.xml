@@ -119,8 +119,10 @@
 							valueSetDefinitionResolution-service,
 							guava,  <!-- not sure why this isn't being picked up as transitive? -->
 							cts2-plugin-util,
-							xercesImpl,
 							ws-commons-util,
+                            xercesImpl,
+                            batik-ext,
+                            xml-resolver,
 							jing,
 							antlr,
 							quartz,
@@ -209,17 +211,23 @@
 			<version>2.11.0</version> <!--eXist-db ships 2.11.0-->
 		</dependency>
 
-		<dependency>
-			<groupId>org.quartz</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.1.6</version>
-		</dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.1.6</version>
+        </dependency>
 
-		<dependency>
+        <dependency>
 			<groupId>xml-resolver</groupId>
 			<artifactId>xml-resolver</artifactId>
 			<version>1.2</version> <!--existdb ships 1.2-->
 		</dependency>
+
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-ext</artifactId>
+            <version>1.7</version>
+        </dependency>
 
 		<dependency>
 			<groupId>xml-apis</groupId>
@@ -431,6 +439,18 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+
+        <repository>
+            <id>edu.informatics.maven.3rdparty</id>
+            <name>Informatics Maven 3rd Party Repository</name>
+            <url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 	</repositories>
 
 </project>
