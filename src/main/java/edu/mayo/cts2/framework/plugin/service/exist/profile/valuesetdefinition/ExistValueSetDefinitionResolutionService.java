@@ -23,21 +23,10 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import javax.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.ComponentReference;
-import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
-import edu.mayo.cts2.framework.model.core.PredicateReference;
-import edu.mayo.cts2.framework.model.core.SortCriteria;
-import edu.mayo.cts2.framework.model.core.URIAndEntityName;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
@@ -56,6 +45,14 @@ import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueS
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionResolutionService;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId;
 import edu.mayo.cts2.framework.util.spring.AggregateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @AggregateService
@@ -125,14 +122,13 @@ public class ExistValueSetDefinitionResolutionService
             final ValueSetDefinitionReadId id,
             Set<NameOrURI> codeSystemVersions,
             NameOrURI tag,
-            ResolvedValueSetResolutionEntityQuery query,
             SortCriteria sort,
             ResolvedReadContext context,
             Page page) {
 		
 		if (valueSetResolutionImpl != null)
 		{
-			return valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, query, sort, context, page);
+			return valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, sort, context, page);
 		}
 		
 		ResolvedValueSetQuery resolvedValueSetQuery = new ResolvedValueSetQuery(){

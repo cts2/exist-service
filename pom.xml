@@ -112,6 +112,7 @@
 							edu.mayo.cts2.framework.model.service.valueset,
 							edu.mayo.cts2.framework.model.service.valuesetdefinition,
 							edu.mayo.cts2.framework.service.provider,
+                            org.w3c.dom.traversal,
 							*;resolution:=optional
 						</Import-Package>
 						<Embed-Transitive>true</Embed-Transitive>
@@ -121,7 +122,6 @@
 							cts2-plugin-util,
 							ws-commons-util,
                             xercesImpl,
-                            batik-ext,
                             xml-resolver,
 							jing,
 							antlr,
@@ -222,12 +222,6 @@
 			<artifactId>xml-resolver</artifactId>
 			<version>1.2</version> <!--existdb ships 1.2-->
 		</dependency>
-
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-ext</artifactId>
-            <version>1.7</version>
-        </dependency>
 
 		<dependency>
 			<groupId>xml-apis</groupId>

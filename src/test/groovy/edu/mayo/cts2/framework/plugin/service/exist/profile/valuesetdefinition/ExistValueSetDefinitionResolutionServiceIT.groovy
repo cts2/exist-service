@@ -44,7 +44,7 @@ class ExistValueSetDefinitionResolutionServiceIT extends BaseServiceDbCleaningBa
 				new ValueSetDefinitionReadId(
 					"vsd",
 					valueSet),
-				null,null,null,null,null,new Page()
+				null,null,null,null,new Page()
 				)
 		
 		assertNotNull returned
@@ -76,7 +76,7 @@ class ExistValueSetDefinitionResolutionServiceIT extends BaseServiceDbCleaningBa
 				new ValueSetDefinitionReadId(
 					"vsd",
 					valueSet),
-				null,null,null,null,null,new Page()
+				null,null,null,null,new Page()
 				)
 		
 		assertNotNull returned
