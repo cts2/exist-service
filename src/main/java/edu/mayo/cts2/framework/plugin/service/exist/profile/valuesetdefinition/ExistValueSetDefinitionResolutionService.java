@@ -125,14 +125,13 @@ public class ExistValueSetDefinitionResolutionService
             final ValueSetDefinitionReadId id,
             Set<NameOrURI> codeSystemVersions,
             NameOrURI tag,
-            ResolvedValueSetResolutionEntityQuery query,
             SortCriteria sort,
             ResolvedReadContext context,
             Page page) {
 		
 		if (valueSetResolutionImpl != null)
 		{
-			return valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, query, sort, context, page);
+			return valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, sort, context, page);
 		}
 		
 		ResolvedValueSetQuery resolvedValueSetQuery = new ResolvedValueSetQuery(){
