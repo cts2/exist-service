@@ -171,13 +171,12 @@ public abstract class AbstractExistMaintenanceService<
 			return;
 		}
 		
-		D identifiedResource = this.resourceToIndentifiedResource(resource);
-		
 		ChangeType changeType = 
 			changeableResource.getChangeableElementGroup().getChangeDescription().getChangeType();
 				
 		switch(changeType){
 		case UPDATE:
+			D identifiedResource = this.resourceToIndentifiedResource(resource);
 			this.updateResource(identifiedResource);
 			break;
 		case CLONE:
