@@ -18,10 +18,6 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
-import java.util.Date;
-
-import org.xmldb.api.base.Resource;
-
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
 import edu.mayo.cts2.framework.model.core.IsChangeable;
@@ -32,6 +28,9 @@ import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.validator.ChangeSetUriValidator;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
+import org.xmldb.api.base.Resource;
+
+import java.util.Date;
 
 /**
  * The Class AbstractService.
@@ -60,29 +59,38 @@ public abstract class AbstractExistMaintenanceService<
 		
 	}
 
-	@Override
-	public void deleteResource(I identifier, String changeSetUri) {
-		//this can either be
-		//a) A DELETE of a COMMITTED Resource
-		//b) A DELETE of a Resource in an PENDING ChangeSet
-		//check in the change set first.
-		Resource resource = this.getResource(identifier,changeSetUri);
-		if(resource == null){
-			resource = this.getResource(identifier);
-		}
-	
-		D changeable = this.doUnmarshall(resource);
-		
+    @Override
+    public void deleteResource(I identifier, String changeSetUri) {
+        //this can either be
+        //a) A DELETE of a COMMITTED Resource
+        //b) A DELETE of a Resource in an PENDING ChangeSet
+        //check in the change set first.
+        Resource resource = this.getResource(identifier,changeSetUri);
+        if(resource == null){
+            resource = this.getResource(identifier);
+        }
+
+        D changeable = this.doUnmarshall(resource);
+
+        ChangeableElementGroup group = changeable.getChangeableElementGroup();
+
+        ChangeDescription changeDescription = new ChangeDescription();
+        changeDescription.setChangeDate(new Date());
+        changeDescription.setChangeType(ChangeType.DELETE);
+        changeDescription.setCommitted(ChangeCommitted.PENDING);
+        changeDescription.setContainingChangeSet(changeSetUri);
+
+        group.setChangeDescription(changeDescription);
+
+        this.doDeleteResource(changeable);
+    }
+
+	protected void doDeleteResource(D changeable) {
 		ChangeableElementGroup group = changeable.getChangeableElementGroup();
-		
-		ChangeDescription changeDescription = new ChangeDescription();
-		
-		changeDescription.setChangeDate(new Date());
-		changeDescription.setChangeType(ChangeType.DELETE);
-		changeDescription.setCommitted(ChangeCommitted.PENDING);
-		changeDescription.setContainingChangeSet(changeSetUri);
-		
-		group.setChangeDescription(changeDescription);
+
+        String changeSetUri = group.getChangeDescription().getContainingChangeSet();
+
+        this.changeSetUriValidator.validateChangeSet(changeSetUri);
 
 		this.doStoreResource(changeable);
 		
@@ -176,8 +184,7 @@ public abstract class AbstractExistMaintenanceService<
 				
 		switch(changeType){
 		case UPDATE:
-			D identifiedResource = this.resourceToIndentifiedResource(resource);
-			this.updateResource(identifiedResource);
+			this.updateResource(this.resourceToIndentifiedResource(resource));
 			break;
 		case CLONE:
 			throw new UnsupportedOperationException();
@@ -185,6 +192,7 @@ public abstract class AbstractExistMaintenanceService<
 			this.createResource(resource);
 			break;
 		case DELETE:
+            this.doDeleteResource(this.resourceToIndentifiedResource(resource));
 			break;
 		case IMPORT:
 			this.createResource(resource);
