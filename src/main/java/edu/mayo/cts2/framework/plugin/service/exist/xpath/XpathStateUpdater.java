@@ -23,8 +23,10 @@
  */
 package edu.mayo.cts2.framework.plugin.service.exist.xpath;
 
+import org.apache.commons.lang.StringUtils;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.core.MatchAlgorithmReference;
+import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2Exception;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.service.meta.StandardMatchAlgorithmReference;
@@ -101,6 +103,15 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 			throw new RuntimeException("Unsupported match algorithm '" + matchAlgorithm.toString() + "'"); 
 		}
 		
+		//TODO - Dan notes that this implementation is actually quite broken per the current APIs, because the APIs would expect to call updateState
+		//numerous times (once for each filter) but this implementation throws away any pre-existing state - and replaces it with the state for this 
+		//exact query.  Which won't work if there is ever more than one restriction.  Another place this pops up is in the ExistValueSetDefinitionQueryService
+		//which also needs to set up a state here.
+		
+		if (StringUtils.isNotBlank(currentState.getXpath()))
+		{
+			throw new UnspecifiedCts2Exception("Calling updateState multiple times is currently not supported");
+		}
 		currentState.setXpath(sb.toString());
 		
 		return currentState;
