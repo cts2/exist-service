@@ -172,7 +172,7 @@ public abstract class AbstractExistQueryService
 					allResourcesCollectionPath, queryString, start, max);
 		}
 
-		return this.getResourceSummaries(collection, queryString, start, max,
+		return this.getResourceSummaries(collection, start, max,
 				transform);
 	}
 	
@@ -219,7 +219,6 @@ public abstract class AbstractExistQueryService
 	
 	private DirectoryResult<Summary> getResourceSummaries(
 			ResourceSet collection,
-			String xpath,
 			int start,
 			int max,
 			SummaryTransform<Summary, R> transform) {
