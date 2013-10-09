@@ -1,11 +1,15 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
 import javax.annotation.Resource;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
+import edu.mayo.cts2.framework.model.exception.UnspecifiedCts2Exception;
+import edu.mayo.cts2.framework.model.service.exception.UnknownValueSetDefinition;
+import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionDirectoryEntry;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinitionListEntry;
@@ -58,7 +62,7 @@ public class ExistValueSetDefinitionQueryService
 
 	private class ValueSetDefinitionDirectoryBuilder extends XpathDirectoryBuilder<XpathState,ValueSetDefinitionDirectoryEntry> {
 		
-		public ValueSetDefinitionDirectoryBuilder(final String changeSetUri) {
+		public ValueSetDefinitionDirectoryBuilder(final String changeSetUri, final ValueSetDefinitionQueryServiceRestrictions vsdqServiceRestrictions) {
 			super(new XpathState(), new Callback<XpathState, ValueSetDefinitionDirectoryEntry>() {
 
 				@Override
@@ -66,6 +70,31 @@ public class ExistValueSetDefinitionQueryService
 						XpathState state, 
 						int start, 
 						int maxResults) {
+					
+					if (vsdqServiceRestrictions != null && vsdqServiceRestrictions.getValueSet() != null)
+					{
+						if (StringUtils.isNotBlank(state.getXpath()))
+						{
+							throw new UnspecifiedCts2Exception("Unsupported operation - currently cannot combine state filters from a restriction with "
+									+ "a valueSetDefinition restriction");
+						}
+						
+						if (StringUtils.isNotBlank(vsdqServiceRestrictions.getValueSet().getName()))
+						{
+							state.setXpath("[valuesetdefinition:definedValueSet = '" + vsdqServiceRestrictions.getValueSet().getName() + "']");
+						}
+						else if (StringUtils.isNotBlank(vsdqServiceRestrictions.getValueSet().getUri()))
+						{
+							state.setXpath("[valuesetdefinition:definedValueSet/@uri = '" + vsdqServiceRestrictions.getValueSet().getUri() + "']");
+						}
+						else
+						{
+							UnknownValueSetDefinition uvsd = new UnknownValueSetDefinition();
+							uvsd.setCts2Message(ModelUtils.createOpaqueData("No identifier was specified for the ValueSet"));
+							throw uvsd;
+						}
+					}
+					
 					return getResourceSummaries(
 							getResourceInfo(),
 							changeSetUri,
@@ -93,8 +122,8 @@ public class ExistValueSetDefinitionQueryService
 		ValueSetDefinitionDirectoryBuilder builder = 
 			new ValueSetDefinitionDirectoryBuilder(
 					this.getChangeSetUri(
-							query.getReadContext()));
-		
+							query.getReadContext()), query.getRestrictions());
+		//TODO implement sort
 		return 
 			builder.restrict(query.getFilterComponent()).
 				restrict(query.getQuery()).

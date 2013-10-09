@@ -27,7 +27,7 @@ public abstract class AbstractExistReadService<
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
 
-	private interface GetResourceCallback {
+	protected interface GetResourceCallback {
 		Resource getResource();
 		Resource getResource(String changeSetUri);
 	}
