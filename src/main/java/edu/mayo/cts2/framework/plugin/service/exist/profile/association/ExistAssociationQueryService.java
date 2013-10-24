@@ -66,6 +66,8 @@ public class ExistAssociationQueryService
 
         public AssociationDirectoryBuilder restrict(final AssociationQueryServiceRestrictions restriction){
 
+        	//TODO this implementation is incomplete - it is ignoring many possible restrictions, such as predicate.
+        	//https://github.com/cts2/exist-service/issues/16
             if(restriction != null &&
                     restriction.getSourceEntity() != null) {
 
