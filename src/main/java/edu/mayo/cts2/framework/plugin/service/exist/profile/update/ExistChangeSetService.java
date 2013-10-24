@@ -21,6 +21,7 @@ import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
+import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
@@ -31,6 +32,7 @@ import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
 import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
+import edu.mayo.cts2.framework.model.extension.LocalIdAssociation;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResource;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
@@ -38,7 +40,9 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.ChangeableResourceHa
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceUnmarshaller;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.StateChangeCallback;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.association.ExistAssociationReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService;
 
 @Component
@@ -51,6 +55,9 @@ public class ExistChangeSetService implements ChangeSetService {
 
 	@Autowired
 	private ExistResourceDao existResourceDao;
+	
+	@Autowired
+	private ExistAssociationReadService existAssociationReadService;
 	
 	@Autowired
 	private ResourceUnmarshaller resourceUnmarshaller;
@@ -131,19 +138,31 @@ public class ExistChangeSetService implements ChangeSetService {
 						"To: " + parentCollectionName + resourceId);
 				}
 		
-				IsChangeable resourcObj = 
+				IsChangeable resourceObj = 
 						(IsChangeable)this.resourceUnmarshaller.unmarshallResource(resource);
 				
 				ChangeDescription changeDescription = 
-						resourcObj.getChangeableElementGroup().getChangeDescription();
+						resourceObj.getChangeableElementGroup().getChangeDescription();
 				
 				if(changeDescription.getChangeType().equals(ChangeType.DELETE)){
+					
+					if (resourceObj instanceof Association)
+					{
+						String id = ((Association)resourceObj).getAssociationID();
+						
+						LocalIdAssociation localToDelete = existAssociationReadService.read(new AssociationReadId(id), null);
+						resourceId = localToDelete.getLocalID();
+					}
+
+					//TODO DELETE processing is broken for many types if IsChangeable - anything else that uses generated identifiers.
+					//https://github.com/cts2/exist-service/issues/17
+					
 					this.existResourceDao.deleteResource(parentCollectionName, resourceId);
 				} else {
 					changeDescription.setCommitted(ChangeCommitted.COMMITTED);
 			
 					resource.setContent(
-							resourceMarshaller.marshallResource(resourcObj));
+							resourceMarshaller.marshallResource(resourceObj));
 	
 					this.existResourceDao.storeResource(parentCollectionName, resourceId, resource);
 				}
