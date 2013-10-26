@@ -180,10 +180,11 @@ public class ExistValueSetDefinitionResolutionService
 			ValueSetDefinitionReadId arg0, 
 			Set<NameOrURI> arg1, 
 			NameOrURI arg2,
-			ResolvedReadContext arg3) {
+			SortCriteria arg3,
+			ResolvedReadContext arg4) {
 		if (valueSetResolutionImpl != null)
 		{
-			return valueSetResolutionImpl.resolveDefinitionAsCompleteSet(arg0, arg1, arg2, arg3);
+			return valueSetResolutionImpl.resolveDefinitionAsCompleteSet(arg0, arg1, arg2, arg3, arg4);
 		}
 		throw new UnsupportedOperationException();
 	}
