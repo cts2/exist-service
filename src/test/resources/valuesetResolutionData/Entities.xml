@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ChangeSet xmlns="http://www.omg.org/spec/CTS2/1.1/Updates" xmlns:upd="http://www.omg.org/spec/CTS2/1.1/Updates"
+	xmlns:core="http://www.omg.org/spec/CTS2/1.1/Core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:vsd="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition"
+	xsi:schemaLocation="http://www.omg.org/spec/CTS2/1.1/Updates http://informatics.mayo.edu/cts2/spec/CTS2/1.1/updates/Updates.xsd"
+	changeSetURI="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" creationDate="2013-10-04T15:26:01.116-05:00">
+	<member entryOrder="1">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A">
+				<entityID>
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>A</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>some long text for filtering</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="2">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#B">
+				<entityID>
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>B</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>some different stuff for filtering</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="3">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#C">
+				<entityID>
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>C</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Letter C</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="4">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#D">
+				<entityID>
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>D</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>D is for door</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="5">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A/B">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A">
+				<core:namespace>UnbelievableTestData</core:namespace>
+				<core:name>A</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#B">
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>B</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	<member entryOrder="6">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#B/C">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#B">
+				<core:namespace>UnbelievableTestData</core:namespace>
+				<core:name>B</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#C">
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>C</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	<member entryOrder="7">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#C/D">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#C">
+				<core:namespace>UnbelievableTestData</core:namespace>
+				<core:name>C</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#D">
+					<core:namespace>UnbelievableTestData</core:namespace>
+					<core:name>D</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<member entryOrder="8">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#1">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>1</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>aaa</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="9">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#2">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>2</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>aaa</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="9">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#3">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>3</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 3</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="10">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#4">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>4</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 4</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	<member entryOrder="11">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#5">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>5</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 5</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+		</member>
+		<member entryOrder="12">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#6">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>6</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 6</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<!--  Create the associations in this code system in reverse -->
+	
+	<member entryOrder="13">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#3/4">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#3">
+				<core:namespace>BelievableTestData</core:namespace>
+				<core:name>3</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#4">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>4</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<member entryOrder="14">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#2/3">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#2">
+				<core:namespace>BelievableTestData</core:namespace>
+				<core:name>2</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#3">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>3</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<member entryOrder="15">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#1/2">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#1">
+				<core:namespace>BelievableTestData</core:namespace>
+				<core:name>1</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#2">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>2</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<!-- Create a cycle between 5 and 6 -->
+	<member entryOrder="16">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#5/6">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#5">
+				<core:namespace>BelievableTestData</core:namespace>
+				<core:name>5</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#6">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>6</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<member entryOrder="17">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#6/5">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#6">
+				<core:namespace>BelievableTestData</core:namespace>
+				<core:name>6</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#5">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>5</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<!-- More entities -->
+	
+	<member entryOrder="18">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#11">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>11</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 11</core:value>
+				</designation>
+				<designation>
+					<core:value>strongbad</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<member entryOrder="18">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#12">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>12</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 12</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+		<member entryOrder="19">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#111">
+				<entityID>
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>111</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>The Number 111</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<!-- An (illegal because of the predicate) association that crosses code systems (which should be ignored) -->
+	<member entryOrder="20">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A/1-0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A">
+				<core:namespace>UnbelievableTestData</core:namespace>
+				<core:name>A</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#1">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>1</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<!-- A legal association that crosses code sytems (but should also be ignored) -->
+	<member entryOrder="21">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A/1-1">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A">
+				<core:namespace>UnbelievableTestData</core:namespace>
+				<core:name>A</core:name>
+			</subject>
+			<predicate uri="tag:informatics.mayo.edu,2013-08-03:Predicate#Crossing">
+				<core:namespace>Predicate</core:namespace>
+				<core:name>Crossing</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#1">
+					<core:namespace>BelievableTestData</core:namespace>
+					<core:name>1</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+</ChangeSet>

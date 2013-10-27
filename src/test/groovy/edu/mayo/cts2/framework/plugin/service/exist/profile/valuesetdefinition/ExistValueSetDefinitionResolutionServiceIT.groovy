@@ -1,11 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition;
 
 import static org.junit.Assert.*
-
 import javax.annotation.Resource
-
+import org.junit.Ignore;
 import org.junit.Test
-
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.ValueSetDefinitionReference
@@ -18,6 +16,8 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset.Exi
 import edu.mayo.cts2.framework.service.profile.resolvedvalueset.ResolvedValueSetReference
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId
 
+@Ignore  //These tests don't make sense when the full ValueSetDefinitionResolution code is in place - it would only work with the previous hack code 
+//that fell through to the storedValueSetResolution APIs
 class ExistValueSetDefinitionResolutionServiceIT extends BaseServiceDbCleaningBase {
 	
 	@Resource

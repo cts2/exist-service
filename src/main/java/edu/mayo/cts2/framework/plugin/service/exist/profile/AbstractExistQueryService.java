@@ -318,7 +318,28 @@ public abstract class AbstractExistQueryService
 
 	@Override
 	public Set<PredicateReference> getKnownProperties() {
-		return null;
+		
+		//This isn't properly supported yet - however - the common use case of filtering on text properties is handled by search references.  so return that.
+		//Note, there also seems to be confusion between knownProperties and supportedSearchReferences... the exist service is currently using 
+		//getSupportedSearchReferences internally to resolve things, when it seems like it should actually be using this.
+		//At the moment, they both return the same content, so thing are working.  But something isn't right here.
+		//Note that the ValueSetDefinitionResolution service calls this to determine what properties to advertise to the user - which are then used by the 
+		//user while resolving PropertyQuery value set definitions
+		HashSet<PredicateReference> result = new HashSet<PredicateReference>();
+		ModelAttributeReference mar = StandardModelAttributeReference.RESOURCE_NAME.getModelAttributeReference();
+		PredicateReference pr = new PredicateReference();
+		pr.setHref(mar.getHref());
+		pr.setName(mar.getContent());
+		pr.setUri(mar.getUri());
+		result.add(pr);
+		
+		mar = StandardModelAttributeReference.RESOURCE_SYNOPSIS.getModelAttributeReference();
+		pr = new PredicateReference();
+		pr.setHref(mar.getHref());
+		pr.setName(mar.getContent());
+		pr.setUri(mar.getUri());
+		result.add(pr);
+		return result;
 	}
 
 	private StateUpdater<S> getResourceNameStateUpdater(){

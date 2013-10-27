@@ -1,9 +1,25 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedFilter;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.*;
+import edu.mayo.cts2.framework.model.core.CodeSystemReference;
+import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
+import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
+import edu.mayo.cts2.framework.model.core.EntityReference;
+import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.model.entity.EntityDescription;
 import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
@@ -22,17 +38,6 @@ import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescripti
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService;
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.XMLDBException;
-
-import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Component
 public class ExistEntityDescriptionReadService 
@@ -218,18 +223,18 @@ public class ExistEntityDescriptionReadService
 	@Override
 	public List<CodeSystemReference> getKnownCodeSystems() {
 		// TODO
-		return null;
+		return new ArrayList<CodeSystemReference>();
 	}
 
 	@Override
 	public List<CodeSystemVersionReference> getKnownCodeSystemVersions() {
 		// TODO
-		return null;
+		return new ArrayList<CodeSystemVersionReference>();
 	}
 
 	@Override
 	public List<VersionTagReference> getSupportedVersionTags() {
-		// TODO
-		return null;
+		// TODO CURRENT isn't really supported yet, but Castor requires this list to be populated. 
+		return Arrays.asList(new VersionTagReference[] {new VersionTagReference("CURRENT")});
 	}
 }

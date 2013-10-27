@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ChangeSet xmlns="http://www.omg.org/spec/CTS2/1.1/Updates" xmlns:upd="http://www.omg.org/spec/CTS2/1.1/Updates"
+	xmlns:core="http://www.omg.org/spec/CTS2/1.1/Core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vsd="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition"
+	xsi:schemaLocation="http://www.omg.org/spec/CTS2/1.1/Updates http://informatics.mayo.edu/cts2/spec/CTS2/1.1/updates/Updates.xsd"
+	changeSetURI="urn:uuid:aaf90f22-f84c-4c7a-a3da-e188d06b0412" creationDate="2013-09-19T13:51:24.041-05:00">
+	<member entryOrder="1">
+		<upd:codeSystemVersion xmlns="http://www.omg.org/spec/CTS2/1.1/CodeSystemVersion"
+			codeSystemVersionName="UnbelievableTestData-1.0" about="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:aaf90f22-f84c-4c7a-a3da-e188d06b0412"
+				changeDate="2013-10-04T15:14:41.254-05:00" />
+			<versionOf uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">UnbelievableTestData</versionOf>
+		</upd:codeSystemVersion>
+	</member>
+	<member entryOrder="2">
+		<upd:codeSystem xmlns="http://www.omg.org/spec/CTS2/1.1/CodeSystem" codeSystemName="UnbelievableTestData"
+			about="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData" formalName="Unbelievable Test Data">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:aaf90f22-f84c-4c7a-a3da-e188d06b0412"
+				changeDate="2013-10-04T15:14:41.254-05:00" />
+			<core:keyword>TEST</core:keyword>
+			<core:keyword>UnbelievableTestData</core:keyword>
+			<core:resourceType uri="http://www.w3.org/2004/02/skos/core#ConceptScheme">
+				<core:namespace>skos</core:namespace>
+				<core:name>ConceptScheme</core:name>
+			</core:resourceType>
+			<currentVersion>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0">UnbelievableTestData-1.0</core:version>
+			</currentVersion>
+		</upd:codeSystem>
+	</member>
+	<member entryOrder="3">
+		<upd:codeSystemVersion xmlns="http://www.omg.org/spec/CTS2/1.1/CodeSystemVersion"
+			codeSystemVersionName="BelievableTestData-1.0" about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:aaf90f22-f84c-4c7a-a3da-e188d06b0412"
+				changeDate="2013-10-04T15:14:41.254-05:00" />
+			<versionOf uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData">BelievableTestData</versionOf>
+		</upd:codeSystemVersion>
+	</member>
+	<member entryOrder="4">
+		<upd:codeSystem xmlns="http://www.omg.org/spec/CTS2/1.1/CodeSystem" codeSystemName="BelievableTestData"
+			about="tag:informatics.mayo.edu,2013-08-03:BelievableTestData" formalName="Believable Test Data">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:aaf90f22-f84c-4c7a-a3da-e188d06b0412"
+				changeDate="2013-10-04T15:14:41.254-05:00" />
+			<core:keyword>TEST</core:keyword>
+			<core:keyword>UnbelievableTestData</core:keyword>
+			<core:resourceType uri="http://www.w3.org/2004/02/skos/core#ConceptScheme">
+				<core:namespace>skos</core:namespace>
+				<core:name>ConceptScheme</core:name>
+			</core:resourceType>
+			<currentVersion>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0">BelievableTestData-1.0</core:version>
+			</currentVersion>
+		</upd:codeSystem>
+	</member>
+</ChangeSet>

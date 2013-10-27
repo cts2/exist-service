@@ -19,9 +19,8 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-
+import org.springframework.beans.factory.annotation.Value;
 import edu.mayo.cts2.framework.model.core.OpaqueData;
 import edu.mayo.cts2.framework.model.core.SourceReference;
 import edu.mayo.cts2.framework.model.service.core.DocumentedNamespaceReference;
@@ -37,12 +36,19 @@ import edu.mayo.cts2.framework.service.profile.BaseService;
 public abstract class AbstractExistService implements BaseService {
 	
 	private static final String MAYO = "Mayo Clinic";
-	private static final String DEFAULT_VERSION = "1.0";
-	private static final String DESCRIPTION = "CTS2 Service using eXist xml database.";
+	
+	@Value("#{existBuildProperties.buildversion}") 
+	protected String buildVersion;
+
+	@Value("#{existBuildProperties.name}") 
+	protected String buildName;
+
+	@Value("#{existBuildProperties.description}") 
+	protected String buildDescription;
 	
 	@Override
 	public String getServiceVersion() {
-		return DEFAULT_VERSION;
+		return buildVersion;
 	}
 	
 	@Override
@@ -55,12 +61,12 @@ public abstract class AbstractExistService implements BaseService {
 	
 	@Override
 	public OpaqueData getServiceDescription() {
-		return ModelUtils.createOpaqueData(DESCRIPTION);
+		return ModelUtils.createOpaqueData(buildDescription);
 	}
 
 	@Override
 	public String getServiceName() {
-		return this.getClass().getCanonicalName();
+		return this.getClass().getSimpleName() + " - " + buildName;
 	}
 
 	@Override

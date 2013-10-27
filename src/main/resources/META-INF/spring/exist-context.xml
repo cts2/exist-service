@@ -11,6 +11,8 @@
 
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.exist"/>
 	
+	<util:properties id="existBuildProperties" location="classpath:exist_build-info.properties" />
+	
 	<!-- ValueSetDefinitionResolution module configuration -->
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.valueSetDefinitionResolutionServices.ctsUtility"/>
 	<context:component-scan base-package="edu.mayo.cts2.framework.plugin.service.valueSetDefinitionResolutionServices.valueSetDefinitionResolutionImpl"/>
