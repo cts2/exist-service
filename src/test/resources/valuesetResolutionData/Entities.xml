@@ -287,7 +287,7 @@
 					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
 				</describingCodeSystemVersion>
 				<designation designationRole="PREFERRED">
-					<core:value>The Number 6</core:value>
+					<core:value>The Number 6 filtering</core:value>
 				</designation>
 				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
 					<core:namespace>skos</core:namespace>
