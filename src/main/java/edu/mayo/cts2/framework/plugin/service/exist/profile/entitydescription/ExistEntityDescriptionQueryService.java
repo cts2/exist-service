@@ -72,8 +72,10 @@ public class ExistEntityDescriptionQueryService
 		
 		String codeSystemName = 
 				base.getDescribingCodeSystemVersion().getCodeSystem().getContent();
+		String codeSystemURI = base.getDescribingCodeSystemVersion().getCodeSystem().getUri();
 		String codeSystemVersionName = 
 				base.getDescribingCodeSystemVersion().getVersion().getContent();
+		String codeSystemVersionURI = base.getDescribingCodeSystemVersion().getVersion().getUri();
 
 		summary.setName(scopedName);
 		summary.setAbout(base.getAbout());
@@ -89,7 +91,9 @@ public class ExistEntityDescriptionQueryService
 		summary.addKnownEntityDescription(
 				getDescriptionInCodeSystemVersion(
 					 codeSystemName,
+					 codeSystemURI,
 					 codeSystemVersionName,
+					 codeSystemVersionURI,
 					 base));
 		
 		
@@ -292,7 +296,9 @@ public class ExistEntityDescriptionQueryService
 
 	private DescriptionInCodeSystem getDescriptionInCodeSystemVersion(
 			String codeSystem, 
+			String codeSystemURI,
 			String codeSystemVersion,
+			String codeSystemVersionURI,
 			EntityDescriptionBase entity) {
 
 		Designation designation = this.getPreferredDesignation(entity);
@@ -304,21 +310,22 @@ public class ExistEntityDescriptionQueryService
 		}
 
 		description.setDescribingCodeSystemVersion(
-				this.buildCodeSystemVersionReference(codeSystem, codeSystemVersion));
+				this.buildCodeSystemVersionReference(codeSystem, codeSystemURI, codeSystemVersion, codeSystemVersionURI));
 		
 		description.setHref(this.getUrlConstructor().createEntityUrl(codeSystem, codeSystemVersion, entity.getEntityID()));
 
 		return description;
 	}
 	
-	protected CodeSystemVersionReference buildCodeSystemVersionReference(String codeSystemName, String codeSystemVersionName){
+	protected CodeSystemVersionReference buildCodeSystemVersionReference(String codeSystemName, String codeSystemURI, String codeSystemVersionName, 
+			String codeSystemVersionURI){
 		CodeSystemVersionReference ref = new CodeSystemVersionReference();
 		
-		ref.setCodeSystem(this.buildCodeSystemReference(codeSystemName));
+		ref.setCodeSystem(this.buildCodeSystemReference(codeSystemName, codeSystemURI));
 		
 		NameAndMeaningReference version = new NameAndMeaningReference();
 		version.setContent(codeSystemVersionName);
-	
+		version.setUri(codeSystemVersionURI);
 		version.setHref(this.getUrlConstructor().createCodeSystemVersionUrl(codeSystemName, codeSystemVersionName));
 			
 		ref.setVersion(version);
@@ -326,12 +333,13 @@ public class ExistEntityDescriptionQueryService
 		return ref;
 	}
 	
-	protected CodeSystemReference buildCodeSystemReference(String codeSystemName){
+	protected CodeSystemReference buildCodeSystemReference(String codeSystemName, String codeSystemURI){
 		CodeSystemReference codeSystemReference = new CodeSystemReference();
 		String codeSystemPath = this.getUrlConstructor().createCodeSystemUrl(codeSystemName);
 
 		codeSystemReference.setContent(codeSystemName);
 		codeSystemReference.setHref(codeSystemPath);
+		codeSystemReference.setUri(codeSystemURI);
 		
 		return codeSystemReference;
 	}
