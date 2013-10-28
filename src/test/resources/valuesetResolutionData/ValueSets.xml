@@ -328,7 +328,7 @@
 			about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet7">
 			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
 			<currentDefinition>
-				<core:valueSetDefinition uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet6-1.0">ValueSet6-1.0</core:valueSetDefinition>
+				<core:valueSetDefinition uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet7-1.0">ValueSet7-1.0</core:valueSetDefinition>
 			</currentDefinition>
 		</upd:valueSet>
 	</member>
@@ -368,5 +368,146 @@
 			</entry>
 		</upd:valueSetDefinition>
 	</member>
+	
+	<member entryOrder="14">
+		<upd:valueSet xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSet" valueSetName="ValueSet8"
+			about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<currentDefinition>
+				<core:valueSetDefinition uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8-1.0">ValueSet8-1.0</core:valueSetDefinition>
+			</currentDefinition>
+		</upd:valueSet>
+	</member>
+	
+	<member entryOrder="15">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8-1.0"
+			formalName="ValueSet8-1.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8">ValueSet8</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<entityList>
+					<referencedEntity uri="tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData/Concept#A">
+						<core:namespace>UnbelievableTestData</core:namespace>
+						<core:name>A</core:name>
+					</referencedEntity>
+					<referencedEntity uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#1">
+						<core:namespace>BelievableTestData</core:namespace>
+						<core:name>1</core:name>
+					</referencedEntity>
+				</entityList>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
+	
+	<!-- Some data for testing code system version handling -->
+	
+	<member entryOrder="16">
+		<upd:valueSet xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSet" valueSetName="ValueSet9"
+			about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+		</upd:valueSet>
+	</member>
 
+    <!-- No version ref -->
+	<member entryOrder="17">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9-1.0"
+			formalName="ValueSet1-9.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">ValueSet9</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<completeCodeSystem>
+					<codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</codeSystem>
+				</completeCodeSystem>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
+	
+	<!-- version 1 -->
+	<member entryOrder="18">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9-2.0"
+			formalName="ValueSet9-2.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">ValueSet9</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<completeCodeSystem>
+					<vsd:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</vsd:codeSystem>
+					<vsd:codeSystemVersion>
+						<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-1.0">MultiVersionTestData-1.0</core:version>
+						<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+					</vsd:codeSystemVersion>
+				</completeCodeSystem>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
+	
+	<!-- version 2 -->
+	<member entryOrder="19">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9-3.0"
+			formalName="ValueSet9-3.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">ValueSet9</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<completeCodeSystem>
+					<vsd:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</vsd:codeSystem>
+					<vsd:codeSystemVersion>
+						<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-2.0">MultiVersionTestData-2.0</core:version>
+						<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+					</vsd:codeSystemVersion>
+				</completeCodeSystem>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
+	
+	<!-- specific entity ref (version controlled by caller) -->
+	<member entryOrder="19">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9-4.0"
+			formalName="ValueSet9-4.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">ValueSet9</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<entityList>
+					<referencedEntity uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#157">
+						<core:namespace>MultiVersionTestData</core:namespace>
+						<core:name>157</core:name>
+					</referencedEntity>
+				</entityList>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
+	
+	<!-- complete code system version ref (version controlled by caller) -->
+	<member entryOrder="19">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9-5.0"
+			formalName="ValueSet9-5.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">ValueSet9</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<completeCodeSystem>
+					<codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</codeSystem>
+				</completeCodeSystem>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
+	
+	<!-- Association ref, version controlled by caller -->
+	<member entryOrder="20">
+		<upd:valueSetDefinition xmlns="http://www.omg.org/spec/CTS2/1.1/ValueSetDefinition" about="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9-6.0"
+			formalName="ValueSet9-6.0">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:abaef30c-0a5d-4bf2-9d75-e524f5e01473" changeDate="2013-10-04T15:14:41.254-05:00"/>
+			<definedValueSet uri="tag:informatics.mayo.edu,2013-08-03:vs/ValueSet9">ValueSet9</definedValueSet>
+			<entry operator="UNION" entryOrder="1">
+				<associatedEntities direction="SOURCE_TO_TARGET" transitivity="TRANSITIVE_CLOSURE" leafOnly="ALL_INTERMEDIATE_NODES">
+					<referencedEntity uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#42">
+						<core:namespace>MultiVersionTestData</core:namespace>
+						<core:name>42</core:name>
+					</referencedEntity>
+					<codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</codeSystem>
+					<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+						<core:namespace>skos</core:namespace>
+						<core:name>broaderTransitive</core:name>
+					</predicate>
+				</associatedEntities>
+			</entry>
+		</upd:valueSetDefinition>
+	</member>
 </ChangeSet>

@@ -552,4 +552,171 @@
 		</upd:association>
 	</member>
 	
+	<!-- Multiversion data -->
+	<member entryOrder="22">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#257">
+				<entityID>
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>257</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-2.0">MultiVersionTestData-2.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>something in version 2</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<member entryOrder="23">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#157">
+				<entityID>
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>157</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-1.0">MultiVersionTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>something in version 1</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<member entryOrder="24">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#157">
+				<entityID>
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>157</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-3.0">MultiVersionTestData-3.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>same concept redefined with a different desc in ver 3</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<!-- A concept that exits the same way in both versions (for use in a rel) -->
+	<member entryOrder="25">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#42">
+				<entityID>
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>42</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-1.0">MultiVersionTestData-1.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>the answer to everything</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<member entryOrder="26">
+		<upd:entityDescription xmlns="http://www.omg.org/spec/CTS2/1.1/Entity" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity">
+			<namedEntity about="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#42">
+				<entityID>
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>42</core:name>
+				</entityID>
+				<describingCodeSystemVersion>
+					<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-3.0">MultiVersionTestData-3.0</core:version>
+					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+				</describingCodeSystemVersion>
+				<designation designationRole="PREFERRED">
+					<core:value>the answer to everything</core:value>
+				</designation>
+				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
+					<core:namespace>skos</core:namespace>
+					<core:name>Concept</core:name>
+				</entityType>
+				<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			</namedEntity>
+		</upd:entityDescription>
+	</member>
+	
+	<member entryOrder="27">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#42/157">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#42">
+				<core:namespace>MultiVersionTestData</core:namespace>
+				<core:name>42</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#157">
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>157</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-1.0">MultiVersionTestData-1.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
+	<member entryOrder="27">
+		<upd:association xmlns="http://www.omg.org/spec/CTS2/1.1/Association" xmlns:entity="http://www.omg.org/spec/CTS2/1.1/Entity"
+			associationID="tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#42/157">
+			<core:changeDescription changeType="IMPORT" containingChangeSet="urn:uuid:cc687c62-b570-4131-88f9-524892de224a" changeDate="2013-10-04T15:26:01.116-05:00"/>
+			<subject uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#42">
+				<core:namespace>MultiVersionTestData</core:namespace>
+				<core:name>42</core:name>
+			</subject>
+			<predicate uri="http://www.w3.org/2004/02/skos/core#broaderTransitive">
+				<core:namespace>skos</core:namespace>
+				<core:name>broaderTransitive</core:name>
+			</predicate>
+			<target>
+				<entity xmlns="http://www.omg.org/spec/CTS2/1.1/Core" uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData/Concept#157">
+					<core:namespace>MultiVersionTestData</core:namespace>
+					<core:name>157</core:name>
+				</entity>
+			</target>
+			<assertedBy>
+				<core:version uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData-3.0">MultiVersionTestData-3.0</core:version>
+				<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:MultiVersionTestData">MultiVersionTestData</core:codeSystem>
+			</assertedBy>
+		</upd:association>
+	</member>
+	
 </ChangeSet>
