@@ -234,7 +234,7 @@ public class ExistEntityDescriptionReadService
 
 	@Override
 	public List<VersionTagReference> getSupportedVersionTags() {
-		// TODO CURRENT isn't really supported yet, but Castor requires this list to be populated. 
-		return Arrays.asList(new VersionTagReference[] {new VersionTagReference("CURRENT")});
+		// tag isn't supported yet, but Castor requires this list to be populated. 
+		return Arrays.asList(new VersionTagReference[] {new VersionTagReference("THIS_DOESN'T_WORK")});
 	}
 }

@@ -39,6 +39,10 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 public class XpathStateBuildingRestriction<T extends XpathState> implements StateBuildingRestriction<T> {
 	
 	//TODO removed ALL - ask Kevin.  I don't think it makes any sense here...
+	//This only does exact matches, and on one attribute of a document.  There is no way for ALL to ever work, because 
+	//uri, for example, can't contain two different URI values in the same document.  
+	//There were also no use cases.  Perhaps if we end up with a use case, we would add it back.. but the query would
+	//have to be written differently than it was written (simply changing or to and wont work)
 	public enum AllOrAny {ANY}
 
 	private String queryPath;
