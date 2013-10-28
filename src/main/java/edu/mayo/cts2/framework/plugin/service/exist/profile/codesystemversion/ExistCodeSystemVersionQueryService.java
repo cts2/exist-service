@@ -52,7 +52,7 @@ public class ExistCodeSystemVersionQueryService
 				
 				private String getCodeSystemXpath(final String codeSystem){
 					if(StringUtils.isNotBlank(codeSystem)){
-						return "[codesystemversion:versionOf[text() = '"+codeSystem+"']]";
+						return "[codesystemversion:versionOf = '"+codeSystem+"']";
 					} else {
 						return "";
 					}
@@ -121,6 +121,7 @@ public class ExistCodeSystemVersionQueryService
 		if(restrictions != null && restrictions.getCodeSystem() != null){
 			return restrictions.getCodeSystem().getName();
 		}
+		//TODO this is incomplete... it needs to handle URIs too...
 		
 		return null;
 	}
