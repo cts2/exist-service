@@ -466,7 +466,7 @@
 					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
 				</describingCodeSystemVersion>
 				<designation designationRole="PREFERRED">
-					<core:value>The Number 12</core:value>
+					<core:value>The number 12</core:value>
 				</designation>
 				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
 					<core:namespace>skos</core:namespace>
@@ -489,7 +489,7 @@
 					<core:codeSystem uri="tag:informatics.mayo.edu,2013-08-03:BelievableTestData">BelievableTestData</core:codeSystem>
 				</describingCodeSystemVersion>
 				<designation designationRole="PREFERRED">
-					<core:value>The Number 111</core:value>
+					<core:value>The number 111</core:value>
 				</designation>
 				<entityType uri="http://www.w3.org/2004/02/skos/core#Concept">
 					<core:namespace>skos</core:namespace>

@@ -1,89 +1,34 @@
 package edu.mayo.cts2.framework.plugin.service.exist.valuesetResolution;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import javax.xml.transform.stream.StreamSource;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.XmlMappingException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.xmldb.api.base.XMLDBException;
-import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
 import edu.mayo.cts2.framework.model.core.ComponentReference;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
+import edu.mayo.cts2.framework.model.core.ScopedEntityName;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
 import edu.mayo.cts2.framework.model.core.SortCriterion;
 import edu.mayo.cts2.framework.model.core.types.SortDirection;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
+import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.model.service.core.NameOrURI;
 import edu.mayo.cts2.framework.model.service.exception.UnknownCodeSystemVersion;
-import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
-import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetHeader;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager;
-import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ExistChangeSetService;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.valuesetdefinition.ExistValueSetDefinitionResolutionService;
+import edu.mayo.cts2.framework.plugin.service.valueSetDefinitionResolutionServices.ctsUtility.queryBuilders.ResolvedValueSetResolutionEntityQueryBuilder;
 import edu.mayo.cts2.framework.service.constant.ExternalCts2Constants;
+import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResolutionEntityQuery;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ResolvedValueSetResult;
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(value = "classpath:/exist-test-context.xml")
-public class ValueSetDefinitionResolutionTest
-{
-	@Autowired
-	public ExistChangeSetService changeSetService;
-
-	@Autowired 
-	public ExistManager existManager;
-
-	@Autowired 
-	public ExistResourceDao dao;
-	
-	@Autowired
-	public ExistValueSetDefinitionResolutionService vsr;
-	
-	//no idea why this needs to be static... something funny about how the spring juni test runner handles this.
-	private static boolean dbInited = false;
-
-	//Sigh - BeforeClass requires static, which doesn't play nice with spring...
-	@Before
-	public void setupExist() throws XMLDBException, XmlMappingException, IOException
+public class ValueSetDefinitionResolutionTest extends ValueSetDefinitionResolutionTestBase
+{	
+	public ValueSetDefinitionResolutionTest()
 	{
-		if (!dbInited)
-		{
-			dao.removeCollection(existManager.getCollectionRoot());
-	
-			DelegatingMarshaller marshaller = new DelegatingMarshaller();
-	
-			ChangeSet changeSet = (ChangeSet) marshaller.unmarshal(new StreamSource(ValueSetDefinitionResolutionTest.class.getResourceAsStream("/valuesetResolutionData/CodeSystems.xml")));
-			changeSetService.importChangeSet(changeSet);
-			changeSetService.commitChangeSet(changeSet.getChangeSetURI());
-	
-			changeSet = (ChangeSet) marshaller.unmarshal(new StreamSource(ValueSetDefinitionResolutionTest.class.getResourceAsStream("/valuesetResolutionData/Entities.xml")));
-			
-			changeSetService.importChangeSet(changeSet);
-			changeSetService.commitChangeSet(changeSet.getChangeSetURI());
-	
-			changeSet = (ChangeSet) marshaller.unmarshal(new StreamSource(ValueSetDefinitionResolutionTest.class.getResourceAsStream("/valuesetResolutionData/ValueSets.xml")));
-			
-			changeSetService.importChangeSet(changeSet);
-			changeSetService.commitChangeSet(changeSet.getChangeSetURI());
-			dbInited = true;
-		}
+		dbInited = false;
 	}
 	
 	@Test
@@ -96,7 +41,7 @@ public class ValueSetDefinitionResolutionTest
 		resolvedUsing.add(makeString("UnbelievableTestData", "tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData", "UnbelievableTestData-1.0", 
 				"tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData-1.0"));
 		
-		validate(rvs.getResolutionInfo(), "ValueSet1", "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet1", "1", "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet1-1.0",
+		validate(rvs.getResolutionInfo(), "ValueSet1", "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet1", null, "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet1-1.0",
 				resolvedUsing, new ArrayList<String>());
 	}
 	
@@ -276,7 +221,7 @@ public class ValueSetDefinitionResolutionTest
 				"tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0"));
 
 		
-		validate(rvs.getResolutionInfo(), "ValueSet8", "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8", "1", "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8-1.0",
+		validate(rvs.getResolutionInfo(), "ValueSet8", "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8", null, "tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8-1.0",
 				resolvedUsing, new ArrayList<String>());
 	}
 	
@@ -592,109 +537,95 @@ public class ValueSetDefinitionResolutionTest
 				resolvedUsing, new ArrayList<String>());
 	}
 	
-	private String[] assemble(String codeSystemVersionURI, String[] codes)
+	@Test
+	public void queryTestFiltering1()
 	{
-		String[] result = new String[codes.length];
-		for (int i = 0; i < codes.length; i++)
-		{
-			result[i] = codeSystemVersionURI + "/Concept#" + codes[i];
-		}
-		return result;
-	}
-	
-	private void validate(ResolvedValueSet rvs, String[] codes, boolean orderMatters)
-	{
-		assertEquals("Resolved ValueSet does not contain the expected number of results.", codes.length, rvs.getEntryCount());
+		ResolvedValueSetResolutionEntityQuery query = ResolvedValueSetResolutionEntityQueryBuilder.build();
+		query.getFilterComponent().add(buildFilter(ExternalCts2Constants.MA_RESOURCE_NAME_NAME, "exactMatch", "3"));
 		
-		if (orderMatters)
-		{
-			for (int i = 0; i < codes.length; i++)
-			{
-				assertEquals("Incorrect code", codes[i], rvs.getEntry(i).getUri());
-			}
-		}
-		else
-		{
-			HashSet<String> temp = new HashSet<String>(Arrays.asList(codes));
-			
-			for (int i = 0; i < codes.length; i++)
-			{
-				boolean removed = temp.remove(rvs.getEntry(i).getUri());
-				assertTrue("Incorrect code, found " + rvs.getEntry(i).getUri() + " which was not expected", removed);
-			}
-			assertEquals(temp.size(), 0);
-		}
-	}
-	
-	private void validate(List<EntityDirectoryEntry> entries, String[] codes, boolean orderMatters)
-	{
-		assertEquals("Resolved ValueSet does not contain the expected number of results.", codes.length, entries.size());
+		ResolvedValueSetResult<EntityDirectoryEntry> rvsr = vsr.resolveDefinitionAsEntityDirectory(
+				new ValueSetDefinitionReadId("tag:informatics.mayo.edu,2013-08-03:vs/ValueSet6-1.0"), 
+				null, null, query, null, null, new Page());
 		
-		if (orderMatters)
-		{
-			for (int i = 0; i < codes.length; i++)
-			{
-				assertEquals("Incorrect code", codes[i], entries.get(i).getAbout());
-			}
-		}
-		else
-		{
-			HashSet<String> temp = new HashSet<String>(Arrays.asList(codes));
-			
-			for (int i = 0; i < codes.length; i++)
-			{
-				boolean removed = temp.remove(entries.get(i).getAbout());
-				assertTrue("Incorrect code, found " + entries.get(i).getAbout() + " which was not expected", removed);
-			}
-			assertEquals(temp.size(), 0);
-		}
+		validate(rvsr.getEntries(), assemble("tag:informatics.mayo.edu,2013-08-03:BelievableTestData", new String[] {"3"}), false);
 	}
 	
-	private String makeString(String codeSystemName, String codeSystemURI, String codeSystemVersionName, String codeSystemVersionURI)
+	@Test
+	public void queryTestFiltering2()
 	{
-		return codeSystemName + ":" + codeSystemURI + ":" + codeSystemVersionName + ":" + codeSystemVersionURI;
-	}
-	
-	private String makeString(CodeSystemVersionReference csvr)
-	{
-		return makeString(csvr.getCodeSystem().getContent(),  csvr.getCodeSystem().getUri(), csvr.getVersion().getContent(), csvr.getVersion().getUri());
-	}
-	
-	private void validate(ResolvedValueSetHeader rvsh, String valueSetName, String valueSetURI, String valueSetDefinitionName, String valueSetDefinitionURI, 
-			HashSet<String> resolvedUsing, List<String> containsNestedValueSetURI)
-	{
-		assertEquals(rvsh.getResolutionOf().getValueSet().getUri(), valueSetURI);
-		assertEquals(rvsh.getResolutionOf().getValueSet().getContent(), valueSetName);
-		assertEquals(rvsh.getResolutionOf().getValueSetDefinition().getUri(), valueSetDefinitionURI);
-		if (valueSetDefinitionName != null)
-		{
-			//Due to multi-threading during load, we can't always predict what the valueSetDefinitionName will be - if null is passed in
-			//it is a case where we won't be able to predict.
-			assertEquals(rvsh.getResolutionOf().getValueSetDefinition().getContent(), valueSetDefinitionName);
-		}
+		ResolvedValueSetResolutionEntityQuery query = ResolvedValueSetResolutionEntityQueryBuilder.build();
+		query.getFilterComponent().add(buildFilter(ExternalCts2Constants.MA_ENTITY_DESCRIPTION_DESIGNATION_NAME, "contains", "number"));
 		
-		assertEquals(rvsh.getResolvedUsingCodeSystemCount(), resolvedUsing.size());
-		for (CodeSystemVersionReference csvr : rvsh.getResolvedUsingCodeSystemAsReference())
-		{
-			assertTrue(resolvedUsing.contains(makeString(csvr)));
-		}
+		ResolvedValueSetResult<EntityDirectoryEntry> rvsr = vsr.resolveDefinitionAsEntityDirectory(
+				new ValueSetDefinitionReadId("tag:informatics.mayo.edu,2013-08-03:vs/ValueSet6-1.0"), 
+				null, null, query, null, null, new Page());
 		
-		assertEquals(rvsh.getIncludesResolvedValueSetCount(), containsNestedValueSetURI.size());
-		for (ResolvedValueSetHeader nestedRvsh : rvsh.getIncludesResolvedValueSetAsReference())
-		{
-			boolean found = false;
-			for (String shouldContainNested : containsNestedValueSetURI)
-			{
-				if (nestedRvsh.getResolutionOf().getValueSetDefinition().getUri().equals(shouldContainNested))
-				{
-					found = true;
-					break;
-				}
-			}
-			if (!found)
-			{
-				fail("nested IncludedResolvedValueSetAsReference list is missing an item it should have");
-			}
-		}	
+		validate(rvsr.getEntries(), assemble("tag:informatics.mayo.edu,2013-08-03:BelievableTestData", new String[] {"12", "111"}), false);
+	}
+	
+	@Test
+	public void queryTestFiltering3()
+	{
+		ResolvedValueSetResolutionEntityQuery query = ResolvedValueSetResolutionEntityQueryBuilder.build();
+		query.getFilterComponent().add(buildFilter(ExternalCts2Constants.MA_ENTITY_DESCRIPTION_DESIGNATION_NAME, "startsWith", "a"));
+		
+		ResolvedValueSetResult<EntityDirectoryEntry> rvsr = vsr.resolveDefinitionAsEntityDirectory(
+				new ValueSetDefinitionReadId("tag:informatics.mayo.edu,2013-08-03:vs/ValueSet6-1.0"), 
+				null, null, query, null, null, new Page());
+		
+		validate(rvsr.getEntries(), assemble("tag:informatics.mayo.edu,2013-08-03:BelievableTestData", new String[] {"1", "2"}), false);
+	}
+	
+	@Test
+	public void queryTestEntityRestrictions()
+	{
+		ResolvedValueSetResolutionEntityQuery query = ResolvedValueSetResolutionEntityQueryBuilder.build();
+		EntityNameOrURI en = new EntityNameOrURI();
+		ScopedEntityName sen = new ScopedEntityName();
+		sen.setName("2");
+		sen.setNamespace("BelievableTestData");
+		en.setEntityName(sen);
+		query.getResolvedValueSetResolutionEntityRestrictions().getEntities().add(en);
+		en = new EntityNameOrURI();
+		en.setUri("tag:informatics.mayo.edu,2013-08-03:BelievableTestData/Concept#11");
+		query.getResolvedValueSetResolutionEntityRestrictions().getEntities().add(en);
+		
+		ResolvedValueSetResult<EntityDirectoryEntry> rvsr = vsr.resolveDefinitionAsEntityDirectory(
+				new ValueSetDefinitionReadId("tag:informatics.mayo.edu,2013-08-03:vs/ValueSet6-1.0"), 
+				null, null, query, null, null, new Page());
+		
+		validate(rvsr.getEntries(), assemble("tag:informatics.mayo.edu,2013-08-03:BelievableTestData", new String[] {"2", "11"}), false);
+	}
+	
+	@Test
+	public void queryTestEntityRestrictions2()
+	{
+		ResolvedValueSetResolutionEntityQuery query = ResolvedValueSetResolutionEntityQueryBuilder.build();
+
+		NameOrURI nou = new NameOrURI();
+		nou.setName("UnbelievableTestData-1.0");
+		query.getResolvedValueSetResolutionEntityRestrictions().setCodeSystemVersion(nou);
+		
+		ResolvedValueSetResult<EntityDirectoryEntry> rvsr = vsr.resolveDefinitionAsEntityDirectory(
+				new ValueSetDefinitionReadId("tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8-1.0"), 
+				null, null, query, null, null, new Page());
+		
+		validate(rvsr.getEntries(), assemble("tag:informatics.mayo.edu,2013-08-03:UnbelievableTestData", new String[] {"A"}), false);
+	}
+	
+	@Test
+	public void queryTestEntityRestrictions3()
+	{
+		ResolvedValueSetResolutionEntityQuery query = ResolvedValueSetResolutionEntityQueryBuilder.build();
+
+		NameOrURI nou = new NameOrURI();
+		nou.setUri("tag:informatics.mayo.edu,2013-08-03:BelievableTestData-1.0");
+		query.getResolvedValueSetResolutionEntityRestrictions().setCodeSystemVersion(nou);
+		
+		ResolvedValueSetResult<EntityDirectoryEntry> rvsr = vsr.resolveDefinitionAsEntityDirectory(
+				new ValueSetDefinitionReadId("tag:informatics.mayo.edu,2013-08-03:vs/ValueSet8-1.0"), 
+				null, null, query, null, null, new Page());
+		
+		validate(rvsr.getEntries(), assemble("tag:informatics.mayo.edu,2013-08-03:BelievableTestData", new String[] {"1"}), false);
 	}
 }
