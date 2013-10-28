@@ -177,29 +177,29 @@ public class ExistValueSetDefinitionResolutionService
 
 	@Override
 	public ResolvedValueSet resolveDefinitionAsCompleteSet(
-			ValueSetDefinitionReadId arg0, 
-			Set<NameOrURI> arg1, 
-			NameOrURI arg2,
-			SortCriteria arg3,
-			ResolvedReadContext arg4) {
+			ValueSetDefinitionReadId definitionId, 
+			Set<NameOrURI> codeSystemVersions, 
+			NameOrURI tag,
+			SortCriteria sortCriteria,
+			ResolvedReadContext readContext) {
 		if (valueSetResolutionImpl != null)
 		{
-			return valueSetResolutionImpl.resolveDefinitionAsCompleteSet(arg0, arg1, arg2, arg3, arg4);
+			return valueSetResolutionImpl.resolveDefinitionAsCompleteSet(definitionId, codeSystemVersions, tag, sortCriteria, readContext);
 		}
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public ResolvedValueSetResult<EntityDirectoryEntry> resolveDefinitionAsEntityDirectory(
-			ValueSetDefinitionReadId arg0, 
-			Set<NameOrURI> arg1, 
-			NameOrURI arg2,
-			ResolvedValueSetResolutionEntityQuery arg3, 
-			SortCriteria arg4,
-			ResolvedReadContext arg5, Page arg6) {
+			ValueSetDefinitionReadId definitionId, 
+			Set<NameOrURI> codeSystemVersions, 
+			NameOrURI tag,
+			ResolvedValueSetResolutionEntityQuery query, 
+			SortCriteria sortCriteria,
+			ResolvedReadContext readContext, Page page) {
 		if (valueSetResolutionImpl != null)
 		{
-			return valueSetResolutionImpl.resolveDefinitionAsEntityDirectory(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+			return valueSetResolutionImpl.resolveDefinitionAsEntityDirectory(definitionId, codeSystemVersions, tag, query, sortCriteria, readContext, page);
 		}
 		throw new UnsupportedOperationException();
 	}
