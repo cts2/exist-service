@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.xml.transform.stream.StreamSource;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.oxm.XmlMappingException;
 import org.xmldb.api.base.XMLDBException;
@@ -19,6 +20,7 @@ import edu.mayo.cts2.framework.model.service.core.Query6Choice;
 import edu.mayo.cts2.framework.model.service.core.Query6Choice2;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResource;
+import edu.mayo.cts2.framework.plugin.service.exist.valuesetResolution.JUnitAnnoyance;
 import edu.mayo.cts2.framework.plugin.service.exist.valuesetResolution.ValueSetDefinitionResolutionTest;
 import edu.mayo.cts2.framework.plugin.service.exist.valuesetResolution.ValueSetDefinitionResolutionTestBase;
 import edu.mayo.cts2.framework.plugin.service.valueSetDefinitionResolutionServices.ctsUtility.queryBuilders.ResolvedValueSetResolutionEntityQueryBuilder;
@@ -51,15 +53,17 @@ public class ValueSetDefinitionResolutionTestIT extends ValueSetDefinitionResolu
 	//same here... spring (or someone) is nulling out variables between tests for some reason ( but not consistently??)
 	protected static String changeSetAddOn;
 	
-	public ValueSetDefinitionResolutionTestIT()
+	@BeforeClass
+	public static void init()
 	{
-		dbInited = false;
+		JUnitAnnoyance.reset();
 	}
 	
 	// Sigh - BeforeClass requires static, which doesn't play nice with spring...
 	@Before
 	public void setupExistRemote() throws XMLDBException, XmlMappingException, IOException
 	{
+		setupExist();
 		if (!remoteDbInited)
 		{
 			Cts2RestClient restClient = Cts2RestClient.instance();

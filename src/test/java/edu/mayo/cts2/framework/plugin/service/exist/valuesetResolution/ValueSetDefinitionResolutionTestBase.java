@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import javax.xml.transform.stream.StreamSource;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.XmlMappingException;
@@ -41,14 +40,10 @@ public abstract class ValueSetDefinitionResolutionTestBase
 
 	@Autowired public ExistValueSetDefinitionResolutionService vsr;
 	
-	// no idea why this needs to be static... something funny about how the spring junit test runner handles this.
-	protected static boolean dbInited = false;
-	
 	// Sigh - BeforeClass requires static, which doesn't play nice with spring...
-	@Before
 	public void setupExist() throws XMLDBException, XmlMappingException, IOException
 	{
-		if (!dbInited)
+		if (!JUnitAnnoyance.hasRun())
 		{
 			dao.removeCollection(existManager.getCollectionRoot());
 
@@ -70,7 +65,6 @@ public abstract class ValueSetDefinitionResolutionTestBase
 
 			changeSetService.importChangeSet(changeSet);
 			changeSetService.commitChangeSet(changeSet.getChangeSetURI());
-			dbInited = true;
 		}
 	}
 

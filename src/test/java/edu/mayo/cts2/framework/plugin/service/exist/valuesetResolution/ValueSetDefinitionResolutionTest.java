@@ -2,10 +2,15 @@ package edu.mayo.cts2.framework.plugin.service.exist.valuesetResolution;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.oxm.XmlMappingException;
+import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.ComponentReference;
 import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
@@ -26,9 +31,16 @@ import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetD
 
 public class ValueSetDefinitionResolutionTest extends ValueSetDefinitionResolutionTestBase
 {	
-	public ValueSetDefinitionResolutionTest()
+	@BeforeClass
+	public static void init()
 	{
-		dbInited = false;
+		JUnitAnnoyance.reset();
+	}
+	
+	@Before
+	public void dataInit() throws XmlMappingException, XMLDBException, IOException
+	{
+		setupExist();
 	}
 	
 	@Test
