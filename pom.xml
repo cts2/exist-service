@@ -130,6 +130,7 @@
 							ws-commons-util,
                             xercesImpl,
                             xml-resolver,
+                            saxon,
 							jing,
 							antlr,
 							quartz,
@@ -193,8 +194,13 @@
 	</build>
 
 	<dependencies>
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <version>8.7</version>
+        </dependency>
 
-		<dependency>
+        <dependency>
 			<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
 			<version>1.6</version>
