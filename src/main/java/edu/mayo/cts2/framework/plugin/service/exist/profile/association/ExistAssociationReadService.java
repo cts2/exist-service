@@ -1,8 +1,11 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
+import edu.mayo.cts2.framework.core.util.EncodingUtils;
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
+import edu.mayo.cts2.framework.model.core.StatementTarget;
+import edu.mayo.cts2.framework.model.core.URIAndEntityName;
 import edu.mayo.cts2.framework.model.extension.LocalIdAssociation;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistLocalIdReadService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceInfo;
@@ -52,6 +55,15 @@ public class ExistAssociationReadService
 
     @Override
     protected LocalIdAssociation createLocalIdResource(String id, Association resource) {
+        if(resource.getTarget() != null){
+            for(StatementTarget target : resource.getTarget()){
+                if(target.getEntity() != null){
+                    URIAndEntityName targetName = target.getEntity();
+                    targetName.setHref(
+                            this.getUrlConstructor().createEntityUrl(EncodingUtils.encodeScopedEntityName(targetName)));
+                }
+            }
+        }
         return new LocalIdAssociation(id, resource);
     }
 }

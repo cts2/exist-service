@@ -1,19 +1,19 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.association;
 
+import edu.mayo.cts2.framework.core.util.EncodingUtils;
 import edu.mayo.cts2.framework.model.association.Association;
 import edu.mayo.cts2.framework.model.association.AssociationDirectoryEntry;
 import edu.mayo.cts2.framework.model.association.GraphNode;
 import edu.mayo.cts2.framework.model.association.types.GraphDirection;
 import edu.mayo.cts2.framework.model.association.types.GraphFocus;
 import edu.mayo.cts2.framework.model.command.Page;
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
-import edu.mayo.cts2.framework.model.core.ScopedEntityName;
-import edu.mayo.cts2.framework.model.core.SortCriteria;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.command.restriction.AssociationQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQuery;
 import edu.mayo.cts2.framework.service.profile.association.AssociationQueryService;
@@ -21,6 +21,7 @@ import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDesc
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.Resource;
 
@@ -66,7 +67,7 @@ public class ExistAssociationQueryService
 
         public AssociationDirectoryBuilder restrict(final AssociationQueryServiceRestrictions restriction){
 
-        	//TODO this implementation is incomplete - it is ignoring many possible restrictions, such as predicate, code system version, etc.
+        	//TODO this implementation is incomplete - it is ignoring many possible restrictions, such as predicate, etc.
         	//https://github.com/cts2/exist-service/issues/16
             if(restriction != null &&
                     restriction.getSourceEntity() != null) {
@@ -84,7 +85,7 @@ public class ExistAssociationQueryService
                         }
 
                         state.setXpath(
-                                state.getXpath() + (isBlankState ? "" : " | " + associationResourceInfo.getResourceXpath()) +
+                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
                                         "[.//association:subject[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
 
                         return state;
@@ -108,8 +109,34 @@ public class ExistAssociationQueryService
                         }
 
                         state.setXpath(
-                                state.getXpath() + (isBlankState ? "" : " | " + associationResourceInfo.getResourceXpath()) +
+                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
                                         "[.//association:target/core:entity[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
+
+                        return state;
+                    }
+                });
+            }
+
+            if(restriction != null
+                    && restriction.getCodeSystemVersion() != null) {
+
+                final String codeSystemVersionName = restriction.getCodeSystemVersion().getName();
+                final String codeSystemVersionUri = restriction.getCodeSystemVersion().getUri();
+
+                getRestrictions().add(new StateBuildingRestriction<XpathState>() {
+                    @Override
+                    public XpathState restrict(XpathState state) {
+                        boolean isBlankState = StringUtils.isBlank(state.getXpath());
+
+                        if(StringUtils.isNotBlank(codeSystemVersionName)){
+                            state.setXpath(
+                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
+                                        "[.//association:assertedBy/core:version[text() = '" + codeSystemVersionName + "']]");
+                        } else {
+                            state.setXpath(
+                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
+                                        "[.//association:assertedBy/core:version[@uri = '" + codeSystemVersionUri + "']]");
+                        }
 
                         return state;
                     }
@@ -161,13 +188,44 @@ public class ExistAssociationQueryService
 		Assert.notNull(assertedIn.getVersion(), "association MUST have CodeSystemVersion reference for 'assertedIn'.");
 		
 		summary.setAssertedBy(resource.getAssertedBy());
-		summary.setSubject(resource.getSubject());
+		summary.setSubject(this.setHref(resource.getSubject()));
 		summary.setPredicate(resource.getPredicate());
-		summary.setTarget(resource.getTarget(0));
+		summary.setTarget(this.setHref(resource.getTarget(0)));
+
+        String name;
+        try {
+            name = ExistServiceUtils.getNameFromResourceName(eXistResource.getId());
+        } catch (XMLDBException e) {
+            throw new IllegalStateException(e);
+        }
+
+        summary.setHref(
+                this.getUrlConstructor().createAssociationOfCodeSystemVersionUrl(
+                        assertedIn.getCodeSystem().getContent(),
+                        assertedIn.getVersion().getContent(),
+                        name)
+                );
 		
 		return summary;
 	}
-	
+
+    protected StatementTarget setHref(StatementTarget target){
+        if(target.getEntity() != null){
+            URIAndEntityName name = target.getEntity();
+            name.setHref(
+                this.getUrlConstructor().createEntityUrl(EncodingUtils.encodeScopedEntityName(name)));
+        }
+
+        return target;
+    }
+
+    protected URIAndEntityName setHref(URIAndEntityName name){
+        name.setHref(
+                this.getUrlConstructor().createEntityUrl(EncodingUtils.encodeScopedEntityName(name)));
+
+        return name;
+    }
+
 	private static CodeSystemVersionReference getAssertedIn(Association resource){
 		if(resource.getAssertedIn() != null){
 			return resource.getAssertedIn();
