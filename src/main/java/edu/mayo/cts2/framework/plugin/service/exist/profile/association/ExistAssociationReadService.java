@@ -64,6 +64,11 @@ public class ExistAssociationReadService
                 }
             }
         }
+
+        resource.getSubject().setHref(
+               this.getUrlConstructor().createEntityUrl(
+                       EncodingUtils.encodeScopedEntityName(resource.getSubject())));
+
         return new LocalIdAssociation(id, resource);
     }
 }

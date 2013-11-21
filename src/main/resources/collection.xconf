@@ -56,6 +56,8 @@
 		<create qname="core:alternateID" type="xs:string"/>
 		<create qname="core:namespace" type="xs:string"/>
 		<create qname="core:name" type="xs:string"/>
+		<create qname="core:codeSystem" type="xs:string"/>
+		<create qname="core:version" type="xs:string"/>
 		<create qname="core:officialResourceVersionId" type="xs:string"/>
 		<create qname="codesystemversion:versionOf" type="xs:string"/>
 		<create qname="valuesetdefinition:definedValueSet" type="xs:string"/>

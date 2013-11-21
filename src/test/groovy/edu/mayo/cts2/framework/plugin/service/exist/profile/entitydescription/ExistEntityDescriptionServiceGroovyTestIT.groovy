@@ -113,6 +113,32 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 		assertEquals 1, summaries.entries.size
 	}
 
+    @Test
+    void Get_Entity_Description_Summaries_With_Contains_ResourceSynopsis_Restriction_Case_Insensitive(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource(createEntity("something",changeSetUri,"aname"))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def fc = new ResolvedFilter(
+                matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
+                matchValue:"AName",
+                componentReference: StandardModelAttributeReference.RESOURCE_SYNOPSIS.componentReference)
+
+        def q = [
+                getFilterComponent : { [fc] as Set },
+                getReadContext : { },
+                getQuery : { },
+                getRestrictions : { }
+        ] as EntityDescriptionQuery
+
+        def summaries = query.getResourceSummaries(q, null, new Page())
+
+        assertEquals 1, summaries.entries.size
+    }
+
 	@Test void GetEntityDescriptionSummariesWithContainsWrongResourceNameOrUriRestriction(){
 		def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
 

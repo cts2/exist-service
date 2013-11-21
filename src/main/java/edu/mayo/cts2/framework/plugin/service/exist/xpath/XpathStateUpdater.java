@@ -82,7 +82,7 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 			{
 				//Otherwise, do a lucene leading-wildcard search
 				//There are bugs in existdb - this is the only way to get it to parse the lucene query properly.
-				sb.append("let $query := <query><wildcard>*" + queryString + "*</wildcard></query>\r\n");
+				sb.append("let $query := <query><wildcard>*" + queryString.toLowerCase() + "*</wildcard></query>\r\n");
 				sb.append("return\r\n");
 				//insert a comment for later processing... if there is an additional path, it should be placed here (instead of prefixed)
 				sb.append(AbstractExistQueryService.REPLACE_INDICATOR);  
@@ -91,9 +91,9 @@ public class XpathStateUpdater<T extends XpathState> implements StateUpdater<T> 
 		} else if(matchAlgorithm.equals(
 				StandardMatchAlgorithmReference.
 					STARTS_WITH.getMatchAlgorithmReference())){
-			sb.append("[ft:query(" + this.queryPath  + ", '" + queryString + "*')]");
+			sb.append("[ft:query(" + this.queryPath  + ", '" + queryString.toLowerCase() + "*')]");
 		} else if(matchAlgorithm.getContent().equals("lucene")){
-			sb.append("[ft:query(" + this.queryPath  + ", '" + queryString + "')]");
+			sb.append("[ft:query(" + this.queryPath  + ", '" + queryString.toLowerCase() + "')]");
 		} else if(matchAlgorithm.equals(
 				StandardMatchAlgorithmReference.
 					EXACT_MATCH.getMatchAlgorithmReference())){

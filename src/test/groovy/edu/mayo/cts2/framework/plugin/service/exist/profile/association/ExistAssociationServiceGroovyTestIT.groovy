@@ -146,6 +146,49 @@ class ExistAssociationServiceGroovyTestIT extends BaseServiceDbCleaningBase {
     }
 
     @Test
+    void TestSourceOfQueryWithCsv(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def assoc1 = new Association(associationID:"http://someAssoc")
+        assoc1.setSubject(new URIAndEntityName(name:"p", namespace:"ns", uri:"http://p"))
+
+        assoc1.addTarget(new StatementTarget())
+        assoc1.getTarget(0).setEntity(new URIAndEntityName(name:"c", namespace:"ns", uri:"http://c"))
+
+        assoc1.setPredicate(new PredicateReference(name:"predicatename", namespace:"ns", uri:"uri"))
+
+        assoc1.setAssertedBy(new CodeSystemVersionReference(
+                codeSystem: new CodeSystemReference(content:"TESTCS"),
+                version: new NameAndMeaningReference(content:"TESTCSVERSION")))
+
+        assoc1.setChangeableElementGroup(new ChangeableElementGroup(
+                changeDescription: new ChangeDescription(
+                        changeType: ChangeType.CREATE,
+                        changeDate: new Date(),
+                        containingChangeSet: changeSetUri)))
+
+        maint.createResource(assoc1)
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def ed = query.getResourceSummaries([
+                getRestrictions: {
+                    new AssociationQueryServiceRestrictions(
+                            sourceEntity: new EntityNameOrURI(entityName: new ScopedEntityName(name: "p")),
+                            codeSystemVersion: new NameOrURI(name: "TESTCSVERSION")
+                    )
+                },
+                getReadContext: {null},
+                getFilterComponent: {null}
+        ] as AssociationQuery, null, new Page()
+        )
+
+        assertNotNull ed
+        assertEquals 1, ed.entries.size()
+    }
+
+    @Test
     void TestSourceOfQueryInvalid(){
 
         def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()

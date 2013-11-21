@@ -44,14 +44,14 @@ public class ExistAssociationQueryService
 
 				@Override
 				public DirectoryResult<AssociationDirectoryEntry> execute(
-						XpathState state, 
+						XpathState state,
 						int start, 
 						int maxResults) {
 					return getResourceSummaries(
 							getResourceInfo(),
 							changeSetUri,
 							"",
-							state.getXpath(), 
+							state.getXpath(),
 							start, 
 							maxResults);
 				}
@@ -84,9 +84,13 @@ public class ExistAssociationQueryService
                             namespaceXpath = " and core:namespace = '" + name.getNamespace() + "'";
                         }
 
-                        state.setXpath(
-                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
-                                        "[.//association:subject[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
+                        String clause = "association:subject[core:name = '" + name.getName() + "'" + namespaceXpath + "]";
+
+                        if(isBlankState){
+                            state.setXpath("[" + clause + "]");
+                        } else {
+                            state.setXpath(StringUtils.removeEnd(state.getXpath(), "]") + " and " + clause + "]");
+                        }
 
                         return state;
                     }
@@ -108,9 +112,13 @@ public class ExistAssociationQueryService
                             namespaceXpath = " and core:namespace = '" + name.getNamespace() + "'";
                         }
 
-                        state.setXpath(
-                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
-                                        "[.//association:target/core:entity[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
+                        String clause = "association:target/core:entity[core:name = '" + name.getName() + "'" + namespaceXpath + "]";
+
+                        if(isBlankState){
+                            state.setXpath("[" + clause + "]");
+                        } else {
+                            state.setXpath(StringUtils.removeEnd(state.getXpath(), "]") + " and " + clause + "]");
+                        }
 
                         return state;
                     }
@@ -128,14 +136,18 @@ public class ExistAssociationQueryService
                     public XpathState restrict(XpathState state) {
                         boolean isBlankState = StringUtils.isBlank(state.getXpath());
 
+                        String clause;
+
                         if(StringUtils.isNotBlank(codeSystemVersionName)){
-                            state.setXpath(
-                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
-                                        "[.//association:assertedBy/core:version[text() = '" + codeSystemVersionName + "']]");
+                            clause = "association:assertedBy[core:version = '" + codeSystemVersionName + "']";
                         } else {
-                            state.setXpath(
-                                state.getXpath() + (isBlankState ? "" : " intersect " + associationResourceInfo.getResourceXpath()) +
-                                        "[.//association:assertedBy/core:version[@uri = '" + codeSystemVersionUri + "']]");
+                            clause = "association:assertedBy/core:version[@uri = '" + codeSystemVersionUri + "']";
+                        }
+
+                        if(isBlankState){
+                            state.setXpath("[" + clause + "]");
+                        } else {
+                            state.setXpath(StringUtils.removeEnd(state.getXpath(), "]") + " and " + clause + "]");
                         }
 
                         return state;
