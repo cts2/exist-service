@@ -305,6 +305,17 @@ public abstract class AbstractExistQueryService
 					getResourceNameStateUpdater());
 		
 		returnSet.add(resourceName);
+
+        StateUpdater<S> resourceSynopsisXpath = this.getResourceSynopsisStateUpdater();
+
+        if(resourceSynopsisXpath != null){
+            StateAdjustingComponentReference<S> resourceDescription =
+                    StateAdjustingComponentReference.toComponentReference(
+                            StandardModelAttributeReference.RESOURCE_SYNOPSIS.getComponentReference(),
+                            resourceSynopsisXpath);
+
+            returnSet.add(resourceDescription);
+        }
 		
 		return returnSet;
 	}
@@ -343,11 +354,18 @@ public abstract class AbstractExistQueryService
 	}
 
 	private StateUpdater<S> getResourceNameStateUpdater(){
-		
 		return new XpathStateUpdater<S>(
 				this.getResourceInfo().getResourceNameXpath());
-		
 	}
+
+    /**
+     * Subclasses can override this to provide Description search functionality.
+     *
+     * @return
+     */
+    protected StateUpdater<S> getResourceSynopsisStateUpdater(){
+        return null;
+    }
 
 	protected abstract PathInfo getResourceInfo();
 

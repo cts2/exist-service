@@ -1,5 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.codesystem;
 
+import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryListEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
@@ -11,6 +12,7 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistQuerySe
 import edu.mayo.cts2.framework.plugin.service.exist.profile.PathInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder;
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
+import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.profile.ResourceQuery;
 import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemQueryService;
 import org.springframework.stereotype.Component;
@@ -32,6 +34,10 @@ public class ExistCodeSystemQueryService
 	protected CodeSystemCatalogEntrySummary createSummary() {
 		return new CodeSystemCatalogEntrySummary();
 	}
+
+    protected StateAdjustingComponentReference.StateUpdater<XpathState> getResourceSynopsisStateUpdater() {
+        return new XpathStateUpdater<XpathState>("core:resourceSynopsis/core:value");
+    }
 
 	@Override
 	protected CodeSystemCatalogEntrySummary doTransform(

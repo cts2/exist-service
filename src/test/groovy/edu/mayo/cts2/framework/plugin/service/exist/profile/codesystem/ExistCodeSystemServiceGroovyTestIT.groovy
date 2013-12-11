@@ -185,7 +185,71 @@ class ExistCodeSystemServiceGroovyTestIT extends BaseServiceDbCleaningBase {
 
 		assertEquals 1, query.getResourceSummaries(q, null, new Page()).entries.size()
 	}
-	
+
+    @Test void TestQueryWithContainsResourceSynopsis(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def cs = new CodeSystemCatalogEntry(
+                about:"about",
+                codeSystemName:"name",
+                resourceSynopsis:new EntryDescription(value: ModelUtils.toTsAnyType("my thing")))
+        cs.setChangeableElementGroup(new ChangeableElementGroup(
+                changeDescription: new ChangeDescription(
+                        changeType: ChangeType.CREATE,
+                        changeDate: new Date(),
+                        containingChangeSet: changeSetUri)))
+
+        maint.createResource(cs)
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def filter = new ResolvedFilter(
+                matchAlgorithmReference:new MatchAlgorithmReference(content:"contains"),
+                matchValue:"thing",
+                componentReference:new ComponentReference(attributeReference: "resourceSynopsis")
+        )
+
+        def q = [
+                getFilterComponent : { [filter] as Set },
+                getReadContext : { },
+                getQuery : { }
+        ] as ResourceQuery
+
+        assertEquals 1, query.getResourceSummaries(q, null, new Page()).entries.size()
+    }
+
+    @Test void TestQueryWithContainsResourceSynopsisBad(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        def cs = new CodeSystemCatalogEntry(
+                about:"about",
+                codeSystemName:"name",
+                resourceSynopsis:new EntryDescription(value: ModelUtils.toTsAnyType("my thing")))
+        cs.setChangeableElementGroup(new ChangeableElementGroup(
+                changeDescription: new ChangeDescription(
+                        changeType: ChangeType.CREATE,
+                        changeDate: new Date(),
+                        containingChangeSet: changeSetUri)))
+
+        maint.createResource(cs)
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def filter = new ResolvedFilter(
+                matchAlgorithmReference:new MatchAlgorithmReference(content:"contains"),
+                matchValue:"asdfasdfasdf",
+                componentReference:new ComponentReference(attributeReference: "resourceSynopsis")
+        )
+
+        def q = [
+                getFilterComponent : { [filter] as Set },
+                getReadContext : { },
+                getQuery : { }
+        ] as ResourceQuery
+
+        assertEquals 0, query.getResourceSummaries(q, null, new Page()).entries.size()
+    }
+
 	@Test void TestCommittedChangeStatus(){
 		
 		def changeSetUri1 = changeSetService.createChangeSet().getChangeSetURI()

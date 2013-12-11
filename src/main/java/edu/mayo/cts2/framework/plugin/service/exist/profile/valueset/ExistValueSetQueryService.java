@@ -1,6 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.valueset;
 
-import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.core.SortCriteria;
@@ -14,13 +13,11 @@ import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDire
 import edu.mayo.cts2.framework.plugin.service.exist.restrict.directory.XpathDirectoryBuilder.XpathState;
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.ValueSetQueryServiceRestrictions;
-import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQuery;
 import edu.mayo.cts2.framework.service.profile.valueset.ValueSetQueryService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Set;
 
 @Component
 public class ExistValueSetQueryService 
@@ -39,20 +36,7 @@ public class ExistValueSetQueryService
 		return new ValueSetCatalogEntrySummary();
 	}
 
-	public Set<StateAdjustingComponentReference<XpathState>> getSupportedSearchReferences() {
-		Set<StateAdjustingComponentReference<XpathState>> set = super.getSupportedSearchReferences();
-
-        StateAdjustingComponentReference<XpathState> resourceSynopsis =
-                StateAdjustingComponentReference.toComponentReference(
-                        StandardModelAttributeReference.RESOURCE_SYNOPSIS.getComponentReference(),
-                        getResourceSynopsisStateUpdater());
-			
-		set.add(resourceSynopsis);
-		
-		return set;
-	}
-	
-	private StateUpdater<XpathState> getResourceSynopsisStateUpdater() {
+	protected StateUpdater<XpathState> getResourceSynopsisStateUpdater() {
 		return new XpathStateUpdater<XpathState>(".//core:resourceSynopsis/core:value");
 	}
 	

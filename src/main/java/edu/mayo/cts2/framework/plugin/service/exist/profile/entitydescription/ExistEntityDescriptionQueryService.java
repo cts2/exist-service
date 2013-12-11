@@ -1,31 +1,11 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.entitydescription;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import javax.annotation.Resource;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
-import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference;
 import edu.mayo.cts2.framework.filter.match.StateAdjustingComponentReference.StateUpdater;
 import edu.mayo.cts2.framework.model.command.Page;
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
-import edu.mayo.cts2.framework.model.core.CodeSystemReference;
-import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference;
-import edu.mayo.cts2.framework.model.core.DescriptionInCodeSystem;
-import edu.mayo.cts2.framework.model.core.EntityReferenceList;
-import edu.mayo.cts2.framework.model.core.NameAndMeaningReference;
-import edu.mayo.cts2.framework.model.core.ScopedEntityName;
-import edu.mayo.cts2.framework.model.core.SortCriteria;
-import edu.mayo.cts2.framework.model.core.VersionTagReference;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.directory.DirectoryResult;
-import edu.mayo.cts2.framework.model.entity.Designation;
-import edu.mayo.cts2.framework.model.entity.EntityDescription;
-import edu.mayo.cts2.framework.model.entity.EntityDescriptionBase;
-import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
-import edu.mayo.cts2.framework.model.entity.EntityListEntry;
-import edu.mayo.cts2.framework.model.entity.NamedEntityDescription;
+import edu.mayo.cts2.framework.model.entity.*;
 import edu.mayo.cts2.framework.model.entity.types.DesignationRole;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI;
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURIList;
@@ -39,9 +19,16 @@ import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateBuildingRest
 import edu.mayo.cts2.framework.plugin.service.exist.xpath.XpathStateUpdater;
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions;
 import edu.mayo.cts2.framework.service.command.restriction.EntityDescriptionQueryServiceRestrictions.HierarchyRestriction.HierarchyType;
-import edu.mayo.cts2.framework.service.meta.StandardModelAttributeReference;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQuery;
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionQueryService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class ExistEntityDescriptionQueryService 
@@ -135,21 +122,7 @@ public class ExistEntityDescriptionQueryService
 
 	}
 
-	
-	public Set<StateAdjustingComponentReference<EntityDescriptionDirectoryState>> getSupportedSearchReferences() {
-		Set<StateAdjustingComponentReference<EntityDescriptionDirectoryState>> set = super.getSupportedSearchReferences();
-
-        StateAdjustingComponentReference<EntityDescriptionDirectoryState> resourceSynopsis =
-                StateAdjustingComponentReference.toComponentReference(
-                        StandardModelAttributeReference.RESOURCE_SYNOPSIS.getComponentReference(),
-                        getResourceSynopsisStateUpdater());
-			
-		set.add(resourceSynopsis);
-		
-		return set;
-	}
-	
-	private StateUpdater<EntityDescriptionDirectoryState> getResourceSynopsisStateUpdater() {
+	protected StateUpdater<EntityDescriptionDirectoryState> getResourceSynopsisStateUpdater() {
 		return new XpathStateUpdater<EntityDescriptionDirectoryState>(".//entity:designation/core:value");
 	}
 

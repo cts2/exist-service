@@ -157,7 +157,6 @@ public class ExistResolvedValueSetQueryService
 	 */
 	@Override
 	public Set<StateAdjustingComponentReference<XpathState>> getSupportedSearchReferences(){
-
 		return new HashSet<StateAdjustingComponentReference<XpathState>>();
 	}
 
