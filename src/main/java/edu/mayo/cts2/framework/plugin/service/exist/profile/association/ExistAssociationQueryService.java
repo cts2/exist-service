@@ -39,6 +39,8 @@ public class ExistAssociationQueryService
 	
 	private class AssociationDirectoryBuilder extends XpathDirectoryBuilder<XpathState,AssociationDirectoryEntry> {
 
+        private StateBuildingRestriction<XpathState> codeSystemVersionRestriction;
+
 		public AssociationDirectoryBuilder(final String changeSetUri) {
 			super(new XpathState(), new Callback<XpathState, AssociationDirectoryEntry>() {
 
@@ -72,6 +74,8 @@ public class ExistAssociationQueryService
             if(restriction != null &&
                     restriction.getSourceEntity() != null) {
 
+                getRestrictions().remove(codeSystemVersionRestriction);
+
                 final ScopedEntityName name = restriction.getSourceEntity().getEntityName();
 
                 getRestrictions().add(new StateBuildingRestriction<XpathState>() {
@@ -100,6 +104,8 @@ public class ExistAssociationQueryService
             if(restriction != null
                     && restriction.getTargetEntity() != null) {
 
+                getRestrictions().remove(codeSystemVersionRestriction);
+
                 final ScopedEntityName name = restriction.getTargetEntity().getEntityName();
 
                 getRestrictions().add(new StateBuildingRestriction<XpathState>() {
@@ -125,13 +131,14 @@ public class ExistAssociationQueryService
                 });
             }
 
-            if(restriction != null
+            if(getRestrictions().size() == 0
+                    && restriction != null
                     && restriction.getCodeSystemVersion() != null) {
 
                 final String codeSystemVersionName = restriction.getCodeSystemVersion().getName();
                 final String codeSystemVersionUri = restriction.getCodeSystemVersion().getUri();
 
-                getRestrictions().add(new StateBuildingRestriction<XpathState>() {
+                codeSystemVersionRestriction = new StateBuildingRestriction<XpathState>() {
                     @Override
                     public XpathState restrict(XpathState state) {
                         boolean isBlankState = StringUtils.isBlank(state.getXpath());
@@ -152,7 +159,9 @@ public class ExistAssociationQueryService
 
                         return state;
                     }
-                });
+                };
+
+                getRestrictions().add(codeSystemVersionRestriction);
             }
 
             return this;
