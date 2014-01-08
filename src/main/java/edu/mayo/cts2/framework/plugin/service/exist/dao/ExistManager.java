@@ -97,7 +97,7 @@ public class ExistManager implements InitializingBean, DisposableBean {
 		String uri = (String) properties.get("uri");
 		String existHome = (String) properties.get("existHome");
 		String password = (String) properties.get("password");
-        boolean useChangeSets = BooleanUtils.toBoolean( (String) properties.get("useChangeSets"));
+        boolean useChangeSets = BooleanUtils.toBoolean( (Boolean) properties.get("useChangeSets"));
 		
 		this.userName = userName;
 		this.uri = uri;
