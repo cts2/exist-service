@@ -25,6 +25,7 @@ import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseMaintenanceService;
 import edu.mayo.cts2.framework.model.updates.ChangeableResource;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.validator.ChangeSetUriValidator;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.UpdateChangeableMetadataRequest;
@@ -48,15 +49,18 @@ public abstract class AbstractExistMaintenanceService<
 
 	@javax.annotation.Resource
 	private StateChangeCallback stateChangeCallback;
-	
-	@javax.annotation.Resource
-	private ChangeSetUriValidator changeSetUriValidator;
+
+    @javax.annotation.Resource
+    private ChangeSetUriValidator changeSetUriValidator;
+
+    @javax.annotation.Resource
+    private ExistManager existManager;
 	
 	@Override
 	public void updateChangeableMetadata(I identifier,
 			UpdateChangeableMetadataRequest request) {
-		// TODO Auto-generated method stub
-		
+        //TODO:
+		throw new UnsupportedOperationException();
 	}
 
     @Override
@@ -86,17 +90,23 @@ public abstract class AbstractExistMaintenanceService<
     }
 
 	protected void doDeleteResource(D changeable) {
-		ChangeableElementGroup group = changeable.getChangeableElementGroup();
-
+        ChangeableElementGroup group = changeable.getChangeableElementGroup();
         String changeSetUri = group.getChangeDescription().getContainingChangeSet();
+        ChangeableResource choice = new ChangeableResource();
+        this.addResourceToChangeableResource(choice, changeable);
 
-        this.changeSetUriValidator.validateChangeSet(changeSetUri);
+        if(this.existManager.isUseChangeSets()) {
+            this.changeSetUriValidator.validateChangeSet(changeSetUri);
 
-		this.doStoreResource(changeable);
-		
-		ChangeableResource choice = new ChangeableResource();
-		
-		this.addResourceToChangeableResource(choice, changeable);
+            this.doStoreResource(changeable);
+        } else {
+            String path = this.getPathFromResource(changeable);
+
+            String name = this.getExistStorageNameForResource(changeable);
+
+            this.getExistResourceDao().deleteResource(
+                    this.createPath(this.getResourceInfo().getResourceBasePath(), path), name);
+        }
 		
 		this.stateChangeCallback.resourceDeleted(choice, changeSetUri);
 	}
@@ -122,7 +132,7 @@ public abstract class AbstractExistMaintenanceService<
 		D resource = this.resourceToIndentifiedResource(inputResource);
 
 		this.doStoreResource(resource);
-		
+
 		ChangeableResource choice = new ChangeableResource();
 		
 		this.addResourceToChangeableResource(choice, resource);
@@ -137,22 +147,26 @@ public abstract class AbstractExistMaintenanceService<
 	protected abstract String getPathFromResource(D inputResource);
 
 	protected void doStoreResource(D resource){
-		
 		String path = 
 				this.getPathFromResource(resource);
 
 		String name = this.getExistStorageNameForResource(resource);
 
-		ChangeableElementGroup group = resource.getChangeableElementGroup();
-		
-		String changeSetUri = group.getChangeDescription().getContainingChangeSet();
-		
-		this.changeSetUriValidator.validateChangeSet(changeSetUri);
-		
-		String changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
-		
-		String wholePath = this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), path);
-	
+        String wholePath;
+
+        if(this.existManager.isUseChangeSets()) {
+            ChangeableElementGroup group = resource.getChangeableElementGroup();
+
+            String changeSetUri = group.getChangeDescription().getContainingChangeSet();
+
+            this.changeSetUriValidator.validateChangeSet(changeSetUri);
+
+            String changeSetDir = ExistServiceUtils.getTempChangeSetContentDirName(changeSetUri);
+            wholePath = this.createPath(changeSetDir, this.getResourceInfo().getResourceBasePath(), path);
+        } else {
+            wholePath = this.createPath(this.getResourceInfo().getResourceBasePath(), path);
+        }
+
 		this.getExistResourceDao().storeResource(wholePath, name, 
 				this.processResourceBeforeStore(resource));
 	}

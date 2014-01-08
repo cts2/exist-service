@@ -1,18 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.Resource;
-import org.xmldb.api.base.ResourceSet;
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
@@ -22,6 +10,19 @@ import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.update.ChangeSetResourceInfo;
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceSet;
+
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class StateChangeCallback {
@@ -48,31 +49,36 @@ public class StateChangeCallback {
 	protected Log log = LogFactory.getLog(getClass());
 	
 	public void resourceAdded(ChangeableResource changeable) {
-		ChangeDescription changeDescription = 
-				changeable.getChangeableElementGroup().getChangeDescription();
-		
-		String changeSetUri = changeDescription.
-					getContainingChangeSet();
-		
-		this.addToChangeSet(changeSetUri, changeable);
+        if(this.existManager.isUseChangeSets()){
+            ChangeDescription changeDescription =
+                    changeable.getChangeableElementGroup().getChangeDescription();
+
+            String changeSetUri = changeDescription.
+                        getContainingChangeSet();
+
+            this.addToChangeSet(changeSetUri, changeable);
+        }
 	}
 	
 	public void resourceUpdated(ChangeableResource changeable) {
-		ChangeDescription changeDescription = 
-				changeable.getChangeableElementGroup().getChangeDescription();
-		
-		String changeSetUri = changeDescription.
-					getContainingChangeSet();
-		
-		this.addToChangeSet(changeSetUri, changeable);
+        if(this.existManager.isUseChangeSets()){
+            ChangeDescription changeDescription =
+                    changeable.getChangeableElementGroup().getChangeDescription();
+
+            String changeSetUri = changeDescription.
+                        getContainingChangeSet();
+
+            this.addToChangeSet(changeSetUri, changeable);
+        }
 	}
 	
 	public void resourceDeleted(ChangeableResource changeable, String changeSetUri) {
-
-		this.addToChangeSet(changeSetUri, changeable);
+        if(this.existManager.isUseChangeSets()){
+		    this.addToChangeSet(changeSetUri, changeable);
+        }
 	}
 	
-	protected void addToChangeSet(String changeSetUri, ChangeableResource changeable){
+	private void addToChangeSet(String changeSetUri, ChangeableResource changeable){
 		//We could only sync on something unique to the changeSetURI - but thats gets to be 
 		//a sticky sync call to make in Java... not worth the difficulty.
 		synchronized (syncLock)

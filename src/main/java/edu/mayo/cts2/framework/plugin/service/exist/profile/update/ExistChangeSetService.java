@@ -1,33 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile.update;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tools.ant.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.xmldb.api.base.Resource;
-import org.xmldb.api.base.ResourceIterator;
-import org.xmldb.api.base.ResourceSet;
-import org.xmldb.api.base.XMLDBException;
 import edu.mayo.cts2.framework.model.association.Association;
-import edu.mayo.cts2.framework.model.core.ChangeDescription;
-import edu.mayo.cts2.framework.model.core.ChangeSetElementGroup;
-import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
-import edu.mayo.cts2.framework.model.core.IsChangeable;
-import edu.mayo.cts2.framework.model.core.OpaqueData;
-import edu.mayo.cts2.framework.model.core.SourceReference;
+import edu.mayo.cts2.framework.model.core.*;
 import edu.mayo.cts2.framework.model.core.types.ChangeCommitted;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.core.types.FinalizableState;
@@ -35,6 +9,7 @@ import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.model.extension.LocalIdAssociation;
 import edu.mayo.cts2.framework.model.updates.ChangeSet;
 import edu.mayo.cts2.framework.model.updates.ChangeableResource;
+import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistManager;
 import edu.mayo.cts2.framework.plugin.service.exist.dao.ExistResourceDao;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ChangeableResourceHandler;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.ResourceMarshaller;
@@ -44,6 +19,21 @@ import edu.mayo.cts2.framework.plugin.service.exist.profile.association.ExistAss
 import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import edu.mayo.cts2.framework.service.profile.association.name.AssociationReadId;
 import edu.mayo.cts2.framework.service.profile.update.ChangeSetService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.tools.ant.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.*;
 
 @Component
 public class ExistChangeSetService implements ChangeSetService {
@@ -55,8 +45,11 @@ public class ExistChangeSetService implements ChangeSetService {
 
 	@Autowired
 	private ExistResourceDao existResourceDao;
-	
-	@Autowired
+
+    @Autowired
+    private ExistManager existManager;
+
+    @Autowired
 	private ExistAssociationReadService existAssociationReadService;
 	
 	@Autowired
@@ -138,10 +131,10 @@ public class ExistChangeSetService implements ChangeSetService {
 						"To: " + parentCollectionName + resourceId);
 				}
 		
-				IsChangeable resourceObj = 
+				IsChangeable resourceObj =
 						(IsChangeable)this.resourceUnmarshaller.unmarshallResource(resource);
 				
-				ChangeDescription changeDescription = 
+				ChangeDescription changeDescription =
 						resourceObj.getChangeableElementGroup().getChangeDescription();
 				
 				if(changeDescription.getChangeType().equals(ChangeType.DELETE)){
@@ -202,8 +195,26 @@ public class ExistChangeSetService implements ChangeSetService {
 		}
 	}
 
-	@Override
-	public String importChangeSet(ChangeSet changeSet) {
+    @Override
+    public String importChangeSet(ChangeSet changeSet) {
+        if(this.existManager.isUseChangeSets()){
+            return importChangeSetWithChangeSets(changeSet);
+        } else {
+            return importChangeSetWithoutChangeSets(changeSet);
+        }
+    }
+
+    private String importChangeSetWithoutChangeSets(ChangeSet changeSet) {
+        for (ChangeableResource member : changeSet.getMemberAsReference()){
+            for(ChangeableResourceHandler handler : this.changeableResourceHandlers){
+                handler.handle(member);
+            }
+        }
+
+        return changeSet.getChangeSetURI();
+    }
+
+    private String importChangeSetWithChangeSets(ChangeSet changeSet) {
 		try
 		{
 			String name = this.changeSetResourceInfo.getExistResourceNameFromResource(changeSet);

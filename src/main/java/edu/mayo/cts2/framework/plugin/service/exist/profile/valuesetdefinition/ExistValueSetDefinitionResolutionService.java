@@ -35,6 +35,7 @@ import edu.mayo.cts2.framework.model.util.ModelUtils;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSet;
 import edu.mayo.cts2.framework.model.valuesetdefinition.ResolvedValueSetDirectoryEntry;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.AbstractExistService;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset.ExistResolvedValueSetLoaderService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset.ExistResolvedValueSetQueryService;
 import edu.mayo.cts2.framework.plugin.service.exist.profile.resolvedvalueset.ExistResolvedValueSetResolutionService;
 import edu.mayo.cts2.framework.service.command.restriction.ResolvedValueSetQueryServiceRestrictions;
@@ -69,6 +70,9 @@ public class ExistValueSetDefinitionResolutionService
 	
 	@Resource
 	private ExistResolvedValueSetResolutionService existResolvedValueSetResolutionService;
+
+    @Resource
+    private ExistResolvedValueSetLoaderService existResolvedValueSetLoaderService;
 
 	@Override
 	public Set<PredicateReference> getKnownProperties() {
@@ -125,12 +129,7 @@ public class ExistValueSetDefinitionResolutionService
             SortCriteria sort,
             ResolvedReadContext context,
             Page page) {
-		
-		if (valueSetResolutionImpl != null)
-		{
-			return valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, sort, context, page);
-		}
-		
+
 		ResolvedValueSetQuery resolvedValueSetQuery = new ResolvedValueSetQuery(){
 
 			@Override
@@ -155,24 +154,50 @@ public class ExistValueSetDefinitionResolutionService
 		
 		DirectoryResult<ResolvedValueSetDirectoryEntry> summaries = 
 			existResolvedValueSetQueryService.getResourceSummaries(resolvedValueSetQuery, sort, page);
-		
+
 		if(summaries != null && summaries.getEntries() != null && summaries.getEntries().size() == 1){
 			ResolvedValueSetDirectoryEntry summary = summaries.getEntries().get(0);
-			
-			ResolvedValueSetReadId identifier = 
-				new ResolvedValueSetReadId(
-					summary.getResourceName(),
-					id.getValueSet(),
-					ModelUtils.nameOrUriFromName(id.getName()));
+
+            ResolvedValueSetReadId identifier =
+                    new ResolvedValueSetReadId(
+                            summary.getResourceName(),
+                            id.getValueSet(),
+                            ModelUtils.nameOrUriFromName(id.getName()));
 			
 			return this.existResolvedValueSetResolutionService.
 						getResolution(
 								identifier, 
 								null, 
 								page);
+		} else if(summaries == null || summaries.getEntries() == null || summaries.getEntries().size() == 0) {
+            if (valueSetResolutionImpl != null) {
+                ResolvedValueSet completeSet = valueSetResolutionImpl.resolveDefinitionAsCompleteSet(id, codeSystemVersions, tag, sort, context);
+                existResolvedValueSetLoaderService.load(completeSet);
+
+                ResolvedValueSetDirectoryEntry summary =
+                        existResolvedValueSetQueryService.getResourceSummaries(resolvedValueSetQuery, sort, page).getEntries().get(0);
+
+                ResolvedValueSetReadId identifier =
+                        new ResolvedValueSetReadId(
+                                summary.getResourceName(),
+                                id.getValueSet(),
+                                ModelUtils.nameOrUriFromName(id.getName()));
+
+                return this.existResolvedValueSetResolutionService.
+                        getResolution(
+                                identifier,
+                                null,
+                                page);
+            } else {
+			    throw new UnsupportedOperationException();
+            }
 		} else {
-			throw new UnsupportedOperationException();
-		}
+            if (valueSetResolutionImpl != null) {
+                return this.valueSetResolutionImpl.resolveDefinition(id, codeSystemVersions, tag, sort, context, page);
+            } else {
+                throw new UnsupportedOperationException();
+            }
+        }
 	}
 
 	@Override

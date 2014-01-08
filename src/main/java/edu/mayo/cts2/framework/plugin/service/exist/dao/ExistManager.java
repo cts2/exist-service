@@ -5,6 +5,7 @@ import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
 import edu.mayo.cts2.framework.plugin.service.exist.ExistServiceConstants;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +40,7 @@ public class ExistManager implements InitializingBean, DisposableBean {
 	private String existHome;
 	private String userName;
 	private String password;
+    private boolean useChangeSets = true;
 	
 	private XQueryService xQueryService;
 	private CollectionManagementService collectionManagementService;
@@ -95,11 +97,13 @@ public class ExistManager implements InitializingBean, DisposableBean {
 		String uri = (String) properties.get("uri");
 		String existHome = (String) properties.get("existHome");
 		String password = (String) properties.get("password");
+        boolean useChangeSets = BooleanUtils.toBoolean( (String) properties.get("useChangeSets"));
 		
 		this.userName = userName;
 		this.uri = uri;
 		this.existHome = existHome;
 		this.password = password;
+        this.useChangeSets = useChangeSets;
 		
 		this.afterPropertiesSet();
 	}
@@ -273,8 +277,16 @@ public class ExistManager implements InitializingBean, DisposableBean {
 	public void setCollectionRoot(String collectionRoot) {
 		this.collectionRoot = collectionRoot;
 	}
-	
-	protected String getBaseCollectionPath(){
+
+    public boolean isUseChangeSets() {
+        return useChangeSets;
+    }
+
+    public void setUseChangeSets(boolean useChangeSets) {
+        this.useChangeSets = useChangeSets;
+    }
+
+    protected String getBaseCollectionPath(){
 		if(StringUtils.isNotBlank(this.collectionRoot)){
 			return this.collectionRoot;
 		} else {

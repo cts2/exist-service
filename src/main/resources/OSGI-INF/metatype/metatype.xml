@@ -6,7 +6,8 @@
 		<AD name="eXist User Name" id="userName" required="false" type="String"  />
 		<AD name="eXist Password" id="password" required="false" type="String"  />
 		<AD name="eXist Collection Root" id="collectionRoot" required="false" type="String" default="/cts2resources" />
-	</OCD>
+        <AD name="eXist Use ChangeSets" id="useChangeSets" required="true" type="Boolean" default="true" />
+    </OCD>
 	<Designate pid="edu.mayo.cts2.framework.plugin.service.exist">
         <Object ocdref="edu.mayo.cts2.framework.plugin.service.exist" />
     </Designate>
