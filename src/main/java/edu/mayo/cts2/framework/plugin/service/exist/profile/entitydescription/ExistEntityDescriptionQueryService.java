@@ -201,12 +201,12 @@ public class ExistEntityDescriptionQueryService
 
                                 String namespaceXpath = "";
                                 if(! StringUtils.isBlank(name.getNamespace())){
-                                    namespaceXpath = " and core:namespace = '" + name.getNamespace() + "'";
+                                    namespaceXpath = " and */entity:entityID/core:namespace = '" + name.getNamespace() + "'";
                                 }
 
                                 state.setXpath(
                                     state.getXpath() + (isBlankState ? "" : " | " + entityDescriptionResourceInfo.getResourceXpath()) +
-                                            "[.//entity:entityID[core:name = '" + name.getName() + "'" + namespaceXpath + "]]");
+                                            "[*/entity:entityID/core:name = '" + name.getName() + "'" + namespaceXpath + "]");
 
                                 return state;
                             }
@@ -236,14 +236,14 @@ public class ExistEntityDescriptionQueryService
 				if(parent.getEntityName() != null){
 					getRestrictions().add(
 						new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
-								".//entity:parent/core:name", 
+								"*/entity:parent/core:name",
 								".", 
 								AllOrAny.ANY,
 								Arrays.asList(parent.getEntityName().getName())));
 				} else {
 					getRestrictions().add(
 							new XpathStateBuildingRestriction<EntityDescriptionDirectoryState>(
-								".//entity:parent",
+								"*/entity:parent",
 								"@uri",
 								AllOrAny.ANY,
 								Arrays.asList(parent.getUri())));
