@@ -123,7 +123,7 @@ public class ExistEntityDescriptionQueryService
 	}
 
 	protected StateUpdater<EntityDescriptionDirectoryState> getResourceSynopsisStateUpdater() {
-		return new XpathStateUpdater<EntityDescriptionDirectoryState>(".//entity:designation/core:value");
+		return new XpathStateUpdater<EntityDescriptionDirectoryState>("*/entity:designation/core:value");
 	}
 
 	private class EntityDescriptionDirectoryBuilder extends XpathDirectoryBuilder<EntityDescriptionDirectoryState,EntityDirectoryEntry> {
