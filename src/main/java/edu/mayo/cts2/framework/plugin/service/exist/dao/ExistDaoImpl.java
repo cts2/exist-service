@@ -1,8 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.exist.dao;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import javax.xml.transform.stream.StreamResult;
+import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
+import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
+import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer;
+import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,10 +12,10 @@ import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
-import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
-import edu.mayo.cts2.framework.model.exception.Cts2RuntimeException;
-import edu.mayo.cts2.framework.plugin.service.exist.profile.CountingIncrementer;
-import edu.mayo.cts2.framework.plugin.service.exist.util.ExistServiceUtils;
+
+import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.StringWriter;
 
 public class ExistDaoImpl implements ExistResourceDao {
 	
@@ -70,7 +71,8 @@ public class ExistDaoImpl implements ExistResourceDao {
 
 		collection.storeResource(resource);
 	}
-	
+
+    @Override
 	public void storeResource(String path, String name, Object entry) {
 		Collection collection = null;
 		try {
@@ -91,7 +93,8 @@ public class ExistDaoImpl implements ExistResourceDao {
 			}
 		}
 	}
-	
+
+    @Override
 	public void storeBinaryResource(String path, String name, Object entry) {
 		Collection collection = null;
 		try {
@@ -113,12 +116,14 @@ public class ExistDaoImpl implements ExistResourceDao {
 		}
 	}
 
+    @Override
 	public Resource getResource(String path, String name) {
 		Resource resource = this.doGetResource(name, ExistServiceUtils.XML_SUFFIX, this.getResourcePath(path));
 
 		return resource;
 	}
-	
+
+    @Override
 	public Resource getBinaryResource(String path, String nameWithSuffix) {
 		Resource resource = this.doGetResource(nameWithSuffix, "", this.getResourcePath(path));
 
@@ -151,6 +156,23 @@ public class ExistDaoImpl implements ExistResourceDao {
 		}
 	}
 
+   @Override
+    public int count(
+            String collectionPath,
+            String xpathQuery){
+
+        try {
+            XQueryService xqueryService = this.getExistManager().getXQueryService(getResourcePath(collectionPath));
+
+            return Integer.parseInt( (String)
+                    xqueryService.query("count("+xpathQuery+")").getResource(0).getContent());
+
+        } catch (XMLDBException e) {
+            throw new Cts2RuntimeException(e);
+        }
+    }
+
+    @Override
 	public ResourceSet query(
 			String collectionPath, 
 			String queryString, 

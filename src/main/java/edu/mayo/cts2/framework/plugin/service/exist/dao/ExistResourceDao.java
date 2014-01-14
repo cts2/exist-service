@@ -10,6 +10,8 @@ public interface ExistResourceDao {
 			String xpath,
 			int start, 
 			int max);
+
+    public int count(String collectionPath, String xpathQuery);
 	
 	public void storeResource(String path, String resourceName, Object resource);
 	

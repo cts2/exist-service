@@ -38,6 +38,28 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
     @Autowired
     ExistAssociationMaintenanceService assocMaint
 
+    @Test
+    void TestCount(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource(createEntity("something",changeSetUri))
+        maint.createResource(createEntity("name",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def q = [
+                getFilterComponent : { },
+                getReadContext : { },
+                getQuery : { },
+                getRestrictions : { }
+        ] as EntityDescriptionQuery
+
+        def count = query.count(q)
+
+        assertEquals 2, count
+    }
+
 	@Test
 	void Get_Entity_Description_Summaries_With_Page_Limit(){
 		
@@ -86,7 +108,34 @@ class ExistEntityDescriptionServiceGroovyTestIT extends BaseServiceDbCleaningBas
 
 		assertEquals 1, summaries.entries.size
 	}
-	
+
+    @Test
+    void Test_Count_With_Contains_ResourceNameOrUri_Restriction(){
+
+        def changeSetUri = changeSetService.createChangeSet().getChangeSetURI()
+
+        maint.createResource(createEntity("something",changeSetUri))
+        maint.createResource(createEntity("name",changeSetUri))
+
+        changeSetService.commitChangeSet(changeSetUri)
+
+        def fc = new ResolvedFilter(
+                matchAlgorithmReference:StandardMatchAlgorithmReference.CONTAINS.getMatchAlgorithmReference(),
+                matchValue:"name",
+                componentReference: StandardModelAttributeReference.RESOURCE_NAME.componentReference)
+
+        def q = [
+                getFilterComponent : { [fc] as Set },
+                getReadContext : { },
+                getQuery : { },
+                getRestrictions : { }
+        ] as EntityDescriptionQuery
+
+        def count = query.count(q)
+
+        assertEquals 1, count
+    }
+
 	@Test
 	void Get_Entity_Description_Summaries_With_Contains_ResourceSynopsis_Restriction(){
 		

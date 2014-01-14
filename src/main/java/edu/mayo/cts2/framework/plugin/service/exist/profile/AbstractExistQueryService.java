@@ -80,6 +80,37 @@ public abstract class AbstractExistQueryService
 	protected String getChangeSetUri(ResolvedReadContext readContext){
 		return readContext == null ? null : readContext.getChangeSetContextUri();
 	}
+
+    private String getQueryString(String xpath){
+        String queryString = (StringUtils.isNotBlank(xpath) ? xpath : "");
+
+        int pos = queryString.indexOf(REPLACE_INDICATOR);
+        if (pos >=0) {
+            queryString = queryString.substring(0, pos) + this.getResourceInfo().getResourceXpath() + queryString.substring(pos + REPLACE_INDICATOR.length());
+        }
+        else {
+            queryString = this.getResourceInfo().getResourceXpath() + queryString;
+        }
+
+        return queryString;
+    }
+
+    public int doCount(
+            PathInfo resourceInfo,
+            String changeSetUri,
+            String collectionPath,
+            String xpath){
+        if(changeSetUri != null){
+            throw new UnsupportedOperationException("Cannot query COUNTs with a ChangeSet.");
+        }
+
+        String queryString = this.getQueryString(xpath);
+
+        return this.existResourceDao.count(
+            ExistServiceUtils.createPath(
+                this.getResourceInfo().getResourceBasePath(),
+                    collectionPath), queryString);
+    }
 	
 	public DirectoryResult<Summary> getResourceSummaries(
 			PathInfo resourceInfo,
@@ -88,18 +119,7 @@ public abstract class AbstractExistQueryService
 			String xpath,
 			int start, 
 			int max) {
-		
-		String queryString = (StringUtils.isNotBlank(xpath) ? xpath : "");
-		
-		int pos = queryString.indexOf(REPLACE_INDICATOR);
-		if (pos >=0)
-		{
-			queryString = queryString.substring(0, pos) + this.getResourceInfo().getResourceXpath() + queryString.substring(pos + REPLACE_INDICATOR.length());
-		}
-		else
-		{
-			queryString = this.getResourceInfo().getResourceXpath() + queryString;
-		}
+		String queryString = this.getQueryString(xpath);
 
 		String allResourcesCollectionPath = ExistServiceUtils.createPath(
 				this.getResourceInfo().getResourceBasePath(),

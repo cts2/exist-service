@@ -118,8 +118,15 @@ public class ExistEntityDescriptionQueryService
 	@Override
 	public int count(
 			EntityDescriptionQuery query){
-		throw new UnsupportedOperationException();
+        EntityDescriptionDirectoryBuilder builder =
+                new EntityDescriptionDirectoryBuilder(
+                        this.getChangeSetUri(query.getReadContext()));
 
+        return builder.
+                restrict(query.getRestrictions()).
+                restrict(query.getFilterComponent()).
+                restrict(query.getQuery()).
+                count();
 	}
 
 	protected StateUpdater<EntityDescriptionDirectoryState> getResourceSynopsisStateUpdater() {
@@ -132,20 +139,26 @@ public class ExistEntityDescriptionQueryService
 			super(new EntityDescriptionDirectoryState(), 
 					new Callback<EntityDescriptionDirectoryState, EntityDirectoryEntry>() {
 
+                private String getCodeSystemVersion(EntityDescriptionDirectoryState state){
+                    String codeSystemVersion = "";
+
+                    if(state.getCodeSystemVersions() != null &&
+                            state.getCodeSystemVersions().size() == 1){
+                        codeSystemVersion = state.getCodeSystemVersions().iterator().next().getName();
+                    } else if(state.getCodeSystemVersions() != null &&
+                            state.getCodeSystemVersions().size() > 1){
+                        throw new UnsupportedOperationException("Cannot currently restrict to more than one CodeSystemVersion.");
+                    }
+
+                    return codeSystemVersion;
+                }
+
 				@Override
 				public DirectoryResult<EntityDirectoryEntry> execute(
 						EntityDescriptionDirectoryState state, 
 						int start, 
 						int maxResults) {
-					String codeSystemVersion = "";
-					
-					if(state.getCodeSystemVersions() != null &&
-							state.getCodeSystemVersions().size() == 1){
-						codeSystemVersion = state.getCodeSystemVersions().iterator().next().getName();
-					} else if(state.getCodeSystemVersions() != null &&
-							state.getCodeSystemVersions().size() > 1){
-						throw new UnsupportedOperationException("Cannot currently restrict to more than one CodeSystemVersion.");
-					}
+					String codeSystemVersion = getCodeSystemVersion(state);
 					
 					return getResourceSummaries(
 							getResourceInfo(),
@@ -158,7 +171,13 @@ public class ExistEntityDescriptionQueryService
 
 				@Override
 				public int executeCount(EntityDescriptionDirectoryState state) {
-					throw new UnsupportedOperationException();
+                    String codeSystemVersion = getCodeSystemVersion(state);
+
+                    return doCount(
+                            getResourceInfo(),
+                            changeSetUri,
+                            ExistServiceUtils.createPath(codeSystemVersion),
+                            state.getXpath());
 				}},
 				
 				getSupportedMatchAlgorithms(),

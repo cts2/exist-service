@@ -36,6 +36,43 @@ class ExistDaoImplTestIT {
 		
 		assertEquals 100, summaries.getSize()
 	}
-	
-	
+
+    @Test
+    void testCount(){
+        assertNotNull existDaoImpl
+
+        for(int i=0;i<100;i++){
+            CodeSystemCatalogEntry entry = new CodeSystemCatalogEntry()
+            def name = Integer.toString(i)
+
+            entry.setCodeSystemName(name)
+            entry.setAbout(name);
+
+            existDaoImpl.storeResource("testcollection", name, entry)
+        }
+
+        def count = existDaoImpl.count("testcollection", "/codesystem:CodeSystemCatalogEntry")
+
+        assertEquals 100, count
+    }
+
+    @Test
+    void testCountNone(){
+        assertNotNull existDaoImpl
+
+        for(int i=0;i<100;i++){
+            CodeSystemCatalogEntry entry = new CodeSystemCatalogEntry()
+            def name = Integer.toString(i)
+
+            entry.setCodeSystemName(name)
+            entry.setAbout(name);
+
+            existDaoImpl.storeResource("testcollection", name, entry)
+        }
+
+        def count = existDaoImpl.count("testcollection", "/entity:EntityDescription")
+
+        assertEquals 0, count
+    }
+
 }

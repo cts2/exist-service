@@ -1,12 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.exist.profile;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.xmldb.api.base.Resource;
-
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext;
 import edu.mayo.cts2.framework.model.core.ChangeDescription;
 import edu.mayo.cts2.framework.model.core.ChangeableElementGroup;
@@ -15,6 +8,12 @@ import edu.mayo.cts2.framework.model.core.VersionTagReference;
 import edu.mayo.cts2.framework.model.core.types.ChangeType;
 import edu.mayo.cts2.framework.model.service.core.BaseReadService;
 import edu.mayo.cts2.framework.service.profile.ReadService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.xmldb.api.base.Resource;
+
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractExistReadService<
 	C extends IsChangeable,
@@ -126,6 +125,7 @@ public abstract class AbstractExistReadService<
 	
 	@Override
 	public boolean exists(I identifier, ResolvedReadContext readContext) {
-		throw new UnsupportedOperationException();
+		return this.read(identifier, readContext) != null;
 	}
+
 }
