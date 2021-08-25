@@ -1,3 +1,5 @@
+# This service implementation has been archived.
+
 exist-service
 =============
 A CTS2 Implementation based on the eXist XML DB.
